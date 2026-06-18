@@ -110,5 +110,19 @@ describe('Details View Tests', () => {
         cy.getByTestId('details-expression-value').should('have.text', '80 [SI::centimetre]');
       });
     });
+
+    context('When we select a TransitionUsage with a guard Expression', () => {
+      beforeEach(() => {
+        explorer.select('Drive Batmobile');
+        explorer.expand('Drive Batmobile');
+        // The TransitionUsage is anonymous so select the closest named item and move down using the keyboard
+        explorer.select('scanEnvironment');
+        cy.getByTestId('scanEnvironment').type('{downArrow}{downArrow}{downArrow}');
+      });
+      it("Then the Details view shows the child expression's textual value", () => {
+        cy.getByTestId('details-expression-value').should('exist');
+        cy.getByTestId('details-expression-value').should('have.text', 'scanEnvironment.status == StatusKind::safe');
+      });
+    });
   });
 });

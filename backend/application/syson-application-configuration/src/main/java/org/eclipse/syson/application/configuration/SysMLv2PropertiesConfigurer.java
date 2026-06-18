@@ -193,6 +193,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         pageCore.getGroups().add(this.createFeatureValuePropertiesGroup());
         pageCore.getGroups().add(this.createExpressionPropertiesGroup());
         pageCore.getGroups().add(this.createResultExpressionPropertiesGroup());
+        pageCore.getGroups().add(this.createGuardExpressionPropertiesGroup());
 
         PageDescription pageAdvanced = FormFactory.eINSTANCE.createPageDescription();
         pageAdvanced.setName("SysON-DetailsView-Advanced");
@@ -269,6 +270,29 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         expressionWidget.setName("ResultExpression");
         expressionWidget.setLabelExpression(CUSTOM_EXPRESSION_WIDGET_KEY);
         expressionWidget.setValueExpression(ServiceMethod.of0(DetailsViewService::getResultExpressionTextualRepresentation).aqlSelf());
+        expressionWidget.setIsEnabledExpression(AQLConstants.AQL_FALSE);
+
+        group.getChildren().add(expressionWidget);
+
+        return group;
+    }
+
+    /**
+     * Creates a group to display the value of a guard expression.
+     *
+     * @return a {@link GroupDescription}
+     */
+    private GroupDescription createGuardExpressionPropertiesGroup() {
+        GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
+        group.setDisplayMode(GroupDisplayMode.LIST);
+        group.setName("Guard");
+        group.setLabelExpression("");
+        group.setSemanticCandidatesExpression(ServiceMethod.of0(DetailsViewService::getGuardExpression).aqlSelf());
+
+        TextAreaDescription expressionWidget = FormFactory.eINSTANCE.createTextAreaDescription();
+        expressionWidget.setName("Guard");
+        expressionWidget.setLabelExpression(CUSTOM_EXPRESSION_WIDGET_KEY);
+        expressionWidget.setValueExpression(ServiceMethod.of0(DetailsViewService::getExpressionTextualRepresentation).aqlSelf());
         expressionWidget.setIsEnabledExpression(AQLConstants.AQL_FALSE);
 
         group.getChildren().add(expressionWidget);

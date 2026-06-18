@@ -68,6 +68,7 @@ import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TransitionFeatureMembership;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
@@ -647,6 +648,23 @@ public class DetailsViewService {
         } else if (self instanceof Namespace namespace && this.metamodelQueryElementService.getResultExpressionMembership(namespace) != null
                 && this.metamodelQueryElementService.getResultExpressionMembership(namespace).getOwnedResultExpression() != null) {
             result = this.metamodelQueryElementService.getResultExpressionMembership(namespace);
+        }
+        return result;
+    }
+
+    /**
+     * Gets the guard expression from a {@ink TransitionUsage} or {@link TransitionFeatureMembership}.
+     *
+     * @param self
+     *            {@ink TransitionUsage} or {@link TransitionFeatureMembership}.
+     * @return the corresponding guard {@link Expression} or <code>null</code>
+     */
+    public Expression getGuardExpression(Element self) {
+        Expression result = null;
+        if (self instanceof TransitionFeatureMembership expressionMembership && expressionMembership.getOwnedMemberElement() instanceof Expression expression) {
+            result = expression;
+        } else if (self instanceof TransitionUsage transitionUsage && !transitionUsage.getGuardExpression().isEmpty()) {
+            result = transitionUsage.getGuardExpression().get(0);
         }
         return result;
     }
