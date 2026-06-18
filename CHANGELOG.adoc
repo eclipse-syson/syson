@@ -44,6 +44,7 @@ Now, the choice is restricted to the _timeslice/snapshot_ type that match the gr
 - https://github.com/eclipse-syson/syson/issues/2270[#2270] [diagram] Add dedicated tools to diagram elements palette to create/edit/delete expressions.
 - https://github.com/eclipse-syson/syson/issues/2269[#2269] [diagram] When using direct edit on feature elements which have a value expression (e.g. an `Attribute` with a default value defined), the expression part (after the `=` sign) is no longer part of the initial direct edit value, and will be ignored if supplied in the new text value.
 Users should use the dedicated tools to edit expressions instead, as they ensure only valid expressions (with all names resolving) are accepted.
+- https://github.com/eclipse-syson/syson/issues/2287[#2287] [details] Use a label instead of a text field to display Expressions in the Details view
 
 === New features
 
