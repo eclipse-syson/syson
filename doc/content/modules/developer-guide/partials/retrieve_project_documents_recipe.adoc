@@ -1,0 +1,72 @@
+= Retrieve project documents recipe (python script)
+
+Learn how to retrieve the list of documents from a {product} project through the Sirius Web HTTP API.
+Each recipe includes a detailed explanation, step-by-step instructions, and sample code.
+
+Recipes covered:
+
+* <<retrieve_project_documents>>: downloads a project archive and prints the document names and ids found in its manifest.
+
+[#retrieve_project_documents]
+== Retrieve project documents
+This example demonstrates how to download a project archive and inspect its `manifest.json` file to retrieve the documents associated with the project.
+
+The manifest contains a `documentIdsToName` entry that maps each document UUID to its corresponding document name.
+
+[NOTE]
+====
+The `document_id` values are returned by the project archive manifest, not by the Explorer tree itself.
+If you need a document id for a given document name, download the project archive and read the `documentIdsToName` section of the manifest.
+====
+
+Example script to retrieve the documents of a project:
+
+[source,python]
+.retrieve_project_documents.py
+----
+include::example$retrieve_project_documents.py[]
+----
+
+*What this code does*:
+
+<1> *Import required libraries*:
+
+* `json`: Used to read the manifest content.
+* `zipfile`: Used to open the downloaded project archive.
+* `io.BytesIO`: Used to read the archive from memory.
+* `requests`: Used for sending HTTP requests.
+<2> *Define the `download_project_archive` function* with two parameters:
+
+* `url`: The {product} server URL.
+* `project_id`: The UUID of the project whose documents should be retrieved.
+
+<3> *Sends a `GET` request* to `/api/projects/{projectId}` so the server returns the project archive as a ZIP file.
+
+<4> *Reads the `manifest.json` file* from the downloaded archive and extracts the `documentIdsToName` mapping.
+
+<5> *Prints the document ids and names* in a stable order so the output is easy to read and reuse.
+
+Run the script:
+[source,bash]
+----
+$ python retrieve_project_documents.py project-id
+$ python retrieve_project_documents.py url-of-syson-server project-id
+----
+
+For example, to retrieve the documents of a local {product} project:
+[source,bash]
+----
+$ python retrieve_project_documents.py 76bb3f29-17d1-465a-a2ca-a331978c36f3
+----
+
+Output example:
+[source,bash]
+----
+Document Name: SysMLv2.sysml, Document ID: 3cb6f3b1-8a10-41b7-9a08-d32b66e28c6f
+Document Name: Requirements.sysml, Document ID: 7f4b9d33-0f4d-4b79-a6f8-8bc12edb9d1d
+----
+
+Then you can reuse the retrieved document ids in recipes such as xref:developer-guide:api/api-cookbook.adoc#download_sysml_file[download a SysML file].
+
+include::developer-guide:partial$download_sysml_file_recipe.adoc[leveloffset=+2]
+

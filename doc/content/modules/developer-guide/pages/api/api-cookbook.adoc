@@ -68,4 +68,8 @@ include::developer-guide:partial$new_objects_from_text.adoc[leveloffset=+2]
 
 include::developer-guide:partial$import_sysml_file_recipe.adoc[leveloffset=+2]
 
+include::developer-guide:partial$retrieve_project_documents_recipe.adoc[leveloffset=+2]
+
+include::developer-guide:partial$download_sysml_file_recipe.adoc[leveloffset=+2]
+
 include::developer-guide:partial$delete_element_recipe.adoc[leveloffset=+2]
