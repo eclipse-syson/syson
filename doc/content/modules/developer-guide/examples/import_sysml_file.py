@@ -55,13 +55,6 @@ mutation UploadDocument($input: UploadDocumentInput!) {
 """
 
 
-def build_headers(token):  # <2>
-    headers = {}
-    if token:
-        headers["Authorization"] = f"Bearer {token}"
-    return headers
-
-
 def get_graphql_url(url):
     return f"{url.rstrip('/')}{GRAPHQL_ENDPOINT}"
 
@@ -76,14 +69,13 @@ def print_graphql_errors(data):
         print(f"GraphQL error: {error.get('message', error)}")
 
 
-def fetch_editing_context_id(url, project_id, token):  # <3>
+def fetch_editing_context_id(url, project_id):  # <2>
     response = requests.post(
         get_graphql_url(url),
         json={
             "query": fetch_editing_context_query,
             "variables": {"projectId": project_id},
         },
-        headers=build_headers(token),
     )
 
     if response.status_code != 200:
@@ -113,7 +105,7 @@ def print_messages(messages):
         print(f"{message.get('level', 'INFO')}: {message.get('body', '')}")
 
 
-def import_sysml_file(url, file_path, editing_context_id, read_only, token):  # <4>
+def import_sysml_file(url, file_path, editing_context_id, read_only):  # <3>
     operation_id = str(uuid.uuid4())
     operations = {
         "query": upload_document_mutation,
@@ -131,7 +123,7 @@ def import_sysml_file(url, file_path, editing_context_id, read_only, token):  # 
     }
 
     with open(file_path, "rb") as file:
-        response = requests.post(  # <5>
+        response = requests.post(  # <4>
             get_graphql_upload_url(url),
             data={
                 "operations": json.dumps(operations),
@@ -140,7 +132,6 @@ def import_sysml_file(url, file_path, editing_context_id, read_only, token):  # 
             files={
                 "0": (file_path.name, file, "text/plain"),
             },
-            headers=build_headers(token),
         )
 
     if response.status_code not in (200, 201):
@@ -177,11 +168,6 @@ def parse_arguments():
         help="Either: file-path project-id, or: url file-path project-id",
     )
     parser.add_argument(
-        "--token",
-        type=str,
-        help="Bearer token used to authenticate on the SysON server",
-    )
-    parser.add_argument(
         "--read-only",
         action="store_true",
         help="Import the uploaded document as read-only",
@@ -210,9 +196,9 @@ if __name__ == "__main__":
         print(f"File not found: {file_path}")
         exit(1)
 
-    editing_context_id = fetch_editing_context_id(args.url, args.project_id, args.token)  # <6>
+    editing_context_id = fetch_editing_context_id(args.url, args.project_id)  # <5>
     if not editing_context_id:
         exit(1)
 
-    if not import_sysml_file(args.url, file_path, editing_context_id, args.read_only, args.token):  # <7>
+    if not import_sysml_file(args.url, file_path, editing_context_id, args.read_only):  # <6>
         exit(1)
