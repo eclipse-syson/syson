@@ -65,6 +65,7 @@ import { NewSysMLExpressionMenuContribution } from '../expressions/NewSysMLExpre
 import { InsertTextualSysMLMenuContribution } from '../InsertTextualSysMLv2MenuContribution';
 import { SysONNavigationBarMenuIcon } from '../navigationBarMenu/SysONNavigationBarMenuIcon';
 import { PublishProjectSysMLContentsAsLibraryCommand } from '../omnibox/PublishProjectSysMLContentsAsLibraryCommand';
+import { RotateNodeToolOverriddenContribution } from '../rotateNodeTool/RotateNodeToolOverriddenContribution';
 import { SysONDiagramPanelMenu } from '../SysONDiagramPanelMenu';
 
 const sysONExtensionRegistry: ExtensionRegistry = new ExtensionRegistry();
@@ -271,6 +272,12 @@ const diagramPaletteToolOverriddenContributions: PaletteToolOverriddenContributi
       return tool.id === 'tool_delete_expression';
     },
     component: DeleteExpressionDiagramToolOverriddenContribution,
+  },
+  {
+    canHandle: (tool: GQLTool) => {
+      return tool.id === 'fork_join_node_rotate_tool';
+    },
+    component: RotateNodeToolOverriddenContribution,
   },
 ];
 

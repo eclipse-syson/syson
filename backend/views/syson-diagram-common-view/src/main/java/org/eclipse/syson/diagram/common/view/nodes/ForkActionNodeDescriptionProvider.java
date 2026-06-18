@@ -49,7 +49,7 @@ public class ForkActionNodeDescriptionProvider extends AbstractControlNodeAction
 
     @Override
     protected UserResizableDirection isNodeResizable() {
-        return UserResizableDirection.HORIZONTAL;
+        return UserResizableDirection.BOTH;
     }
 
     @Override
