@@ -31,6 +31,7 @@ It has long been unused by Sirius Web itself (since the transition to MUI).
 - https://github.com/eclipse-syson/syson/issues/2237[#2237] [diagrams] Fix the item label inside `frames`, `require constraints`, and `assume constraints` compartments.
 - https://github.com/eclipse-syson/syson/issues/2278[#2278] [diagrams] Display inherited behavior parameters in the _parameters_ compartment of `ActionDefinition` and `ActionUsage` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/2291[#2291] [diagrams] Fix item label for constraint to show their name and expression value between braces (if present).
+- https://github.com/eclipse-syson/syson/issues/2289[#2289] [details] Fix expression support for `TransitionUsage`.
 
 === Improvements
 
