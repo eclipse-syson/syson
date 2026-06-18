@@ -48,7 +48,7 @@ include::example$download_sysml_file.py[]
 * `document_id`: The UUID of the document to download.
 * `output_path`: The local path of the `.sysml` file to create.
 
-<4> *Sends a `GET` request* to `/api/editingcontexts/{editingContextId}/documents/{documentId}` with the `Accept: text/html` header so the server returns the textual SysML export.
+<4> *Sends a `GET` request* to `/api/editingcontexts/\{editingContextId\}/documents/\{documentId\}` with the `Accept: text/html` header so the server returns the textual SysML export.
 
 <5> *Streams the response body* into the output file so large models do not need to be buffered entirely in memory.
 
