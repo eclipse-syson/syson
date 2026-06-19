@@ -493,10 +493,7 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
 
     private String getCompartmentItemStringRepresentation(Usage usage, boolean directEditInput) {
         StringBuilder label = new StringBuilder();
-        if (usage instanceof ConstraintUsage constraintUsage
-                && usage.getOwningMembership() instanceof RequirementConstraintMembership) {
-            // Use the constraint-specific rendering only if the element is a constraint owned by a requirement. Other
-            // constraints (including requirements) are rendered as regular elements.
+        if (usage instanceof ConstraintUsage constraintUsage) {
             label.append(this.getCompartmentItemLabel(constraintUsage, directEditInput));
         } else {
             label.append(this.getUsageListItemPrefix(usage));
@@ -597,11 +594,7 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
      */
     private String getCompartmentItemLabel(ConstraintUsage constraintUsage, boolean directEditInput) {
         StringBuilder label = new StringBuilder();
-        if (constraintUsage == null) {
-            label.append("");
-        } else if (!constraintUsage.getOwnedMember().isEmpty() && constraintUsage.getOwnedMember().get(0) instanceof Expression expression) {
-            label.append(this.getSysmlTextualRepresentation(expression, directEditInput));
-        } else {
+        if (constraintUsage != null) {
             var identificationLabel = this.getIdentificationLabel(constraintUsage);
             if (identificationLabel.isBlank()) {
                 // The constraint doesn't have an expression and does not have a name, we use the referenced feature name if the referenced feature exists
@@ -615,6 +608,14 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
                 label.append(this.getReferenceSubsettingLabel(constraintUsage));
             }
 
+            if (!directEditInput && !constraintUsage.getOwnedMember().isEmpty() && constraintUsage.getOwnedMember().get(0) instanceof Expression expression) {
+                if (!label.isEmpty()) {
+                    label.append(LabelConstants.SPACE);
+                }
+                label.append(LabelConstants.OPEN_BRACE).append(LabelConstants.SPACE);
+                label.append(this.getSysmlTextualRepresentation(expression, directEditInput));
+                label.append(LabelConstants.SPACE).append(LabelConstants.CLOSE_BRACE);
+            }
         }
         return label.toString();
     }

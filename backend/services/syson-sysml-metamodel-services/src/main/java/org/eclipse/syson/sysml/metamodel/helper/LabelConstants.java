@@ -25,6 +25,8 @@ public class LabelConstants {
 
     public static final String ASSUME = SysMLv2Keywords.ASSUME;
 
+    public static final String CLOSE_BRACE = SysMLv2Keywords.RIGHT_BRACE;
+
     public static final String CLOSE_BRACKET = SysMLv2Keywords.RIGHT_BRACKET;
 
     public static final String CLOSE_PARENTHESIS = SysMLv2Keywords.RIGHT_PAREN;
@@ -62,6 +64,8 @@ public class LabelConstants {
     public static final String LESSER_THAN = SysMLv2Keywords.LESS_THAN;
 
     public static final String NON_UNIQUE = SysMLv2Keywords.NONUNIQUE;
+
+    public static final String OPEN_BRACE = SysMLv2Keywords.LEFT_BRACE;
 
     public static final String OPEN_BRACKET = SysMLv2Keywords.LEFT_BRACKET;
 
