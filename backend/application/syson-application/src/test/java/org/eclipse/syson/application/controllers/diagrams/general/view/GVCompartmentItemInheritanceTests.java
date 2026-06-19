@@ -22,6 +22,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
@@ -64,9 +65,9 @@ import reactor.test.StepVerifier;
  */
 @Transactional
 @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
-@SuppressWarnings("checkstyle:MultipleStringLiterals")
+// CHECKSTYLE:OFF
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { SysONTestsProperties.NO_DEFAULT_LIBRARIES_PROPERTY })
-public class GVActionDefinitionParameterTests extends AbstractIntegrationTests {
+public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests {
 
 
     private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
@@ -150,9 +151,107 @@ public class GVActionDefinitionParameterTests extends AbstractIntegrationTests {
 
     @DisplayName("GIVEN an ActionDefinition with behavior parameter, WHEN subclassing the ActionDefinition with another ActionDefinition, THEN the other ActionDefinition behavior parameters are inherited from the subclassed ActionDefinition")
     @Test
-    public void checkActionDefinitionParameterInheritance() {
-        String parameterToolName = "New Parameter In";
-        String expectedListItemLabelText = "in ref parameter1";
+    public void checkActionDefinitionParametersInheritanceWithSubclassification() {
+        this.checkListItemInBaseElementAreInheritedInSpecializingElement(
+                SysmlPackage.eINSTANCE.getActionDefinition(),
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_DEFINITION_ID,
+                GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_DEFINITION_ID,
+                "New Parameter In",
+                "in ref parameter1",
+                true,
+                "parameters",
+                "New Action Definition",
+                SysmlPackage.eINSTANCE.getActionDefinition(),
+                "New Subclassification"
+        );
+    }
+
+    @DisplayName("GIVEN a base ActionUsage with behavior parameter, WHEN another ActionUsage is subsetting by reference the base ActionUsage, THEN the base ActionUsage behavior parameters are inherited by the other ActionUsage")
+    @Test
+    public void checkActionUsageParametersInheritanceWithReferenceSubsetting() {
+        this.checkListItemInBaseElementAreInheritedInSpecializingElement(
+                SysmlPackage.eINSTANCE.getActionUsage(),
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID,
+                GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID,
+                "New Parameter Out",
+                "out ref parameter1",
+                true,
+                "parameters",
+                "New Action",
+                SysmlPackage.eINSTANCE.getActionUsage(),
+                "New Reference Subsetting"
+        );
+    }
+
+    @DisplayName("GIVEN an ActionDefinition with an action, WHEN using the ActionDefinition as a feature type of an ActionUsage, THEN the ActionUsage actions are inherited from the ActionDefinition")
+    @Test
+    public void checkActionDefinitionActionsInheritanceWithFeatureTyping() {
+        this.checkListItemInBaseElementAreInheritedInSpecializingElement(
+                SysmlPackage.eINSTANCE.getActionDefinition(),
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_DEFINITION_ID,
+                GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_DEFINITION_ID,
+                "New Action",
+                "action1",
+                false,
+                "actions",
+                "New Action",
+                SysmlPackage.eINSTANCE.getActionUsage(),
+                "New Feature Typing"
+        );
+    }
+
+    @DisplayName("GIVEN a base ActionUsage with an action, WHEN subsetting the base ActionUsage with another ActionUsage, THEN the ActionUsage actions are inherited from the base ActionUsage")
+    @Test
+    public void checkActionUsageActionsInheritanceWithSubsetting() {
+        this.checkListItemInBaseElementAreInheritedInSpecializingElement(
+                SysmlPackage.eINSTANCE.getActionUsage(),
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID,
+                GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID,
+                "New Action",
+                "action1",
+                false,
+                "actions",
+                "New Action",
+                SysmlPackage.eINSTANCE.getActionUsage(),
+                "New Subsetting"
+        );
+    }
+
+    @DisplayName("GIVEN a base ActionUsage with an item, WHEN subsetting the base ActionUsage with another ActionUsage, THEN the ActionUsage items are inherited from the base ActionUsage")
+    @Test
+    public void checkActionUsageItemsInheritanceWithSubsetting() {
+        this.checkListItemInBaseElementAreInheritedInSpecializingElement(
+                SysmlPackage.eINSTANCE.getActionUsage(),
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID,
+                GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID,
+                "New Item",
+                "item1",
+                false,
+                "items",
+                "New Action",
+                SysmlPackage.eINSTANCE.getActionUsage(),
+                "New Subsetting"
+        );
+    }
+
+    @DisplayName("GIVEN an ActionUsage with an action, WHEN a StateUsage is subsetting by reference the ActionUsage, THEN the ActionUsage actions are inherited by the StateUsage")
+    @Test
+    public void checkActionUsageActionsInheritanceWithReferenceSubsetting() {
+        this.checkListItemInBaseElementAreInheritedInSpecializingElement(
+                SysmlPackage.eINSTANCE.getActionUsage(),
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID,
+                GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID,
+                "New Action",
+                "action1",
+                false,
+                "actions",
+                "New State",
+                SysmlPackage.eINSTANCE.getStateUsage(),
+                "New Reference Subsetting"
+        );
+    }
+
+    private void checkListItemInBaseElementAreInheritedInSpecializingElement(EClass baseElementToInheritFrom, String baseElementToInheritFromTargetObjectId, String baseElementToInheritFromNodeId, String elementToInheritCreationToolName, String elementToInheritExpectedListItemLabelText, boolean alsoRepresentedByBorderNode, String compartmentName, String elementThatInheritFromBaseElementCreationToolName, EClass elementThatInheritFromBaseElementEClass, String specializationToolName) {
         var flux = this.givenSubscriptionToDiagram();
         var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
@@ -161,70 +260,76 @@ public class GVActionDefinitionParameterTests extends AbstractIntegrationTests {
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        // Create parameter on ActionDefinition
-        String createParameterToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionDefinition()), parameterToolName);
-        Runnable newCreationTool = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_DEFINITION_ID, createParameterToolId);
-        Consumer<Object> createdParameterDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
+        // Create an element in the base element to inherit
+        String createActionToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(baseElementToInheritFrom), elementToInheritCreationToolName);
+        Runnable newCreationTool = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, baseElementToInheritFromTargetObjectId, createActionToolId);
+        Consumer<Object> createdActionDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
+            int expectedBorderNodeCount = 0;
+            if (alsoRepresentedByBorderNode) {
+                expectedBorderNodeCount = 1;
+            }
             new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewBorderNodeCount(1)
-                    .hasNewNodeCount(1) // The parameter is created
+                    .hasNewBorderNodeCount(expectedBorderNodeCount) // The element is created and sometimes can be represented as a border node
+                    .hasNewNodeCount(1) // The element is created and represented as a list item
                     .hasNewEdgeCount(0)
                     .check(diagram.get(), newDiagram, true);
 
-            var parameterCompartment = new DiagramNavigator(newDiagram)
-                    .nodeWithTargetObjectId(GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_DEFINITION_ID)
-                    .childNodeWithLabel("parameters")
+            var actionsCompartment = new DiagramNavigator(newDiagram)
+                    .nodeWithTargetObjectId(baseElementToInheritFromTargetObjectId)
+                    .childNodeWithLabel(compartmentName)
                     .getNode();
-            assertThat(parameterCompartment.getChildNodes()).hasSize(1);
-            assertThat(parameterCompartment.getChildNodes().getFirst().getInsideLabel().getText()).isEqualTo(expectedListItemLabelText);
+            assertThat(actionsCompartment.getChildNodes()).hasSize(1);
+            assertThat(actionsCompartment.getChildNodes().getFirst().getInsideLabel().getText()).isEqualTo(elementToInheritExpectedListItemLabelText); // The created element has the expected name
             diagram.set(newDiagram);
         });
 
-        AtomicReference<String> newActionDefinitionNodeId = new AtomicReference<>();
 
-        // Create another ActionDefinition
-        String createActionDefinitionToolId = diagramDescriptionIdProvider.getDiagramCreationToolId("New Action Definition");
-        Runnable createActionDefinitionRunnable = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, null, createActionDefinitionToolId);
+        // Create an new element that will inherit from the base element
+        AtomicReference<String> newActionActionUsageNodeId = new AtomicReference<>();
+        String createActionUsageToolId = diagramDescriptionIdProvider.getDiagramCreationToolId(elementThatInheritFromBaseElementCreationToolName);
+        Runnable createActionDefinitionRunnable = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, null, createActionUsageToolId);
         Consumer<Object> createdActionDefinitionDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewBorderNodeCount(0)
-                    .hasNewNodeCount(1) // The Action definition
+                    .hasNewNodeCount(1) // The new element is created
                     .hasNewEdgeCount(0)
                     .check(diagram.get(), newDiagram, true);
             var newNodes = this.diagramComparator.newNodes(diagram.get(), newDiagram);
-            newActionDefinitionNodeId.set(newNodes.getFirst().getId());
+            newActionActionUsageNodeId.set(newNodes.getFirst().getId());
             diagram.set(newDiagram);
         });
 
-        // Create the subclassification between the created ActionDefinition and the existing one
-        String createSubclassificationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionDefinition()), "New Subclassification");
-        Runnable createSubclassification = () -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, newActionDefinitionNodeId.get(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_DEFINITION_ID, createSubclassificationToolId);
 
-        // check the parameter is inherited and contains a '^' in its name
-        Consumer<Object> createSubclassificationDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
+        // Create the specialization between the newly created element and the base element
+        String createFeatureTypeToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(elementThatInheritFromBaseElementEClass), specializationToolName);
+        Runnable createFeatureTyping = () -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, newActionActionUsageNodeId.get(), baseElementToInheritFromNodeId, createFeatureTypeToolId);
+
+        // Check new created element inherits from the base element, and thus, contains a list item with '^' in its label
+        Consumer<Object> createFeatureTypeDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewBorderNodeCount(0)
-                    .hasNewNodeCount(1) // The list item inherited from subclassed element
-                    .hasNewEdgeCount(1) // The subclassification edge
+                    .hasNewNodeCount(1) // The list item inherited from the base element
+                    .hasNewEdgeCount(1) // The specialization edge
                     .check(diagram.get(), newDiagram);
 
             var parameterCompartment = new DiagramNavigator(newDiagram)
-                    .nodeWithId(newActionDefinitionNodeId.get())
-                    .childNodeWithLabel("parameters")
+                    .nodeWithId(newActionActionUsageNodeId.get())
+                    .childNodeWithLabel(compartmentName)
                     .getNode();
             assertThat(parameterCompartment.getChildNodes()).hasSize(1);
-            assertThat(parameterCompartment.getChildNodes().getFirst().getInsideLabel().getText()).isEqualTo("^" + expectedListItemLabelText);
+            assertThat(parameterCompartment.getChildNodes().getFirst().getInsideLabel().getText()).isEqualTo("^" + elementToInheritExpectedListItemLabelText); // The inheriting element has the same name prefixed with '^'
         });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(newCreationTool)
-                .consumeNextWith(createdParameterDiagramConsumer)
+                .consumeNextWith(createdActionDiagramConsumer)
                 .then(createActionDefinitionRunnable)
                 .consumeNextWith(createdActionDefinitionDiagramConsumer)
-                .then(createSubclassification)
-                .consumeNextWith(createSubclassificationDiagramConsumer)
+                .then(createFeatureTyping)
+                .consumeNextWith(createFeatureTypeDiagramConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
 }
+// CHECKSTYLE:ON
