@@ -333,7 +333,7 @@ public class DiagramQueryLabelServiceTest {
         literalInteger.setValue(2);
         yValue.getOwnedRelatedElement().add(literalInteger);
 
-        assertThat(this.labelService.getCompartmentItemLabel(constraintUsage)).isEqualTo("1 >= 2");
+        assertThat(this.labelService.getCompartmentItemLabel(constraintUsage)).isEqualTo(CONSTRAINT_USAGE_NAME + " { 1 >= 2 }");
     }
 
     @DisplayName("GIVEN a ConstraintUsage with an expression containing a subject reference, WHEN its label is computed, THEN the label represents the expression")
@@ -356,7 +356,7 @@ public class DiagramQueryLabelServiceTest {
         yFeatureReference.getOwnedRelationship().add(yFeatureReferenceMembership);
         yFeatureReferenceMembership.setMemberElement(subjectReference);
 
-        assertThat(this.labelService.getCompartmentItemLabel(constraintUsage)).isEqualTo("1 >= mySubject");
+        assertThat(this.labelService.getCompartmentItemLabel(constraintUsage)).isEqualTo(CONSTRAINT_USAGE_NAME + " { 1 >= mySubject }");
 
     }
 
@@ -381,7 +381,7 @@ public class DiagramQueryLabelServiceTest {
         yFeatureReference.getOwnedRelationship().add(yFeatureReferenceMembership);
         yFeatureReferenceMembership.setMemberElement(attributeUsage);
 
-        assertThat(this.labelService.getCompartmentItemLabel(constraintUsage)).isEqualTo("1 >= myAttribute");
+        assertThat(this.labelService.getCompartmentItemLabel(constraintUsage)).isEqualTo(CONSTRAINT_USAGE_NAME + " { 1 >= myAttribute }");
     }
 
     @DisplayName("GIVEN a ConstraintUsage with an expression containing a single feature chaining, WHEN its label is computed, THEN the label represents the expression")
@@ -406,7 +406,7 @@ public class DiagramQueryLabelServiceTest {
         featureChainExpression.getOwnedRelationship().add(featureChainMembership);
         featureChainMembership.setMemberElement(subAttributeUsage);
 
-        assertThat(this.labelService.getCompartmentItemLabel(constraintUsage)).isEqualTo("1 >= myAttribute.mySubAttribute");
+        assertThat(this.labelService.getCompartmentItemLabel(constraintUsage)).isEqualTo(CONSTRAINT_USAGE_NAME + " { 1 >= myAttribute.mySubAttribute }");
     }
 
     @DisplayName("GIVEN a ConstraintUsage with an expression containing multiple feature chainings, WHEN its label is computed, THEN the label represents the expression")
@@ -439,7 +439,7 @@ public class DiagramQueryLabelServiceTest {
         featureChaining2.setChainingFeature(zAttributeUsage);
         feature.getOwnedRelationship().addAll(List.of(featureChaining1, featureChaining2));
 
-        assertThat(this.labelService.getCompartmentItemLabel(constraintUsage)).isEqualTo("1 >= x.y.z");
+        assertThat(this.labelService.getCompartmentItemLabel(constraintUsage)).isEqualTo(CONSTRAINT_USAGE_NAME + " { 1 >= x.y.z }");
     }
 
     @DisplayName("GIVEN a Dependency with a name and short name, WHEN its edge label is computed, THEN the label contains the name and short name")
