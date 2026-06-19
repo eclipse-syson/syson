@@ -118,6 +118,7 @@ image::expression-palette-section.png[Expression palette tool section on an `Att
 +
 image::action-flow-guard-labels.png[Succession edges with visible guard expressions, width=80%]
 ** Display inherited behavior parameters in the _parameters_ compartment of `ActionDefinition` and `ActionUsage` graphical nodes.
+** Display inherited `ItemUsages` in the _items_ compartment, and inherited `ActionUsages` in the _actions_ compartment of `ActionDefinitions`, `ActionUsages`, `PartUsages`... graphical nodes.
 
 == Technical details
 

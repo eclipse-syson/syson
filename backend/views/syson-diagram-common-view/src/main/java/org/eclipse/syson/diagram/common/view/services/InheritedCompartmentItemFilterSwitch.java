@@ -109,7 +109,8 @@ public class InheritedCompartmentItemFilterSwitch extends SysmlSwitch<Boolean> {
 
     private boolean shouldConsiderParameter(Feature feature) {
         Type owningType = feature.getOwningType();
-        return owningType instanceof Behavior || owningType instanceof Step;
+        return (owningType instanceof Behavior && this.eReference.equals(SysmlPackage.eINSTANCE.getBehavior_Parameter()))
+                || (owningType instanceof Step && this.eReference.equals(SysmlPackage.eINSTANCE.getStep_Parameter()));
     }
 
     private boolean isInheritedParameter(Feature feature) {
