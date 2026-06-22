@@ -10,10 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useDeletionConfirmationDialog } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, useDeletionConfirmationDialog } from '@eclipse-sirius/sirius-components-core';
 import { DiagramContext, DiagramContextValue, EdgeData, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
 import { PaletteToolContributionComponentProps, usePalette } from '@eclipse-sirius/sirius-components-palette';
-import DeleteIcon from '@mui/icons-material/Delete';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -76,6 +75,9 @@ export const DeleteExpressionDiagramToolOverriddenContribution = ({
     });
   };
 
+  const toolLabel = 'Delete Expression';
+  const toolIconURL = '/api/images/diagram-images/semanticDelete.svg';
+
   return (
     <ListItemButton
       key="overridden_tool_delete_expression"
@@ -84,9 +86,9 @@ export const DeleteExpressionDiagramToolOverriddenContribution = ({
       disabled={readOnly}
       className={classes.listItemButton}>
       <ListItemIcon className={classes.listItemIcon}>
-        <DeleteIcon fontSize="small" />
+        <IconOverlay iconURLs={[toolIconURL]} alt={toolLabel} customIconHeight={16} customIconWidth={16} />
       </ListItemIcon>
-      <ListItemText primary={'Delete expression'} className={classes.listItemText} />
+      <ListItemText primary={toolLabel} className={classes.listItemText} />
     </ListItemButton>
   );
 };

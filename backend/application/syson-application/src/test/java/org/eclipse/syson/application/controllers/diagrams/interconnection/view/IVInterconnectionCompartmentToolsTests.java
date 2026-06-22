@@ -113,8 +113,8 @@ public class IVInterconnectionCompartmentToolsTests extends AbstractIntegrationT
             assertThat(quickToolsLabels).hasSize(4);
             assertThat(quickToolsLabels).containsSequence("Pin", "Adjust size", "Fade", "Hide");
             List<String> paletteEntriesLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
-            assertThat(paletteEntriesLabels).hasSize(6);
-            assertThat(paletteEntriesLabels).containsSequence("Requirements", "Structure", "Show/Hide", "Related Elements", "Edit", "Expression");
+            assertThat(paletteEntriesLabels).hasSize(5);
+            assertThat(paletteEntriesLabels).containsSequence("Requirements", "Structure", "Show/Hide", "Related Elements", "Edit");
 
             List<String> paletteRequirementsSectionToolsLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[0].tools[*].label");
             assertThat(paletteRequirementsSectionToolsLabels).hasSize(1);

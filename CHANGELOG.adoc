@@ -51,6 +51,7 @@ Users should use the dedicated tools to edit expressions instead, as they ensure
 - https://github.com/eclipse-syson/syson/issues/2301[#2301] [diagram] Constraint nodes now display their corresponding expression directly in their label if it is set.
 - https://github.com/eclipse-syson/syson/issues/2292[#2292] [diagrams] Add inheritance of "Behavior" and "Step" graphical elements in list items.
 It concerns, at least, _actions_ and _items_ compartments list items.
+- https://github.com/eclipse-syson/syson/issues/2284[#2284] [diagrams] The expression-related tools in diagram palette are now available in the default _Edit_ section.
 
 === New features
 
