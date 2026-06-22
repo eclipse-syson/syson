@@ -117,6 +117,10 @@ public class GeneralPurposeTests {
             "/org/eclipse/syson/direct/edit/grammars"
     );
 
+    private static final List<String> CHECKSTYLE_HIDDEN_FIELD_WHITELIST_CLASSNAME = List.of(
+            "ElementSpecializationInheritanceTestRunner"
+    );
+
     /**
      * Finds the folder containing the Git repository.
      *
@@ -216,7 +220,7 @@ public class GeneralPurposeTests {
             if (line.contains(CHECKSTYLE_HIDDEN_FIELD)) {
                 isValidUsage = true;
                 isValidUsage = isValidUsage && lines.size() > index;
-                isValidUsage = isValidUsage && lines.get(index + 1).contains(BUILDER);
+                isValidUsage = isValidUsage && (lines.get(index + 1).contains(BUILDER) || CHECKSTYLE_HIDDEN_FIELD_WHITELIST_CLASSNAME.stream().anyMatch(whiteListClassName -> lines.get(index + 1).contains(whiteListClassName)));
             } else if (line.contains(CHECKSTYLE_ILLEGAL_CATCH)) {
                 isValidUsage = true;
             } else if (line.contains(CHECKSTYLE_MULTIPLE_STRING_LITERALS)) {
@@ -237,8 +241,7 @@ public class GeneralPurposeTests {
     private void testNoCheckstyleOff(int index, String line, Path javaFilePath) {
         var whitelist = Stream.of(
                 Path.of("ServiceMethod.java"),
-                Path.of("GVTopNodeCreationTests.java"),
-                Path.of("GVCompartmentItemInheritanceTests.java")
+                Path.of("GVTopNodeCreationTests.java")
         );
         if (whitelist.filter(javaFilePath::endsWith).findFirst().isEmpty()) {
             if (line.contains(CHECKSTYLE_OFF)) {

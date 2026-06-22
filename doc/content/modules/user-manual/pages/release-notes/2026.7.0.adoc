@@ -45,7 +45,7 @@ image::release-notes-assume-and-require-edge-tools.png[list available edge tools
 
 ** When using direct edit on feature elements that have a value expression (e.g., an `Attribute` with a default value defined), the expression part (after the `=` sign) is no longer part of the initial direct edit value and will be ignored if supplied in the new text value.
 Users should use the dedicated tools to edit expressions instead, as they ensure only valid expressions (with all names resolving) are accepted.
-
+** Add support for list item inheritance in _states_ and _exhibit states_ compartments.
 ** Add support for creating _Start_, _Done_, _Decision_, _Fork_, _Join_, and _Merge_ actions directly on the background of an `Action Flow View` diagram if its root element is an `ActionUsage` or `ActionDefinition`.
 
 * In the _Explorer_ view:

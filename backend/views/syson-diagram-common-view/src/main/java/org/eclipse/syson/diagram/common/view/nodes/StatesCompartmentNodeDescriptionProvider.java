@@ -82,11 +82,13 @@ public class StatesCompartmentNodeDescriptionProvider extends AbstractCompartmen
         if (this.showsExhibitOnly) {
             cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(this.eClass, this.eReference) + EXHIBIT_STATES_NAME).ifPresent(nd -> {
                 cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, this.eReference) + EXHIBIT_STATES_NAME).ifPresent(nd.getChildrenDescriptions()::add);
+                cache.getNodeDescription(this.getDescriptionNameGenerator().getInheritedCompartmentItemName(this.eClass, eReference) + EXHIBIT_STATES_NAME).ifPresent(nd.getChildrenDescriptions()::add);
                 nd.setPalette(this.createCompartmentPalette(cache));
             });
         } else {
             cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(this.eClass, this.eReference) + STATES_NAME).ifPresent(nd -> {
                 cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, this.eReference) + STATES_NAME).ifPresent(nd.getChildrenDescriptions()::add);
+                cache.getNodeDescription(this.getDescriptionNameGenerator().getInheritedCompartmentItemName(this.eClass, eReference)).ifPresent(nd.getChildrenDescriptions()::add);
                 nd.setPalette(this.createCompartmentPalette(cache));
             });
         }

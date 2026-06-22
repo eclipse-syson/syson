@@ -64,6 +64,8 @@ public class GeneralViewWithTopNodesTestProjectData {
 
         public static final String REQUIREMENT_USAGE_ID = "3eea9d01-7033-3f31-b7ef-561b5bc86d10";
 
+        public static final String STATE_DEFINITION_ID = "dbf7eccb-35e6-3ff1-b7b8-fc71f1a4094a";
+
         public static final String STATE_USAGE_ID = "1541c013-2cc7-3dd7-a39f-6e33d07b411e";
     }
 
