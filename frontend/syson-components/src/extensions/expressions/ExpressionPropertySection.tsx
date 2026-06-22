@@ -13,12 +13,12 @@
 
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import {
-  GQLTextarea,
-  GQLTextfield,
+  getTextDecorationLineValue,
+  GQLLabelWidget,
+  LabelStyleProps,
   PropertySectionComponent,
   PropertySectionComponentProps,
   PropertySectionLabel,
-  TextfieldStyleProps,
 } from '@eclipse-sirius/sirius-components-forms';
 import Typography from '@mui/material/Typography';
 
@@ -29,57 +29,24 @@ import { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { EditSysMLExpressionModal } from './EditSysMLExpressionModal';
 
-const useStyle = makeStyles<TextfieldStyleProps>()(
-  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, gridLayout }) => {
-    const {
-      gridTemplateColumns,
-      gridTemplateRows,
-      labelGridColumn,
-      labelGridRow,
-      widgetGridColumn,
-      widgetGridRow,
-      gap,
-    } = {
-      ...gridLayout,
-    };
-    return {
-      style: {
-        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : undefined,
-        color: foregroundColor ? getCSSColor(foregroundColor, theme) : undefined,
-        fontSize: fontSize ? fontSize : undefined,
-        fontStyle: italic ? 'italic' : undefined,
-        fontWeight: bold ? 'bold' : undefined,
-      },
-      input: {
-        paddingTop: theme.spacing(0.5),
-        paddingBottom: theme.spacing(0.5),
-      },
-      textfield: {
-        marginTop: theme.spacing(0.5),
-        marginBottom: theme.spacing(0.5),
-      },
-      formControl: {},
-      propertySection: {
-        display: 'grid',
-        gridTemplateColumns,
-        gridTemplateRows,
-        alignItems: 'center',
-        gap: gap ?? '',
-      },
-      propertySectionLabel: {
-        gridColumn: labelGridColumn,
-        gridRow: labelGridRow,
-        display: 'flex',
-        flexDirection: 'row',
-        gap: theme.spacing(2),
-        alignItems: 'center',
-      },
-      propertySectionWidget: {
-        gridColumn: widgetGridColumn,
-        gridRow: widgetGridRow,
-      },
-    };
-  }
+const useStyle = makeStyles<LabelStyleProps>()(
+  (theme, { color, fontSize, italic, bold, underline, strikeThrough }) => ({
+    style: {
+      color: color ? getCSSColor(color, theme) : undefined,
+      fontSize: fontSize ? fontSize : undefined,
+      fontStyle: italic ? 'italic' : undefined,
+      fontWeight: bold ? 'bold' : undefined,
+      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      verticalAlign: 'baseline',
+      alignItems: 'center',
+      display: 'flex',
+    },
+    propertySection: {
+      display: 'flex',
+      flexDirection: 'row',
+      gap: theme.spacing(2),
+    },
+  })
 );
 
 // Extracts the UUID from the string of the form "details://?objectIds=[c5f78f3a-8b39-4cb0-903a-cedd8e6e71f6]" if it contains a single UUID, otherwise returns null.
@@ -93,20 +60,18 @@ type ExpressionPropertySectionState = {
   state: 'idle' | 'modal';
 };
 
-export const ExpressionPropertySection: PropertySectionComponent<GQLTextfield | GQLTextarea> = ({
+export const ExpressionPropertySection: PropertySectionComponent<GQLLabelWidget> = ({
   editingContextId,
   formId,
   widget,
-}: PropertySectionComponentProps<GQLTextfield | GQLTextarea>) => {
-  const props: TextfieldStyleProps = {
-    backgroundColor: widget.style?.backgroundColor ?? null,
-    foregroundColor: widget.style?.foregroundColor ?? null,
+}: PropertySectionComponentProps<GQLLabelWidget>) => {
+  const props: LabelStyleProps = {
+    color: widget.style?.color ?? null,
     fontSize: widget.style?.fontSize ?? null,
     italic: widget.style?.italic ?? null,
     bold: widget.style?.bold ?? null,
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
-    gridLayout: widget.style?.widgetGridLayout ?? null,
   };
   const { classes } = useStyle(props);
   const [state, setState] = useState<ExpressionPropertySectionState>({
@@ -137,7 +102,7 @@ export const ExpressionPropertySection: PropertySectionComponent<GQLTextfield | 
   const widgetForLabel = { ...widget, label: labelOverride };
   return (
     <div>
-      <div className={classes.propertySectionLabel}>
+      <div className={classes.propertySection}>
         <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widgetForLabel} />
       </div>
       <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
