@@ -88,6 +88,10 @@ image::expression-details.png[Expression value displayed in the _Details_ veiw, 
 
 == Bug fixes
 
+* In diagrams:
+
+** Remove the useless multiplicity label on composition edge between `PartDefinition` and nested `PartUsage`.
+
 == Improvements
 
 * In diagrams:
