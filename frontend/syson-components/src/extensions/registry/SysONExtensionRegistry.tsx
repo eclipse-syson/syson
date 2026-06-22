@@ -33,6 +33,7 @@ import {
   omniboxCommandOverrideContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-omnibox';
 import {
+  GQLTool,
   PaletteToolOverriddenContributionProps,
   paletteToolOverrideExtensionPoint,
 } from '@eclipse-sirius/sirius-components-palette';
@@ -251,14 +252,6 @@ sysONExtensionRegistry.putData(widgetContributionExtensionPoint, {
     },
   ],
 });
-
-// FIXME: This type should be exported by @eclipse-sirius/sirius-components-palette
-interface GQLTool {
-  id: string;
-  label: string;
-  iconURL: string[];
-  __typename: string;
-}
 
 const diagramPaletteToolOverriddenContributions: PaletteToolOverriddenContributionProps[] = [
   {
