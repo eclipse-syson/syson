@@ -12,7 +12,10 @@
  *******************************************************************************/
 package org.eclipse.syson.application.controllers.diagrams.general.view;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
+
+import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
@@ -25,10 +28,15 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -50,9 +58,12 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -86,6 +97,9 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenDiagramSubscription givenDiagramSubscription;
+
+    @Autowired
+    private EditLabelMutationRunner editLabelMutationRunner;
 
     @Autowired
     private IDiagramIdProvider diagramIdProvider;
@@ -804,6 +818,60 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
+
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @DisplayName("GIVEN a PartDefinition, WHEN a nested PartUsage is created with multiplicity THEN the edge between them has no label")
+    @Test
+    public void givenAPartDefinitionWhenANestedParUsageIsCreatedWithMultiplicityThenTheEdgeBetweenThemHasNoLabel() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        EClass parentEClass = SysmlPackage.eINSTANCE.getPartDefinition();
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_DEFINITION_ID;
+
+        Runnable createNestedPartUsage = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, SysmlPackage.eINSTANCE.getPartUsage());
+
+        var partNodeLabelId = new AtomicReference<String>();
+        Consumer<Object> diagramBeforeEditConsumer = assertRefreshedDiagramThat(diag -> {
+            var partNode = new DiagramNavigator(diag).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\npart1").getNode();
+            partNodeLabelId.set(partNode.getInsideLabel().getId());
+        });
+
+        Runnable editLabelWithMultiplicity = () -> {
+            var input = new EditLabelInput(UUID.randomUUID(), GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram.get().getId(), partNodeLabelId.get(), "part1[1..2]");
+            var result = this.editLabelMutationRunner.run(input);
+
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
+            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> diagramChecker = assertRefreshedDiagramThat(newDiagram -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(1)
+                    .hasNewEdgeCount(1)
+                    .check(diagram.get(), newDiagram, true);
+            List<Edge> newEdges = this.diagramComparator.newEdges(diagram.get(), newDiagram);
+            assertThat(newEdges).hasSize(1);
+            // the new edge must not have a label
+            assertThat(newEdges.getFirst().getCenterLabel().text()).as("");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNestedPartUsage)
+                .consumeNextWith(diagramBeforeEditConsumer)
+                .then(editLabelWithMultiplicity)
+                .consumeNextWith(diagramChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
 
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest

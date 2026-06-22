@@ -73,7 +73,7 @@ public abstract class AbstractDefinitionOwnedUsageEdgeDescriptionProvider extend
         return this.diagramBuilderHelper.newEdgeDescription()
                 .domainType(domainType)
                 .isDomainBasedEdge(false)
-                .centerLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getMultiplicityLabel).aql(org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET))
+                .centerLabelExpression(AQLConstants.AQL + "''") // Empty aql expression is necessary to allow direct edit on edge
                 .name(this.descriptionNameGenerator.getEdgeName("Definition Owned " + this.eClass.getName()))
                 .sourceExpression(AQLConstants.AQL_SELF)
                 .style(this.createEdgeStyle())
