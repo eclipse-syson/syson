@@ -81,6 +81,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     private static final String CUSTOM_EXPRESSION_WIDGET_KEY = "syson:expression-value-widget";
 
+    private static final String CUSTOM_MISSING_EXPRESSION_WIDGET_KEY = "syson:missing-expression-value-widget";
+
     private static final String CORE_PROPERTIES = "Core Properties";
 
     private static final String ADVANCED_PROPERTIES = "Advanced Properties";
@@ -194,6 +196,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         pageCore.getGroups().add(this.createExpressionPropertiesGroup());
         pageCore.getGroups().add(this.createResultExpressionPropertiesGroup());
         pageCore.getGroups().add(this.createGuardExpressionPropertiesGroup());
+        pageCore.getGroups().add(this.createMissingExpressionPropertiesGroup());
 
         PageDescription pageAdvanced = FormFactory.eINSTANCE.createPageDescription();
         pageAdvanced.setName("SysON-DetailsView-Advanced");
@@ -268,6 +271,31 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         expressionWidget.setName("Expression");
         expressionWidget.setLabelExpression(CUSTOM_EXPRESSION_WIDGET_KEY);
         expressionWidget.setValueExpression(valueExpression);
+
+        group.getChildren().add(expressionWidget);
+
+        return group;
+    }
+
+    /**
+     * Helper to create a group with a widget to create an expression on compatible elements which do not already have
+     * one.
+     *
+     * @param semanticCandidatesExpression
+     *            the AQL expression to find the semantic candidate.
+     * @return a {@link GroupDescription}
+     */
+    private GroupDescription createMissingExpressionPropertiesGroup() {
+        GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
+        group.setDisplayMode(GroupDisplayMode.LIST);
+        group.setName("Expression Value");
+        group.setLabelExpression("");
+        group.setSemanticCandidatesExpression(ServiceMethod.of0(DetailsViewService::getPotentialExpressionOwner).aqlSelf());
+
+        LabelDescription expressionWidget = FormFactory.eINSTANCE.createLabelDescription();
+        expressionWidget.setName("Expression");
+        expressionWidget.setLabelExpression(CUSTOM_MISSING_EXPRESSION_WIDGET_KEY);
+        expressionWidget.setValueExpression("");
 
         group.getChildren().add(expressionWidget);
 

@@ -239,7 +239,11 @@ sysONExtensionRegistry.putData(widgetContributionExtensionPoint, {
       previewComponent: () => null,
       component: (widget: GQLWidget): PropertySectionComponent<GQLWidget> | null => {
         let propertySectionComponent: PropertySectionComponent<GQLWidget> | null = null;
-        if (widget.__typename == 'LabelWidget' && widget.label.startsWith('syson:expression-value-widget')) {
+        if (
+          widget.__typename == 'LabelWidget' &&
+          (widget.label.startsWith('syson:expression-value-widget') ||
+            widget.label.startsWith('syson:missing-expression-value-widget'))
+        ) {
           propertySectionComponent = ExpressionPropertySection as PropertySectionComponent<GQLWidget>;
         }
         return propertySectionComponent;
