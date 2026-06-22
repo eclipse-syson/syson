@@ -94,6 +94,7 @@ describe('Details View Tests', () => {
       it("Then the Details view shows the expression's textual value", () => {
         cy.getByTestId('details-expression-value').should('exist');
         cy.getByTestId('details-expression-value').should('have.text', 'vehicle.actualSpeed <= maxSpeed');
+        cy.getByTestId('Edit-expression-button').should('exist').should('be.enabled');
       });
     });
 
@@ -108,6 +109,7 @@ describe('Details View Tests', () => {
       it("Then the Details view shows the child expression's textual value", () => {
         cy.getByTestId('details-expression-value').should('exist');
         cy.getByTestId('details-expression-value').should('have.text', '80 [SI::centimetre]');
+        cy.getByTestId('Edit-expression-button').should('exist').should('be.enabled');
       });
     });
 
@@ -122,6 +124,34 @@ describe('Details View Tests', () => {
       it("Then the Details view shows the child expression's textual value", () => {
         cy.getByTestId('details-expression-value').should('exist');
         cy.getByTestId('details-expression-value').should('have.text', 'scanEnvironment.status == StatusKind::safe');
+        cy.getByTestId('Edit-expression-button').should('exist').should('be.enabled');
+      });
+    });
+
+    context('When we select an attribute with no Expression', () => {
+      beforeEach(() => {
+        explorer.select('Vehicle');
+        explorer.expand('Vehicle');
+        explorer.select('actualSpeed');
+      });
+      it('Then the Details view shows the expression widget but indicate the element has none', () => {
+        cy.getByTestId('details-expression-value').should('exist');
+        cy.getByTestId('details-expression-value').should('have.text', '<none>');
+        cy.getByTestId('Create-expression-button').should('exist').should('be.enabled');
+      });
+    });
+
+    context('When we select a succession with no guard Expression', () => {
+      beforeEach(() => {
+        explorer.select('Drive Batmobile');
+        explorer.expand('Drive Batmobile');
+        // Select the first child, a TransitionUsage without a name/label
+        cy.getByTestId('Drive Batmobile').type('{downArrow}');
+      });
+      it('Then the Details view shows the expression widget but indicate the element has none', () => {
+        cy.getByTestId('details-expression-value').should('exist');
+        cy.getByTestId('details-expression-value').should('have.text', '<none>');
+        cy.getByTestId('Create-expression-button').should('exist').should('be.enabled');
       });
     });
   });

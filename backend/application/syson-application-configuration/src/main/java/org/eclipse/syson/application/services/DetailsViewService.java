@@ -685,6 +685,22 @@ public class DetailsViewService {
     }
 
     /**
+     * Checks if an element could contain an expression but does not.
+     *
+     * @param self
+     *            an element.
+     * @return the element if it could contain an expression but does not, <code>null</code> otherwise.
+     */
+    public Element getPotentialExpressionOwner(Element self) {
+        if (!this.readOnlyObjectPredicate.test(self) && this.metamodelQueryElementService.canContainExpressionDefinition(self)
+                && !this.metamodelQueryElementService.hasSingleExpressionDefinition(self)) {
+            return self;
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Returns the element that owns the visibility feature of the given element.
      *
      * @param self

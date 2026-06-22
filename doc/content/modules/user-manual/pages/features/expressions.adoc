@@ -19,15 +19,18 @@ a|image::explorer-expression-internals-hidden.png[Internals hidden (default)]
 a|image::explorer-expression-internals-visible.png[Internals visible]
 |===
 
-When an `Expression` element or an `Element` which contains a single `Expression` element is selected (for example from the {explorer} view), the {details}} view displays the textual representation of the expression, with a button to open the expression edition modal (see below) directly on it:
+When an `Expression` element or an `Element` which contains a single `Expression` element is selected (for example from the {explorer} view), the {details} view displays the textual representation of the expression, with a button to open the expression edition modal (see below) directly on it:
 +
 image::expression-details.png[Expression value displayed in the _Details_ veiw, width=80%]
 
 == Creation
 
-To _create_ an expression, invoke the _New expression_ action on a compatible element (supported elements are `Attributes`, `Constraints` and `Transitions`).
-In the {explorer} view, this is available in the element's context menu.
-In a _Diagram_, it is avilable in the _Expression_ section of the element's palette (if applicable).
+To _create_ an expression, invoke the _New expression_ action on a compatible element (supported elements are `Attributes`, `Constraints`, `Successions` and `Transitions`).
+The action is only available on elements which _can_ own an expression but do not have one yet.
+
+* In the {explorer} view, this is available in the element's context menu.
+* In a _Diagram_, it is available in the _Expression_ section of the element's palette (if applicable).
+* In the {details} view, it is available as a `+` button on the _Expression value_ widget (if present).
 
 A modal will open where you can enter the textual representation of the expression to create.
 Click on the _Update_ button to validate.

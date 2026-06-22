@@ -20,11 +20,11 @@ import {
   PropertySectionComponentProps,
   PropertySectionLabel,
 } from '@eclipse-sirius/sirius-components-forms';
-import Typography from '@mui/material/Typography';
-
+import AddIcon from '@mui/icons-material/Add';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { EditSysMLExpressionModal } from './EditSysMLExpressionModal';
@@ -85,19 +85,22 @@ export const ExpressionPropertySection: PropertySectionComponent<GQLLabelWidget>
   };
 
   const targetObjectId = extractObjectIdFromDetailsString(formId);
+  const expressionPresent = widget.label === 'syson:expression-value-widget';
 
   let modalElement: JSX.Element | null = null;
   if (state.state === 'modal' && targetObjectId !== null) {
     modalElement = (
       <EditSysMLExpressionModal
         editingContextId={editingContextId}
-        mode="edit"
+        mode={expressionPresent ? 'edit' : 'create'}
         elementId={targetObjectId}
         onClose={onCloseModal}
       />
     );
   }
 
+  const action = expressionPresent ? 'Edit' : 'Create';
+  const actionIcon = expressionPresent ? <MoreHorizIcon /> : <AddIcon />;
   const labelOverride = 'Expression value';
   const widgetForLabel = { ...widget, label: labelOverride };
   return (
@@ -106,10 +109,16 @@ export const ExpressionPropertySection: PropertySectionComponent<GQLLabelWidget>
         <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widgetForLabel} />
       </div>
       <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Typography data-testid={`details-expression-value`}>{widget.stringValue}</Typography>
-        <Tooltip title={'Edit'}>
-          <IconButton size="small" onClick={onEditExpression}>
-            <MoreHorizIcon />
+        {expressionPresent ? (
+          <Typography data-testid={`details-expression-value`}>{widget.stringValue}</Typography>
+        ) : (
+          <Typography color={'textDisabled'} data-testid={`details-expression-value`}>
+            {'<none>'}
+          </Typography>
+        )}
+        <Tooltip title={action}>
+          <IconButton size="small" onClick={onEditExpression} data-testid={`${action}-expression-button`}>
+            {actionIcon}
           </IconButton>
         </Tooltip>
       </div>
