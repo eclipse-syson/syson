@@ -62,9 +62,9 @@ public class ExpressionsPaletteToolsProvider implements IPaletteToolsProvider {
 
     private static final String DELETE_EXPRESSION_TOOL_LABEL = "Delete expression";
 
-    private static final String EXPRESSION_TOOL_SECTION_ID = "toolSection_expression";
+    private static final String EXPRESSION_TOOL_SECTION_ID = "edit-section";
 
-    private static final String EXPRESSION_TOOL_SECTION_LABEL = "Expression";
+    private static final String EXPRESSION_TOOL_SECTION_LABEL = "Edit";
 
     private final IObjectSearchService objectSearchService;
 

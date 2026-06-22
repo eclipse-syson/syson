@@ -10,9 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import { DiagramContext, DiagramContextValue, EdgeData, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
 import { PaletteToolContributionComponentProps, usePalette } from '@eclipse-sirius/sirius-components-palette';
-import AddIcon from '@mui/icons-material/Add';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -84,6 +84,9 @@ export const NewExpressionDiagramToolOverriddenContribution = ({
     );
   }
 
+  const toolLabel = 'New Expression';
+  const toolIconURL = '/api/images/palette/create.svg';
+
   return (
     <Fragment key="new-overridden_tool_new_expression-modal-contribution">
       <ListItemButton
@@ -92,9 +95,9 @@ export const NewExpressionDiagramToolOverriddenContribution = ({
         disabled={readOnly}
         className={classes.listItemButton}>
         <ListItemIcon className={classes.listItemIcon}>
-          <AddIcon fontSize="small" />
+          <IconOverlay iconURLs={[toolIconURL]} alt={toolLabel} customIconHeight={16} customIconWidth={16} />
         </ListItemIcon>
-        <ListItemText primary={'New Expression'} className={classes.listItemText} />
+        <ListItemText primary={toolLabel} className={classes.listItemText} />
       </ListItemButton>
       {modalElement}
     </Fragment>

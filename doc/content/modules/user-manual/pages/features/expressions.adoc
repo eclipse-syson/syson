@@ -29,7 +29,7 @@ To _create_ an expression, invoke the _New expression_ action on a compatible el
 The action is only available on elements which _can_ own an expression but do not have one yet.
 
 * In the {explorer} view, this is available in the element's context menu.
-* In a _Diagram_, it is available in the _Expression_ section of the element's palette (if applicable).
+* In a _Diagram_, it is available in the _Edit_ section of the element's palette (if applicable).
 * In the {details} view, it is available as a `+` button on the _Expression value_ widget (if present).
 
 A modal will open where you can enter the textual representation of the expression to create.
@@ -46,7 +46,7 @@ image::edit-expression-modal-error.png[Edit expression modal showing an error me
 
 To edit an already existing expression, invoke the _Edit expression_ action directly on the existing expression or on its parent element.
 In the {explorer} view, this is available in the element's context menu.
-In a _Diagram_, it is avilable in the _Expression_ section of the element's palette (if applicable).
+In a _Diagram_, it is avilable in the _Edit_ section of the element's palette (if applicable).
 
 The same modal as for expression creation will open, but with the current textual representation of the expression pre-filled.
 
