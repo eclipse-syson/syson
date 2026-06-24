@@ -13,6 +13,7 @@
 package org.eclipse.syson.application.controllers.expressions;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 import static org.eclipse.sirius.components.trees.tests.TreeEventPayloadConsumer.assertRefreshedTreeThat;
 
 import com.jayway.jsonpath.JsonPath;
@@ -27,6 +28,7 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
@@ -34,21 +36,26 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.GivenSysONServer;
+import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
+import org.eclipse.syson.application.controllers.diagrams.testers.DropFromExplorerTester;
 import org.eclipse.syson.application.controllers.expressions.graphql.CreateExpressionMutationRunner;
 import org.eclipse.syson.application.controllers.expressions.graphql.DeleteExpressionMutationRunner;
 import org.eclipse.syson.application.controllers.expressions.graphql.EditExpressionMutationRunner;
 import org.eclipse.syson.application.controllers.expressions.graphql.ExpressionTextualRepresentationQueryRunner;
 import org.eclipse.syson.application.data.ExpressionSamplesProjectData;
 import org.eclipse.syson.application.expressions.dto.DeleteExpressionInput;
+import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.explorer.api.IExplorerDefaultFiltersSearchService;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
@@ -62,6 +69,7 @@ import org.eclipse.syson.sysml.dto.EditExpressionInput;
 import org.eclipse.syson.sysml.dto.EditExpressionSuccessPayload;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
+import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -70,6 +78,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
@@ -83,6 +92,9 @@ import reactor.test.StepVerifier;
 public class ExpressionsControllersIntegrationTests extends AbstractIntegrationTests {
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
+
+    @Autowired
+    private DropFromExplorerTester dropFromExplorerTester;
 
     @Autowired
     private ExplorerEventSubscriptionRunner explorerEventSubscriptionRunner;
@@ -116,6 +128,12 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
 
     @Autowired
     private DeleteExpressionMutationRunner deleteExpressionMutationRunner;
+
+    @Autowired
+    private IGivenCreatedDiagramSubscription givenCreatedDiagramSubscription;
+
+    @Autowired
+    private DiagramComparator diagramComparator;
 
     private String sysONExplorerTreeDescriptionId;
 
@@ -585,6 +603,52 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
                 .verify(Duration.ofSeconds(10));
     }
 
+    private Flux<Object> givenSubscriptionToNewDiagram() {
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                ExpressionSamplesProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID,
+                ExpressionSamplesProjectData.SemanticIds.EXPRESSIONS_PACKAGE_ID,
+                "Diagram");
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
+    }
+
+
+    @DisplayName("GIVEN a SysML model with expressions, WHEN dropping a contraint with an associated expression on an empty diagram, THEN the node showing the constraint includes the text of the exression in its label")
+    @GivenSysONServer({ ExpressionSamplesProjectData.SCRIPT_PATH })
+    @Test
+    public void topLevelConstraintNodeLabelIncludesExpressionInLabel() {
+        var flux = this.givenSubscriptionToNewDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        Runnable dropFromExplorerRunnable = () -> {
+            assertThat(diagram.get().getNodes()).hasSize(0);
+            var background = diagram.get().getStyle().getBackground();
+            assertThat(background).isNotEqualTo("white");
+            this.dropFromExplorerTester.dropFromExplorerOnDiagram(ExpressionSamplesProjectData.EDITING_CONTEXT_ID, diagram, ExpressionSamplesProjectData.SemanticIds.TANK_PRESSURE_LIMIT_CONSTRAINT_ID);
+        };
+
+        Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewEdgeCount(0)
+                    // 1 node for the ConstraintUsage, 4 for its compartments (doc, attributes, constraints, ports)
+                    .hasNewNodeCount(5)
+                    .check(diagram.get(), newDiagram);
+
+            String nodeLabel = newDiagram.getNodes().get(0).getInsideLabel().getText();
+            assertThat(nodeLabel).isEqualTo("«constraint»\npressureLimit\n{ pressure <= maxPressure }");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(dropFromExplorerRunnable)
+                .consumeNextWith(updatedDiagramConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+    }
 
     /**
      * Executes a function in the editing context with the specified id (which is assumed to be loaded). The function

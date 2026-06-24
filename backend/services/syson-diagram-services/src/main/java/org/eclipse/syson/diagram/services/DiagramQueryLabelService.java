@@ -48,6 +48,7 @@ import org.eclipse.syson.sysml.PortionKind;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
+import org.eclipse.syson.sysml.ResultExpressionMembership;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.Subclassification;
@@ -355,12 +356,15 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
      * @return the label of the value part of the given {@link Usage} if there is one, an empty string otherwise.
      */
     private String getValueStringRepresentation(Usage usage, boolean directEditInput) {
+        if (directEditInput) {
+            return "";
+        }
         StringBuilder label = new StringBuilder();
         var featureValue = usage.getOwnedRelationship().stream()
                 .filter(FeatureValue.class::isInstance)
                 .map(FeatureValue.class::cast)
                 .findFirst();
-        if (featureValue.isPresent() && !directEditInput) {
+        if (featureValue.isPresent()) {
             var expression = featureValue.get().getValue();
             String valueAsString = null;
             if (expression != null) {
@@ -377,6 +381,12 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
                     .append(this.getFeatureValueRelationshipSymbol(featureValue.get()))
                     .append(LabelConstants.SPACE)
                     .append(valueAsString);
+        } else if (usage instanceof ConstraintUsage constraintUsage) {
+            String expressionPart = this.getConstraintExpression(constraintUsage);
+            if (!expressionPart.isEmpty()) {
+                label.append(LabelConstants.CR);
+                label.append(expressionPart);
+            }
         }
         return label.toString();
     }
@@ -574,7 +584,7 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
      * Returns the label for the given {@link SatisfyRequirementUsage}.
      *
      * @param satisfyRequirementUsage
-     *          The given {@link SatisfyRequirementUsage}
+     *            The given {@link SatisfyRequirementUsage}
      * @return the label for the given {@link SatisfyRequirementUsage}
      */
     public String getSatisfyLabel(SatisfyRequirementUsage satisfyRequirementUsage) {
@@ -607,15 +617,31 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
                 label.append(this.getIdentificationLabel(constraintUsage));
                 label.append(this.getReferenceSubsettingLabel(constraintUsage));
             }
-
-            if (!directEditInput && !constraintUsage.getOwnedMember().isEmpty() && constraintUsage.getOwnedMember().get(0) instanceof Expression expression) {
-                if (!label.isEmpty()) {
-                    label.append(LabelConstants.SPACE);
-                }
-                label.append(LabelConstants.OPEN_BRACE).append(LabelConstants.SPACE);
-                label.append(this.getSysmlTextualRepresentation(expression, directEditInput));
-                label.append(LabelConstants.SPACE).append(LabelConstants.CLOSE_BRACE);
+            String expressionPart = this.getConstraintExpression(constraintUsage);
+            if (!expressionPart.isEmpty()) {
+                label.append(LabelConstants.SPACE);
+                label.append(expressionPart);
             }
+        }
+        return label.toString();
+    }
+
+    /**
+     * Returns the string representation of the {@link Expression} associated with a {@link ConstraintUsage} using the
+     * proper syntax (between braces=.
+     *
+     * @param constraintUsage
+     *            a {@link ConstraintUsage}
+     * @param label
+     *            the string representation of the corresponding expression if it is set, or an empty string if there is
+     *            no associated expression.
+     */
+    private String getConstraintExpression(ConstraintUsage constraintUsage) {
+        StringBuilder label = new StringBuilder();
+        if (this.metamodelQueryElementService.getResultExpressionMembership(constraintUsage) instanceof ResultExpressionMembership rem && rem.getOwnedResultExpression() != null) {
+            label.append(LabelConstants.OPEN_BRACE).append(LabelConstants.SPACE);
+            label.append(this.metamodelQueryElementService.getExpressionTextualRepresentation(rem.getOwnedResultExpression()));
+            label.append(LabelConstants.SPACE).append(LabelConstants.CLOSE_BRACE);
         }
         return label.toString();
     }
