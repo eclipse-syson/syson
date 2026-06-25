@@ -20,8 +20,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramSuccessPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
+import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
+import org.eclipse.sirius.components.view.emf.diagram.tools.DeleteOneDiagramElementToolHandler;
 
 /**
  * Execute a "Delete" tool (either delete from model or delete from diagram).
@@ -30,26 +32,30 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagra
  */
 public class DeleteToolTester {
 
-    private final DeleteToolRunner runner;
+    private final InvokeSingleClickOnDiagramElementToolMutationRunner runner;
 
     private final String editingContextId;
 
     private final String representationId;
 
-    public DeleteToolTester(DeleteToolRunner runner, String editingContextId, String representationId) {
+    public DeleteToolTester(InvokeSingleClickOnDiagramElementToolMutationRunner runner, String editingContextId, String representationId) {
         this.runner = Objects.requireNonNull(runner);
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.representationId = Objects.requireNonNull(representationId);
     }
 
-    public Runnable checkDeleteTool(List<String> nodeIds, List<String> edgeIds) {
+    public Runnable checkDeleteTool(List<String> diagramElementIds) {
         return () -> {
 
-            DeleteFromDiagramInput input = new DeleteFromDiagramInput(UUID.randomUUID(), this.editingContextId, this.representationId, nodeIds, edgeIds);
+            InvokeSingleClickOnDiagramElementToolInput input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), this.editingContextId, this.representationId, diagramElementIds,
+                    DeleteOneDiagramElementToolHandler.DELETE_ELEMENT_TOOL_ID,
+                    0,
+                    0,
+                    List.of());
             var result = this.runner.run(input);
 
-            String typename = JsonPath.read(result.data(), "$.data.deleteFromDiagram.__typename");
-            assertThat(typename).isEqualTo(DeleteFromDiagramSuccessPayload.class.getSimpleName());
+            String typename = JsonPath.read(result.data(), "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
         };
     }
 

@@ -116,7 +116,16 @@ const packageContainerStyle = (
 };
 
 export const SysMLPackageNode: NodeComponentsMap['sysMLPackageNode'] = memo(
-  ({ data, id, selected, dragging }: NodeProps<Node<SysMLPackageNodeData>>) => {
+  ({
+    data,
+    id,
+    selected,
+    dragging,
+    positionAbsoluteX,
+    positionAbsoluteY,
+    width,
+    height,
+  }: NodeProps<Node<SysMLPackageNodeData>>) => {
     const theme: Theme = useTheme();
     const { onDrop, onDragOver } = useDrop();
     const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
@@ -157,7 +166,18 @@ export const SysMLPackageNode: NodeComponentsMap['sysMLPackageNode'] = memo(
           onDrop={handleOnDrop}
           data-testid={`SysMLPackage - ${data?.insideLabel?.text}`}>
           <DecoratorContainer decorators={data.decorators}></DecoratorContainer>
-          {!!selected ? <ConnectionCreationHandles nodeId={id} /> : null}
+          {!!selected && width && height ? (
+            <ConnectionCreationHandles
+              nodeId={id}
+              nodePosition={{
+                x: positionAbsoluteX,
+                y: positionAbsoluteY,
+              }}
+              nodeWidth={width}
+              nodeHeight={height}
+              isDraggedNode={data.isDraggedNode}
+            />
+          ) : null}
           <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
           <ConnectionHandles connectionHandles={data.connectionHandles} />
           <div
