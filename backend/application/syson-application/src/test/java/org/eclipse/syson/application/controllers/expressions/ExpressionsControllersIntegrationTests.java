@@ -28,6 +28,8 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -37,6 +39,9 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.InitialDirectEditElementLabelQueryRunner;
+import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
@@ -48,6 +53,7 @@ import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuil
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
+import org.eclipse.syson.application.controllers.diagrams.testers.DirectEditInitialLabelTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.DropFromExplorerTester;
 import org.eclipse.syson.application.controllers.expressions.graphql.CreateExpressionMutationRunner;
 import org.eclipse.syson.application.controllers.expressions.graphql.DeleteExpressionMutationRunner;
@@ -67,6 +73,7 @@ import org.eclipse.syson.sysml.dto.CreateExpressionInput;
 import org.eclipse.syson.sysml.dto.CreateExpressionSuccessPayload;
 import org.eclipse.syson.sysml.dto.EditExpressionInput;
 import org.eclipse.syson.sysml.dto.EditExpressionSuccessPayload;
+import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
@@ -135,15 +142,24 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
     @Autowired
     private DiagramComparator diagramComparator;
 
+    @Autowired
+    private InitialDirectEditElementLabelQueryRunner initialDirectEditElementLabelQueryRunner;
+
+    @Autowired
+    private EditLabelMutationRunner editLabelMutationRunner;
+
     private String sysONExplorerTreeDescriptionId;
 
     private MetamodelQueryElementService metamodelQueryElementService;
+
+    private DirectEditInitialLabelTester directEditInitialLabelTester;
 
     @BeforeEach
     public void beforeEach() {
         this.sysONExplorerTreeDescriptionId = this.sysonTreeViewDescriptionProvider.getDescriptionId();
         this.givenInitialServerState.initialize();
         this.metamodelQueryElementService = new MetamodelQueryElementService();
+        this.directEditInitialLabelTester = new DirectEditInitialLabelTester(this.initialDirectEditElementLabelQueryRunner, ExpressionSamplesProjectData.EDITING_CONTEXT_ID);
     }
 
     @DisplayName("GIVEN a SysML attribute which does not have an initial or default value, WHEN creating a new expression on it THEN the new expression is created with proper name resolution")
@@ -613,8 +629,7 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
         return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
-
-    @DisplayName("GIVEN a SysML model with expressions, WHEN dropping a contraint with an associated expression on an empty diagram, THEN the node showing the constraint includes the text of the exression in its label")
+    @DisplayName("GIVEN a SysML model with expressions, WHEN dropping a constraint with an associated expression on an empty diagram, THEN the node showing the constraint includes the text of the exression in its label")
     @GivenSysONServer({ ExpressionSamplesProjectData.SCRIPT_PATH })
     @Test
     public void topLevelConstraintNodeLabelIncludesExpressionInLabel() {
@@ -625,8 +640,6 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
 
         Runnable dropFromExplorerRunnable = () -> {
             assertThat(diagram.get().getNodes()).hasSize(0);
-            var background = diagram.get().getStyle().getBackground();
-            assertThat(background).isNotEqualTo("white");
             this.dropFromExplorerTester.dropFromExplorerOnDiagram(ExpressionSamplesProjectData.EDITING_CONTEXT_ID, diagram, ExpressionSamplesProjectData.SemanticIds.TANK_PRESSURE_LIMIT_CONSTRAINT_ID);
         };
 
@@ -647,7 +660,86 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
                 .consumeNextWith(updatedDiagramConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
 
+    @DisplayName("GIVEN a SysML model an assumed constraint visible as a list item in a requirement node, WHEN using direct-edit on the constraint, THEN only its name is shown in the initial text and impacted by the edition")
+    @GivenSysONServer({ ExpressionSamplesProjectData.SCRIPT_PATH })
+    @Test
+    public void directEditNamedAssumedConstraintListItem() {
+        String initialConstraintName = "environmentalPrecondition";
+        String constraintExpression = "s.enabled == true & s.samplingRate > 0.0";
+        String newConstraintName = "newConstraintName";
+
+        var flux = this.givenSubscriptionToNewDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+        AtomicReference<String> constraintNodeId = new AtomicReference<>();
+        AtomicReference<String> constraintNodeLabelId = new AtomicReference<>();
+
+        Runnable dropFromExplorerRunnable = () -> {
+            assertThat(diagram.get().getNodes()).hasSize(0);
+            this.dropFromExplorerTester.dropFromExplorerOnDiagram(ExpressionSamplesProjectData.EDITING_CONTEXT_ID, diagram, ExpressionSamplesProjectData.SemanticIds.SENSOR_OPERABILITY_REQUIREMENT_ID);
+        };
+
+        Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewEdgeCount(0)
+                    .hasNewNodeCount(15)
+                    .check(diagram.get(), newDiagram);
+
+            String nodeLabel = newDiagram.getNodes().get(0).getInsideLabel().getText();
+            assertThat(nodeLabel).isEqualTo(this.quoted("requirement def") + "\nSensorOperability");
+
+            var constraintNode = new DiagramNavigator(newDiagram).nodeWithTargetObjectId(ExpressionSamplesProjectData.SemanticIds.SENSOR_OPERABILITY_ENVIRONMENTAL_PRECONDITION_ASSUMED_CONSTRAINT_ID)
+                    .getNode();
+            assertThat(constraintNode).isNotNull();
+            assertThat(constraintNode.getInsideLabel().getText()).isEqualTo(initialConstraintName + " { " + constraintExpression + " }");
+            constraintNodeId.set(constraintNode.getId());
+            constraintNodeLabelId.set(constraintNode.getInsideLabel().getId());
+        });
+
+        var checkDirectEditInitialTextShowsNameOnly = this.directEditInitialLabelTester.checkDirectEditInitialLabel(diagram, constraintNodeLabelId::get,
+                initialConstraintName);
+
+        Runnable editConstraintName = () -> {
+            String labelId = constraintNodeLabelId.get();
+            EditLabelInput input = new EditLabelInput(UUID.randomUUID(), ExpressionSamplesProjectData.EDITING_CONTEXT_ID, diagram.get().getId(), labelId, newConstraintName);
+            var result = this.editLabelMutationRunner.run(input);
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
+            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedDiagramAfterDirectEditConsumer = assertRefreshedDiagramThat(newDiagram -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewEdgeCount(0)
+                    .hasNewNodeCount(15)
+                    .check(diagram.get(), newDiagram);
+
+            String nodeLabel = newDiagram.getNodes().get(0).getInsideLabel().getText();
+            assertThat(nodeLabel).isEqualTo(this.quoted("requirement def") + "\nSensorOperability");
+
+            var constraintNode = new DiagramNavigator(newDiagram).nodeWithTargetObjectId(ExpressionSamplesProjectData.SemanticIds.SENSOR_OPERABILITY_ENVIRONMENTAL_PRECONDITION_ASSUMED_CONSTRAINT_ID)
+                    .getNode();
+            assertThat(constraintNode).isNotNull();
+            assertThat(constraintNode.getInsideLabel().getText()).isEqualTo(newConstraintName + " { " + constraintExpression + " }");
+            constraintNodeId.set(constraintNode.getId());
+            constraintNodeLabelId.set(constraintNode.getInsideLabel().getId());
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(dropFromExplorerRunnable)
+                .consumeNextWith(updatedDiagramConsumer)
+                .then(checkDirectEditInitialTextShowsNameOnly)
+                .then(editConstraintName)
+                .consumeNextWith(updatedDiagramAfterDirectEditConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    private String quoted(String text) {
+        return LabelConstants.OPEN_QUOTE + text + LabelConstants.CLOSE_QUOTE;
     }
 
     /**

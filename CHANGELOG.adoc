@@ -33,9 +33,9 @@ It has long been unused by Sirius Web itself (since the transition to MUI).
 - https://github.com/eclipse-syson/syson/issues/2289[#2289] [details] Fix expression support for `TransitionUsage`.
 - https://github.com/eclipse-syson/syson/issues/1808[#1808] [diagrams] Remove multiplicity displayed on feature membership edge between Part Definition and Part Usage.
 - https://github.com/eclipse-syson/syson/issues/2194[#2194] [diagrams] Properly report feedback messages to user when using _ISysMLMoveElementService_.
+- https://github.com/eclipse-syson/syson/issues/2306[#2306] [diagrams] Fixed an error when trying to rename a constraint displayed as a list item through direct edit.
 
 === Improvements
-
 - https://github.com/eclipse-syson/syson/issues/2198[#2198] [diagrams] Improve diagram-to-diagram drag and drop to support dropping multiple graphical nodes at once, leveraging Sirius Web's `droppedNodes` and `droppedElements` variables.
 - https://github.com/eclipse-syson/syson/issues/2182[#2182] [services] Provide a way for downstream applications to extend _ISysMLMoveElementService_.
 - https://github.com/eclipse-syson/syson/issues/2240[#2240] [diagrams] Update the choice of _timeslice_ and _snapshot_ elements that can be created in the selection dialog of tools creating _timeslice_ and _snapshot_ elements.
