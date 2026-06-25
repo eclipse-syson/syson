@@ -10,14 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import {
-  DiagramContext,
-  DiagramContextValue,
-  EdgeData,
-  NodeData,
-  useDiagramPalette,
-} from '@eclipse-sirius/sirius-components-diagrams';
-import { PaletteToolContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import { DiagramContext, DiagramContextValue, EdgeData, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
+import { PaletteToolContributionComponentProps, usePalette } from '@eclipse-sirius/sirius-components-palette';
 import AddIcon from '@mui/icons-material/Add';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -51,7 +45,7 @@ export const NewExpressionDiagramToolOverriddenContribution = ({
   const { classes } = useStyle();
   const { editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
-  const { hideDiagramPalette } = useDiagramPalette();
+  const { hidePalette } = usePalette();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   let elementId = '';
@@ -75,7 +69,7 @@ export const NewExpressionDiagramToolOverriddenContribution = ({
 
   const onClose = () => {
     setModalVisible(false);
-    hideDiagramPalette();
+    hidePalette();
   };
 
   let modalElement: JSX.Element | null = null;

@@ -23,21 +23,22 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
+import org.eclipse.sirius.components.view.emf.diagram.tools.DeleteOneDiagramElementToolHandler;
 import org.eclipse.sirius.web.application.undo.dto.UndoInput;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.undoredo.UndoMutationRunner;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.GivenSysONServer;
-import org.eclipse.syson.application.controllers.diagrams.testers.DeleteToolRunner;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -77,7 +78,7 @@ public class GVUndoTests extends AbstractIntegrationTests {
     private IDiagramIdProvider diagramIdProvider;
 
     @Autowired
-    private DeleteToolRunner deleteFromDiagramRunner;
+    private InvokeSingleClickOnDiagramElementToolMutationRunner deleteFromDiagramRunner;
 
     @Autowired
     private UndoMutationRunner undoMutationRunner;
@@ -128,10 +129,14 @@ public class GVUndoTests extends AbstractIntegrationTests {
         var deletePartInputId = UUID.randomUUID();
 
         Runnable invokeDeletePartUsageTool = () -> {
-            var input = new DeleteFromDiagramInput(deletePartInputId, GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagram.get().getId(), List.of(partNodeId.get()), List.of());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(deletePartInputId, GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagram.get().getId(), List.of(partNodeId.get()),
+                    DeleteOneDiagramElementToolHandler.DELETE_ELEMENT_TOOL_ID,
+                    0,
+                    0,
+                    List.of());
             var result = this.deleteFromDiagramRunner.run(input);
-            String typename = JsonPath.read(result.data(), "$.data.deleteFromDiagram.__typename");
-            assertThat(typename).isEqualTo(DeleteFromDiagramSuccessPayload.class.getSimpleName());
+            String typename = JsonPath.read(result.data(), "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
         };
 
         Consumer<Object> updatedDiagramAfterPartDeletion = assertRefreshedDiagramThat(diag -> {

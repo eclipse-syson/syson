@@ -34,11 +34,11 @@ import org.eclipse.sirius.components.diagrams.OutsideLabel;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InitialDirectEditElementLabelQueryRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.GivenSysONServer;
-import org.eclipse.syson.application.controllers.diagrams.testers.DeleteToolRunner;
 import org.eclipse.syson.application.controllers.diagrams.testers.DeleteToolTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.DirectEditInitialLabelTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.DirectEditTester;
@@ -89,7 +89,7 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
     private DiagramComparator diagramComparator;
 
     @Autowired
-    private DeleteToolRunner deleteFromDiagramRunner;
+    private InvokeSingleClickOnDiagramElementToolMutationRunner deleteFromDiagramRunner;
 
     @Autowired
     private CreateExpressionMutationRunner createExpressionMutationRunner;
@@ -375,7 +375,7 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        Runnable deleteTool = this.deleteFromDiagramTester.checkDeleteTool(List.of(), List.of(GeneralViewItemAndAttributeProjectData.GraphicalIds.FEATURE_VALUE_A2_2_TO_A1_4_EDGE));
+        Runnable deleteTool = this.deleteFromDiagramTester.checkDeleteTool(List.of(GeneralViewItemAndAttributeProjectData.GraphicalIds.FEATURE_VALUE_A2_2_TO_A1_4_EDGE));
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             // Check label no more FeatureValue (the = part is gone)
