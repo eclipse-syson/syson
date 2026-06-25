@@ -28,9 +28,7 @@ import org.eclipse.syson.services.DiagramDirectEditListener;
 import org.eclipse.syson.services.LabelService;
 import org.eclipse.syson.services.api.DiagramDirectEditErrorListener;
 import org.eclipse.syson.services.api.IDirectEditNamespaceProvider;
-import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.springframework.stereotype.Service;
 
 /**
@@ -98,11 +96,7 @@ public class DiagramMutationLabelService {
         DirectEditParser parser = new DirectEditParser(tokens);
         parser.addErrorListener(new DiagramDirectEditErrorListener());
         ParseTree tree;
-        if (element instanceof ConstraintUsage && element.getOwningMembership() instanceof RequirementConstraintMembership && isCompartmentItem) {
-            // Use the constraint expression parser only if the element is a constraint owned by a requirement, other
-            // constraints (including requirements) are parsed as regular elements.
-            tree = parser.constraintExpression();
-        } else if (isCompartmentItem) {
+        if (isCompartmentItem) {
             tree = parser.listItemExpression();
         } else {
             tree = parser.nodeExpression();

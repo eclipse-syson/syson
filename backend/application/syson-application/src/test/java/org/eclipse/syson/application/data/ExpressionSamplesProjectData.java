@@ -60,6 +60,12 @@ public class ExpressionSamplesProjectData {
 
         public static final String THERMAL_CONTROL_TO_COOLING_TRANSITION_GUARD_EXPRESSION_ID = "ec67ead5-7739-4dd3-a82e-f1bb5ef34268";
 
+        public static final String SENSOR_OPERABILITY_REQUIREMENT_ID = "96735823-f93e-4edd-948e-2db5df124d11";
+
+        public static final String SENSOR_OPERABILITY_ENVIRONMENTAL_PRECONDITION_ASSUMED_CONSTRAINT_ID = "baa1ff9e-5735-4393-ba94-324731366733";
+
+        public static final String SENSOR_OPERABILITY_ENVIRONMENTAL_PRECONDITION_ASSUMED_CONSTRAINT_EXPRESSION_ID = "97f03244-a4a5-47cd-988d-15119a3b2210";
+
         public static final List<String> ALL_IDS = List.of(
                 EXPRESSIONS_DOCUMENT_ID,
                 EXPRESSIONS_PACKAGE_ID,

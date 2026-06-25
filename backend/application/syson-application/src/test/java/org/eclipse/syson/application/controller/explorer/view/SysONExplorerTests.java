@@ -898,7 +898,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
             var packageItem = documentItem.getChildren().get(0);
             assertThat(packageItem.getLabel().toString()).isEqualTo("Expressions");
 
-            assertThat(packageItem.getChildren()).hasSize(6);
+            assertThat(packageItem.getChildren()).hasSize(7);
 
             var tankItem = this.getChildByLabel(packageItem, "Tank");
             assertThat(tankItem).isPresent();
@@ -952,7 +952,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
             var packageItem = documentItem.getChildren().get(0);
             assertThat(packageItem.getLabel().toString()).isEqualTo("Expressions");
 
-            assertThat(packageItem.getChildren()).hasSize(6);
+            assertThat(packageItem.getChildren()).hasSize(7);
 
             var tankItem = this.getChildByLabel(packageItem, "Tank");
             assertThat(tankItem).isPresent();

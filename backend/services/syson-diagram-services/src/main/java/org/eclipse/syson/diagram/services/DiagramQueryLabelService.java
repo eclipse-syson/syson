@@ -47,7 +47,6 @@ import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PortionKind;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
-import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.ResultExpressionMembership;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.StateSubactionMembership;
@@ -617,10 +616,12 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
                 label.append(this.getIdentificationLabel(constraintUsage));
                 label.append(this.getReferenceSubsettingLabel(constraintUsage));
             }
-            String expressionPart = this.getConstraintExpression(constraintUsage);
-            if (!expressionPart.isEmpty()) {
-                label.append(LabelConstants.SPACE);
-                label.append(expressionPart);
+            if (!directEditInput) {
+                String expressionPart = this.getConstraintExpression(constraintUsage);
+                if (!expressionPart.isEmpty()) {
+                    label.append(LabelConstants.SPACE);
+                    label.append(expressionPart);
+                }
             }
         }
         return label.toString();
@@ -675,25 +676,7 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
      * @return the value to display.
      */
     public String getInitialDirectEditListItemLabel(Usage usage) {
-        String result;
-        if (usage instanceof ConstraintUsage constraintUsage &&
-                usage.getOwningMembership() instanceof RequirementConstraintMembership) {
-            result = this.getInitialDirectEditListItemLabel(constraintUsage, true);
-        } else {
-            result = this.getCompartmentItemStringRepresentation(usage, true);
-        }
-        return result;
-    }
-
-    private String getInitialDirectEditListItemLabel(ConstraintUsage constraintUsage, boolean directEditInput) {
-        String result;
-        if (!constraintUsage.getOwnedMember().isEmpty() && constraintUsage.getOwnedMember().get(0) instanceof Expression expression) {
-            result = this.getSysmlTextualRepresentation(expression, directEditInput);
-        } else {
-            // The constraint doesn't have an expression, we set an initial empty string for the direct edit.
-            result = "";
-        }
-        return result;
+        return this.getCompartmentItemStringRepresentation(usage, true);
     }
 
     /**
