@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import { CreateDocumentData } from './support/server/createDocumentCommand.types
 import { CreateProjectData } from './support/server/createProjectCommand.types';
 import { DeleteProjectData } from './support/server/deleteProjectCommand.types';
 import { GetCurrentEditingContextIdData } from './support/server/getCurrentEditingContextId.types';
+import { GetLibraryIdData } from './support/server/getLibraryId.types';
 import { MutationResponse, QueryResponse } from './support/server/graphql.types';
 
 export {};
