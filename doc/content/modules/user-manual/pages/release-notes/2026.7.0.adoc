@@ -93,12 +93,6 @@ image::expression-details.png[Expression value displayed in the _Details_ veiw, 
 * In diagrams:
 
 ** Remove the useless multiplicity label on composition edge between `PartDefinition` and nested `PartUsage`.
-
-== Improvements
-
-* In diagrams:
-
-** Improve diagram-to-diagram drag and drop to support dropping multiple graphical nodes at once.
 ** Improve feedback message reporting while moving elements in diagrams.
 ** Improve the labeling logic inside `frames`, `require constraints`, and `assume constraints` compartments.
 Previously, the label was always the name of the `ConcernUsage` or the `ConstraintUsage` displayed in the compartment.
@@ -106,6 +100,12 @@ Now, the label dynamically adapts based on whether the `ConcernUsage` or `Constr
 *** Elements with both a name and an owned reference subsetting now display using the standard subsetting notation (e.g., `ElementName ::> SubsettingName`).
 *** Elements without a name and an owned reference subsetting display only the reference subsetting name.
 *** Elements without a reference subsetting display their name.
+
+== Improvements
+
+* In diagrams:
+
+** Improve diagram-to-diagram drag and drop to support dropping multiple graphical nodes at once.
 ** Update the choice of _timeslice_ and _snapshot_ elements that can be created in the selection dialog of tools for creating _timeslice_ and _snapshot_ elements.
 Previously, the selection dialog allowed choosing from all _timeslice_ and _snapshot_ types.
 Now, the choice is restricted to the _timeslice_ or _snapshot_ type that matches the graphical node type on which the tool is applied.
