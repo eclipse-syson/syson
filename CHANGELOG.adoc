@@ -29,24 +29,23 @@ It has long been unused by Sirius Web itself (since the transition to MUI).
 
 - https://github.com/eclipse-syson/syson/issues/2232[#2232] [configuration] Fix a serialization problem of the View models of SysON representations.
 - https://github.com/eclipse-syson/syson/issues/2237[#2237] [diagrams] Fix the item label inside `frames`, `require constraints`, and `assume constraints` compartments.
-- https://github.com/eclipse-syson/syson/issues/2278[#2278] [diagrams] Display inherited behavior parameters in the _parameters_ compartment of `ActionDefinition` and `ActionUsage` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/2291[#2291] [diagrams] Fix item label for constraint to show their name and expression value between braces (if present).
 - https://github.com/eclipse-syson/syson/issues/2289[#2289] [details] Fix expression support for `TransitionUsage`.
 - https://github.com/eclipse-syson/syson/issues/1808[#1808] [diagrams] Remove multiplicity displayed on feature membership edge between Part Definition and Part Usage.
+- https://github.com/eclipse-syson/syson/issues/2194[#2194] [diagrams] Properly report feedback messages to user when using _ISysMLMoveElementService_.
 
 === Improvements
 
 - https://github.com/eclipse-syson/syson/issues/2198[#2198] [diagrams] Improve diagram-to-diagram drag and drop to support dropping multiple graphical nodes at once, leveraging Sirius Web's `droppedNodes` and `droppedElements` variables.
-- https://github.com/eclipse-syson/syson/issues/2194[#2194] [diagrams] Properly report feedback messages to user when using _ISysMLMoveElementService_.
 - https://github.com/eclipse-syson/syson/issues/2182[#2182] [services] Provide a way for downstream applications to extend _ISysMLMoveElementService_.
 - https://github.com/eclipse-syson/syson/issues/2240[#2240] [diagrams] Update the choice of _timeslice_ and _snapshot_ elements that can be created in the selection dialog of tools creating _timeslice_ and _snapshot_ elements.
 Before, the selection dialog option with selection allowed choosing between all _timeslice/snapshot_ types.
 Now, the choice is restricted to the _timeslice/snapshot_ type that match the graphical node type on which the tool is applied.
 - https://github.com/eclipse-syson/syson/issues/2119[#2119] [details] Display expressions values in the _Details_ view and allow to edit them from there.
 - https://github.com/eclipse-syson/syson/issues/2251[#2251] [explorer] Allow expression-related operations on their parent element.
-- https://github.com/eclipse-syson/syson/issues/2270[#2270] [diagram] Add dedicated tools to diagram elements palette to create/edit/delete expressions.
 - https://github.com/eclipse-syson/syson/issues/2269[#2269] [diagram] When using direct edit on feature elements which have a value expression (e.g. an `Attribute` with a default value defined), the expression part (after the `=` sign) is no longer part of the initial direct edit value, and will be ignored if supplied in the new text value.
 Users should use the dedicated tools to edit expressions instead, as they ensure only valid expressions (with all names resolving) are accepted.
+- https://github.com/eclipse-syson/syson/issues/2278[#2278] [diagrams] Display inherited behavior parameters in the _parameters_ compartment of `ActionDefinition` and `ActionUsage` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/2287[#2287] [details] Use a label instead of a text field to display Expressions in the Details view.
 - https://github.com/eclipse-syson/syson/issues/2290[#2290] [details] When the selected element can have an expression (but does not), display a widget to indicate it and to allow to create one.
 - https://github.com/eclipse-syson/syson/issues/2301[#2301] [diagram] Constraint nodes now display their corresponding expression directly in their label if it is set.
@@ -66,6 +65,7 @@ Disabling the _Hide expression internals_ filter in the _Explorer_ view allows t
 One creates a `ConcernUsage` and another one creates `FramedConcernMembership`.
 - https://github.com/eclipse-syson/syson/issues/2097[#2097] [explorer] Add support for creating and editing exressions through their textual representation.
 This is currently supported on `Features` (e.g. `Attribute`), `Constraints` and `Transitions` (guard conditions) view new context menu actions (_Create expression_ and _Edit expression_) on the corresponding elements in the _Explorer_.
+- https://github.com/eclipse-syson/syson/issues/2270[#2270] [diagram] Add dedicated tools to diagram elements palette to create/edit/delete expressions.
 - https://github.com/eclipse-syson/syson/issues/2247[#2247] [diagrams] Add the support for creating _timeslices/snapshots_ from the different kind of `OccurrenceDefiniton` graphical nodes.
 It leverages the selection dialog to either create an _occurrence timeslice/snapshot_, or the _usage timeslice/snapshot_ matching the `OccurrenceDefinition` on which the tool is applied.
 - https://github.com/eclipse-syson/syson/issues/2250[#2250] [diagrams] Leverage the selection dialog to improve the graphical node tools creating a _require_ `ConstraintUsage`, or an _assume_ `ConstraintUsage`, from `RequirementUsage` and `RequirementDefinition` graphical nodes.
