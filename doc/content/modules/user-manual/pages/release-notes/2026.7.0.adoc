@@ -2,7 +2,11 @@
 
 == Key highlights
 
-== Breaking changes
+* Expression editing is now available across diagrams, Explorer, and Details, with a validated textual editor and better handling of value expressions in direct edit.
+* New diagram capabilities for requirement modeling, including frame edges, framed concern creation, assume/require constraint edges, and dedicated frames compartments for requirements.
+* Expanded support for action and state diagrams with background creation of state and action nodes, rotate tools for fork/join nodes, and improved timeslice/snapshot creation.
+* Explorer usability improvements include hiding expression internals by default and new child creation options for requirement and concern elements.
+* Diagram and workflow quality enhancements such as multi-node drag-and-drop, clearer feedback while moving elements, and visible guard expressions on succession edges.
 
 == New features
 
@@ -31,7 +35,7 @@ image::release-notes-frames-compartment.png[frames compartment displaying concer
 ** Use the selection dialog to improve the graphical node tools creating a _require_ `ConstraintUsage`, or an _assume_ `ConstraintUsage`, from `RequirementUsage` and `RequirementDefinition` graphical nodes.
 
 ** Add support for creating _timeslices/snapshots_ from the different kinds of `OccurrenceDefinition` graphical nodes.
-It leverages the selection dialog to either create an _occurrence timeslice/snapshot_, or the _usage timeslice/snapshot_ matching the `OccurrenceDefinition` on which the tool is applied.
+It leverages the selection dialog to either create an _occurrence timeslice/snapshot_ or the _usage timeslice/snapshot_ matching the `OccurrenceDefinition` on which the tool is applied.
 
 ** Add support for _assume_ and _require_ graphical edges.
 These graphical edges are displayed using the tool to create a _require_ `ConstraintUsage`, or an _assume_ `ConstraintUsage`, from `RequirementUsage` and `RequirementDefinition` graphical nodes, when another `ConstraintUsage` is selected.
@@ -47,9 +51,9 @@ image::release-notes-assume-and-require-edge-tools.png[list available edge tools
 Users should use the dedicated tools to edit expressions instead, as they ensure only valid expressions (with all names resolving) are accepted.
 ** Add support for list item inheritance in _states_ and _exhibit states_ compartments.
 ** Add support for creating _Start_, _Done_, _Decision_, _Fork_, _Join_, and _Merge_ actions directly on the background of an `Action Flow View` diagram if its root element is an `ActionUsage` or `ActionDefinition`.
-** Add the support for a tool to rotate `ForkNode` and `JoinNode` graphical nodes.
+** Add support for a tool to rotate `ForkNode` and `JoinNode` graphical nodes.
 +
-image::release-notes-rotate-fork-join-graphical-nodes.png[For both fork nodes and two join nodes, display one horizontal and one vertical graphical node. Also display the palette with the rotate tool, width=60%,height=60%]
+image::release-notes-rotate-fork-join-graphical-nodes.png[For both fork nodes and two join nodes, display one horizontal and one vertical graphical node. Also display the palette with the rotate tool, width=50%,height=50%]
 
 * In the _Explorer_ view:
 
@@ -89,7 +93,7 @@ To _delete_ an existing expression, you can simply invoke the normal _Delete_ me
 
 ** When an `Expression` element or an `Element` that contains a single `Expression` element is selected (for example from the _Explorer_ view), the _Details_ view displays the textual representation of the `Expression`, with a button to open the expression editing modal (see above) directly on it:
 +
-image::expression-details.png[Expression value displayed in the _Details_ veiw, width=80%]
+image::expression-details.png[Expression value displayed in the _Details_ view, width=80%]
 
 == Bug fixes
 
@@ -108,7 +112,7 @@ Now, the label dynamically adapts based on whether the `ConcernUsage` or `Constr
 
 * In diagrams:
 
-** Improve diagram-to-diagram drag and drop to support dropping multiple graphical nodes at once.
+** Improve diagram-to-diagram drag-and-drop to support dropping multiple graphical nodes at once.
 ** Update the choice of _timeslice_ and _snapshot_ elements that can be created in the selection dialog of tools for creating _timeslice_ and _snapshot_ elements.
 Previously, the selection dialog allowed choosing from all _timeslice_ and _snapshot_ types.
 Now, the choice is restricted to the _timeslice_ or _snapshot_ type that matches the graphical node type on which the tool is applied.
