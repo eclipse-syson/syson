@@ -126,6 +126,10 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
             tree -> tree.getChildren().get(0).getChildren().get(1).getChildren().get(2),
             treeItem -> treeItem.getLabel().toString().equals("<Req2> "));
 
+    private final TreeItemMatcher req3RU = new TreeItemMatcher(
+            tree -> tree.getChildren().get(0).getChildren().get(1).getChildren().get(3),
+            treeItem -> treeItem.getLabel().toString().startsWith("<Req3>"));
+
     private final TreeItemMatcher userLibraryPackageRW = new TreeItemMatcher(
             tree -> this.findTreeItem(tree, WithUserLibrariesTestProjectData.SemanticIds.RW_USER_LIBRARY_PACKAGE_ID).orElseThrow(),
             treeItem -> treeItem.getLabel().toString().equals("Package2"));
@@ -260,6 +264,27 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
                         UUID.fromString(ExplorerViewDirectEditTestProjectData.SemanticIds.REQ1_RU_ID), "requirement1"))
                 .then(this.triggerDirectEditTreeItemLabel(ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId,
                         UUID.fromString(ExplorerViewDirectEditTestProjectData.SemanticIds.REQ2_RU_ID), ""))
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN the SysON Explorer View, WHEN we direct edit an Element with a null declared name, THEN the initial value of the direct edit is empty")
+    @GivenSysONServer({ ExplorerViewDirectEditTestProjectData.SCRIPT_PATH })
+    @Test
+    public void testDirectEditOnElementWithNullDeclaredName() {
+        var expandedIds = this.getAllTreeItemIds(ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID);
+        var activatedFilters = List.of(SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID, SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONTreeViewDescriptionProvider.getDescriptionId(), expandedIds, activatedFilters);
+
+        var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId);
+        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput).flux();
+
+        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.req3RU));
+
+        StepVerifier.create(treeFlux)
+                .consumeNextWith(hasProjectContent)
+                .then(this.triggerDirectEditTreeItemLabel(ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId,
+                        UUID.fromString(ExplorerViewDirectEditTestProjectData.SemanticIds.REQ3_RU_ID), ""))
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

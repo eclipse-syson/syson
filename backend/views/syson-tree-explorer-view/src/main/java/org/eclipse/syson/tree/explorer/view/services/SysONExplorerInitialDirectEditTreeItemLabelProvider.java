@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -61,7 +61,7 @@ public class SysONExplorerInitialDirectEditTreeItemLabelProvider implements IIni
         String label = this.objectSearchService.getObject(editingContext, input.treeItemId())
                 .filter(Element.class::isInstance)
                 .map(Element.class::cast)
-                .map(Element::getDeclaredName)
+                .map(element -> Optional.ofNullable(element.getDeclaredName()).orElse(""))
                 .orElseGet(() -> tree.getChildren().stream()
                         .map(treeItems -> this.searchById(treeItems, input.treeItemId()))
                         .filter(Optional::isPresent)
