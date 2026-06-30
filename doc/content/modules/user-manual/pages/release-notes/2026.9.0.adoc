@@ -6,6 +6,8 @@
 
 * In diagrams:
 
+** Add support for list item inheritance in _perform actions_ compartments.
+
 * In textual import/export:
 
 == Bug fixes
