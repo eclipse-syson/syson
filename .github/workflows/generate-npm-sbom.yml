@@ -12,7 +12,7 @@ on:
         required: true
 
 env:
-  NODE_VERSION: "18.7"
+  NODE_VERSION: "24"
   REGISTRY_URL: "https://npm.pkg.github.com/"
   PRODUCT_PATH: "./"
   WORKFLOW_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
