@@ -36,6 +36,7 @@ It has long been unused by Sirius Web itself (since the transition to MUI).
 - https://github.com/eclipse-syson/syson/issues/2306[#2306] [diagrams] Fixed an error when trying to rename a constraint displayed as a list item through direct edit.
 
 === Improvements
+
 - https://github.com/eclipse-syson/syson/issues/2198[#2198] [diagrams] Improve diagram-to-diagram drag and drop to support dropping multiple graphical nodes at once, leveraging Sirius Web's `droppedNodes` and `droppedElements` variables.
 - https://github.com/eclipse-syson/syson/issues/2182[#2182] [services] Provide a way for downstream applications to extend _ISysMLMoveElementService_.
 - https://github.com/eclipse-syson/syson/issues/2240[#2240] [diagrams] Update the choice of _timeslice_ and _snapshot_ elements that can be created in the selection dialog of tools creating _timeslice_ and _snapshot_ elements.
@@ -75,6 +76,7 @@ It leverages the selection dialog to either create an _occurrence timeslice/snap
 - https://github.com/eclipse-syson/syson/issues/2113[#2113] [diagrams] Handle start/end/merge/decision... graphical nodes on Action Flow View diagram background
 - https://github.com/eclipse-syson/syson/issues/2303[#2303] [diagrams] Add support for list item inheritance in _states_ and _exhibit states_ compartments
 - https://github.com/eclipse-syson/syson/issues/2239[#2239] [diagrams] Add the support for a frontend tool to rotate `ForkNode` and `JoinNode` graphical nodes
+- https://github.com/eclipse-syson/syson/issues/2316[#2316] [diagrams] Add support for list item inheritance in _perform actions_ compartments
 
 == v2026.5.0
 
