@@ -28,6 +28,7 @@ import org.eclipse.syson.services.DiagramDirectEditListener;
 import org.eclipse.syson.services.LabelService;
 import org.eclipse.syson.services.api.DiagramDirectEditErrorListener;
 import org.eclipse.syson.services.api.IDirectEditNamespaceProvider;
+import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Element;
 import org.springframework.stereotype.Service;
 
@@ -120,7 +121,11 @@ public class DiagramMutationLabelService {
      * @return the given {@link Element}.
      */
     public Element directEditNode(Element element, String newLabel) {
-        return this.directEdit(element, newLabel, false, (String[]) null);
+        String cleanNewLabel = newLabel;
+        if (element instanceof ConstraintUsage) {
+            cleanNewLabel = newLabel.replaceAll("\\{.*$", "");
+        }
+        return this.directEdit(element, cleanNewLabel, false, (String[]) null);
     }
 
     /**
@@ -133,7 +138,11 @@ public class DiagramMutationLabelService {
      * @return the given {@link Element}.
      */
     public Element directEditListItem(Element element, String newLabel) {
-        return this.directEdit(element, newLabel, true, LabelService.VALUE_OFF);
+        String cleanNewLabel = newLabel;
+        if (element instanceof ConstraintUsage) {
+            cleanNewLabel = newLabel.replaceAll("\\{.*$", "");
+        }
+        return this.directEdit(element, cleanNewLabel, true, LabelService.VALUE_OFF);
     }
 
     public Element editMultiplicityRangeCenterLabel(Element element, String newLabel) {
