@@ -64,6 +64,7 @@ public class PerformActionsCompartmentNodeDescriptionProvider extends AbstractCo
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(this.eClass, this.eReference) + PERFORM_ACTIONS_COMPARTMENT_NAME).ifPresent(nd -> {
             cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, this.eReference) + PERFORM_ACTIONS_COMPARTMENT_NAME).ifPresent(nd.getChildrenDescriptions()::add);
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getInheritedCompartmentItemName(this.eClass, this.eReference) + PERFORM_ACTIONS_COMPARTMENT_NAME).ifPresent(nd.getChildrenDescriptions()::add);
             nd.setPalette(this.createCompartmentPalette(cache));
         });
     }

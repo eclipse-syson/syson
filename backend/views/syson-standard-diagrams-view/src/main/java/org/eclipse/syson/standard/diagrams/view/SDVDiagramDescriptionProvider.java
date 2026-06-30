@@ -131,6 +131,7 @@ import org.eclipse.syson.standard.diagrams.view.nodes.InterfaceDefinitionEndsCom
 import org.eclipse.syson.standard.diagrams.view.nodes.ObjectiveDocumentationCompartmentItemNodeDescription;
 import org.eclipse.syson.standard.diagrams.view.nodes.PerformActionsCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PerformActionsCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.standard.diagrams.view.nodes.PerformActionsInheritedCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PortDefinitionOwnedItemBorderNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PortDefinitionOwnedItemCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PortUsageBorderNodeDescriptionProvider;
@@ -639,6 +640,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                     compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                     compartmentNodeDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
                     compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                    compartmentNodeDescriptionProviders.add(new PerformActionsInheritedCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                     compartmentNodeDescriptionProviders.add(new PerformActionsCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                     compartmentNodeDescriptionProviders.add(new PerformActionsCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                 } else if ((SysmlPackage.eINSTANCE.getPartUsage().equals(eClass) && SysmlPackage.eINSTANCE.getUsage_NestedAction().equals(eReference))
@@ -646,6 +648,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                     compartmentNodeDescriptionProviders.add(new ActionItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                     compartmentNodeDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
                     compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                    compartmentNodeDescriptionProviders.add(new PerformActionsInheritedCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                     compartmentNodeDescriptionProviders.add(new PerformActionsCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                     compartmentNodeDescriptionProviders.add(new PerformActionsCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                 } else if ((SysmlPackage.eINSTANCE.getPartUsage().equals(eClass) && SysmlPackage.eINSTANCE.getUsage_NestedState().equals(eReference))
@@ -661,6 +664,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                     compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                     compartmentNodeDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
                     compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                    compartmentNodeDescriptionProviders.add(new PerformActionsInheritedCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                     compartmentNodeDescriptionProviders.add(new PerformActionsCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                     compartmentNodeDescriptionProviders.add(new PerformActionsCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                 } else if (SysmlPackage.eINSTANCE.getPortDefinition().equals(eClass) && SysmlPackage.eINSTANCE.getDefinition_OwnedItem().equals(eReference)) {
