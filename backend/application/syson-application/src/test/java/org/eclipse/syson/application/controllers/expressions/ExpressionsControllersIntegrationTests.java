@@ -651,13 +651,77 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
                     .check(diagram.get(), newDiagram);
 
             String nodeLabel = newDiagram.getNodes().get(0).getInsideLabel().getText();
-            assertThat(nodeLabel).isEqualTo("«constraint»\npressureLimit\n{ pressure <= maxPressure }");
+            assertThat(nodeLabel).isEqualTo(this.multiLine(this.quoted("constraint"), "pressureLimit", "{ pressure <= maxPressure }"));
         });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(dropFromExplorerRunnable)
                 .consumeNextWith(updatedDiagramConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a SysML model with expressions, WHEN direct editing a constraint node's label with an expression part, THEN the direct edit succeeds but ignores the expression part")
+    @GivenSysONServer({ ExpressionSamplesProjectData.SCRIPT_PATH })
+    @Test
+    public void directEditTopLevelConstraintNodeIgnoresExpressionPart() {
+        String initialConstraintName = "pressureLimit";
+        String constraintExpression = "pressure <= maxPressure";
+        String newConstraintName = "newConstraintName";
+        String newExpressionIgnored = "false";
+
+        var flux = this.givenSubscriptionToNewDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+        AtomicReference<String> constraintNodeId = new AtomicReference<>();
+        AtomicReference<String> constraintNodeLabelId = new AtomicReference<>();
+
+        Runnable dropFromExplorerRunnable = () -> {
+            assertThat(diagram.get().getNodes()).hasSize(0);
+            this.dropFromExplorerTester.dropFromExplorerOnDiagram(ExpressionSamplesProjectData.EDITING_CONTEXT_ID, diagram, ExpressionSamplesProjectData.SemanticIds.TANK_PRESSURE_LIMIT_CONSTRAINT_ID);
+        };
+
+        Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewEdgeCount(0)
+                    .hasNewNodeCount(5)
+                    .check(diagram.get(), newDiagram);
+
+            var constraintNode = newDiagram.getNodes().get(0);
+            String nodeLabel = constraintNode.getInsideLabel().getText();
+            assertThat(nodeLabel).isEqualTo(this.multiLine(this.quoted("constraint"), initialConstraintName, "{ " + constraintExpression + " }"));
+            constraintNodeId.set(constraintNode.getId());
+            constraintNodeLabelId.set(constraintNode.getInsideLabel().getId());
+        });
+
+        var checkDirectEditInitialTextShowsNameOnly = this.directEditInitialLabelTester.checkDirectEditInitialLabel(diagram, constraintNodeLabelId::get,
+                initialConstraintName);
+
+        Runnable editConstraintName = () -> {
+            String labelId = constraintNodeLabelId.get();
+            String newLabelWIthExpressionPart = newConstraintName + " {" + newExpressionIgnored + " }";
+            EditLabelInput input = new EditLabelInput(UUID.randomUUID(), ExpressionSamplesProjectData.EDITING_CONTEXT_ID, diagram.get().getId(), labelId, newLabelWIthExpressionPart);
+            var result = this.editLabelMutationRunner.run(input);
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
+            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedDiagramAfterDirectEditConsumer = assertRefreshedDiagramThat(newDiagram -> {
+            var constraintNode = new DiagramNavigator(newDiagram).nodeWithTargetObjectId(ExpressionSamplesProjectData.SemanticIds.TANK_PRESSURE_LIMIT_CONSTRAINT_ID)
+                    .getNode();
+            assertThat(constraintNode).isNotNull();
+            assertThat(constraintNode.getInsideLabel().getText()).isEqualTo(this.multiLine(this.quoted("constraint"), newConstraintName, "{ " + constraintExpression + " }"));
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(dropFromExplorerRunnable)
+                .consumeNextWith(updatedDiagramConsumer)
+                .then(checkDirectEditInitialTextShowsNameOnly)
+                .then(editConstraintName)
+                .consumeNextWith(updatedDiagramAfterDirectEditConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -689,7 +753,7 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
                     .check(diagram.get(), newDiagram);
 
             String nodeLabel = newDiagram.getNodes().get(0).getInsideLabel().getText();
-            assertThat(nodeLabel).isEqualTo(this.quoted("requirement def") + "\nSensorOperability");
+            assertThat(nodeLabel).isEqualTo(this.multiLine(this.quoted("requirement def"), "SensorOperability"));
 
             var constraintNode = new DiagramNavigator(newDiagram).nodeWithTargetObjectId(ExpressionSamplesProjectData.SemanticIds.SENSOR_OPERABILITY_ENVIRONMENTAL_PRECONDITION_ASSUMED_CONSTRAINT_ID)
                     .getNode();
@@ -717,12 +781,37 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
                     .check(diagram.get(), newDiagram);
 
             String nodeLabel = newDiagram.getNodes().get(0).getInsideLabel().getText();
-            assertThat(nodeLabel).isEqualTo(this.quoted("requirement def") + "\nSensorOperability");
+            assertThat(nodeLabel).isEqualTo(this.multiLine(this.quoted("requirement def"), "SensorOperability"));
 
             var constraintNode = new DiagramNavigator(newDiagram).nodeWithTargetObjectId(ExpressionSamplesProjectData.SemanticIds.SENSOR_OPERABILITY_ENVIRONMENTAL_PRECONDITION_ASSUMED_CONSTRAINT_ID)
                     .getNode();
             assertThat(constraintNode).isNotNull();
             assertThat(constraintNode.getInsideLabel().getText()).isEqualTo(newConstraintName + " { " + constraintExpression + " }");
+            constraintNodeId.set(constraintNode.getId());
+            constraintNodeLabelId.set(constraintNode.getInsideLabel().getId());
+        });
+
+        Runnable editConstraintNameWithExpressionPart = () -> {
+            String labelId = constraintNodeLabelId.get();
+            EditLabelInput input = new EditLabelInput(UUID.randomUUID(), ExpressionSamplesProjectData.EDITING_CONTEXT_ID, diagram.get().getId(), labelId, initialConstraintName + "{ false }");
+            var result = this.editLabelMutationRunner.run(input);
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
+            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedDiagramAfterDirectEditWithExpressionPartConsumer = assertRefreshedDiagramThat(newDiagram -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewEdgeCount(0)
+                    .hasNewNodeCount(15)
+                    .check(diagram.get(), newDiagram);
+
+            String nodeLabel = newDiagram.getNodes().get(0).getInsideLabel().getText();
+            assertThat(nodeLabel).isEqualTo(this.multiLine(this.quoted("requirement def"), "SensorOperability"));
+
+            var constraintNode = new DiagramNavigator(newDiagram).nodeWithTargetObjectId(ExpressionSamplesProjectData.SemanticIds.SENSOR_OPERABILITY_ENVIRONMENTAL_PRECONDITION_ASSUMED_CONSTRAINT_ID)
+                    .getNode();
+            assertThat(constraintNode).isNotNull();
+            assertThat(constraintNode.getInsideLabel().getText()).isEqualTo(initialConstraintName + " { " + constraintExpression + " }");
             constraintNodeId.set(constraintNode.getId());
             constraintNodeLabelId.set(constraintNode.getInsideLabel().getId());
         });
@@ -734,12 +823,18 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
                 .then(checkDirectEditInitialTextShowsNameOnly)
                 .then(editConstraintName)
                 .consumeNextWith(updatedDiagramAfterDirectEditConsumer)
+                .then(editConstraintNameWithExpressionPart)
+                .consumeNextWith(updatedDiagramAfterDirectEditWithExpressionPartConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
 
     private String quoted(String text) {
         return LabelConstants.OPEN_QUOTE + text + LabelConstants.CLOSE_QUOTE;
+    }
+
+    private String multiLine(String... lines) {
+        return String.join(LabelConstants.CR, lines);
     }
 
     /**
