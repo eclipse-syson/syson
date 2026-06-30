@@ -34,6 +34,8 @@ It has long been unused by Sirius Web itself (since the transition to MUI).
 - https://github.com/eclipse-syson/syson/issues/1808[#1808] [diagrams] Remove multiplicity displayed on feature membership edge between Part Definition and Part Usage.
 - https://github.com/eclipse-syson/syson/issues/2194[#2194] [diagrams] Properly report feedback messages to user when using _ISysMLMoveElementService_.
 - https://github.com/eclipse-syson/syson/issues/2306[#2306] [diagrams] Fixed an error when trying to rename a constraint displayed as a list item through direct edit.
+- https://github.com/eclipse-syson/syson/issues/2221[#2221] [explorer] Fix the initial direct edit value of an _Explorer_ tree item whose element has no declared name (for example a `Dependency`).
+The initial value is now an empty string instead of the computed display label, so validating it without changes no longer writes the display label into the element's declared name.
 
 === Improvements
 - https://github.com/eclipse-syson/syson/issues/2198[#2198] [diagrams] Improve diagram-to-diagram drag and drop to support dropping multiple graphical nodes at once, leveraging Sirius Web's `droppedNodes` and `droppedElements` variables.

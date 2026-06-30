@@ -61,6 +61,8 @@ public class ExplorerViewDirectEditTestProjectData {
         public static final String REQ1_RU_ID = "49ec0ce7-c6c4-45f2-a55b-d11a5dca62e4";
 
         public static final String REQ2_RU_ID = "1380102d-9b85-4933-8f60-f691fab97672";
+
+        public static final String REQ3_RU_ID = "f9f66a25-6bda-4ab3-bc5f-96dc6866df0c";
     }
 
 }
