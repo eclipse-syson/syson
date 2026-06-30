@@ -35,7 +35,6 @@ import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.GivenSysONServer;
-import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeCreationTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
@@ -68,7 +67,7 @@ import reactor.test.StepVerifier;
 @Transactional
 @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { SysONTestsProperties.NO_DEFAULT_LIBRARIES_PROPERTY })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests {
 
     private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
@@ -155,7 +154,6 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
     public void checkActionDefinitionParametersInheritanceWithSubclassification() {
         new ElementSpecializationInheritanceTestRunner()
                 .baseElementToInheritFromEClass(SysmlPackage.eINSTANCE.getActionDefinition())
-                .baseElementToInheritFromTargetObjectId(GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_DEFINITION_ID)
                 .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_DEFINITION_ID)
                 .elementToInheritCreationToolName("New Parameter In")
                 .elementToInheritExpectedListItemLabelText("in ref parameter1")
@@ -172,7 +170,6 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
     public void checkActionUsageParametersInheritanceWithReferenceSubsetting() {
         new ElementSpecializationInheritanceTestRunner()
                 .baseElementToInheritFromEClass(SysmlPackage.eINSTANCE.getActionUsage())
-                .baseElementToInheritFromTargetObjectId(GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID)
                 .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID)
                 .elementToInheritCreationToolName("New Parameter Out")
                 .elementToInheritExpectedListItemLabelText("out ref parameter1")
@@ -189,9 +186,9 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
     public void checkActionDefinitionActionsInheritanceWithFeatureTyping() {
         new ElementSpecializationInheritanceTestRunner()
                 .baseElementToInheritFromEClass(SysmlPackage.eINSTANCE.getActionDefinition())
-                .baseElementToInheritFromTargetObjectId(GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_DEFINITION_ID)
                 .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_DEFINITION_ID)
                 .elementToInheritCreationToolName("New Action")
+                .withEdgeExpected()
                 .elementToInheritExpectedListItemLabelText("action1")
                 .compartmentName("actions")
                 .elementThatInheritFromBaseElementCreationToolName("New Action")
@@ -205,9 +202,9 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
     public void checkActionUsageActionsInheritanceWithSubsetting() {
         new ElementSpecializationInheritanceTestRunner()
                 .baseElementToInheritFromEClass(SysmlPackage.eINSTANCE.getActionUsage())
-                .baseElementToInheritFromTargetObjectId(GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID)
                 .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID)
                 .elementToInheritCreationToolName("New Action")
+                .withEdgeExpected()
                 .elementToInheritExpectedListItemLabelText("action1")
                 .compartmentName("actions")
                 .elementThatInheritFromBaseElementCreationToolName("New Action")
@@ -221,9 +218,9 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
     public void checkActionUsageItemsInheritanceWithSubsetting() {
         new ElementSpecializationInheritanceTestRunner()
                 .baseElementToInheritFromEClass(SysmlPackage.eINSTANCE.getActionUsage())
-                .baseElementToInheritFromTargetObjectId(GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID)
                 .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID)
                 .elementToInheritCreationToolName("New Item")
+                .withEdgeExpected()
                 .elementToInheritExpectedListItemLabelText("item1")
                 .compartmentName("items")
                 .elementThatInheritFromBaseElementCreationToolName("New Action")
@@ -237,9 +234,9 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
     public void checkActionUsageActionsInheritanceWithReferenceSubsetting() {
         new ElementSpecializationInheritanceTestRunner()
                 .baseElementToInheritFromEClass(SysmlPackage.eINSTANCE.getActionUsage())
-                .baseElementToInheritFromTargetObjectId(GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID)
                 .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID)
                 .elementToInheritCreationToolName("New Action")
+                .withEdgeExpected()
                 .elementToInheritExpectedListItemLabelText("action1")
                 .compartmentName("actions")
                 .elementThatInheritFromBaseElementCreationToolName("New State")
@@ -253,9 +250,9 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
     public void checkParDefinitionStatesInheritanceWithSubclassification() {
         new ElementSpecializationInheritanceTestRunner()
                 .baseElementToInheritFromEClass(SysmlPackage.eINSTANCE.getPartDefinition())
-                .baseElementToInheritFromTargetObjectId(GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_DEFINITION_ID)
                 .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_ID)
                 .elementToInheritCreationToolName("New State")
+                .withEdgeExpected()
                 .elementToInheritExpectedListItemLabelText("state1")
                 .compartmentName("states")
                 .elementThatInheritFromBaseElementCreationToolName("New Part Definition")
@@ -269,9 +266,9 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
     public void checkStateDefinitionStatesInheritanceWithFeatureTyping() {
         new ElementSpecializationInheritanceTestRunner()
                 .baseElementToInheritFromEClass(SysmlPackage.eINSTANCE.getStateDefinition())
-                .baseElementToInheritFromTargetObjectId(GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_DEFINITION_ID)
                 .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.STATE_DEFINITION_ID)
                 .elementToInheritCreationToolName("New State")
+                .withEdgeExpected()
                 .elementToInheritExpectedListItemLabelText("state1")
                 .compartmentName("states")
                 .elementThatInheritFromBaseElementCreationToolName("New State")
@@ -285,9 +282,9 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
     public void checkStateUsageStatesInheritanceWithRedefinition() {
         new ElementSpecializationInheritanceTestRunner()
                 .baseElementToInheritFromEClass(SysmlPackage.eINSTANCE.getStateUsage())
-                .baseElementToInheritFromTargetObjectId(GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_USAGE_ID)
                 .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.STATE_USAGE_ID)
                 .elementToInheritCreationToolName("New State")
+                .withEdgeExpected()
                 .elementToInheritExpectedListItemLabelText("state1")
                 .compartmentName("states")
                 .elementThatInheritFromBaseElementCreationToolName("New State")
@@ -301,9 +298,9 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
     public void checkPartDefinitionExhibitStatesInheritanceWithSubclassification() {
         new ElementSpecializationInheritanceTestRunner()
                 .baseElementToInheritFromEClass(SysmlPackage.eINSTANCE.getPartDefinition())
-                .baseElementToInheritFromTargetObjectId(GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_DEFINITION_ID)
                 .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_ID)
                 .elementToInheritCreationToolName("New Exhibit State")
+                .withEdgeExpected()
                 .withSelectedElementId(GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_USAGE_ID)
                 .elementToInheritExpectedListItemLabelText("ref  ::> state")
                 .compartmentName("exhibit states")
@@ -318,9 +315,9 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
     public void checkStateDefinitionExhibitStatesInheritanceWithFeatureTyping() {
         new ElementSpecializationInheritanceTestRunner()
                 .baseElementToInheritFromEClass(SysmlPackage.eINSTANCE.getStateDefinition())
-                .baseElementToInheritFromTargetObjectId(GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_DEFINITION_ID)
                 .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.STATE_DEFINITION_ID)
                 .elementToInheritCreationToolName("New Exhibit State")
+                .withEdgeExpected()
                 .withSelectedElementId(GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_USAGE_ID)
                 .elementToInheritExpectedListItemLabelText("ref  ::> state")
                 .compartmentName("exhibit states")
@@ -335,9 +332,9 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
     public void checkStateUsageExhibitStatesInheritanceWithRedefinition() {
         new ElementSpecializationInheritanceTestRunner()
                 .baseElementToInheritFromEClass(SysmlPackage.eINSTANCE.getStateUsage())
-                .baseElementToInheritFromTargetObjectId(GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_USAGE_ID)
                 .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.STATE_USAGE_ID)
                 .elementToInheritCreationToolName("New Exhibit State")
+                .withEdgeExpected()
                 .withSelectedElementId(GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_USAGE_ID)
                 .elementToInheritExpectedListItemLabelText("ref  ::> state")
                 .compartmentName("exhibit states")
@@ -366,9 +363,17 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
         private EClass baseElementToInheritFromEClass;
 
         /**
-         * The <em>target object ID</em> of the element on which the {@code elementToInheritCreationToolName} tool will be applied.
+         * Whether applying the {@code elementToInheritCreationToolName} tool on {@code baseElementToInheritFromNodeId} make new edges to render.
+         * <p>
+         *     We expect edges when the tool creates an element without revealing the list compartment holding the created element.
+         *     That means the new element is created on the background linked with a containment edge.
+         * </p>
+         * <p>
+         *     Another edge is created when the element is created on the background and a non-empty selection is provided.
+         *     In that case, a specialization edge is also rendered.
+         * </p>
          */
-        private String baseElementToInheritFromTargetObjectId;
+        private boolean withEdgeExpected;
 
         /**
          * The selected element required for the creation tool applied on the base element.
@@ -420,8 +425,8 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
             return this;
         }
 
-        public ElementSpecializationInheritanceTestRunner baseElementToInheritFromTargetObjectId(String baseElementToInheritFromTargetObjectId) {
-            this.baseElementToInheritFromTargetObjectId = Objects.requireNonNull(baseElementToInheritFromTargetObjectId);
+        public ElementSpecializationInheritanceTestRunner withEdgeExpected() {
+            this.withEdgeExpected = true;
             return this;
         }
 
@@ -472,7 +477,6 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
 
         private void isReady() {
             Objects.requireNonNull(this.baseElementToInheritFromEClass);
-            Objects.requireNonNull(this.baseElementToInheritFromTargetObjectId);
             Objects.requireNonNull(this.baseElementToInheritFromNodeId);
             Objects.requireNonNull(this.elementToInheritCreationToolName);
             Objects.requireNonNull(this.elementToInheritExpectedListItemLabelText);
@@ -498,20 +502,27 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
 
             // Create an element in the base element to inherit
             String createActionToolId = diagramDescriptionIdProvider.getNodeToolId(GVCompartmentItemInheritanceTests.this.descriptionNameGenerator.getNodeName(this.baseElementToInheritFromEClass), this.elementToInheritCreationToolName);
-            Runnable newCreationTool = () -> GVCompartmentItemInheritanceTests.this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, this.baseElementToInheritFromTargetObjectId, createActionToolId, toolVariables);
+            Runnable newCreationTool = () -> GVCompartmentItemInheritanceTests.this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram.get().getId(), this.baseElementToInheritFromNodeId, createActionToolId, toolVariables);
             Consumer<Object> createdActionDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
                 int expectedBorderNodeCount = 0;
                 if (this.alsoRepresentedByBorderNode) {
                     expectedBorderNodeCount = 1;
                 }
+                int expectEdgeCount = 0;
+                if (withEdgeExpected) {
+                    expectEdgeCount = 1;
+                    if (this.selectedElementId.isPresent() && !this.selectedElementId.get().isBlank()) {
+                        expectEdgeCount = 2;
+                    }
+                }
                 new CheckDiagramElementCount(GVCompartmentItemInheritanceTests.this.diagramComparator)
                         .hasNewBorderNodeCount(expectedBorderNodeCount) // The element is created and sometimes can be represented as a border node
                         .hasNewNodeCount(1) // The element is created and represented as a list item
-                        .hasNewEdgeCount(0)
+                        .hasNewEdgeCount(expectEdgeCount)
                         .check(diagram.get(), newDiagram, true);
 
                 var actionsCompartment = new DiagramNavigator(newDiagram)
-                        .nodeWithTargetObjectId(this.baseElementToInheritFromTargetObjectId)
+                        .nodeWithId(this.baseElementToInheritFromNodeId)
                         .childNodeWithLabel(this.compartmentName)
                         .getNode();
                 assertThat(actionsCompartment.getChildNodes()).hasSize(1);
