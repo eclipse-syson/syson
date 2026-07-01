@@ -10,30 +10,30 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
-import { TreeItemContextMenuComponentProps } from '@eclipse-sirius/sirius-components-trees';
-import EditIcon from '@mui/icons-material/Edit';
+import { PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import { TreePaletteContext, TreePaletteContextValue } from '@eclipse-sirius/sirius-components-trees';
+import AddIcon from '@mui/icons-material/Add';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import React, { forwardRef, Fragment, useState } from 'react';
+import { forwardRef, Fragment, useContext, useState } from 'react';
 import { EditSysMLExpressionModal } from './EditSysMLExpressionModal';
 
-export const EditSysMLExpressionMenuContribution = forwardRef(
-  (
-    { editingContextId, treeId, item, readOnly, onClose }: TreeItemContextMenuComponentProps,
-    ref: React.ForwardedRef<HTMLLIElement>
-  ) => {
+export const NewExpressionExplorerToolOverriddenContribution = forwardRef(
+  ({}: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+    const { editingContextId, item, treeId, readOnly, onClose } =
+      useContext<TreePaletteContextValue>(TreePaletteContext);
+
     const [modalOpened, setModalOpened] = useState<boolean>(false);
+
+    if (!treeId.startsWith('explorer://') || item === null || readOnly) {
+      return null;
+    }
 
     const onCloseModal = () => {
       setModalOpened(false);
       onClose();
     };
-
-    if (!treeId.startsWith('explorer://') || readOnly) {
-      return null;
-    }
 
     let modalElement: JSX.Element | null = null;
     if (modalOpened === true) {
@@ -41,25 +41,25 @@ export const EditSysMLExpressionMenuContribution = forwardRef(
         <EditSysMLExpressionModal
           editingContextId={editingContextId}
           elementId={item.id}
-          mode="edit"
+          mode="create"
           onClose={onCloseModal}
         />
       );
     }
 
     return (
-      <Fragment key="edit-sysml-expression-context-menu-contribution">
+      <Fragment key="new-sysml-expression-context-menu-contribution">
         <MenuItem
-          key="edit-sysml-expression-menu"
+          key="new-sysml-expression-menu"
           onClick={() => setModalOpened(true)}
-          data-testid="edit-sysml-expression-menu"
+          data-testid="new-sysml-expression-menu"
           disabled={readOnly}
           ref={ref}
           aria-disabled>
           <ListItemIcon>
-            <EditIcon fontSize="small" />
+            <AddIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="Edit expression" />
+          <ListItemText primary="New expression" />
         </MenuItem>
         {modalElement}
       </Fragment>

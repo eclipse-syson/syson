@@ -11,29 +11,29 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { TreeItemContextMenuComponentProps } from '@eclipse-sirius/sirius-components-trees';
+import { PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import { TreePaletteContext, TreePaletteContextValue } from '@eclipse-sirius/sirius-components-trees';
 import EditIcon from '@mui/icons-material/Edit';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import React, { forwardRef, Fragment, useState } from 'react';
+import React, { forwardRef, Fragment, useContext, useState } from 'react';
 import { EditSysMLExpressionModal } from './EditSysMLExpressionModal';
 
-export const EditSysMLExpressionMenuContribution = forwardRef(
-  (
-    { editingContextId, treeId, item, readOnly, onClose }: TreeItemContextMenuComponentProps,
-    ref: React.ForwardedRef<HTMLLIElement>
-  ) => {
+export const EditExpressionExplorerToolOverriddenContribution = forwardRef(
+  ({}: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+    const { editingContextId, item, treeId, readOnly, onClose } =
+      useContext<TreePaletteContextValue>(TreePaletteContext);
     const [modalOpened, setModalOpened] = useState<boolean>(false);
+
+    if (!treeId.startsWith('explorer://') || item === null || readOnly) {
+      return null;
+    }
 
     const onCloseModal = () => {
       setModalOpened(false);
       onClose();
     };
-
-    if (!treeId.startsWith('explorer://') || readOnly) {
-      return null;
-    }
 
     let modalElement: JSX.Element | null = null;
     if (modalOpened === true) {

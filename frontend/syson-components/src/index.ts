@@ -10,6 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+export { DeleteExpressionDiagramToolOverriddenContribution } from './extensions/expressions/DeleteExpressionDiagramToolOverriddenContribution';
+export { DeleteExpressionExplorerToolOverriddenContribution } from './extensions/expressions/DeleteExpressionExplorerToolOverriddenContribution';
+export { EditExpressionDiagramToolOverriddenContribution } from './extensions/expressions/EditExpressionDiagramToolOverriddenContribution';
+export { EditExpressionExplorerToolOverriddenContribution } from './extensions/expressions/EditExpressionExplorerToolOverriddenContribution';
+export { NewExpressionDiagramToolOverriddenContribution } from './extensions/expressions/NewExpressionDiagramToolOverriddenContribution';
+export { NewExpressionExplorerToolOverriddenContribution } from './extensions/expressions/NewExpressionExplorerToolOverriddenContribution';
+export { InsertTextualSysMLv2ExplorerToolOverriddenContribution } from './extensions/InsertTextualSysMLv2ExplorerToolOverriddenContribution';
 export { InsertTextualSysMLMenuContribution } from './extensions/InsertTextualSysMLv2MenuContribution';
 export { InsertTextualSysMLv2Modal } from './extensions/InsertTextualSysMLv2Modal';
 export { SysONNavigationBarMenuIcon } from './extensions/navigationBarMenu/SysONNavigationBarMenuIcon';
@@ -17,6 +24,7 @@ export { PublishProjectSysMLContentsAsLibraryCommand } from './extensions/omnibo
 export type { PublishProjectSysMLContentsAsLibraryCommandState } from './extensions/omnibox/PublishProjectSysMLContentsAsLibraryCommand.types';
 export { sysONExtensionRegistry } from './extensions/registry/SysONExtensionRegistry';
 export { sysONNodeTypeRegistry } from './extensions/registry/SysONNodeTypeRegistry';
+export { RotateNodeToolOverriddenContribution } from './extensions/rotateNodeTool/RotateNodeToolOverriddenContribution';
 export { ShowHideDiagramsIcons } from './extensions/ShowHideDiagramsIcons';
 export { ShowHideDiagramsInheritedMembers } from './extensions/ShowHideDiagramsInheritedMembers';
 export { ShowHideDiagramsInheritedMembersFromStandardLibraries } from './extensions/ShowHideDiagramsInheritedMembersFromStandardLibraries';

@@ -14,6 +14,10 @@
 import { DataExtension, ExtensionRegistryMergeStrategy } from '@eclipse-sirius/sirius-components-core';
 import { widgetContributionExtensionPoint } from '@eclipse-sirius/sirius-components-forms';
 import { omniboxCommandOverrideContributionExtensionPoint } from '@eclipse-sirius/sirius-components-omnibox';
+import {
+  paletteToolExtensionPoint,
+  paletteToolOverrideExtensionPoint,
+} from '@eclipse-sirius/sirius-components-palette';
 import { treeItemContextMenuEntryOverrideExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
 import {
   apolloClientOptionsConfigurersExtensionPoint,
@@ -40,6 +44,12 @@ export class SysONExtensionRegistryMergeStrategy
     }
     if (identifier === widgetContributionExtensionPoint.identifier) {
       return this.mergeWidgetContributions(existingValues, newValues);
+    }
+    if (identifier === paletteToolOverrideExtensionPoint.identifier) {
+      return this.mergePaletteOverrideContributions(existingValues, newValues);
+    }
+    if (identifier === paletteToolExtensionPoint.identifier) {
+      return this.mergePaletteContributions(existingValues, newValues);
     }
     return newValues;
   }
@@ -80,6 +90,26 @@ export class SysONExtensionRegistryMergeStrategy
   ): DataExtension<any> {
     return {
       identifier: `syson_${widgetContributionExtensionPoint.identifier}`,
+      data: [...existingContributions.data, ...newContributions.data],
+    };
+  }
+
+  private mergePaletteOverrideContributions(
+    existingContributions: DataExtension<any>,
+    newContributions: DataExtension<any>
+  ): DataExtension<any> {
+    return {
+      identifier: `syson_${paletteToolOverrideExtensionPoint.identifier}`,
+      data: [...existingContributions.data, ...newContributions.data],
+    };
+  }
+
+  private mergePaletteContributions(
+    existingContributions: DataExtension<any>,
+    newContributions: DataExtension<any>
+  ): DataExtension<any> {
+    return {
+      identifier: `syson_${paletteToolExtensionPoint.identifier}`,
       data: [...existingContributions.data, ...newContributions.data],
     };
   }

@@ -13,6 +13,7 @@
 
 import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
 import {
+  DIAGRAM_REPRESENTATION_KIND,
   diagramToolbarActionExtensionPoint,
   EdgeAppearanceSection,
   EdgeData,
@@ -39,6 +40,7 @@ import {
 } from '@eclipse-sirius/sirius-components-palette';
 import {
   GQLTreeItemContextMenuEntry,
+  TREE_REPRESENTATION_KIND,
   treeItemContextMenuEntryOverrideExtensionPoint,
   TreeItemContextMenuOverrideContribution,
 } from '@eclipse-sirius/sirius-components-trees';
@@ -56,12 +58,16 @@ import { SysMLPackageNodePaletteAppearanceSection } from '../../nodes/package/Sy
 import { sysMLNodesStyleDocumentTransform } from '../../nodes/SysMLNodesDocumentTransform';
 import { SysMLViewFrameNodePaletteAppearanceSection } from '../../nodes/view_frame/SysMLViewFrameNodePaletteAppearanceSection';
 import { DeleteExpressionDiagramToolOverriddenContribution } from '../expressions/DeleteExpressionDiagramToolOverriddenContribution';
+import { DeleteExpressionExplorerToolOverriddenContribution } from '../expressions/DeleteExpressionExplorerToolOverriddenContribution';
 import { DeleteSysMLExpressionMenuContribution } from '../expressions/DeleteSysMLExpressionMenuContribution';
 import { EditExpressionDiagramToolOverriddenContribution } from '../expressions/EditExpressionDiagramToolOverriddenContribution';
+import { EditExpressionExplorerToolOverriddenContribution } from '../expressions/EditExpressionExplorerToolOverriddenContribution';
 import { EditSysMLExpressionMenuContribution } from '../expressions/EditSysMLExpressionMenuContribution';
 import { ExpressionPropertySection } from '../expressions/ExpressionPropertySection';
 import { NewExpressionDiagramToolOverriddenContribution } from '../expressions/NewExpressionDiagramToolOverriddenContribution';
+import { NewExpressionExplorerToolOverriddenContribution } from '../expressions/NewExpressionExplorerToolOverriddenContribution';
 import { NewSysMLExpressionMenuContribution } from '../expressions/NewSysMLExpressionMenuContribution';
+import { InsertTextualSysMLv2ExplorerToolOverriddenContribution } from '../InsertTextualSysMLv2ExplorerToolOverriddenContribution';
 import { InsertTextualSysMLMenuContribution } from '../InsertTextualSysMLv2MenuContribution';
 import { SysONNavigationBarMenuIcon } from '../navigationBarMenu/SysONNavigationBarMenuIcon';
 import { PublishProjectSysMLContentsAsLibraryCommand } from '../omnibox/PublishProjectSysMLContentsAsLibraryCommand';
@@ -254,28 +260,52 @@ sysONExtensionRegistry.putData(widgetContributionExtensionPoint, {
   ],
 });
 
-const diagramPaletteToolOverriddenContributions: PaletteToolOverriddenContributionProps[] = [
+const paletteToolOverriddenContributions: PaletteToolOverriddenContributionProps[] = [
   {
-    canHandle: (tool: GQLTool) => {
-      return tool.id === 'tool_new_expression';
+    canHandle: (representationDescriptionId: string, tool: GQLTool) => {
+      return representationDescriptionId === TREE_REPRESENTATION_KIND && tool.id === 'newObjectsFromText';
+    },
+    component: InsertTextualSysMLv2ExplorerToolOverriddenContribution,
+  },
+  {
+    canHandle: (representationDescriptionId: string, tool: GQLTool) => {
+      return representationDescriptionId === TREE_REPRESENTATION_KIND && tool.id === 'createExpression';
+    },
+    component: NewExpressionExplorerToolOverriddenContribution,
+  },
+  {
+    canHandle: (representationDescriptionId: string, tool: GQLTool) => {
+      return representationDescriptionId === TREE_REPRESENTATION_KIND && tool.id === 'editExpression';
+    },
+    component: EditExpressionExplorerToolOverriddenContribution,
+  },
+  {
+    canHandle: (representationDescriptionId: string, tool: GQLTool) => {
+      return representationDescriptionId === TREE_REPRESENTATION_KIND && tool.id === 'deleteExpression';
+    },
+    component: DeleteExpressionExplorerToolOverriddenContribution,
+  },
+  {
+    canHandle: (representationDescriptionId: string, tool: GQLTool) => {
+      return representationDescriptionId === DIAGRAM_REPRESENTATION_KIND && tool.id === 'tool_new_expression';
     },
     component: NewExpressionDiagramToolOverriddenContribution,
   },
   {
-    canHandle: (tool: GQLTool) => {
-      return tool.id === 'tool_edit_expression';
+    canHandle: (representationDescriptionId: string, tool: GQLTool) => {
+      return representationDescriptionId === DIAGRAM_REPRESENTATION_KIND && tool.id === 'tool_edit_expression';
     },
     component: EditExpressionDiagramToolOverriddenContribution,
   },
   {
-    canHandle: (tool: GQLTool) => {
-      return tool.id === 'tool_delete_expression';
+    canHandle: (representationDescriptionId: string, tool: GQLTool) => {
+      return representationDescriptionId === DIAGRAM_REPRESENTATION_KIND && tool.id === 'tool_delete_expression';
     },
     component: DeleteExpressionDiagramToolOverriddenContribution,
   },
   {
-    canHandle: (tool: GQLTool) => {
-      return tool.id === 'fork_join_node_rotate_tool';
+    canHandle: (representationDescriptionId: string, tool: GQLTool) => {
+      return representationDescriptionId === DIAGRAM_REPRESENTATION_KIND && tool.id === 'fork_join_node_rotate_tool';
     },
     component: RotateNodeToolOverriddenContribution,
   },
@@ -283,7 +313,7 @@ const diagramPaletteToolOverriddenContributions: PaletteToolOverriddenContributi
 
 sysONExtensionRegistry.putData<PaletteToolOverriddenContributionProps[]>(paletteToolOverrideExtensionPoint, {
   identifier: `syson_${paletteToolOverrideExtensionPoint.identifier}`,
-  data: diagramPaletteToolOverriddenContributions,
+  data: paletteToolOverriddenContributions,
 });
 
 export { sysONExtensionRegistry };
