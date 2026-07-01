@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,20 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
-import { TreeItemContextMenuComponentProps } from '@eclipse-sirius/sirius-components-trees';
+import { PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import { TreePaletteContext, TreePaletteContextValue } from '@eclipse-sirius/sirius-components-trees';
 import AddIcon from '@mui/icons-material/Add';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import React, { forwardRef, Fragment, useState } from 'react';
+import { forwardRef, Fragment, useContext, useState } from 'react';
 import { InsertTextualSysMLv2Modal } from './InsertTextualSysMLv2Modal';
 
-export const InsertTextualSysMLMenuContribution = forwardRef(
-  (
-    { editingContextId, treeId, item, readOnly, expandItem, onClose }: TreeItemContextMenuComponentProps,
-    ref: React.ForwardedRef<HTMLLIElement>
-  ) => {
+export const InsertTextualSysMLv2ExplorerToolOverriddenContribution = forwardRef(
+  ({}: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+    const { editingContextId, item, treeId, readOnly, expandItem, onClose } =
+      useContext<TreePaletteContextValue>(TreePaletteContext);
+
     const [modal, setModal] = useState<boolean>(false);
 
     if (!treeId.startsWith('explorer://') || readOnly) {

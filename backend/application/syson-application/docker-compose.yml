@@ -18,6 +18,7 @@ services:
       SPRING_DATASOURCE_USERNAME: test_username
       SPRING_DATASOURCE_PASSWORD: test_password
       SIRIUS_COMPONENTS_CORS_ALLOWEDORIGINPATTERNS: "*"
+      SIRIUS_WEB_TREE_NEW-PALETTE_ENABLED: false
       SERVER_PORT: 8080
     depends_on:
       - database

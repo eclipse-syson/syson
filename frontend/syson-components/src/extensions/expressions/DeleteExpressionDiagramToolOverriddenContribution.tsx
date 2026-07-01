@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { IconOverlay, useDeletionConfirmationDialog } from '@eclipse-sirius/sirius-components-core';
 import { DiagramContext, DiagramContextValue, EdgeData, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
-import { PaletteToolContributionComponentProps, usePalette } from '@eclipse-sirius/sirius-components-palette';
+import { PaletteToolOverriddenContributionComponentProps, usePalette } from '@eclipse-sirius/sirius-components-palette';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -41,7 +41,8 @@ const useStyle = makeStyles()((theme) => ({
 
 export const DeleteExpressionDiagramToolOverriddenContribution = ({
   representationElementIds,
-}: PaletteToolContributionComponentProps) => {
+  onInvoked,
+}: PaletteToolOverriddenContributionComponentProps) => {
   const { classes } = useStyle();
   const { editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
@@ -73,6 +74,7 @@ export const DeleteExpressionDiagramToolOverriddenContribution = ({
       deleteExpression(editingContextId, elementId);
       hidePalette();
     });
+    onInvoked();
   };
 
   const toolLabel = 'Delete Expression';
