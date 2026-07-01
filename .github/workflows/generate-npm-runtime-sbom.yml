@@ -1,4 +1,4 @@
-name: Generate NPM SBOM
+name: Generate NPM Runtime SBOM
 
 on:
   workflow_run:
@@ -12,7 +12,7 @@ on:
         required: true
 
 env:
-  NODE_VERSION: "24"
+  NODE_VERSION: "24.18"
   REGISTRY_URL: "https://npm.pkg.github.com/"
   PRODUCT_PATH: "./"
   WORKFLOW_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
@@ -27,7 +27,7 @@ permissions:
 
 jobs:
   generate-sbom:
-    name: Generate SBOM for frontend
+    name: Generate runtime SBOM for frontend (excluding dev tools)
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event != 'pull_request' && (github.event.workflow_run.head_branch == 'main' || startsWith(github.event.workflow_run.head_branch, 'v')) }}
     outputs:
@@ -43,14 +43,14 @@ jobs:
           echo "Run on github.ref ${GITHUB_REF}"
 
       - name: Checkout repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 0
           ref: ${{ env.INPUTS_VERSION }}
           persist-credentials: false
 
       - name: Setup Node SDK
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: ${{ env.REGISTRY_URL }}
@@ -63,15 +63,11 @@ jobs:
 
       - name: Install cyclonedx-npm
         run: |
-          npm install --global @cyclonedx/cyclonedx-npm@2.1.0
+          npm install --global @cyclonedx/cyclonedx-npm@5.0.0
 
-      - name: Generate runtime SBOM
+      - name: Generate SBOM (runtime only)
         run: |
-          cyclonedx-npm --output-format json --output-file runtime-bom.json --omit dev
-
-      - name: Generate full SBOM
-        run: |
-          cyclonedx-npm --output-format json --output-file full-bom.json
+          cyclonedx-npm --output-format json --output-file bom.json --omit dev
 
       - name: Extract product version
         id: version
@@ -82,7 +78,7 @@ jobs:
           ref="${GITHUB_REF}"
           input="${INPUTS_VERSION}"
 
-          VERSION="$(jq -r '.metadata.component.version' < ./${{ env.PRODUCT_PATH }}/full-bom.json)"
+          VERSION="$(jq -r '.metadata.component.version' < ./${{ env.PRODUCT_PATH }}/bom.json)"
 
           if [[ "$event" == "workflow_run" ]] && [[ "$ref" == refs/heads/* ]] && [[ ! "$event_workflow_run_head_branch" =~ ^v ]]; then
             VERSION="${VERSION}@dev"
@@ -91,34 +87,18 @@ jobs:
           echo "PROJECT_VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "Product version: $VERSION"
 
-      - name: Upload runtime SBOM as artifact
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - name: Upload SBOM as artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: frontend-runtime-sbom
-          path: ${{ env.PRODUCT_PATH }}/runtime-bom.json
-
-      - name: Upload full SBOM as artifact
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: frontend-full-sbom
+          name: frontend-sbom
           path: ${{ env.PRODUCT_PATH }}/full-bom.json
 
-  store-runtime-sbom-data: # stores sbom and metadata in a predefined format for otterdog to pick up
+  store-sbom-data: # stores sbom and metadata in a predefined format for otterdog to pick up
     needs: ["generate-sbom"]
     uses: eclipse-csi/workflows/.github/workflows/store-sbom-data.yml@main
     with:
       projectName: "SysON - Frontend Runtime"
       projectVersion: ${{ needs.generate-sbom.outputs.project-version }}
-      bomArtifact: "frontend-runtime-sbom"
-      bomFilename: "runtime-bom.json"
-      parentProject: "1b099ee7-62ee-48e1-986b-b7f0309dd344"
-
-  store-full-sbom-data: # stores sbom and metadata in a predefined format for otterdog to pick up
-    needs: ["generate-sbom"]
-    uses: eclipse-csi/workflows/.github/workflows/store-sbom-data.yml@main
-    with:
-      projectName: "SysON - Frontend Full"
-      projectVersion: ${{ needs.generate-sbom.outputs.project-version }}
-      bomArtifact: "frontend-full-sbom"
-      bomFilename: "full-bom.json"
+      bomArtifact: "frontend-sbom"
+      bomFilename: "bom.json"
       parentProject: "1b099ee7-62ee-48e1-986b-b7f0309dd344"
