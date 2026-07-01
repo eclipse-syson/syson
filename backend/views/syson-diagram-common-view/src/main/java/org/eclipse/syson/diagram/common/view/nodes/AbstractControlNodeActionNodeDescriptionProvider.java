@@ -99,6 +99,7 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
                 .domainType(domainType)
                 .defaultWidthExpression(this.getDefaultWidthExpression())
                 .defaultHeightExpression(this.getDefaultHeightExpression())
+                .isHiddenByDefaultExpression(ServiceMethod.of1(DiagramQueryAQLService.class, DiagramQueryAQLService::isHiddenControlNodeByDefault, Element.class, List.class).aqlSelf(ANCESTORS))
                 .outsideLabels(this.createOutsideLabelDescription())
                 .name(this.descriptionNameGenerator.getNodeName(this.getNodeDescriptionName()))
                 .semanticCandidatesExpression(ServiceMethod.of4(DiagramQueryAQLService.class,
