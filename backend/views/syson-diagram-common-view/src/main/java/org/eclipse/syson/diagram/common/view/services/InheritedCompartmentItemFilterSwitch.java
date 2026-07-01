@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Behavior;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
@@ -26,6 +27,7 @@ import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
@@ -79,13 +81,11 @@ public class InheritedCompartmentItemFilterSwitch extends SysmlSwitch<Boolean> {
         // Add this behavior parameter check for each caseXXXUsage.
         // In this case, we want to display inherited parameters (directed feature) but not all features with the same
         // type.
-        if (!shouldKeep && this.shouldConsiderParameter(object)) {
+        if (this.shouldConsiderParameter(object)) {
             shouldKeep = this.isInheritedParameter(object);
-        }
-        if (!shouldKeep && this.shouldConsiderExhibitState(object)) {
+        } else if (this.shouldConsiderExhibitState(object)) {
             shouldKeep = this.isInheritedState(object);
-        }
-        if (!shouldKeep) {
+        } else {
             shouldKeep = super.caseExhibitStateUsage(object);
         }
         return shouldKeep;
@@ -113,6 +113,22 @@ public class InheritedCompartmentItemFilterSwitch extends SysmlSwitch<Boolean> {
         EClassifier eType = this.eReference.getEType();
         EClass eClass = object.eClass();
         return eType.equals(eClass) || (eType instanceof EClass eTypeEClass && eTypeEClass.isSuperTypeOf(eClass));
+    }
+
+    @Override
+    public Boolean casePerformActionUsage(PerformActionUsage object) {
+        Boolean shouldKeep = Boolean.FALSE;
+        // Add this behavior parameter check for each caseXXXUsage.
+        // In this case, we want to display inherited parameters (directed feature) but not all features with the same
+        // type.
+        if (this.shouldConsiderParameter(object)) {
+            shouldKeep = this.isInheritedParameter(object);
+        } else if (this.shouldConsiderPerformUsage(object)) {
+            shouldKeep = this.isInheritedAction(object);
+        } else {
+            shouldKeep = super.casePerformActionUsage(object);
+        }
+        return shouldKeep;
     }
 
     @Override
@@ -161,5 +177,24 @@ public class InheritedCompartmentItemFilterSwitch extends SysmlSwitch<Boolean> {
             default -> List.of();
         };
         return featureState.contains(feature);
+    }
+
+    private boolean shouldConsiderPerformUsage(Feature feature) {
+        if (!(feature instanceof PerformActionUsage)) {
+            return false;
+        }
+
+        EClassifier eType = this.eReference.getEType();
+        EClass eClass = feature.eClass();
+        return eType.equals(eClass) || (eType instanceof EClass eTypeEClass && eTypeEClass.isSuperTypeOf(eClass));
+    }
+
+    private boolean isInheritedAction(Feature feature) {
+        List< ActionUsage> featureActions = switch (feature.getOwner()) {
+            case Definition definition -> definition.getOwnedAction();
+            case Usage usage -> usage.getNestedAction();
+            default -> List.of();
+        };
+        return featureActions.contains(feature);
     }
 }

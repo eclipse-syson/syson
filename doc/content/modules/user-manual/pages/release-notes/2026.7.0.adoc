@@ -55,6 +55,8 @@ Users should use the dedicated tools to edit expressions instead, as they ensure
 +
 image::release-notes-rotate-fork-join-graphical-nodes.png[For both fork nodes and two join nodes, display one horizontal and one vertical graphical node. Also display the palette with the rotate tool, width=50%,height=50%]
 
+** Add support for list item inheritance in _perform actions_ compartments.
+
 * In the _Explorer_ view:
 
 ** The tree items corresponding to the internals of `Expression` elements (syntax tree) are now hidden by default.

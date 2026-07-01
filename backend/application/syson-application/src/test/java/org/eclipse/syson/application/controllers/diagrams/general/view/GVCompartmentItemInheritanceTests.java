@@ -344,6 +344,55 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
                 .run();
     }
 
+    @DisplayName("GIVEN a base ActionDefinition with a perform action, WHEN another ActionDefinition is subclassing the base ActionDefinition, THEN the base ActionDefinition perform actions are inherited by the other ActionDefinition")
+    @Test
+    public void checkActionDefinitionPerformActionsInheritanceWithSubclassification() {
+        new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(SysmlPackage.eINSTANCE.getActionDefinition())
+                .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_DEFINITION_ID)
+                .elementToInheritCreationToolName("New Perform action")
+                .withEdgeExpected()
+                .withSelectedElementId("")
+                .elementToInheritExpectedListItemLabelText("ref ")
+                .compartmentName("perform actions")
+                .elementThatInheritFromBaseElementCreationToolName("New Action Definition")
+                .elementThatInheritFromBaseElementEClass(SysmlPackage.eINSTANCE.getActionDefinition())
+                .specializationToolName("New Subclassification")
+                .run();
+    }
+
+    @DisplayName("GIVEN a StateDefinition with a do action, WHEN a StateUsage is typed by the StateDefinition, THEN the StateDefinition perform actions are inherited by the StateUsage")
+    @Test
+    public void checkStateDefinitionPerformActionsInheritanceWithFeatureTyping() {
+        new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(SysmlPackage.eINSTANCE.getStateDefinition())
+                .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.STATE_DEFINITION_ID)
+                .elementToInheritCreationToolName("New Do Action")
+                .withSelectedElementId(GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID)
+                .elementToInheritExpectedListItemLabelText("ref do ::> action")
+                .compartmentName("perform actions")
+                .elementThatInheritFromBaseElementCreationToolName("New State")
+                .elementThatInheritFromBaseElementEClass(SysmlPackage.eINSTANCE.getStateUsage())
+                .specializationToolName("New Feature Typing")
+                .run();
+    }
+
+    @DisplayName("GIVEN a StateUsage with an entry action, WHEN a PartUsage is subsetting by reference the StateUsage, THEN the StateUsage perform actions are inherited by the PartUsage")
+    @Test
+    public void checkStateUsagePerformActionsInheritanceWithReferenceSubsetting() {
+        new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(SysmlPackage.eINSTANCE.getStateUsage())
+                .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.STATE_USAGE_ID)
+                .elementToInheritCreationToolName("New Entry Action")
+                .withSelectedElementId(GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID)
+                .elementToInheritExpectedListItemLabelText("ref entry ::> action")
+                .compartmentName("perform actions")
+                .elementThatInheritFromBaseElementCreationToolName("New Part")
+                .elementThatInheritFromBaseElementEClass(SysmlPackage.eINSTANCE.getPartUsage())
+                .specializationToolName("New Reference Subsetting")
+                .run();
+    }
+
     /**
      * This test runner verifies that creating a specializing relationship create inherited elements.
      *
