@@ -35,6 +35,7 @@ It has long been unused by Sirius Web itself (since the transition to MUI).
 - https://github.com/eclipse-syson/syson/issues/2194[#2194] [diagrams] Properly report feedback messages to user when using _ISysMLMoveElementService_.
 - https://github.com/eclipse-syson/syson/issues/2306[#2306] [diagrams] Fixed an error when trying to rename a constraint displayed as a list item through direct edit.
 - https://github.com/eclipse-syson/syson/issues/2318[#2318] [diagrams] Direct edit on a constraint label now ignores the expression part (`{ ... }`) if present in the new text.
+- https://github.com/eclipse-syson/syson/issues/2329[#2329] [import] Fix invalid relation created when importing a requirement inside a requirement.
 
 === Improvements
 
