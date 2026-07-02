@@ -192,7 +192,7 @@ public class ASTTransformer {
         if (child instanceof Import imp) {
             parent.getOwnedRelationship().add(imp);
             undo = () -> parent.getOwnedRelationship().remove(imp);
-        } else if (child instanceof Expression expr) {
+        } else if (child instanceof Expression expr && !(child instanceof Usage)) {
             var compatibleOwnerships = this.metamodelQueryElementService.getCompatibleExpressionOwnerships(parent);
             if (!compatibleOwnerships.isEmpty()) {
                 var selectedOwnership = compatibleOwnerships.get(0);

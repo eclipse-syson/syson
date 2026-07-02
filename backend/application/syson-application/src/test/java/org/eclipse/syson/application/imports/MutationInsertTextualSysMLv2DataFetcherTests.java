@@ -36,18 +36,22 @@ import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.data.NewObjectAsTextProjectData;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.NamespaceImport;
+import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.datafetchers.MutationInsertTextualSysMLv2DataFetcher;
@@ -57,8 +61,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.test.StepVerifier;
@@ -89,8 +91,8 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
         this.givenInitialServerState.initialize();
     }
 
-    @Sql(scripts = { NewObjectAsTextProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @DisplayName("GIVEN a package, WHEN importing a simple package, THEN the imported package is a child of the existing package")
+    @GivenSysONServer({ NewObjectAsTextProjectData.SCRIPT_PATH })
     @Test
     public void testCreationFromText() {
         this.insertTextExpectNoMessage(NewObjectAsTextProjectData.SemanticIds.ROOT_ID, """
@@ -102,9 +104,8 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
                 p -> p.getOwnedElement().stream().anyMatch(e -> e instanceof org.eclipse.syson.sysml.Package pack && "importedPackage".equals(pack.getName())));
     }
 
-    @Sql(scripts = { NewObjectAsTextProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @DisplayName("GIVEN a package importing ScalarValues namespace, WHEN importing an attribute with type Real, THEN the Real type should be correctly resolved")
+    @GivenSysONServer({ NewObjectAsTextProjectData.SCRIPT_PATH })
     @Test
     public void testCreateRealAttribute() {
         this.insertTextExpectNoMessage(NewObjectAsTextProjectData.SemanticIds.PART1_ID, " attribute x : Real");
@@ -126,9 +127,8 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
 
     }
 
-    @Sql(scripts = { NewObjectAsTextProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @DisplayName("GIVEN a package, WHEN importing a NamespaceImport, THEN NamespaceImport should be contained in the ownedRelationships of the Package")
+    @GivenSysONServer({ NewObjectAsTextProjectData.SCRIPT_PATH })
     @Test
     public void testCreateNamespaceImport() {
         this.insertTextExpectNoMessage(NewObjectAsTextProjectData.SemanticIds.ROOT_ID, "import ScalarValues::*;");
@@ -147,9 +147,8 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
 
     }
 
-    @Sql(scripts = { NewObjectAsTextProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @DisplayName("GIVEN a model with two ActionUsages, WHEN creating a succession between those actions, THEN the successsion should be created")
+    @GivenSysONServer({ NewObjectAsTextProjectData.SCRIPT_PATH })
     @Test
     public void testCreateSuccessionAsUsage() {
         this.insertTextExpectNoMessage(NewObjectAsTextProjectData.SemanticIds.ACTION_DEFINITION_1_ID, "succession s1 first action1 then action2;");
@@ -169,9 +168,8 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
 
     }
 
-    @Sql(scripts = { NewObjectAsTextProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @DisplayName("GIVEN model with two ItemUsages, WHEN creating a FlowUsage between those items, THEN the flow should be created")
+    @GivenSysONServer({ NewObjectAsTextProjectData.SCRIPT_PATH })
     @Test
     public void testCreateFlow() {
         this.insertTextExpectNoMessage(NewObjectAsTextProjectData.SemanticIds.ACTION_DEFINITION_1_ID, "flow action1.item1Out to action2.item1In;");
@@ -193,9 +191,8 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
 
     }
 
-    @Sql(scripts = { NewObjectAsTextProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @DisplayName("GIVEN a package that do not import ScalarValues namespace, WHEN importing an attribute with type Real, THEN attribute should be added but a message should be displayed")
+    @GivenSysONServer({ NewObjectAsTextProjectData.SCRIPT_PATH })
     @Test
     public void testCreateRealAttributeWithResolutionProblem() {
         this.insertTextExpectMessages(NewObjectAsTextProjectData.SemanticIds.PART_DEFINITION_1_ID, " attribute x : Real",
@@ -214,6 +211,24 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
                         }
                     }
                     return false;
+                });
+    }
+
+    @DisplayName("GIVEN a package, WHEN importing a requirement usage with a sub-requirement, THEN they are both created and owned through the correct membership types")
+    @GivenSysONServer({ NewObjectAsTextProjectData.SCRIPT_PATH })
+    @Test
+    public void testCreateRequirementAndSubRequirement() {
+        this.insertTextExpectNoMessage(NewObjectAsTextProjectData.SemanticIds.USAGES_ID, "requirement parentReq { requirement subReq; }");
+
+        this.checkElement(Package.class,
+                NewObjectAsTextProjectData.SemanticIds.USAGES_ID,
+                p -> {
+                    var parentReq = p.getOwnedElement().getLast();
+                    boolean validParent = parentReq instanceof RequirementUsage && parentReq.getName().equals("parentReq") && parentReq.getOwningRelationship() instanceof OwningMembership;
+                    var childReq = parentReq.getOwnedElement().getLast();
+                    boolean validChild = childReq instanceof RequirementUsage && childReq.getName().equals("subReq") && childReq.getOwningRelationship() instanceof FeatureMembership;
+
+                    return validParent && validChild;
                 });
     }
 
