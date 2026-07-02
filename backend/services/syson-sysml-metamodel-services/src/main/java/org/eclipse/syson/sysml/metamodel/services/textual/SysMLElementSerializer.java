@@ -1736,28 +1736,30 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private void appendConnectorEndMember(Appender builder, EndFeatureMembership endFeatureMembership) {
         endFeatureMembership.getOwnedRelatedElement().stream()
-                .filter(ReferenceUsage.class::isInstance)
-                .map(ReferenceUsage.class::cast)
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
                 .findFirst()
-                .ifPresent(ref -> this.appendConnectorEnd(builder, ref));
+                .ifPresent(endFeature -> this.appendConnectorEnd(builder, endFeature));
     }
 
-    private void appendConnectorEnd(Appender builder, ReferenceUsage referenceUsage) {
+    private void appendConnectorEnd(Appender builder, Feature endFeature) {
 
         // Handle ownedRelationship += OwnedMultiplicity
-        referenceUsage.getOwnedRelationship().stream().filter(OwningMembership.class::isInstance)
+        endFeature.getOwnedRelationship().stream().filter(OwningMembership.class::isInstance)
                 .map(OwningMembership.class::cast)
                 .filter(owningMembership -> owningMembership.getOwnedMemberElement() instanceof Feature)
                 .findFirst()
                 .ifPresent(owningMembership -> this.appendOwnedCrossMultiplicityMember(builder, owningMembership));
 
-        String declaredName = referenceUsage.getDeclaredName();
+        if (endFeature instanceof ReferenceUsage referenceUsage) {
+            String declaredName = referenceUsage.getDeclaredName();
 
-        if (declaredName != null && !declaredName.isBlank()) {
-            builder.appendWithSpaceIfNeeded(declaredName).append(SPACE).append(LabelConstants.REFERENCES);
+            if (declaredName != null && !declaredName.isBlank()) {
+                builder.appendWithSpaceIfNeeded(declaredName).append(SPACE).append(LabelConstants.REFERENCES);
+            }
         }
 
-        ReferenceSubsetting refSubsetting = referenceUsage.getOwnedReferenceSubsetting();
+        ReferenceSubsetting refSubsetting = endFeature.getOwnedReferenceSubsetting();
 
         if (refSubsetting != null) {
             this.appendOwnedReferenceSubsetting(builder, refSubsetting);
