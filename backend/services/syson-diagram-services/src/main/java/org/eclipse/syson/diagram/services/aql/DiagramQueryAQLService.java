@@ -30,6 +30,7 @@ import org.eclipse.syson.diagram.services.DiagramQueryViewService;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.Connector;
+import org.eclipse.syson.sysml.ControlNode;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
@@ -38,7 +39,11 @@ import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.TransitionUsage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.ViewDefinition;
+import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.util.StandardDiagramsConstants;
 
 /**
  * Entry point for all diagram-related services doing queries in diagrams and called by AQL expressions in diagram
@@ -281,5 +286,40 @@ public class DiagramQueryAQLService {
      */
     public boolean showAnnotatingNode(Element element, DiagramContext diagramContext, IEditingContext editingContext) {
         return this.diagramQueryAnnotatingService.showAnnotatingNode(element, diagramContext, editingContext);
+    }
+
+    public boolean isHiddenControlNodeByDefault(Element element, List<Object> ancestors) {
+        // A control node on the top of the GV diagram should be hidden by default
+        // A control node on the top of the AFV diagram should be hidden by default if it has not been created on the AFV background
+        boolean result = false;
+        if (element instanceof ControlNode controlNode && !ancestors.isEmpty() && ancestors.getFirst() instanceof ViewUsage viewUsage) {
+            if (this.isGVDiagram(viewUsage)) {
+                result = true;
+            } else if (this.isAFVDiagram(viewUsage)) {
+                Element owner = controlNode.getOwner();
+                Element viewUsageOwner = viewUsage.getOwner();
+                if (!Objects.equals(owner, viewUsageOwner)) {
+                    result = true;
+                }
+            }
+        }
+        return result;
+
+    }
+
+    private boolean isGVDiagram(ViewUsage viewUsage) {
+        return this.isDiagram(viewUsage, StandardDiagramsConstants.GV_QN);
+    }
+
+    private boolean isAFVDiagram(ViewUsage viewUsage) {
+        return this.isDiagram(viewUsage, StandardDiagramsConstants.AFV_QN);
+    }
+
+    private boolean isDiagram(ViewUsage viewUsage, String diagramQualifiedName) {
+        if (!viewUsage.getType().isEmpty()) {
+            Type type = viewUsage.getType().getFirst();
+            return type instanceof ViewDefinition && diagramQualifiedName.equals(type.getQualifiedName());
+        }
+        return false;
     }
 }
