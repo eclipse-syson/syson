@@ -129,6 +129,17 @@ image::expression-palette-section.png[Expression palette tool section on an `Att
 image::action-flow-guard-labels.png[Succession edges with visible guard expressions, width=40%,height=40%]
 ** Display inherited behavior parameters in the _parameters_ compartment of `ActionDefinition` and `ActionUsage` graphical nodes.
 ** Display inherited `ItemUsages` in the _items_ compartment and inherited `ActionUsages` in the _actions_ compartment of `ActionDefinitions`, `ActionUsages`, `PartUsages`, and other graphical nodes.
++
+** Actor image has been reshaped to remove margins.
++
+[cols="1,1"]
+|===
+|Old shape
+|New shape (margins removed)
+
+a|image::actor-old-shape.png[Actor image before]
+a|image::actor-new-shape.png[Actor image after]
+|===
 
 == Technical details
 

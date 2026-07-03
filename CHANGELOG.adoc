@@ -55,6 +55,7 @@ Users should use the dedicated tools to edit expressions instead, as they ensure
 - https://github.com/eclipse-syson/syson/issues/2292[#2292] [diagrams] Add inheritance of "Behavior" and "Step" graphical elements in list items.
 It concerns, at least, _actions_ and _items_ compartments list items.
 - https://github.com/eclipse-syson/syson/issues/2284[#2284] [diagrams] The expression-related tools in diagram palette are now available in the default _Edit_ section.
+- https://github.com/eclipse-syson/syson/issues/2319[#2319] [diagrams] Remove the margins around the `Actor` image.
 
 === New features
 

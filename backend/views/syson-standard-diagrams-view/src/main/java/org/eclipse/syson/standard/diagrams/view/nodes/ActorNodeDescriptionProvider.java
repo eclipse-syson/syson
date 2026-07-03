@@ -77,8 +77,8 @@ public class ActorNodeDescriptionProvider extends UsageNodeDescriptionProvider {
                 .collapsible(true)
                 // Use the same ratio as the actor.svg image to make sure the keepAspectRatio property works as
                 // expected.
-                .defaultHeightExpression("100")
-                .defaultWidthExpression("70")
+                .defaultHeightExpression("92")
+                .defaultWidthExpression("41")
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
                 .outsideLabels(this.createOutsideLabelDescriptions().toArray(OutsideLabelDescription[]::new))
