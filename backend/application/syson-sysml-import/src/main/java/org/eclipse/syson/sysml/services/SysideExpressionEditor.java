@@ -28,6 +28,7 @@ import org.eclipse.syson.sysml.ASTTransformer;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.Function;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.StateUsage;
@@ -35,6 +36,8 @@ import org.eclipse.syson.sysml.SysmlToAst;
 import org.eclipse.syson.sysml.TransitionFeatureKind;
 import org.eclipse.syson.sysml.TransitionFeatureMembership;
 import org.eclipse.syson.sysml.TransitionUsage;
+import org.eclipse.syson.sysml.dto.ExpressionPropertiesInput;
+import org.eclipse.syson.sysml.dto.FeatureValueExpressionPropertiesInput;
 import org.eclipse.syson.sysml.metamodel.services.textual.utils.Status;
 import org.eclipse.syson.sysml.services.api.ExpressionCreationResult;
 import org.eclipse.syson.sysml.services.api.ISysMLExpressionEditor;
@@ -55,13 +58,14 @@ public class SysideExpressionEditor implements ISysMLExpressionEditor {
     }
 
     @Override
-    public ExpressionCreationResult createExpression(IEMFEditingContext emfEditingContext, Element parentElement, String expressionText) {
-        return this.createOrEditExpression(emfEditingContext, parentElement, Optional.empty(), expressionText);
+    public ExpressionCreationResult createExpression(IEMFEditingContext emfEditingContext, Element parentElement, String expressionText, ExpressionPropertiesInput properties) {
+        return this.createOrEditExpression(emfEditingContext, parentElement, Optional.empty(), expressionText, properties);
     }
 
     @Override
-    public ExpressionCreationResult editExpression(IEMFEditingContext emfEditingContext, Element parentElement, Expression expression, String expressionText) {
-        return this.createOrEditExpression(emfEditingContext, parentElement, Optional.of(expression), expressionText);
+    public ExpressionCreationResult editExpression(IEMFEditingContext emfEditingContext, Element parentElement, Expression expression, String expressionText,
+            ExpressionPropertiesInput properties) {
+        return this.createOrEditExpression(emfEditingContext, parentElement, Optional.of(expression), expressionText, properties);
     }
 
     /**
@@ -77,10 +81,13 @@ public class SysideExpressionEditor implements ISysMLExpressionEditor {
      *            will <em>replace</em> this one instead of just being added.
      * @param expressionText
      *            the textual representation of the expression to create.
+     * @param properties
+     *            the optional typed properties to apply after the expression is created or replaced.
      * @return the result of creating a new expression. It can either contain the actual expression created (on success)
      *         or a list of messages on failure.
      */
-    private ExpressionCreationResult createOrEditExpression(IEMFEditingContext emfEditingContext, Element parentElement, Optional<Expression> expressionToReplace, String expressionText) {
+    private ExpressionCreationResult createOrEditExpression(IEMFEditingContext emfEditingContext, Element parentElement, Optional<Expression> expressionToReplace, String expressionText,
+            ExpressionPropertiesInput properties) {
         List<Element> newObjects = List.of();
         List<Message> messages = new ArrayList<>();
 
@@ -106,9 +113,54 @@ public class SysideExpressionEditor implements ISysMLExpressionEditor {
             if (expressionToReplace.isPresent()) {
                 this.replace(expressionToReplace.get(), optionalResult.get());
             }
+            this.applyProperties(optionalResult.get(), properties);
             return new ExpressionCreationResult(optionalResult.get(), messages);
         } else {
             return new ExpressionCreationResult(null, messages);
+        }
+    }
+
+    /**
+     * Applies supported properties to the owner of the created or edited expression.
+     *
+     * @param expression
+     *            the created or edited expression.
+     * @param properties
+     *            the optional properties to apply.
+     */
+    private void applyProperties(Expression expression, ExpressionPropertiesInput properties) {
+        if (properties != null && properties.featureValue() != null) {
+            this.getOwningFeatureValue(expression).ifPresent(featureValue -> this.applyFeatureValueProperties(featureValue, properties.featureValue()));
+        }
+    }
+
+    /**
+     * Gets the owning {@link FeatureValue} of the provided expression, if any.
+     *
+     * @param expression
+     *            the expression whose owner should be inspected.
+     * @return the owning {@link FeatureValue}, if one exists.
+     */
+    private Optional<FeatureValue> getOwningFeatureValue(Expression expression) {
+        return Optional.ofNullable(expression.getOwningRelationship())
+                .filter(FeatureValue.class::isInstance)
+                .map(FeatureValue.class::cast);
+    }
+
+    /**
+     * Applies optional {@link FeatureValue} properties while preserving existing values for omitted fields.
+     *
+     * @param featureValue
+     *            the feature value to update.
+     * @param properties
+     *            the optional properties to apply.
+     */
+    private void applyFeatureValueProperties(FeatureValue featureValue, FeatureValueExpressionPropertiesInput properties) {
+        if (properties.isDefault() != null) {
+            featureValue.setIsDefault(properties.isDefault());
+        }
+        if (properties.isInitial() != null) {
+            featureValue.setIsInitial(properties.isInitial());
         }
     }
 

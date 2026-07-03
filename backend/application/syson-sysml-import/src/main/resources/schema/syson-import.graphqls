@@ -21,6 +21,7 @@ input CreateExpressionInput {
   editingContextId: ID!
   parentElementId: ID!
   expressionText: String!
+  properties: ExpressionPropertiesInput
 }
 
 union CreateExpressionPayload = ErrorPayload | CreateExpressionSuccessPayload
@@ -36,6 +37,16 @@ input EditExpressionInput {
   editingContextId: ID!
   elementId: ID!
   newExpressionText: String!
+  properties: ExpressionPropertiesInput
+}
+
+input ExpressionPropertiesInput {
+  featureValue: FeatureValueExpressionPropertiesInput
+}
+
+input FeatureValueExpressionPropertiesInput {
+  isDefault: Boolean
+  isInitial: Boolean
 }
 
 union EditExpressionPayload = ErrorPayload | EditExpressionSuccessPayload

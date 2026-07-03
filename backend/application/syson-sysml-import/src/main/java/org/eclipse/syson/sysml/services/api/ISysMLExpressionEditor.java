@@ -18,6 +18,7 @@ import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.LiteralBoolean;
 import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.Relationship;
+import org.eclipse.syson.sysml.dto.ExpressionPropertiesInput;
 
 /**
  * Use to create of edit a SySMLv2 {@link Expression} in a given context from a given text fragment.
@@ -35,10 +36,12 @@ public interface ISysMLExpressionEditor {
      *            relationship} into which the expression is added will depend on the parent's type.
      * @param expressionText
      *            the plain text representation of the expression to create.
+     * @param properties
+     *            the optional typed properties to apply after creation succeeds.
      * @return the result of creating a new expression. It can either contain the actual expression created (on success)
      *         or a list of messages on failure.
      */
-    ExpressionCreationResult createExpression(IEMFEditingContext emfEditingContext, Element parentElement, String expressionText);
+    ExpressionCreationResult createExpression(IEMFEditingContext emfEditingContext, Element parentElement, String expressionText, ExpressionPropertiesInput properties);
 
     /**
      * "Edit" an existing {@link Expression expression} inside the specified parent element from a textual
@@ -54,8 +57,10 @@ public interface ISysMLExpressionEditor {
      *            which the expression is added will depend on the parent's type.
      * @param expressionText
      *            the plain text representation of the expression to create as a replacement.
+     * @param properties
+     *            the optional typed properties to apply after the replacement succeeds.
      * @return the result of editing the expression. It can either contain the actual new expression created as a
      *         replacement (on success) or a list of messages on failure.
      */
-    ExpressionCreationResult editExpression(IEMFEditingContext emfEditingContext, Element parentElement, Expression expression, String expressionText);
+    ExpressionCreationResult editExpression(IEMFEditingContext emfEditingContext, Element parentElement, Expression expression, String expressionText, ExpressionPropertiesInput properties);
 }

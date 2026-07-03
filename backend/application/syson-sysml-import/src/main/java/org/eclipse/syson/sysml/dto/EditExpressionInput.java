@@ -19,7 +19,32 @@ import org.eclipse.sirius.components.core.api.IInput;
 /**
  * The input object of the {@code editExpression} mutation.
  *
+ * @param id
+ *            the mutation identifier.
+ * @param editingContextId
+ *            the editing context identifier.
+ * @param elementId
+ *            the identifier of the expression itself or of the parent element that owns a single expression.
+ * @param newExpressionText
+ *            the textual representation of the replacement expression.
+ * @param properties
+ *            the optional typed properties to apply once the expression is edited successfully.
  * @author pcdavid
  */
-public record EditExpressionInput(UUID id, String editingContextId, String elementId, String newExpressionText) implements IInput {
+public record EditExpressionInput(UUID id, String editingContextId, String elementId, String newExpressionText, ExpressionPropertiesInput properties) implements IInput {
+    /**
+     * Creates an input without optional properties.
+     *
+     * @param id
+     *            the mutation identifier.
+     * @param editingContextId
+     *            the editing context identifier.
+     * @param elementId
+     *            the identifier of the expression itself or of the parent element that owns a single expression.
+     * @param newExpressionText
+     *            the textual representation of the replacement expression.
+     */
+    public EditExpressionInput(UUID id, String editingContextId, String elementId, String newExpressionText) {
+        this(id, editingContextId, elementId, newExpressionText, null);
+    }
 }

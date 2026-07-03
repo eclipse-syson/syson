@@ -19,7 +19,32 @@ import org.eclipse.sirius.components.core.api.IInput;
 /**
  * The input object of the createExpression operation.
  *
+ * @param id
+ *            the mutation identifier.
+ * @param editingContextId
+ *            the editing context identifier.
+ * @param parentElementId
+ *            the identifier of the element in which the expression should be created.
+ * @param expressionText
+ *            the textual representation of the expression to create.
+ * @param properties
+ *            the optional typed properties to apply once the expression is created successfully.
  * @author pcdavid
  */
-public record CreateExpressionInput(UUID id, String editingContextId, String parentElementId, String expressionText) implements IInput {
+public record CreateExpressionInput(UUID id, String editingContextId, String parentElementId, String expressionText, ExpressionPropertiesInput properties) implements IInput {
+    /**
+     * Creates an input without optional properties.
+     *
+     * @param id
+     *            the mutation identifier.
+     * @param editingContextId
+     *            the editing context identifier.
+     * @param parentElementId
+     *            the identifier of the element in which the expression should be created.
+     * @param expressionText
+     *            the textual representation of the expression to create.
+     */
+    public CreateExpressionInput(UUID id, String editingContextId, String parentElementId, String expressionText) {
+        this(id, editingContextId, parentElementId, expressionText, null);
+    }
 }

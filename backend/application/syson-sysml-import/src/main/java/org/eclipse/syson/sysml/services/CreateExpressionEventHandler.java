@@ -90,7 +90,8 @@ public class CreateExpressionEventHandler implements IEditingContextEventHandler
                 if (this.metamodelQueryElementService.hasSingleExpressionDefinition(optionalParentElement.get())) {
                     payload = new ErrorPayload(input.id(), "The parent element already has an expression");
                 } else {
-                    var result = this.expressionEditor.createExpression(emfEditingContext, optionalParentElement.get(), createExpressionInput.expressionText());
+                    var result = this.expressionEditor.createExpression(emfEditingContext, optionalParentElement.get(), createExpressionInput.expressionText(),
+                            createExpressionInput.properties());
                     if (result.createdExpression() != null) {
                         var createdExpression = result.createdExpression();
                         var createdExpressionId = this.identityService.getId(createdExpression);

@@ -87,7 +87,8 @@ public class EditExpressionEventHandler implements IEditingContextEventHandler {
             var optionalExpression = this.getExpression(emfEditingContext, editExpressionInput.elementId());
 
             if (optionalParent.isPresent() && optionalExpression.isPresent()) {
-                var result = this.expressionEditor.editExpression(emfEditingContext, optionalParent.get(), optionalExpression.get(), editExpressionInput.newExpressionText());
+                var result = this.expressionEditor.editExpression(emfEditingContext, optionalParent.get(), optionalExpression.get(), editExpressionInput.newExpressionText(),
+                        editExpressionInput.properties());
                 if (result.createdExpression() != null) {
                     var newExpression = result.createdExpression();
                     var newExpressionId = this.identityService.getId(newExpression);

@@ -73,6 +73,8 @@ import org.eclipse.syson.sysml.dto.CreateExpressionInput;
 import org.eclipse.syson.sysml.dto.CreateExpressionSuccessPayload;
 import org.eclipse.syson.sysml.dto.EditExpressionInput;
 import org.eclipse.syson.sysml.dto.EditExpressionSuccessPayload;
+import org.eclipse.syson.sysml.dto.ExpressionPropertiesInput;
+import org.eclipse.syson.sysml.dto.FeatureValueExpressionPropertiesInput;
 import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
@@ -203,6 +205,43 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
                 .verify(Duration.ofSeconds(10));
     }
 
+    @DisplayName("GIVEN an empty SysML attribute, WHEN creating an expression with feature value properties THEN the created feature value stores them")
+    @GivenSysONServer({ ExpressionSamplesProjectData.SCRIPT_PATH })
+    @Test
+    public void canCreateExpressionInEmptyAttributeWithFeatureValueProperties() {
+        String editingContextId = ExpressionSamplesProjectData.EDITING_CONTEXT_ID;
+
+        List<String> defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(editingContextId, this.sysONExplorerTreeDescriptionId);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, List.of(), defaultFilters);
+        var explorerInput = new ExplorerEventInput(UUID.randomUUID(), editingContextId, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(explorerInput).flux();
+
+        var treeId = new AtomicReference<String>();
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            treeId.set(tree.getId());
+        });
+
+        Runnable createExpressionOnPressureAttribute = this.createExpression(editingContextId, ExpressionSamplesProjectData.SemanticIds.TANK_PRESSURE_ATTRIBUTE_ID, "maxPressure / 2",
+                this.featureValueProperties(true, false));
+
+        Consumer<Object> treeRefreshed = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getId()).isEqualTo(treeId.get());
+        });
+
+        Runnable checkPressureAttributeFeatureValueProperties = this.checkAttributeFeatureValue(editingContextId, ExpressionSamplesProjectData.SemanticIds.TANK_PRESSURE_ATTRIBUTE_ID,
+                "maxPressure / 2", true, false);
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTreeContentConsumer)
+                .then(createExpressionOnPressureAttribute)
+                .consumeNextWith(treeRefreshed)
+                .then(checkPressureAttributeFeatureValueProperties)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
     @DisplayName("GIVEN a SysML attribute which does have an existing expression, WHEN trying to create a new expression on it THEN the new expression is created with proper name resolution")
     @GivenSysONServer({ ExpressionSamplesProjectData.SCRIPT_PATH })
     @Test
@@ -285,6 +324,110 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
                 .verify(Duration.ofSeconds(10));
     }
 
+    @DisplayName("GIVEN a SysML attribute with a value expression, WHEN editing it with feature value properties THEN the flags are updated together with the expression")
+    @GivenSysONServer({ ExpressionSamplesProjectData.SCRIPT_PATH })
+    @Test
+    public void textEditAttributeExpressionAndFeatureValueProperties() {
+        String editingContextId = ExpressionSamplesProjectData.EDITING_CONTEXT_ID;
+
+        List<String> defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(editingContextId, this.sysONExplorerTreeDescriptionId);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, List.of(), defaultFilters);
+        var explorerInput = new ExplorerEventInput(UUID.randomUUID(), editingContextId, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(explorerInput).flux();
+
+        var treeId = new AtomicReference<String>();
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            treeId.set(tree.getId());
+        });
+
+        var existingExpressionId = new AtomicReference<String>();
+
+        Runnable checkInitialExpression = this.checkElementHasExpression(editingContextId,
+                ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_ID, AttributeUsage.class, existingExpressionId,
+                "100.0 * minVolume");
+
+        Runnable editExpressionOnMaxVolumeAttribute = this.editExpression(editingContextId, existingExpressionId::get, "50 * minVolume",
+                this.featureValueProperties(true, true));
+
+        Consumer<Object> treeRefreshed = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getId()).isEqualTo(treeId.get());
+        });
+
+        Runnable checkUpdatedFeatureValue = this.checkAttributeFeatureValue(editingContextId, ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_ID,
+                "50 * minVolume", true, true);
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTreeContentConsumer)
+                .then(checkInitialExpression)
+                .then(editExpressionOnMaxVolumeAttribute)
+                .consumeNextWith(treeRefreshed)
+                .then(checkUpdatedFeatureValue)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a SysML attribute with feature value flags, WHEN editing it with partial properties THEN omitted fields keep their previous value")
+    @GivenSysONServer({ ExpressionSamplesProjectData.SCRIPT_PATH })
+    @Test
+    public void textEditAttributeExpressionWithPartialFeatureValueProperties() {
+        String editingContextId = ExpressionSamplesProjectData.EDITING_CONTEXT_ID;
+
+        List<String> defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(editingContextId, this.sysONExplorerTreeDescriptionId);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, List.of(), defaultFilters);
+        var explorerInput = new ExplorerEventInput(UUID.randomUUID(), editingContextId, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(explorerInput).flux();
+
+        var treeId = new AtomicReference<String>();
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            treeId.set(tree.getId());
+        });
+
+        var existingExpressionId = new AtomicReference<String>();
+
+        Runnable checkInitialExpression = this.checkElementHasExpression(editingContextId,
+                ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_ID, AttributeUsage.class, existingExpressionId,
+                "100.0 * minVolume");
+
+        Runnable firstEdit = this.editExpression(editingContextId, existingExpressionId::get, "50 * minVolume", this.featureValueProperties(true, true));
+
+        Consumer<Object> firstTreeRefresh = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getId()).isEqualTo(treeId.get());
+        });
+
+        Runnable checkIntermediateFeatureValue = this.checkAttributeFeatureValue(editingContextId, ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_ID,
+                "50 * minVolume", true, true);
+
+        Runnable refreshExpressionId = this.checkElementHasExpression(editingContextId, ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_ID,
+                AttributeUsage.class, existingExpressionId, "50 * minVolume");
+
+        Runnable secondEdit = this.editExpression(editingContextId, existingExpressionId::get, "60 * minVolume", this.featureValueProperties(null, false));
+
+        Consumer<Object> secondTreeRefresh = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getId()).isEqualTo(treeId.get());
+        });
+
+        Runnable checkFinalFeatureValue = this.checkAttributeFeatureValue(editingContextId, ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_ID,
+                "60 * minVolume", true, false);
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTreeContentConsumer)
+                .then(checkInitialExpression)
+                .then(firstEdit)
+                .consumeNextWith(firstTreeRefresh)
+                .then(checkIntermediateFeatureValue)
+                .then(refreshExpressionId)
+                .then(secondEdit)
+                .consumeNextWith(secondTreeRefresh)
+                .then(checkFinalFeatureValue)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
     @DisplayName("GIVEN a SysML constraint which does not have a predicate expression, WHEN creating a new expression on it THEN the new expression is created with proper name resolution")
     @GivenSysONServer({ ExpressionSamplesProjectData.SCRIPT_PATH })
     @Test
@@ -318,6 +461,43 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
         StepVerifier.create(flux)
                 .consumeNextWith(initialTreeContentConsumer)
                 .then(checkNoInitialExpression)
+                .then(createExpression)
+                .consumeNextWith(treeRefreshed)
+                .then(checkCreatedExpression)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a SysML constraint, WHEN creating an expression with feature value properties THEN the expression is created and the properties are ignored")
+    @GivenSysONServer({ ExpressionSamplesProjectData.SCRIPT_PATH })
+    @Test
+    public void canCreateExpressionInConstraintIgnoringFeatureValueProperties() {
+        String editingContextId = ExpressionSamplesProjectData.EDITING_CONTEXT_ID;
+
+        List<String> defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(editingContextId, this.sysONExplorerTreeDescriptionId);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, List.of(), defaultFilters);
+        var explorerInput = new ExplorerEventInput(UUID.randomUUID(), editingContextId, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(explorerInput).flux();
+
+        var treeId = new AtomicReference<String>();
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            treeId.set(tree.getId());
+        });
+
+        Runnable createExpression = this.createExpression(editingContextId, ExpressionSamplesProjectData.SemanticIds.PERFORMANCE_CONCERN_ASSUME_ID, "s.enabled == true",
+                this.featureValueProperties(true, true));
+
+        Consumer<Object> treeRefreshed = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getId()).isEqualTo(treeId.get());
+        });
+
+        Runnable checkCreatedExpression = this.checkElementHasExpression(editingContextId, ExpressionSamplesProjectData.SemanticIds.PERFORMANCE_CONCERN_ASSUME_ID, ConstraintUsage.class,
+                new AtomicReference<>(), "s.enabled == true");
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTreeContentConsumer)
                 .then(createExpression)
                 .consumeNextWith(treeRefreshed)
                 .then(checkCreatedExpression)
@@ -440,7 +620,8 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
         });
 
         Runnable editExpressionOnMaxVolumeAttributeWithInvalidValue = () -> {
-            var input = new EditExpressionInput(UUID.randomUUID(), editingContextId, existingExpressionId.get(), "50 * minVolumeTypo");
+            var input = new EditExpressionInput(UUID.randomUUID(), editingContextId, existingExpressionId.get(), "50 * minVolumeTypo",
+                    this.featureValueProperties(true, true));
             var result = this.editExpressionMutationRunner.run(input);
             String typename = JsonPath.read(result.data(), "$.data.editExpression.__typename");
             assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
@@ -463,6 +644,9 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
 
             // Make sure we did not create an additional invalid FeatureValue and left it around.
             assertThat(maxVolumeAttribute.getOwnedRelationship().stream().filter(FeatureValue.class::isInstance)).hasSize(1);
+            FeatureValue featureValue = maxVolumeAttribute.getOwnedRelationship().stream().filter(FeatureValue.class::isInstance).map(FeatureValue.class::cast).findFirst().orElseThrow();
+            assertThat(featureValue.isIsDefault()).isFalse();
+            assertThat(featureValue.isIsInitial()).isFalse();
 
             return new ExecuteEditingContextFunctionSuccessPayload(input.id(), optionalMaxVolumeAttribute.get());
         });
@@ -850,8 +1034,12 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
     }
 
     private Runnable createExpression(String editingContextId, String parentElementId, String expressionContent) {
+        return this.createExpression(editingContextId, parentElementId, expressionContent, null);
+    }
+
+    private Runnable createExpression(String editingContextId, String parentElementId, String expressionContent, ExpressionPropertiesInput properties) {
         return () -> {
-            var input = new CreateExpressionInput(UUID.randomUUID(), editingContextId, parentElementId, expressionContent);
+            var input = new CreateExpressionInput(UUID.randomUUID(), editingContextId, parentElementId, expressionContent, properties);
             var result = this.createExpressionMutationRunner.run(input);
             String typename = JsonPath.read(result.data(), "$.data.createExpression.__typename");
             assertThat(typename).isEqualTo(CreateExpressionSuccessPayload.class.getSimpleName());
@@ -859,8 +1047,12 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
     }
 
     private Runnable editExpression(String editingContextId, Supplier<String> elementId, String expressionContent) {
+        return this.editExpression(editingContextId, elementId, expressionContent, null);
+    }
+
+    private Runnable editExpression(String editingContextId, Supplier<String> elementId, String expressionContent, ExpressionPropertiesInput properties) {
         return () -> {
-            var input = new EditExpressionInput(UUID.randomUUID(), editingContextId, elementId.get(), expressionContent);
+            var input = new EditExpressionInput(UUID.randomUUID(), editingContextId, elementId.get(), expressionContent, properties);
             var result = this.editExpressionMutationRunner.run(input);
             String typename = JsonPath.read(result.data(), "$.data.editExpression.__typename");
             assertThat(typename).isEqualTo(EditExpressionSuccessPayload.class.getSimpleName());
@@ -899,5 +1091,28 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
             assertThat(this.metamodelQueryElementService.getExpressionTextualRepresentation(valueExpression.get())).isEqualTo(expectedExpressionTextualRepresentation);
             return new ExecuteEditingContextFunctionSuccessPayload(input.id(), optionalElement.get());
         });
+    }
+
+    private Runnable checkAttributeFeatureValue(String editingContextId, String attributeId, String expectedExpressionTextualRepresentation, boolean expectedIsDefault,
+            boolean expectedIsInitial) {
+        return this.semanticCheck(editingContextId, (editingContext, input) -> {
+            var optionalElement = this.objectSearchService.getObject(editingContext, attributeId);
+            assertThat(optionalElement).containsInstanceOf(AttributeUsage.class);
+            AttributeUsage attributeUsage = (AttributeUsage) optionalElement.get();
+            Optional<FeatureValue> optionalFeatureValue = attributeUsage.getOwnedRelationship().stream()
+                    .filter(FeatureValue.class::isInstance)
+                    .map(FeatureValue.class::cast)
+                    .findFirst();
+            assertThat(optionalFeatureValue).isPresent();
+            assertThat(this.metamodelQueryElementService.getExpressionTextualRepresentation(optionalFeatureValue.get().getValue()))
+                    .isEqualTo(expectedExpressionTextualRepresentation);
+            assertThat(optionalFeatureValue.get().isIsDefault()).isEqualTo(expectedIsDefault);
+            assertThat(optionalFeatureValue.get().isIsInitial()).isEqualTo(expectedIsInitial);
+            return new ExecuteEditingContextFunctionSuccessPayload(input.id(), optionalElement.get());
+        });
+    }
+
+    private ExpressionPropertiesInput featureValueProperties(Boolean isDefault, Boolean isInitial) {
+        return new ExpressionPropertiesInput(new FeatureValueExpressionPropertiesInput(isDefault, isInitial));
     }
 }
