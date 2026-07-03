@@ -66,7 +66,7 @@ public class PartUsageInterfaceNodeToolProvider implements INodeToolProvider {
                 .build();
 
         return builder.name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getInterfaceUsage()))
-                .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getInterfaceUsage() + ".svg")
+                .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getInterfaceUsage().getName() + ".svg")
                 .body(rootChangContext)
                 .build();
     }

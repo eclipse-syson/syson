@@ -107,6 +107,7 @@ Now, the label dynamically adapts based on whether the `ConcernUsage` or `Constr
 *** Elements with both a name and an owned reference subsetting now display using the standard subsetting notation (e.g., `ElementName ::> SubsettingName`).
 *** Elements without a name and an owned reference subsetting display only the reference subsetting name.
 *** Elements without a reference subsetting display their name.
+** Fix the broken `New Interface` tool icon.
 
 == Improvements
 
