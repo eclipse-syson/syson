@@ -120,9 +120,17 @@ public class NestedActorEdgeDescriptionProvider extends AbstractEdgeDescriptionP
 
     @Override
     protected ChangeContextBuilder getTargetReconnectToolBody() {
+        // Because of https://github.com/eclipse-sirius/sirius-web/issues/2930, it is not possible to prevent user to do the reconnection.
+        return this.viewBuilderHelper.newChangeContext()
+                .expression(ServiceMethod.of0(ViewToolService::reconnectTargetNestedActorEdge).aql(AQLConstants.EDGE_SEMANTIC_ELEMENT));
+    }
+
+    @Override
+    protected String getTargetReconnectToolPreconditionExpression() {
         // It is not possible to reconnect the target (actor) of this edge. This would mean that the existing actor is
         // not contained in a UseCase/Requirement anymore.
-        return this.viewBuilderHelper.newChangeContext();
+        // Once https://github.com/eclipse-sirius/sirius-web/issues/2930 is fixed, this precondition could be evaluated.
+        return "aql:false";
     }
 
 }

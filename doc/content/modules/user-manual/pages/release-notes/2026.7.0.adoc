@@ -108,6 +108,7 @@ Now, the label dynamically adapts based on whether the `ConcernUsage` or `Constr
 *** Elements without a name and an owned reference subsetting display only the reference subsetting name.
 *** Elements without a reference subsetting display their name.
 ** Fix the broken `New Interface` tool icon.
+** Add an explicit warning message when user tries to reconnect one `Actor` 's graphical edge to another `Actor`.
 
 == Improvements
 

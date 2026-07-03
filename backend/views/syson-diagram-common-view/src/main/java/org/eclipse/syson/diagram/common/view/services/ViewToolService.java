@@ -301,6 +301,23 @@ public class ViewToolService extends ToolService {
     }
 
     /**
+     * Reconnects the target of a nested actor edge (the Actor side of the edge).
+     * This service is only used because edge preconditions are not taken into account.
+     *
+     * @param self
+     *            the current UseCase or Requirement
+     * @return the given self
+     */
+    public Element reconnectTargetNestedActorEdge(Element self) {
+        // due to https://github.com/eclipse-sirius/sirius-web/issues/2930 we cannot prevent the user to do the reconnect,
+        // so we just warn him/her that this is not possible.
+        String errorMessage = "An Actor cannot be disconnected from its UseCase or its Requirement element";
+        this.logger.warn(errorMessage);
+        this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
+        return self;
+    }
+
+    /**
      * Reconnects the source of a nested stakeholder edge.
      * <p>
      * The source of this edge is a Requirement, and can only be reconnected to Requirements.
