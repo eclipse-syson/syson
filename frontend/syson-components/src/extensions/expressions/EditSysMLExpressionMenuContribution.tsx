@@ -18,6 +18,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import React, { forwardRef, Fragment, useState } from 'react';
 import { EditSysMLExpressionModal } from './EditSysMLExpressionModal';
+import { defaultFeatureValueExpressionProperties } from './expressionProperties.types';
 
 export const EditSysMLExpressionMenuContribution = forwardRef(
   (
@@ -43,6 +44,10 @@ export const EditSysMLExpressionMenuContribution = forwardRef(
           elementId={item.id}
           mode="edit"
           onClose={onCloseModal}
+          expressionPropertiesContext={{
+            supportsFeatureValueProperties: true,
+            featureValueProperties: defaultFeatureValueExpressionProperties,
+          }}
         />
       );
     }

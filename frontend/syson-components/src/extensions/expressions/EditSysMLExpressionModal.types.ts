@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { ExpressionProperties, ExpressionPropertiesContext } from './expressionProperties.types';
 
 export type Mode = 'create' | 'edit';
 
@@ -20,6 +21,7 @@ export interface EditSysMLExpressionModalProps {
   elementId: string;
   mode: Mode;
   onClose: () => void;
+  expressionPropertiesContext?: ExpressionPropertiesContext;
 }
 
 export type Operation = 'loading' | 'creating' | 'editing';
@@ -28,4 +30,5 @@ export interface EditSysMLExpressionModalState {
   operationInProgress: Operation | null;
   textualContent: string | null;
   validationResult: GQLMessage[] | null;
+  properties: ExpressionProperties;
 }

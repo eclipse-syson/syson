@@ -30,7 +30,12 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { ExpressionFeatureValueProperties } from './ExpressionFeatureValueProperties';
 import { EditSysMLExpressionModalProps, EditSysMLExpressionModalState } from './EditSysMLExpressionModal.types';
+import {
+  defaultFeatureValueExpressionProperties,
+  FeatureValueExpressionProperties,
+} from './expressionProperties.types';
 import { useCreateExpression } from './useCreateExpression';
 import { useDeleteExpression } from './useDeleteExpression';
 import { useEditExpression } from './useEditExpression';
@@ -85,6 +90,7 @@ export const EditSysMLExpressionModal = ({
   elementId,
   mode,
   onClose,
+  expressionPropertiesContext,
 }: EditSysMLExpressionModalProps) => {
   const { classes } = useEditSysMLExpressionModalStyles();
 
@@ -92,6 +98,9 @@ export const EditSysMLExpressionModal = ({
     textualContent: null,
     operationInProgress: null,
     validationResult: null,
+    properties: {
+      featureValue: expressionPropertiesContext?.featureValueProperties ?? defaultFeatureValueExpressionProperties,
+    },
   });
   const validationStatus = computeValidationStatus(state.validationResult);
   const busy = state.operationInProgress !== null;
@@ -111,6 +120,8 @@ export const EditSysMLExpressionModal = ({
       }));
     }
   }, [textualRepresentation, loading]);
+
+  const supportsFeatureValueProperties = expressionPropertiesContext?.supportsFeatureValueProperties ?? false;
 
   const fieldReady = !busy && state.textualContent !== null;
   useEffect(() => {
@@ -203,6 +214,21 @@ export const EditSysMLExpressionModal = ({
               },
             }}
           />
+          {supportsFeatureValueProperties ? (
+            <ExpressionFeatureValueProperties
+              disabled={busy || state.textualContent === null}
+              properties={state.properties.featureValue}
+              onChange={(featureValue: FeatureValueExpressionProperties) =>
+                setState((prevState) => ({
+                  ...prevState,
+                  properties: {
+                    ...prevState.properties,
+                    featureValue,
+                  },
+                }))
+              }
+            />
+          ) : null}
           <div className={classes.feedback}>
             {validationStatus === 'invalid' && state.validationResult ? (
               <Accordion className={classes.errorAccordion}>
