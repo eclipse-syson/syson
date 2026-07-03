@@ -18,7 +18,6 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { forwardRef, Fragment, useContext, useState } from 'react';
 import { EditSysMLExpressionModal } from './EditSysMLExpressionModal';
-import { defaultFeatureValueExpressionProperties } from './expressionProperties.types';
 
 export const NewExpressionExplorerToolOverriddenContribution = forwardRef(
   ({}: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
@@ -44,10 +43,6 @@ export const NewExpressionExplorerToolOverriddenContribution = forwardRef(
           elementId={item.id}
           mode="create"
           onClose={onCloseModal}
-          expressionPropertiesContext={{
-            supportsFeatureValueProperties: true,
-            featureValueProperties: defaultFeatureValueExpressionProperties,
-          }}
         />
       );
     }

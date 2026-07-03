@@ -11,8 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { FeatureValueExpressionProperties } from './ExpressionProperties.types';
+
 export interface UseExpressionTextualRepresentationValue {
-  textualRepresentation: string | null;
+  editorState: GQLExpressionEditorState | null;
   loading: boolean;
 }
 
@@ -30,5 +32,10 @@ export interface GQLGetExpressionTextualRepresentationViewer {
 }
 
 export interface GQLGetExpressionTextualRepresentationEditingContext {
-  expressionTextualRepresentation: string | null;
+  expressionTextualRepresentation: GQLExpressionEditorState | null;
+}
+
+export interface GQLExpressionEditorState {
+  textualRepresentation: string;
+  featureValueProperties: FeatureValueExpressionProperties | null;
 }

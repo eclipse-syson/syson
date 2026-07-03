@@ -35,7 +35,8 @@ import { EditSysMLExpressionModalProps, EditSysMLExpressionModalState } from './
 import {
   defaultFeatureValueExpressionProperties,
   FeatureValueExpressionProperties,
-} from './expressionProperties.types';
+  GQLExpressionProperties,
+} from './ExpressionProperties.types';
 import { useCreateExpression } from './useCreateExpression';
 import { useDeleteExpression } from './useDeleteExpression';
 import { useEditExpression } from './useEditExpression';
@@ -85,12 +86,24 @@ const computeValidationStatus = (validationResult: GQLMessage[] | null): Validat
   }
 };
 
+const sanitizeFeatureValueProperties = (
+  featureValueProperties: FeatureValueExpressionProperties | null | undefined
+): FeatureValueExpressionProperties => ({
+  isDefault: featureValueProperties?.isDefault ?? false,
+  isInitial: featureValueProperties?.isInitial ?? false,
+});
+
+const toExpressionProperties = (
+  featureValueProperties: FeatureValueExpressionProperties | null | undefined
+): GQLExpressionProperties => ({
+  featureValue: sanitizeFeatureValueProperties(featureValueProperties ?? defaultFeatureValueExpressionProperties),
+});
+
 export const EditSysMLExpressionModal = ({
   editingContextId,
   elementId,
   mode,
   onClose,
-  expressionPropertiesContext,
 }: EditSysMLExpressionModalProps) => {
   const { classes } = useEditSysMLExpressionModalStyles();
 
@@ -98,16 +111,14 @@ export const EditSysMLExpressionModal = ({
     textualContent: null,
     operationInProgress: null,
     validationResult: null,
-    properties: {
-      featureValue: expressionPropertiesContext?.featureValueProperties ?? defaultFeatureValueExpressionProperties,
-    },
+    properties: toExpressionProperties(null),
   });
   const validationStatus = computeValidationStatus(state.validationResult);
   const busy = state.operationInProgress !== null;
 
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
 
-  const { textualRepresentation, loading } = useExpressionTextualRepresentation(editingContextId, elementId);
+  const { editorState, loading } = useExpressionTextualRepresentation(editingContextId, elementId);
   useEffect(() => {
     if (loading) {
       setState((prevState) => ({ ...prevState, operationInProgress: 'loading' }));
@@ -115,13 +126,14 @@ export const EditSysMLExpressionModal = ({
       setState((prevState) => ({
         ...prevState,
         operationInProgress: null,
-        textualContent: textualRepresentation,
+        textualContent: editorState?.textualRepresentation ?? '',
         validationResult: null,
+        properties: toExpressionProperties(editorState?.featureValueProperties),
       }));
     }
-  }, [textualRepresentation, loading]);
+  }, [editorState, loading]);
 
-  const supportsFeatureValueProperties = expressionPropertiesContext?.supportsFeatureValueProperties ?? false;
+  const supportsFeatureValueProperties = editorState?.featureValueProperties != null;
 
   const fieldReady = !busy && state.textualContent !== null;
   useEffect(() => {
@@ -141,14 +153,24 @@ export const EditSysMLExpressionModal = ({
     if (state.textualContent !== null) {
       if (mode === 'create' && state.textualContent.trim() !== '') {
         setState((prevState) => ({ ...prevState, operationInProgress: 'creating' }));
-        createExpression(editingContextId, elementId, state.textualContent);
+        createExpression(
+          editingContextId,
+          elementId,
+          state.textualContent,
+          supportsFeatureValueProperties ? state.properties : null
+        );
       } else if (mode === 'edit' && state.textualContent !== null) {
         if (state.textualContent.trim() === '') {
           deleteExpression(editingContextId, elementId);
           onClose();
         } else {
           setState((prevState) => ({ ...prevState, operationInProgress: 'editing' }));
-          editExpression(editingContextId, elementId, state.textualContent);
+          editExpression(
+            editingContextId,
+            elementId,
+            state.textualContent,
+            supportsFeatureValueProperties ? state.properties : null
+          );
         }
       }
     }

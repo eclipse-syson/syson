@@ -1,5 +1,15 @@
 extend type EditingContext {
-  expressionTextualRepresentation(elementId: ID!): String
+  expressionTextualRepresentation(elementId: ID!): ExpressionEditorState
+}
+
+type ExpressionEditorState {
+  textualRepresentation: String!
+  featureValueProperties: FeatureValueExpressionProperties
+}
+
+type FeatureValueExpressionProperties {
+  isDefault: Boolean!
+  isInitial: Boolean!
 }
 
 extend type Mutation {

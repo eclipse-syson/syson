@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { GQLExpressionProperties } from './ExpressionProperties.types';
 import {
   GQLCreateExpressionData,
   GQLCreateExpressionInput,
@@ -51,12 +52,18 @@ export const useCreateExpression = (): UseCreateExpressionValue => {
     GQLCreateExpressionVariables
   >(createExpressionMutation);
 
-  const createExpression = (editingContextId: string, parentElementId: string, expressionText: string) => {
+  const createExpression = (
+    editingContextId: string,
+    parentElementId: string,
+    expressionText: string,
+    properties?: GQLExpressionProperties | null
+  ) => {
     const input: GQLCreateExpressionInput = {
       id: crypto.randomUUID(),
       editingContextId,
       parentElementId,
       expressionText,
+      properties,
     };
     performCreateExpression({ variables: { input } });
   };

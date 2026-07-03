@@ -12,9 +12,15 @@
  *******************************************************************************/
 
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { GQLExpressionProperties } from './ExpressionProperties.types';
 
 export interface UseEditExpressionValue {
-  editExpression: (editingContextId: string, elementId: string, newValue: string) => void;
+  editExpression: (
+    editingContextId: string,
+    elementId: string,
+    newValue: string,
+    properties?: GQLExpressionProperties | null
+  ) => void;
   loading: boolean;
   newExpressionId: string | null;
   messages: GQLMessage[] | null;
@@ -29,6 +35,7 @@ export interface GQLEditExpressionInput {
   editingContextId: string;
   elementId: string;
   newExpressionText: string;
+  properties?: GQLExpressionProperties | null;
 }
 
 export interface GQLEditExpressionData {

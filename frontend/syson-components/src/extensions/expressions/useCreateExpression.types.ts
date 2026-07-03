@@ -11,9 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { GQLExpressionProperties } from './ExpressionProperties.types';
 
 export interface UseCreateExpressionValue {
-  createExpression: (editingContextId: string, parentElementId: string, expressionText: string) => void;
+  createExpression: (
+    editingContextId: string,
+    parentElementId: string,
+    expressionText: string,
+    properties?: GQLExpressionProperties | null
+  ) => void;
   messages: GQLMessage[] | null;
   newExpressionId: string | null;
   loading: boolean;
@@ -28,6 +34,7 @@ export interface GQLCreateExpressionInput {
   editingContextId: string;
   parentElementId: string;
   expressionText: string;
+  properties?: GQLExpressionProperties | null;
 }
 
 export interface GQLCreateExpressionData {

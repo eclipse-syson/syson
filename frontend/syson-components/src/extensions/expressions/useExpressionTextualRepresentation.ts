@@ -15,6 +15,7 @@ import { gql, useQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
 import {
+  GQLExpressionEditorState,
   GQLGetExpressionTextualRepresentationData,
   GQLGetExpressionTextualRepresentationVariables,
   UseExpressionTextualRepresentationValue,
@@ -24,7 +25,13 @@ const getExpressionTextualRepresentationQuery = gql`
   query getExpressionTextualRepresentation($editingContextId: ID!, $elementId: ID!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
-        expressionTextualRepresentation(elementId: $elementId)
+        expressionTextualRepresentation(elementId: $elementId) {
+          textualRepresentation
+          featureValueProperties {
+            isDefault
+            isInitial
+          }
+        }
       }
     }
   }
@@ -50,7 +57,8 @@ export const useExpressionTextualRepresentation = (
     }
   }, [error]);
 
-  const textualRepresentation: string | null = data?.viewer.editingContext.expressionTextualRepresentation ?? null;
+  const editorState: GQLExpressionEditorState | null =
+    data?.viewer.editingContext.expressionTextualRepresentation ?? null;
 
-  return { textualRepresentation, loading };
+  return { editorState, loading };
 };

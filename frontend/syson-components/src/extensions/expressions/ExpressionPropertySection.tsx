@@ -28,7 +28,6 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { EditSysMLExpressionModal } from './EditSysMLExpressionModal';
-import { defaultFeatureValueExpressionProperties } from './expressionProperties.types';
 
 const useStyle = makeStyles<LabelStyleProps>()(
   (theme, { color, fontSize, italic, bold, underline, strikeThrough }) => ({
@@ -96,10 +95,6 @@ export const ExpressionPropertySection: PropertySectionComponent<GQLLabelWidget>
         mode={expressionPresent ? 'edit' : 'create'}
         elementId={targetObjectId}
         onClose={onCloseModal}
-        expressionPropertiesContext={{
-          supportsFeatureValueProperties: true,
-          featureValueProperties: defaultFeatureValueExpressionProperties,
-        }}
       />
     );
   }

@@ -14,7 +14,30 @@ import Checkbox from '@mui/material/Checkbox';
 import FormLabel from '@mui/material/FormLabel';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
-import { FeatureValueExpressionProperties } from './expressionProperties.types';
+import { Theme } from '@mui/material/styles';
+import { FeatureValueExpressionProperties } from './ExpressionProperties.types';
+import { makeStyles } from 'tss-react/mui';
+
+const useStyles = makeStyles()((theme: Theme) => ({
+  label: {
+    fontFamily: theme.typography.body2.fontFamily,
+    fontSize: theme.typography.body2.fontSize,
+    fontWeight: theme.typography.body2.fontWeight,
+    lineHeight: theme.typography.body2.lineHeight,
+    letterSpacing: theme.typography.body2.letterSpacing,
+    color: theme.palette.text.secondary,
+  },
+  checkboxLabel: {
+    '& .MuiFormControlLabel-label': {
+      fontFamily: theme.typography.body2.fontFamily,
+      fontSize: theme.typography.body2.fontSize,
+      fontWeight: theme.typography.body2.fontWeight,
+      lineHeight: theme.typography.body2.lineHeight,
+      letterSpacing: theme.typography.body2.letterSpacing,
+      color: theme.palette.text.secondary,
+    },
+  },
+}));
 
 export interface ExpressionFeatureValuePropertiesProps {
   disabled: boolean;
@@ -27,11 +50,14 @@ export const ExpressionFeatureValueProperties = ({
   properties,
   onChange,
 }: ExpressionFeatureValuePropertiesProps) => {
+  const { classes } = useStyles();
+
   return (
     <div data-testid="expression-feature-value-properties">
-      <FormLabel>Properties</FormLabel>
+      <FormLabel className={classes.label}>Properties</FormLabel>
       <FormGroup row>
         <FormControlLabel
+          className={classes.checkboxLabel}
           control={
             <Checkbox
               checked={properties.isDefault}
@@ -42,6 +68,7 @@ export const ExpressionFeatureValueProperties = ({
           label="Default value"
         />
         <FormControlLabel
+          className={classes.checkboxLabel}
           control={
             <Checkbox
               checked={properties.isInitial}

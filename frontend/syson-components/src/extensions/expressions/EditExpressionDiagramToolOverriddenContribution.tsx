@@ -20,7 +20,6 @@ import { Edge, InternalNode, Node, useStoreApi } from '@xyflow/react';
 import { Fragment, useContext, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { EditSysMLExpressionModal } from './EditSysMLExpressionModal';
-import { defaultFeatureValueExpressionProperties } from './expressionProperties.types';
 
 const useStyle = makeStyles()((theme) => ({
   listItemText: {
@@ -82,10 +81,6 @@ export const EditExpressionDiagramToolOverriddenContribution = ({
         elementId={elementId}
         mode="edit"
         onClose={onClose}
-        expressionPropertiesContext={{
-          supportsFeatureValueProperties: true,
-          featureValueProperties: defaultFeatureValueExpressionProperties,
-        }}
       />
     );
   }

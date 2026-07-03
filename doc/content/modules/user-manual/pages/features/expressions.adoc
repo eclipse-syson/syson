@@ -42,6 +42,16 @@ Fix any error reported before clicking on _Update_ again (or canceling the opera
 image::edit-expression-modal.png[Edit expression modal, width=80%]
 image::edit-expression-modal-error.png[Edit expression modal showing an error message if the new expression is invalid, width=80%]
 
+When the expression belongs to a `FeatureValue` context, such as the value of an `AttributeUsage`, the modal also displays two additional checkboxes:
+
+* _Default value_
+* _Initial value_
+
+These checkboxes allow editing the properties of the owning `FeatureValue` together with the expression text.
+They are only shown when the selected semantic element can host a `FeatureValue`; they are not shown for expression contexts such as `ConstraintUsage` or transition guard expressions.
++
+image::expression-feature-value-properties-placeholder.png[Expression modal checkboxes in a FeatureValue context, width=60%,height=60%]
+
 == Edition
 
 To edit an already existing expression, invoke the _Edit expression_ action directly on the existing expression or on its parent element.
@@ -53,6 +63,11 @@ The same modal as for expression creation will open, but with the current textua
 Edit the textual representation of the expression as required, and click on the _Update_ button or hit _Ctrl-RET_ to validate.
 
 As for expression creation, the change will only be applied if there are no errors detected; otherwise the modal will display any errors (e.g. names used in the expression that can not be resolve to existing elements) so that you can fix the input.
+
+If the edited expression is owned by a `FeatureValue`, the _Default value_ and _Initial value_ checkboxes are also pre-filled with the current state of the owning `FeatureValue`.
+Updating either checkbox and applying the dialog persists the change together with the expression edition.
++
+image::expression-feature-value-properties-placeholder.png[Expression modal checkboxes in a FeatureValue context, width=60%,height=60%]
 
 Note that if the new text value entered for the expression is empty, applying the change will _delete_ the expression.
 

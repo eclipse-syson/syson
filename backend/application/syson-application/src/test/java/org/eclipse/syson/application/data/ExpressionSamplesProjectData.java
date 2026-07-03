@@ -56,6 +56,8 @@ public class ExpressionSamplesProjectData {
 
         public static final String THERMAL_CONTROL_TO_HEATING_TRANSITION_ID = "0b517687-ef3f-4057-9ce5-27e27f627a22";
 
+        public static final String THERMAL_CONTROL_TO_HEATING_SUCCESSION_ID = "c59c0174-da0a-4972-a5ca-6743ab295651";
+
         public static final String THERMAL_CONTROL_TO_COOLING_TRANSITION_ID = "e1c27d0b-476e-42d4-9b81-b5f064d9cbbe";
 
         public static final String THERMAL_CONTROL_TO_COOLING_TRANSITION_GUARD_EXPRESSION_ID = "ec67ead5-7739-4dd3-a82e-f1bb5ef34268";
@@ -81,6 +83,7 @@ public class ExpressionSamplesProjectData {
                 PERFORMANCE_CONCERN_REQUIRE_EXPRESSION_ID,
                 THERMAL_CONTROL_STATE_DEFINITION_ID,
                 THERMAL_CONTROL_TO_HEATING_TRANSITION_ID,
+                THERMAL_CONTROL_TO_HEATING_SUCCESSION_ID,
                 THERMAL_CONTROL_TO_COOLING_TRANSITION_ID,
                 THERMAL_CONTROL_TO_COOLING_TRANSITION_GUARD_EXPRESSION_ID);
     }

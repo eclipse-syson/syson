@@ -31,7 +31,7 @@ import graphql.schema.DataFetchingEnvironment;
  * @author pcdavid
  */
 @QueryDataFetcher(type = "EditingContext", field = "expressionTextualRepresentation")
-public class EditingContextExpressionTextualRepresentationDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<String>> {
+public class EditingContextExpressionTextualRepresentationDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<ExpressionTextualRepresentationPayload>> {
 
     private static final String ELEMENT_ID_ARGUMENT = "elementId";
 
@@ -42,7 +42,7 @@ public class EditingContextExpressionTextualRepresentationDataFetcher implements
     }
 
     @Override
-    public CompletableFuture<String> get(DataFetchingEnvironment environment) throws Exception {
+    public CompletableFuture<ExpressionTextualRepresentationPayload> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getSource();
         String elementId = environment.getArgument(ELEMENT_ID_ARGUMENT);
 
@@ -50,7 +50,6 @@ public class EditingContextExpressionTextualRepresentationDataFetcher implements
         return this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input)
                 .filter(ExpressionTextualRepresentationPayload.class::isInstance)
                 .map(ExpressionTextualRepresentationPayload.class::cast)
-                .map(ExpressionTextualRepresentationPayload::textualRepresentation)
                 .toFuture();
     }
 }

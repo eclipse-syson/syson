@@ -771,34 +771,47 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
             treeId.set(tree.getId());
         });
 
-        // The Tank part is not an expression => ""
-        var checkTank = this.checkExpressiontTextualRepresentation(editingContextId, ExpressionSamplesProjectData.SemanticIds.TANK_ID, "");
+        // The Tank part definition is not an expression and does not expose feature value properties.
+        var checkTank = this.checkExpressionEditorState(editingContextId, ExpressionSamplesProjectData.SemanticIds.TANK_ID, "", null, null);
         // The Tank's attribute is not an expression itself either, but it owns a single, non-ambiguous expression to
         // can act as a "shortcut" to interact with id.
-        var checkTankAttribute = this.checkExpressiontTextualRepresentation(editingContextId, ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_ID, "100.0 * minVolume");
+        var checkTankAttribute = this.checkExpressionEditorState(editingContextId, ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_ID, "100.0 * minVolume",
+                false, false);
         // The actual attribute default value expression however should be correctly represented
-        var checkTankAttributeValueExpression = this.checkExpressiontTextualRepresentation(editingContextId, ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_VALUE_ID,
-                "100.0 * minVolume");
+        var checkTankAttributeValueExpression = this.checkExpressionEditorState(editingContextId, ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_VALUE_ID,
+                "100.0 * minVolume", false, false);
+        // An empty attribute still supports feature value properties for expression creation.
+        var checkEmptyTankAttribute = this.checkExpressionEditorState(editingContextId, ExpressionSamplesProjectData.SemanticIds.TANK_PRESSURE_ATTRIBUTE_ID, "", false, false);
 
-        var checkPerformanceConcern = this.checkExpressiontTextualRepresentation(editingContextId, ExpressionSamplesProjectData.SemanticIds.PERFORMANCE_CONCERN_ID, "");
+        var checkPerformanceConcern = this.checkExpressionEditorState(editingContextId, ExpressionSamplesProjectData.SemanticIds.PERFORMANCE_CONCERN_ID, "", null, null);
         // A ConstaintUsage *is* an Expression from the point of view of SysML's type hierarchy, but not a top-level
         // Expression. However if it contains a single expression, it an act as a "shortcut" to it.
-        var checkPerformanceConcernAssumeConstraint = this.checkExpressiontTextualRepresentation(editingContextId, ExpressionSamplesProjectData.SemanticIds.PERFORMANCE_CONCERN_ASSUME_ID, "");
-        var checkPerformanceConcernRequireConstraint = this.checkExpressiontTextualRepresentation(editingContextId, ExpressionSamplesProjectData.SemanticIds.PERFORMANCE_CONCERN_REQUIRE_ID,
-                "s.samplingRate >= 50.0 & s.currentValue != 0.0 | s.errorCount == 0");
+        var checkPerformanceConcernAssumeConstraint = this.checkExpressionEditorState(editingContextId, ExpressionSamplesProjectData.SemanticIds.PERFORMANCE_CONCERN_ASSUME_ID, "", null,
+                null);
+        var checkPerformanceConcernRequireConstraint = this.checkExpressionEditorState(editingContextId, ExpressionSamplesProjectData.SemanticIds.PERFORMANCE_CONCERN_REQUIRE_ID,
+                "s.samplingRate >= 50.0 & s.currentValue != 0.0 | s.errorCount == 0", null, null);
         // require s.samplingRate >= 50.0 & s.currentValue != 0.0 | s.errorCount == 0
-        var checkPerformanceConcernRequireConstraintExpression = this.checkExpressiontTextualRepresentation(editingContextId,
-                ExpressionSamplesProjectData.SemanticIds.PERFORMANCE_CONCERN_REQUIRE_EXPRESSION_ID, "s.samplingRate >= 50.0 & s.currentValue != 0.0 | s.errorCount == 0");
+        var checkPerformanceConcernRequireConstraintExpression = this.checkExpressionEditorState(editingContextId,
+                ExpressionSamplesProjectData.SemanticIds.PERFORMANCE_CONCERN_REQUIRE_EXPRESSION_ID, "s.samplingRate >= 50.0 & s.currentValue != 0.0 | s.errorCount == 0", null, null);
+        var checkHeatingTransition = this.checkExpressionEditorState(editingContextId, ExpressionSamplesProjectData.SemanticIds.THERMAL_CONTROL_TO_HEATING_TRANSITION_ID, "", null, null);
+        var checkHeatingSuccession = this.checkExpressionEditorState(editingContextId, ExpressionSamplesProjectData.SemanticIds.THERMAL_CONTROL_TO_HEATING_SUCCESSION_ID, "", null,
+                null);
+        var checkCoolingTransition = this.checkExpressionEditorState(editingContextId, ExpressionSamplesProjectData.SemanticIds.THERMAL_CONTROL_TO_COOLING_TRANSITION_ID,
+                "currentTemp > targetTemp + tolerance", null, null);
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTreeContentConsumer)
                 .then(checkTank)
                 .then(checkTankAttribute)
                 .then(checkTankAttributeValueExpression)
+                .then(checkEmptyTankAttribute)
                 .then(checkPerformanceConcern)
                 .then(checkPerformanceConcernAssumeConstraint)
                 .then(checkPerformanceConcernRequireConstraint)
                 .then(checkPerformanceConcernRequireConstraintExpression)
+                .then(checkHeatingTransition)
+                .then(checkHeatingSuccession)
+                .then(checkCoolingTransition)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -1059,12 +1072,22 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
         };
     }
 
-    private Runnable checkExpressiontTextualRepresentation(String editingContextId, String elementId, String expectedTextualRepresentation) {
+    private Runnable checkExpressionEditorState(String editingContextId, String elementId, String expectedTextualRepresentation, Boolean expectedIsDefault,
+            Boolean expectedIsInitial) {
         return () -> {
             Map<String, Object> variables = Map.of("editingContextId", editingContextId, "elementId", elementId);
             var result = this.expressionTextualRepresentationQueryRunner.run(variables);
-            String textualRepresentation = JsonPath.read(result.data(), "$.data.viewer.editingContext.expressionTextualRepresentation");
+            String textualRepresentation = JsonPath.read(result.data(), "$.data.viewer.editingContext.expressionTextualRepresentation.textualRepresentation");
             assertThat(textualRepresentation).as("elementId: {}", elementId).isEqualTo(expectedTextualRepresentation);
+            if (expectedIsDefault == null && expectedIsInitial == null) {
+                Object featureValueProperties = JsonPath.read(result.data(), "$.data.viewer.editingContext.expressionTextualRepresentation.featureValueProperties");
+                assertThat(featureValueProperties).as("elementId: {}", elementId).isNull();
+            } else {
+                Boolean isDefault = JsonPath.read(result.data(), "$.data.viewer.editingContext.expressionTextualRepresentation.featureValueProperties.isDefault");
+                Boolean isInitial = JsonPath.read(result.data(), "$.data.viewer.editingContext.expressionTextualRepresentation.featureValueProperties.isInitial");
+                assertThat(isDefault).as("elementId: {}", elementId).isEqualTo(expectedIsDefault);
+                assertThat(isInitial).as("elementId: {}", elementId).isEqualTo(expectedIsInitial);
+            }
         };
     }
 

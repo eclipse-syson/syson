@@ -10,22 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.syson.application.expressions.dto;
 
-export interface FeatureValueExpressionProperties {
-  isDefault: boolean;
-  isInitial: boolean;
+/**
+ * Properties exposed by the expression editor for expressions owned by a SysML {@code FeatureValue}.
+ *
+ * @param isDefault
+ *            whether the feature value is marked as default.
+ * @param isInitial
+ *            whether the feature value is marked as initial.
+ * @author arichard
+ */
+public record FeatureValueExpressionPropertiesPayload(boolean isDefault, boolean isInitial) {
 }
-
-export interface ExpressionProperties {
-  featureValue: FeatureValueExpressionProperties;
-}
-
-export interface ExpressionPropertiesContext {
-  supportsFeatureValueProperties: boolean;
-  featureValueProperties?: FeatureValueExpressionProperties | null;
-}
-
-export const defaultFeatureValueExpressionProperties: FeatureValueExpressionProperties = {
-  isDefault: false,
-  isInitial: false,
-};

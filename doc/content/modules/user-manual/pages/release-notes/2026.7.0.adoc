@@ -85,6 +85,16 @@ Fix any error reported before clicking on _Update_ again (or canceling the opera
 image::edit-expression-modal.png[Edit expression modal, width=80%]
 image::edit-expression-modal-error.png[Edit expression modal showing an error message if the new expression is invalid, width=80%]
 +
+When the edited expression is the value of a `FeatureValue` (for example the value of an `AttributeUsage`), the modal now also exposes two dedicated checkboxes:
+
+* _Default value_
+* _Initial value_
+
+These checkboxes make it possible to update the `FeatureValue` properties at the same time as the expression text.
+They are only displayed when the selected semantic context can actually host a `FeatureValue`.
++
+image::release-notes-expression-feature-value-properties.png[Expression modal checkboxes on a FeatureValue context, width=60%,height=60%]
++
 To _edit_ an existing expression, invoke the _Edit expression_ context menu action directly on the existing expression or on its parent element. The same modal will open with the current textual representation of the expression pre-filled.
 +
 To _delete_ an existing expression, you can simply invoke the normal _Delete_ menu item action on the expression itself or the new _Delete expression_ on its parent element.
@@ -94,6 +104,9 @@ To _delete_ an existing expression, you can simply invoke the normal _Delete_ me
 ** When an `Expression` element or an `Element` that contains a single `Expression` element is selected (for example from the _Explorer_ view), the _Details_ view displays the textual representation of the `Expression`, with a button to open the expression editing modal (see above) directly on it:
 +
 image::expression-details.png[Expression value displayed in the _Details_ view, width=80%]
++
+When this modal is opened on the value expression of a `FeatureValue`, it also displays the _Default value_ and _Initial value_ checkboxes.
+These controls are not shown for other expression contexts such as `ConstraintUsage` predicate expressions or transition guard expressions.
 
 == Bug fixes
 

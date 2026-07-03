@@ -13,6 +13,7 @@
 
 import { gql, useMutation } from '@apollo/client';
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { GQLExpressionProperties } from './ExpressionProperties.types';
 import {
   GQLEditExpressionData,
   GQLEditExpressionInput,
@@ -52,12 +53,18 @@ export const useEditExpression = (): UseEditExpressionValue => {
     GQLEditExpressionVariables
   >(editExpressionMutation);
 
-  const editExpression = (editingContextId: string, elementId: string, newExpressionText: string) => {
+  const editExpression = (
+    editingContextId: string,
+    elementId: string,
+    newExpressionText: string,
+    properties?: GQLExpressionProperties | null
+  ) => {
     const input: GQLEditExpressionInput = {
       id: crypto.randomUUID(),
       editingContextId,
       elementId: elementId,
       newExpressionText,
+      properties,
     };
 
     performEditExpression({ variables: { input } });

@@ -31,7 +31,13 @@ public class ExpressionTextualRepresentationQueryRunner implements IQueryRunner 
             query getExpressionTextualRepresentation($editingContextId: ID!, $elementId: ID!) {
               viewer {
                 editingContext(editingContextId: $editingContextId) {
-                  expressionTextualRepresentation(elementId: $elementId)
+                  expressionTextualRepresentation(elementId: $elementId) {
+                    textualRepresentation
+                    featureValueProperties {
+                      isDefault
+                      isInitial
+                    }
+                  }
                 }
               }
             }

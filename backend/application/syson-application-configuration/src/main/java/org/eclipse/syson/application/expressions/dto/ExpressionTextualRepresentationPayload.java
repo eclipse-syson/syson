@@ -20,9 +20,16 @@ import org.eclipse.sirius.components.core.api.IPayload;
 /**
  * Payload for the {@code expressionTextualRepresentation} query field on EditingContext.
  *
+ * @param id
+ *            the query identifier.
+ * @param textualRepresentation
+ *            the textual representation of the effective expression, or an empty string if none is available.
+ * @param featureValueProperties
+ *            the current feature value properties when supported.
  * @author pcdavid
  */
-public record ExpressionTextualRepresentationPayload(UUID id, String textualRepresentation) implements IPayload {
+public record ExpressionTextualRepresentationPayload(UUID id, String textualRepresentation,
+        FeatureValueExpressionPropertiesPayload featureValueProperties) implements IPayload {
     public ExpressionTextualRepresentationPayload {
         Objects.requireNonNull(id);
     }
