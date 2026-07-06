@@ -324,6 +324,51 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
                 .verify(Duration.ofSeconds(10));
     }
 
+    @DisplayName("GIVEN a SysML the FeatueValue of an attribute that has an existing expression, WHEN editing the expression to a new one THEN the attribute's expression is replaced")
+    @GivenSysONServer({ ExpressionSamplesProjectData.SCRIPT_PATH })
+    @Test
+    public void textEditFeatureValueExpression() {
+        String editingContextId = ExpressionSamplesProjectData.EDITING_CONTEXT_ID;
+
+        List<String> defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(editingContextId, this.sysONExplorerTreeDescriptionId);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, List.of(), defaultFilters);
+        var explorerInput = new ExplorerEventInput(UUID.randomUUID(), editingContextId, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(explorerInput).flux();
+
+        var treeId = new AtomicReference<String>();
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            treeId.set(tree.getId());
+        });
+
+        var existingExpressionId = new AtomicReference<String>();
+
+        Runnable checkInitialExpression = this.checkElementHasExpression(editingContextId,
+                ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_FEATURE_VALUE_ID, FeatureValue.class, existingExpressionId,
+                "100.0 * minVolume");
+
+        Runnable editExpressionOnMaxVolumeAttribute = this.editExpression(editingContextId, existingExpressionId::get, "50 * minVolume");
+
+        Consumer<Object> treeRefreshed = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getId()).isEqualTo(treeId.get());
+        });
+
+        Runnable checkExpressionUpdated = this.checkElementHasExpression(editingContextId, ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_FEATURE_VALUE_ID,
+                FeatureValue.class,
+                existingExpressionId,
+                "50 * minVolume");
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTreeContentConsumer)
+                .then(checkInitialExpression)
+                .then(editExpressionOnMaxVolumeAttribute)
+                .consumeNextWith(treeRefreshed)
+                .then(checkExpressionUpdated)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
     @DisplayName("GIVEN a SysML attribute with a value expression, WHEN editing it with feature value properties THEN the flags are updated together with the expression")
     @GivenSysONServer({ ExpressionSamplesProjectData.SCRIPT_PATH })
     @Test

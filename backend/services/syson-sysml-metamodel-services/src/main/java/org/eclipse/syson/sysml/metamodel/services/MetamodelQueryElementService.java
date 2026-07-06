@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.BooleanExpression;
 import org.eclipse.syson.sysml.ConcernUsage;
@@ -32,6 +33,7 @@ import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.ResultExpressionMembership;
 import org.eclipse.syson.sysml.StakeholderMembership;
@@ -183,7 +185,13 @@ public class MetamodelQueryElementService {
         if (this.isExpressionDefinition(element)) {
             result = Optional.of((Expression) element);
         } else {
-            var ownedExpressions = element.getOwnedElement().stream().filter(child -> this.isExpressionDefinition(child)).toList();
+            EList<Element> ownedElements;
+            if (element instanceof Relationship relationship) {
+                ownedElements = relationship.getOwnedRelatedElement();
+            } else {
+                ownedElements = element.getOwnedElement();
+            }
+            var ownedExpressions = ownedElements.stream().filter(child -> this.isExpressionDefinition(child)).toList();
             if (ownedExpressions.size() == 1) {
                 result = Optional.of((Expression) ownedExpressions.get(0));
             }

@@ -38,6 +38,8 @@ public class ExpressionSamplesProjectData {
 
         public static final String TANK_MAX_VOLUME_ATTRIBUTE_ID = "d9926727-7378-4177-a940-2fb6c1c89dce";
 
+        public static final String TANK_MAX_VOLUME_ATTRIBUTE_FEATURE_VALUE_ID = "8f9592ef-9513-4025-ab13-e7d7f822f7d8";
+
         public static final String TANK_MAX_VOLUME_ATTRIBUTE_VALUE_ID = "a9216e54-f44c-4b1f-b262-13650324d325";
 
         public static final String TANK_PRESSURE_LIMIT_CONSTRAINT_ID = "7d42ee06-3c27-4eaa-9438-344fc789906a";
