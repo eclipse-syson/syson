@@ -122,6 +122,8 @@ Now, the label dynamically adapts based on whether the `ConcernUsage` or `Constr
 *** Elements without a reference subsetting display their name.
 ** Fix the broken `New Interface` tool icon.
 ** Add an explicit warning message when user tries to reconnect one `Actor` 's graphical edge to another `Actor`.
+** Fix the creation of `Succession` and `Transition` elements from _New Succession_ and _New Transition_ graphical edge tools.
+The problem was that the `Succession` and `Transition` were created in the wrong container, which was the `ViewUsage` instead of the common ancestor `Element` containing the source and target.
 
 * In textual import/export:
 

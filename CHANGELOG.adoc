@@ -42,6 +42,8 @@ It has long been unused by Sirius Web itself (since the transition to MUI).
 - https://github.com/eclipse-syson/syson/issues/2336[#2336] [details] Fix _Edit expression_ modal when the selected element is a `FeatureValue`
 - https://github.com/eclipse-syson/syson/issues/2221[#2221] [explorer] Fix the initial direct edit value of an _Explorer_ tree item whose element has no declared name (for example a `Dependency`).
 The initial value is now an empty string instead of the computed display label, so validating it without changes no longer writes the display label into the element's declared name.
+- https://github.com/eclipse-syson/syson/issues/2342[#2342] [diagrams] Fix the creation of `Succession` and `Transition` elements from _New Succession_ and _New Transition_ graphical edge tools.
+The problem was that the `Succession` and `Transition` were created in the wrong container, which was the `ViewUsage` instead of the common ancestor `Element` containing the source and target.
 
 === Improvements
 

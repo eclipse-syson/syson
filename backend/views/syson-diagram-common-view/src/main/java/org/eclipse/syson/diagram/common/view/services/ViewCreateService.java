@@ -83,6 +83,7 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationElementService;
 import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
@@ -489,18 +490,25 @@ public class ViewCreateService {
      */
     private Element getSourceOwner(Node sourceNode, IEditingContext editingContext, IDiagramService diagramService) {
         Diagram diagram = diagramService.getDiagramContext().diagram();
-        String id;
         var parentNode = new NodeFinder(diagram).getParent(sourceNode);
         if (parentNode instanceof Node node) {
-            id = node.getTargetObjectId();
-        } else {
-            // parent is diagram
-            id = diagram.getTargetObjectId();
+            return this.objectSearchService.getObject(editingContext, node.getTargetObjectId())
+                    .filter(Element.class::isInstance)
+                    .map(Element.class::cast)
+                    .orElse(null);
         }
-        return this.objectSearchService.getObject(editingContext, id)
+        return this.objectSearchService.getObject(editingContext, diagram.getTargetObjectId())
                 .filter(Element.class::isInstance)
                 .map(Element.class::cast)
+                .map(this::resolveSemanticOwnerForBackgroundNodeInDiagramContext)
                 .orElse(null);
+    }
+
+    private Element resolveSemanticOwnerForBackgroundNodeInDiagramContext(Element diagramTarget) {
+        if (diagramTarget instanceof ViewUsage viewUsage && viewUsage.getOwner() != null) {
+            return viewUsage.getOwner();
+        }
+        return diagramTarget;
     }
 
     public List<Feature> getInheritedCompartmentItems(Type type, String eReferenceName) {

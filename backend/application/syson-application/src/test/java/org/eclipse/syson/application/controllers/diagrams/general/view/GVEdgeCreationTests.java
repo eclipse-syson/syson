@@ -58,7 +58,10 @@ import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
+import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TransitionUsage;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
@@ -83,6 +86,8 @@ import reactor.test.StepVerifier;
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVEdgeCreationTests extends AbstractIntegrationTests {
+
+    private static final String ACTION_LABEL = "action";
 
     private static final String PART_LABEL = "part";
 
@@ -120,7 +125,7 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
                 Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ITEM_DEFINITION_ID, SysmlPackage.eINSTANCE.getItemDefinition(), "ItemDefinition", 1, ArrowStyle.FillDiamond),
                 Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_ID, SysmlPackage.eINSTANCE.getPartDefinition(), "PartDefinition", 1, ArrowStyle.FillDiamond),
                 Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID, SysmlPackage.eINSTANCE.getPartUsage(), PART_LABEL, 1, ArrowStyle.Diamond),
-                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID, SysmlPackage.eINSTANCE.getActionUsage(), "action", 1, ArrowStyle.Diamond),
+                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID, SysmlPackage.eINSTANCE.getActionUsage(), ACTION_LABEL, 1, ArrowStyle.Diamond),
                 Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.STATE_USAGE_ID, SysmlPackage.eINSTANCE.getStateUsage(), "state", 0, ArrowStyle.Diamond)
         );
     }
@@ -130,7 +135,7 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
                 Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ITEM_DEFINITION_ID, "ItemDefinition", 1, ArrowStyle.FillDiamond),
                 Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_ID, "PartDefinition", 1, ArrowStyle.FillDiamond),
                 Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID, PART_LABEL, 1, ArrowStyle.Diamond),
-                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID, "action", 1, ArrowStyle.Diamond),
+                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID, ACTION_LABEL, 1, ArrowStyle.Diamond),
                 Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.STATE_USAGE_ID, "state", 0, ArrowStyle.Diamond)
         );
     }
@@ -278,7 +283,7 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
         Runnable creationToolRunnable = () -> this.edgeCreationTester.createEdge(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 diagram,
                 PART_LABEL,
-                "action",
+                ACTION_LABEL,
                 creationToolId);
 
         Consumer<Object> diagramChecker = assertRefreshedDiagramThat(newDiagram -> {
@@ -297,7 +302,7 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
             // element).
             var nodeDescriptionId = diagramDescriptionIdProvider.getNodeDescriptionId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()));
             Optional<String> optionalTargetId = diagramNavigator.findAllNodes().stream()
-                    .filter(node -> Objects.equals(node.getTargetObjectLabel(), "action"))
+                    .filter(node -> Objects.equals(node.getTargetObjectLabel(), ACTION_LABEL))
                     .filter(node -> Objects.equals(node.getDescriptionId(), nodeDescriptionId))
                     .filter(node -> Objects.equals(node.getState(), ViewModifier.Normal))
                     .map(Node::getId)
@@ -426,6 +431,107 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(creationToolRunnable)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a ViewUsage-backed General View with top-level ActionUsages, WHEN using the New Succession tool on diagram background nodes, THEN the created SuccessionAsUsage is owned by the container element of the ViewUsage")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createBackgroundSuccessionOwnedByViewUsageContainer() {
+        SemanticCheckerService semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID);
+        var flux = this.givenSubscriptionToDiagram(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+        var creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Succession");
+
+        Runnable creationToolRunnable = () -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                diagram,
+                GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID,
+                GeneralViewWithTopNodesTestProjectData.GraphicalIds.STATE_USAGE_ID,
+                creationToolId);
+
+        AtomicReference<String> newSuccessionId = new AtomicReference<>();
+        Consumer<Object> diagramChecker = assertRefreshedDiagramThat(newDiagram -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(0)
+                    .hasNewEdgeCount(1)
+                    .check(diagram.get(), newDiagram);
+            Edge newEdge = this.diagramComparator.newEdges(diagram.get(), newDiagram).get(0);
+            newSuccessionId.set(newEdge.getTargetObjectId());
+            assertThat(newEdge.getSourceId()).isEqualTo(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID);
+            assertThat(newEdge.getTargetId()).isEqualTo(GeneralViewWithTopNodesTestProjectData.GraphicalIds.STATE_USAGE_ID);
+        });
+
+        Runnable semanticCheck = semanticCheckerService.checkElement(SuccessionAsUsage.class, newSuccessionId::get, successionAsUsage -> {
+            assertThat(successionAsUsage.getOwner()).isNotInstanceOf(ViewUsage.class);
+            assertThat(successionAsUsage.getOwner().getName()).isEqualTo("Package 1");
+            assertThat(successionAsUsage.getSourceFeature().getName()).isEqualTo(ACTION_LABEL);
+            assertThat(successionAsUsage.getTargetFeature()).hasSize(1)
+                    .allMatch(targetFeature -> "state".equals(targetFeature.getName()));
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(creationToolRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a ViewUsage-backed General View with top-level ActionUsages, WHEN using the New Transition tool on diagram background nodes, THEN the created TransitionUsage is owned by the container element of the ViewUsage")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createBackgroundTransitionOwnedByViewUsageContainer() {
+        SemanticCheckerService semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID);
+        var flux = this.givenSubscriptionToDiagram(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+        var creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Transition");
+
+        Runnable creationToolRunnable = () -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                diagram,
+                GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID,
+                GeneralViewWithTopNodesTestProjectData.GraphicalIds.STATE_USAGE_ID,
+                creationToolId);
+
+        AtomicReference<String> newTransitionId = new AtomicReference<>();
+        Consumer<Object> diagramChecker = assertRefreshedDiagramThat(newDiagram -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(0)
+                    .hasNewEdgeCount(1)
+                    .check(diagram.get(), newDiagram);
+            Edge newEdge = this.diagramComparator.newEdges(diagram.get(), newDiagram).get(0);
+            newTransitionId.set(newEdge.getTargetObjectId());
+            assertThat(newEdge.getSourceId()).isEqualTo(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID);
+            assertThat(newEdge.getTargetId()).isEqualTo(GeneralViewWithTopNodesTestProjectData.GraphicalIds.STATE_USAGE_ID);
+        });
+
+        Runnable semanticCheck = semanticCheckerService.checkElement(TransitionUsage.class, newTransitionId::get, transitionUsage -> {
+            assertThat(transitionUsage.getOwner()).isNotInstanceOf(ViewUsage.class);
+            assertThat(transitionUsage.getOwner().getName()).isEqualTo("Package 1");
+            assertThat(transitionUsage.getSource().getName()).isEqualTo(ACTION_LABEL);
+            assertThat(transitionUsage.getTarget().getName()).isEqualTo("state");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(creationToolRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticCheck)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
