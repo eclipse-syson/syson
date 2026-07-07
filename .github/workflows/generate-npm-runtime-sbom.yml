@@ -14,7 +14,7 @@ on:
 env:
   NODE_VERSION: "24.18"
   REGISTRY_URL: "https://npm.pkg.github.com/"
-  PRODUCT_PATH: "./"
+  PRODUCT_PATH: "."
   WORKFLOW_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
   WORKFLOW_EVENT: ${{ github.event.workflow_run.event }}
   WORKFLOW_HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
@@ -91,7 +91,7 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: frontend-sbom
-          path: ${{ env.PRODUCT_PATH }}/full-bom.json
+          path: ${{ env.PRODUCT_PATH }}/bom.json
 
   store-sbom-data: # stores sbom and metadata in a predefined format for otterdog to pick up
     needs: ["generate-sbom"]
