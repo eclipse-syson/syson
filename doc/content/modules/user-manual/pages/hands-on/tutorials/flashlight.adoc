@@ -5,9 +5,10 @@ The focus is on representing a flashlight.
 
 == Step 1: Create a Project
 . Open the {homepage} and xref:hands-on/how-tos/project-management.adoc#create-template-project[create a new {sysmlv2} project] by clicking on the {sysmlv2} card.
-. The {editor} automatically opens, creating a new project named `{sysmlv2}` with a package `Package1`.
-A default `{gv}` representation associated with the package is opened in the main editor area.
-. From the project toolbar, xref:hands-on/how-tos/project-management.adoc#rename-project[rename the project] to `Flashlight`.
+. In the page named `Create a new project`, name the new project `Flashlight`.
+. The {editor} automatically opens, creating a new project named `Flashlight` with a package `Package1`.
+A default `{gv}` representation called `view1` associated with the package is created.
+. Open this representation by clicking on `view1` in the `Open an existing Representation` card.
 . From the {explorer}, xref:hands-on/how-tos/model-management.adoc#rename-model[rename the model] to `Flashlight.sysml` and the xref:hands-on/how-tos/model-management.adoc#rename-element[package] to `Flashlight_StarterModel`.
 
 == Step 2: Model Organization (Package Structure)
@@ -17,7 +18,7 @@ A default `{gv}` representation associated with the package is opened in the mai
 . Rename the package to `FlashlightSpecificationAndDesign`.
 . Right-click on the `FlashlightSpecificationAndDesign` package, select `Structure` -> `New Package` to create a new package inside it.
 . Rename it to `Requirements`.
-. Right-click again on the `FlashlightSpecificationAndDesign`, and use the quick access tool `New Package`.
+. Right-click again on the `FlashlightSpecificationAndDesign`, and use the _repeat last tool_ `New Package`.
 . Rename it to `ActionTree`.
 . Repeat the earlier step to create and rename the following packages inside `FlashlightSpecificationAndDesign`:
 ** `PartsTree`
@@ -65,18 +66,19 @@ requirement cost;
 . In the newly created `doc` element, enter the text:  `The weight shall be less than 0.25 kg.`
 . Right-click on the `weight` requirement again and choose `Structure -> New Attribute`.
 . Edit the new attribute to `actualweight :> mass`.
-This well set the _declaredName_ property of the attribute to `actualweight` and its type to `mass` (automatically imported from the standard library `ISQBase`).
-. Right-click on the background of diagram and use the tool `New Namespace Import`.
+This will set the _declaredName_ property of the attribute to `actualweight` and its type to `mass` (automatically imported from the standard library `ISQBase`).
+. Right-click on the background of the diagram and use the tool `New Namespace Import`.
 It is located in the `Structure` section of the palette.
-Then select `SI/Library Package SI` to import it from the standard libraries.
+Then select `Libraries > SysML > SI > Namespace > SI` to import it from the standard libraries.
 This will allow you to use standard units, such as the kilogram.
-. Click on the `Manage Visibility -> require constraints` (i.e. the eye icon that will appear when the mouse pointer will be over the `weight` requirement) on the `weight` requirement to display the _require constraints_ compartment on the `weight` requirement.
+. Hover the `weight` requirement header and click on the top-right eye icon to open the `Manage Visibility` dialog. Then, check the `require constraints` entry to display the associated compartment.
 . Use the palette filter to locate the `New Required Constraint` tool, and apply it to the `weight` requirement.
 . In the dialog that opens, choose the `Create a New Require Constraint` option and then `Confirm`.
 . In the `require constraints` compartment of the `weight` requirement, select the newly created constraint.
-. Open it's palette, and invoke the `New Expression` tool in the `Expression` section.
+. Open its palette, and invoke the `New Expression` tool in the `Edit` section.
 . In the modal that opens, enter `actualweight \<= 0.25 [kg]` and click on the `Update` button.
 This will set the predicate of the constraint.
+. Select the newly created constraint, open its palette and choose the `Edit` tool to rename the constraint itself to `maxWeight`.
 
 image::flashlight-requirements-tree.png[Flashlight Requirements Tree]
 
@@ -118,20 +120,21 @@ action directLight{
   	out item lightOut;
 }
 ----
-. In the `action flow` compartment of `produceDirectLight` use the tool `Related Elements -> Add existing element`.
+. In the `action flow` compartment of `produceDirectedLight` use the tool `Related Elements -> Add existing elements`.
 . Create a new transition between `fork1` and `connectDCPwr`.
+. Use the eye icon on the `connectDCPwr` action to display its items' compartment.
 . In the _items_ compartment of the `connectDCPwr` action in the diagram, select the item `onOffCmd` and invoke the `New Expression` tool on it.
 . In the expression dialog, enter `produceDirectedLight.onOffCmd` and click on `Update`.
 . The `in connectDCPwr` item now shows as `in connectDCPwr = produceDirectedLight.onOffCmd` and an edge has appeared to show the binding.
-. Create a `Flow Connection (flow)` from `dcPwrOut` of `connectDCPwr` to  `dcPwrIn` of `generateLight`.
-. Create a `Flow Connection (flow)` between `light` of `generateLight` to `lightIn` of `directLight`.
-. Create a `Flow Connection (flow)` between `outdcPwr` of `provideDCPwr` to `dcPwrIn` of `connectDCPwr`.
-. Use the eye icon on the `produceDirectLight` action to display the `items` compartment.
+. Create a `Flow (flow)` from `dcPwrOut` of `connectDCPwr` to  `dcPwrIn` of `generateLight`.
+. Create a `Flow (flow)` between `light` of `generateLight` to `lightIn` of `directLight`.
+. Create a `Flow (flow)` between `outdcPwr` of `provideDCPwr` to `dcPwrIn` of `connectDCPwr`.
+. Use the eye icon on the `produceDirectedLight` action to display the `items` compartment.
 . In the _items_ compartment of the `produceDirectedLight` action in the diagram, select the item `out lightOut` and invoke the `New Expression` tool on it.
 . In the expression dialog, enter `directLight.lightOut` and click on `Update`.
 . The `out lightOut` item now shows as `out lightOut = directLight.lightOut` and an edge has appeared to show the binding.
 
-image::flashlight-action-tree.png[Flashlight Requirements Tree]
+image::flashlight-action-tree.png[Flashlight Action Tree]
 
 == Step 5: Flashlight Interconnection
 
@@ -145,7 +148,7 @@ image::flashlight-action-tree.png[Flashlight Requirements Tree]
 . Edit it to `mass :> ISQ::mass`
 . Right-click again on `flashlight`, and use the quick access tool `New Attribute` to add `fov:Real`.
 . Right-click again on `flashlight`, and use the quick access tool `New Attribute` to add `illuminationLevel:Real`.
-. Right-click on `flashlight`, then select the `Behavior` -> `New Perform`, choose the second option in the selection dialog, then select the action `produceDirectedLight` created earlier.
+. Right-click on `flashlight`, then select the `Behavior` -> `New Perform action`, choose the second option in the selection dialog, then select the action `produceDirectedLight` created earlier.
 . In the `Explorer` view, select the `flashlight` part, click the "more" menu, and choose `New representation`.
 . Set the name of the representation to `Flashlight Interconnection View`.
 . Create a new `Interconnection View` and open it.
@@ -158,9 +161,9 @@ image::flashlight-action-tree.png[Flashlight Requirements Tree]
 . Rename it `cmdPort`.
 . Create a new binding between the `cmdPort` of `flashlight` and the `cmdPort` of the `switch`.
 . Right-click on `switch`, then select the `Structure` -> `New Port In`.
-. A new port (a graphical border node) has been created, rename it `inPort`.
+. A new port (a graphical border node) has been created, and rename it `inPort`.
 . Right-click on `switch`, then select the `Structure` -> `New Port Out`.
-. A new port (a graphical border node) has been created, rename it `outPort`.
+. A new port (a graphical border node) has been created, and rename it `outPort`.
 . Right-click on `flashlight`, then select the `Structure` -> `New Part` to create a nested part.
 . Rename it `battery`.
 . In the `Details` view, select the `Advanced` tab and uncheck the `Is Composite` property, to declare that this is a reference.
@@ -212,7 +215,8 @@ image::flashlight-interconnection.png[Flashlight Interconnection]
 . In the main editor area, right-click on the diagram background to open the palette.
 . Click on `Behavior`-> `New Exhibit State`, choose the first option in the selection dialog to create an exhibit state usage.
 . Rename it to `flashlightStates`.
-. Right-click on `flashlightStates`, then select the `Behavior` -> `New State` to create a three nested states.
+. Use the eye icon on `flashlightStates` to show the `state transition` compartment.
+. Right-click on `flashlightStates`, then select the `Behavior` -> `New State` to create three nested states.
 . Rename them to `initial`, `off`, and `on`.
 . Create transition named `init` between the `initial` state and the `off` state.
 . Create the following transitions between the `on` state and the `off` state.
