@@ -1,0 +1,27 @@
+= 2026.9.0 (work in progress)
+
+== Key highlights
+
+== New features
+
+* In diagrams:
+
+* In textual import/export:
+
+== Bug fixes
+
+* In diagrams:
+
+* In textual import/export:
+
+
+== Improvements
+
+* In diagrams:
+
+* In textual import/export:
+
+
+== Technical details
+
+* For technical details on this {product} release, including breaking changes, please refer to the https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
