@@ -224,7 +224,7 @@ image::flashlight-interconnection.png[Flashlight Interconnection]
 .. transition `on_To_off` from `on` to `off`
 . Right-click on the `on` state, select the `Behavior` -> `New Do Action`, choose the second option in the selection dialog, then select the `produceDirectedLight` action defined earlier .
 
-image::flashlight-states.png[Flashlight States]
+image::flashlight-states.png[Flashlight States, width=70%,height=70%]
 
 == Step 7: Flashlight Requirements Allocation
 
