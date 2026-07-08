@@ -213,14 +213,15 @@ public class DiagramQueryElementService {
     }
 
     /**
-     * Get the semantic element of the graphical parent of the given node. If located at the root of the diagram, return the semantic element of the diagram (most likely the {@link ViewUsage)}.
+     * Get the semantic element of the graphical parent of the given node. If located at the root of the diagram, return
+     * the semantic element of the diagram (most likely the {@link ViewUsage}).
      *
      * @param node
-     *         the node for which we want to find the semantic element corresponding to its graphical parent node
+     *            the node for which we want to find the semantic element corresponding to its graphical parent node
      * @param editingContext
-     *         the editing context
+     *            the editing context
      * @param contextDiagram
-     *         the diagram
+     *            the diagram
      * @return an optional element
      */
     public Optional<Element> getGraphicalSemanticParent(Node node, IEditingContext editingContext, Diagram contextDiagram) {

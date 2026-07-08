@@ -117,11 +117,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * The ANTLR Listener for the direct edit grammar for SysON diagrams.
- * <p>
- * <br>
+ *
  * Be aware that this parser may create some proxies that need to be handled in a second step by calling the method
- * {@link #resolveProxies()}</br>
- * </p>
+ * {@link #resolveProxies()}
  *
  * @author arichard
  */

@@ -317,7 +317,7 @@ public class DiagramMutationAQLService {
     }
 
     /**
-     * {@link DiagramMutationElementService#viewNodeAs(List<Element>, String, IEditingContext, DiagramContext, List)}.
+     * {@link DiagramMutationElementService#viewNodeAs(List, String, IEditingContext, DiagramContext, List)}.
      */
     public Element viewNodeAs(List<Element> elements, String newViewDefinition, IEditingContext editingContext, DiagramContext diagramContext, List<Node> selectedNodes) {
         return this.diagramMutationElementService.viewNodeAs(elements, newViewDefinition, editingContext, diagramContext, selectedNodes);
