@@ -153,8 +153,8 @@ image::action-flow-guard-labels.png[Succession edges with visible guard expressi
 |Old shape
 |New shape (margins removed)
 
-a|image::actor-old-shape.png[Actor image before, width=80%,height=80%]
-a|image::actor-new-shape.png[Actor image after, width=80%,height=80%]
+a|image::actor-old-shape.png[Actor image before, width=60%,height=60%]
+a|image::actor-new-shape.png[Actor image after, width=60%,height=60%]
 |===
 
 == Technical details
