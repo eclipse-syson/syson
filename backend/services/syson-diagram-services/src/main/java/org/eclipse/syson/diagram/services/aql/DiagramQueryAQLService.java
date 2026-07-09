@@ -107,6 +107,13 @@ public class DiagramQueryAQLService {
     }
 
     /**
+     * {@link DiagramQueryLabelService#getBeginEdgeLabel(Element)}.
+     */
+    public String getBeginEdgeLabel(Element element) {
+        return this.diagramQueryLabelService.getBeginEdgeLabel(element);
+    }
+
+    /**
      * {@link DiagramQueryLabelService#getBorderNodeUsageLabel(Usage)}.
      */
     public String getBorderNodeUsageLabel(Usage usage) {
@@ -163,13 +170,6 @@ public class DiagramQueryAQLService {
      */
     public String getDependencyLabel(Dependency dependency) {
         return this.diagramQueryLabelService.getDependencyLabel(dependency);
-    }
-
-    /**
-     * {@link DiagramQueryLabelService#getBeginEdgeLabel(Element)}.
-     */
-    public String getBeginEdgeLabel(Element element) {
-        return this.diagramQueryLabelService.getBeginEdgeLabel(element);
     }
 
     /**
@@ -261,17 +261,17 @@ public class DiagramQueryAQLService {
     }
 
     /**
-     * {@link DiagramQueryElementService#isControlNodeActionCreationToolInAction(editingContext, selectedNode)}.
-     */
-    public boolean isControlNodeActionCreationToolInsideActionOnAFV(Element element, IEditingContext editingContext, DiagramContext diagramContext) {
-        return this.diagramQueryToolService.isControlNodeActionCreationToolInsideActionOnAFV(element, editingContext, diagramContext);
-    }
-
-    /**
-     * {@link DiagramQueryElementService#isControlNodeActionCreationToolInAction(editingContext, selectedNode)}.
+     * {@link DiagramQueryToolService#isControlNodeActionCreationToolInAction(IEditingContext, Node)}.
      */
     public boolean isControlNodeActionCreationToolInAction(IEditingContext editingContext, Node selectedNode) {
         return this.diagramQueryToolService.isControlNodeActionCreationToolInAction(editingContext, selectedNode);
+    }
+
+    /**
+     * {@link DiagramQueryToolService#isControlNodeActionCreationToolInsideActionOnAFV(Element, IEditingContext, DiagramContext)}.
+     */
+    public boolean isControlNodeActionCreationToolInsideActionOnAFV(Element element, IEditingContext editingContext, DiagramContext diagramContext) {
+        return this.diagramQueryToolService.isControlNodeActionCreationToolInsideActionOnAFV(element, editingContext, diagramContext);
     }
 
     /**
@@ -319,6 +319,14 @@ public class DiagramQueryAQLService {
     }
 
     /**
+     * {@link DiagramQueryGraphicalService#isInSameGraphicalContainer(org.eclipse.sirius.components.representations.Element, org.eclipse.sirius.components.representations.Element, DiagramRenderingCache)}.
+     */
+    public boolean isInSameGraphicalContainer(org.eclipse.sirius.components.representations.Element source,
+            org.eclipse.sirius.components.representations.Element target, DiagramRenderingCache cache) {
+        return this.diagramQueryGraphicalService.isInSameGraphicalContainer(source, target, cache);
+    }
+
+    /**
      * {@link DiagramQueryGraphicalService#isNotAncestorOf(org.eclipse.sirius.components.representations.Element, org.eclipse.sirius.components.representations.Element, DiagramRenderingCache)}.
      */
     public boolean isNotAncestorOf(org.eclipse.sirius.components.representations.Element parentNodeElement,
@@ -362,10 +370,6 @@ public class DiagramQueryAQLService {
         return this.diagramQueryToolService.toolShouldBeAvailable(element, editingContext, diagramContext, newElementType);
     }
 
-    private boolean isGVDiagram(ViewUsage viewUsage) {
-        return this.isDiagram(viewUsage, StandardDiagramsConstants.GV_QN);
-    }
-
     private boolean isAFVDiagram(ViewUsage viewUsage) {
         return this.isDiagram(viewUsage, StandardDiagramsConstants.AFV_QN);
     }
@@ -377,5 +381,9 @@ public class DiagramQueryAQLService {
             return type instanceof ViewDefinition && diagramQualifiedName.equals(type.getQualifiedName());
         }
         return false;
+    }
+
+    private boolean isGVDiagram(ViewUsage viewUsage) {
+        return this.isDiagram(viewUsage, StandardDiagramsConstants.GV_QN);
     }
 }

@@ -21,6 +21,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
@@ -44,6 +45,8 @@ import org.eclipse.syson.model.services.ModelMutationElementService;
 import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.services.api.SiriusWebCoreServices;
+import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.Connector;
@@ -53,17 +56,26 @@ import org.eclipse.syson.sysml.Expose;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FlowUsage;
+import org.eclipse.syson.sysml.IncludeUseCaseUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
+import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
+import org.eclipse.syson.sysml.Succession;
+import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
 import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
@@ -702,6 +714,185 @@ public class DiagramMutationElementService {
     }
 
     /**
+     * Reconnects the source of an allocate edge.
+     *
+     * @param allocationUsage
+     *            the allocate edge to reconnect
+     * @param newSource
+     *            the new source
+     * @return the allocate edge
+     */
+    public Element reconnectSourceAllocateEdge(AllocationUsage allocationUsage, Element newSource) {
+        if (newSource instanceof Usage usage) {
+            var features = this.getAllocateEdgeFeatures(allocationUsage);
+            if (features.size() == 2) {
+                var reference = features.getFirst().getOwnedReferenceSubsetting();
+                if (reference != null) {
+                    reference.setReferencedFeature(usage);
+                }
+            }
+        }
+        return allocationUsage;
+    }
+
+    /**
+     * Reconnects the target of an allocate edge.
+     *
+     * @param allocationUsage
+     *            the allocate edge to reconnect
+     * @param newTarget
+     *            the new target
+     * @return the allocate edge
+     */
+    public Element reconnectTargetAllocateEdge(AllocationUsage allocationUsage, Element newTarget) {
+        if (newTarget instanceof Usage usage) {
+            var features = this.getAllocateEdgeFeatures(allocationUsage);
+            if (features.size() == 2) {
+                var reference = features.get(1).getOwnedReferenceSubsetting();
+                if (reference != null) {
+                    reference.setReferencedFeature(usage);
+                }
+            }
+        }
+        return allocationUsage;
+    }
+
+    /**
+     * Reconnects the source of a succession edge.
+     *
+     * @param succession
+     *            the succession edge
+     * @param oldSource
+     *            the previous source
+     * @param newSource
+     *            the new source
+     * @return the succession edge
+     */
+    public Element reconnectSourceSuccessionEdge(SuccessionAsUsage succession, Element oldSource, Element newSource) {
+        EList<Feature> ends = succession.getConnectorEnd();
+        if (!ends.isEmpty()) {
+            this.setConnectorEndFeature(ends.getFirst(), newSource);
+        }
+        return succession;
+    }
+
+    /**
+     * Reconnects the target of a succession edge.
+     *
+     * @param succession
+     *            the succession edge
+     * @param oldTarget
+     *            the previous target
+     * @param newTarget
+     *            the new target
+     * @return the succession edge
+     */
+    public Element reconnectTargetSuccessionEdge(SuccessionAsUsage succession, Element oldTarget, Element newTarget) {
+        EList<Feature> ends = succession.getConnectorEnd();
+        if (ends.size() > 1) {
+            this.setConnectorEndFeature(ends.get(1), newTarget);
+        }
+        return succession;
+    }
+
+    /**
+     * Reconnects the source of a transition edge.
+     *
+     * @param transition
+     *            the transition to reconnect
+     * @param newSource
+     *            the new source
+     * @return the transition
+     */
+    public TransitionUsage reconnectSourceTransitionEdge(TransitionUsage transition, ActionUsage newSource) {
+        if (newSource instanceof TransitionUsage || !this.isValidTransitionTarget(newSource, transition.getTarget())) {
+            this.feedbackMessageService.addFeedbackMessage(new Message("Invalid new source for transition", MessageLevel.WARNING));
+            return transition;
+        }
+        transition.getOwnedMembership().stream()
+                .filter(Membership.class::isInstance)
+                .findFirst()
+                .ifPresent(membership -> membership.setMemberElement(newSource));
+
+        Succession succession = transition.getSuccession();
+        succession.getFeatureMembership().stream()
+                .filter(EndFeatureMembership.class::isInstance)
+                .map(EndFeatureMembership.class::cast)
+                .findFirst()
+                .ifPresent(endFeatureMembership -> endFeatureMembership.getOwnedRelatedElement().stream()
+                        .findFirst()
+                        .ifPresent(feature -> feature.getOwnedRelationship().stream()
+                                .filter(ReferenceSubsetting.class::isInstance)
+                                .map(ReferenceSubsetting.class::cast)
+                                .findFirst()
+                                .ifPresent(referenceSubsetting -> referenceSubsetting.setReferencedFeature(newSource))));
+        return transition;
+    }
+
+    /**
+     * Reconnects the target of a transition edge.
+     *
+     * @param transition
+     *            the transition to reconnect
+     * @param newTarget
+     *            the new target
+     * @return the transition
+     */
+    public TransitionUsage reconnectTargetTransitionEdge(TransitionUsage transition, ActionUsage newTarget) {
+        if (newTarget instanceof TransitionUsage || !this.isValidTransitionTarget(transition.getSource(), newTarget)) {
+            this.feedbackMessageService.addFeedbackMessage(new Message("Invalid new target for transition", MessageLevel.WARNING));
+            return transition;
+        }
+        Succession succession = transition.getSuccession();
+        List<EndFeatureMembership> successionFeatureMemberships = succession.getFeatureMembership().stream()
+                .filter(EndFeatureMembership.class::isInstance)
+                .map(EndFeatureMembership.class::cast)
+                .toList();
+        if (successionFeatureMemberships.size() > 1) {
+            successionFeatureMemberships.get(1).getOwnedRelatedElement().stream()
+                    .findFirst()
+                    .ifPresent(feature -> feature.getOwnedRelationship().stream()
+                            .filter(ReferenceSubsetting.class::isInstance)
+                            .map(ReferenceSubsetting.class::cast)
+                            .findFirst()
+                            .ifPresent(referenceSubsetting -> referenceSubsetting.setReferencedFeature(newTarget)));
+        }
+        return transition;
+    }
+
+    /**
+     * Reconnects the source of an include use case edge.
+     *
+     * @param includeUseCaseUsage
+     *            the include use case edge
+     * @param newSource
+     *            the new source
+     * @return the include use case edge
+     */
+    public IncludeUseCaseUsage reconnectSourceIncludeUseCaseUsage(IncludeUseCaseUsage includeUseCaseUsage, UseCaseUsage newSource) {
+        OwningMembership owningMembership = includeUseCaseUsage.getOwningMembership();
+        newSource.getOwnedRelationship().add(owningMembership);
+        return includeUseCaseUsage;
+    }
+
+    /**
+     * Reconnects the target of an include use case edge.
+     *
+     * @param includeUseCaseUsage
+     *            the include use case edge
+     * @param newTarget
+     *            the new target
+     * @return the include use case edge
+     */
+    public IncludeUseCaseUsage reconnectTargetIncludeUseCaseUsage(IncludeUseCaseUsage includeUseCaseUsage, UseCaseUsage newTarget) {
+        ReferenceSubsetting referenceSubsetting = includeUseCaseUsage.getOwnedReferenceSubsetting();
+        if (referenceSubsetting != null) {
+            referenceSubsetting.setReferencedFeature(newTarget);
+        }
+        return includeUseCaseUsage;
+    }
+
+    /**
      * Creates a {@link BindingConnectorAsUsage}.
      *
      * @param source
@@ -926,5 +1117,46 @@ public class DiagramMutationElementService {
             }
         }
         return namespaceOwner;
+    }
+
+    private List<Feature> getAllocateEdgeFeatures(AllocationUsage allocationUsage) {
+        return allocationUsage.getOwnedFeatureMembership().stream()
+                .filter(EndFeatureMembership.class::isInstance)
+                .map(EndFeatureMembership.class::cast)
+                .flatMap(endFeatureMembership -> endFeatureMembership.getOwnedRelatedElement().stream())
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .toList();
+    }
+
+    private void setConnectorEndFeature(Feature sourceEnd, Element newTargetFeature) {
+        if (sourceEnd instanceof ReferenceUsage referenceUsage) {
+            ReferenceSubsetting referenceSubsetting = sourceEnd.getOwnedReferenceSubsetting();
+            if (referenceSubsetting == null || referenceSubsetting.isIsImplied()) {
+                referenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+                referenceSubsetting.setSubsettingFeature(referenceUsage);
+            }
+            this.getAction(newTargetFeature).ifPresent(referenceSubsetting::setReferencedFeature);
+        }
+    }
+
+    private Optional<ActionUsage> getAction(Element element) {
+        Optional<ActionUsage> result = Optional.empty();
+        if (element instanceof Membership membership) {
+            if (membership.getMemberElement() instanceof ActionUsage actionUsage) {
+                result = Optional.of(actionUsage);
+            }
+        } else if (element instanceof ActionUsage actionUsage) {
+            result = Optional.of(actionUsage);
+        }
+        return result;
+    }
+
+    private boolean isValidTransitionTarget(Element source, Element target) {
+        boolean sameParent = false;
+        if (source instanceof ActionUsage sourceAction && target instanceof ActionUsage targetAction) {
+            sameParent = sourceAction.getOwner() == targetAction.getOwner();
+        }
+        return sameParent && !this.utilService.isParallelState(source.getOwner());
     }
 }

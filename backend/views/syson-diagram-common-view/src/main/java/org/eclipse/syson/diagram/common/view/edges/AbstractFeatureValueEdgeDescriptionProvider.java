@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
-import org.eclipse.syson.diagram.common.view.services.ViewEdgeService;
+import org.eclipse.syson.model.services.aql.ModelQueryAQLService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -84,7 +84,7 @@ public abstract class AbstractFeatureValueEdgeDescriptionProvider extends Abstra
                 .sourceExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getFeatureValue_FeatureWithValue().getName())
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetExpression(ServiceMethod.of0(ViewEdgeService::getFeatureValueTarget).aqlSelf())
+                .targetExpression(ServiceMethod.of0(ModelQueryAQLService::getFeatureValueTarget).aqlSelf())
                 .build();
     }
 

@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
-import org.eclipse.syson.diagram.common.view.services.ViewEdgeService;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
 import org.eclipse.syson.util.AQLConstants;
@@ -112,7 +112,7 @@ public abstract class AbstractAllocateEdgeDescriptionProvider extends AbstractEd
     @Override
     protected ChangeContextBuilder getSourceReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of1(ViewEdgeService::reconnectSourceAllocateEdge)
+                .expression(ServiceMethod.of1(DiagramMutationAQLService::reconnectSourceAllocateEdge)
                         .aql(AQLConstants.EDGE_SEMANTIC_ELEMENT, AQLConstants.SEMANTIC_RECONNECTION_TARGET));
 
     }
@@ -120,7 +120,7 @@ public abstract class AbstractAllocateEdgeDescriptionProvider extends AbstractEd
     @Override
     protected ChangeContextBuilder getTargetReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of1(ViewEdgeService::reconnectTargetAllocateEdge)
+                .expression(ServiceMethod.of1(DiagramMutationAQLService::reconnectTargetAllocateEdge)
                         .aql(AQLConstants.EDGE_SEMANTIC_ELEMENT, AQLConstants.SEMANTIC_RECONNECTION_TARGET));
     }
 }

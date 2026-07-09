@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
-import org.eclipse.syson.diagram.common.view.services.ViewEdgeService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.model.services.aql.ModelQueryAQLService;
@@ -102,14 +101,14 @@ public abstract class AbstractSuccessionEdgeDescriptionProvider extends Abstract
     @Override
     protected ChangeContextBuilder getSourceReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of2(ViewEdgeService::reconnectSourceSuccessionEdge)
+                .expression(ServiceMethod.of2(DiagramMutationAQLService::reconnectSourceSuccessionEdge)
                         .aql(AQLConstants.EDGE_SEMANTIC_ELEMENT, AQLConstants.SEMANTIC_RECONNECTION_SOURCE, AQLConstants.SEMANTIC_RECONNECTION_TARGET));
     }
 
     @Override
     protected ChangeContextBuilder getTargetReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of2(ViewEdgeService::reconnectTargetSuccessionEdge)
+                .expression(ServiceMethod.of2(DiagramMutationAQLService::reconnectTargetSuccessionEdge)
                         .aql(AQLConstants.EDGE_SEMANTIC_ELEMENT, AQLConstants.SEMANTIC_RECONNECTION_SOURCE, AQLConstants.SEMANTIC_RECONNECTION_TARGET));
     }
 

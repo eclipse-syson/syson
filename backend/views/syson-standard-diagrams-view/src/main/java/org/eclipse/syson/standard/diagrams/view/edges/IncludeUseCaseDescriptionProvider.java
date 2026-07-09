@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.edges.AbstractEdgeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.services.ViewEdgeService;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.IncludeUseCaseUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -107,14 +107,14 @@ public class IncludeUseCaseDescriptionProvider extends AbstractEdgeDescriptionPr
     @Override
     protected ChangeContextBuilder getSourceReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of1(ViewEdgeService::reconnectSourceIncludeUseCaseUsage)
+                .expression(ServiceMethod.of1(DiagramMutationAQLService::reconnectSourceIncludeUseCaseUsage)
                         .aql(AQLConstants.EDGE_SEMANTIC_ELEMENT, AQLConstants.SEMANTIC_RECONNECTION_TARGET));
     }
 
     @Override
     protected ChangeContextBuilder getTargetReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of1(ViewEdgeService::reconnectTargetIncludeUseCaseUsage)
+                .expression(ServiceMethod.of1(DiagramMutationAQLService::reconnectTargetIncludeUseCaseUsage)
                         .aql(AQLConstants.EDGE_SEMANTIC_ELEMENT, AQLConstants.SEMANTIC_RECONNECTION_TARGET));
     }
 

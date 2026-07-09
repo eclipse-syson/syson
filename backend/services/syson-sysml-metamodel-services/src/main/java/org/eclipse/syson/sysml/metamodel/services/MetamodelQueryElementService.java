@@ -22,23 +22,31 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.BooleanExpression;
 import org.eclipse.syson.sysml.ConcernUsage;
+import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.Connector;
+import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureChainExpression;
+import org.eclipse.syson.sysml.FeatureChaining;
+import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.FramedConcernMembership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.ResultExpressionMembership;
+import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.StakeholderMembership;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.metamodel.services.textual.SysMLElementSerializer;
 import org.eclipse.syson.sysml.metamodel.services.textual.SysMLSerializingOptions;
@@ -255,6 +263,36 @@ public class MetamodelQueryElementService {
     }
 
     /**
+     * Get the source element of an allocate edge.
+     *
+     * @param allocationUsage
+     *            an {@link AllocationUsage}
+     * @return the source element or {@code null}
+     */
+    public Element getSourceAllocateEdge(AllocationUsage allocationUsage) {
+        var features = this.getAllocateEdgeFeatures(allocationUsage);
+        if (features.size() == 2) {
+            return this.getFeatureElement(features.getFirst());
+        }
+        return null;
+    }
+
+    /**
+     * Get the target element of an allocate edge.
+     *
+     * @param allocationUsage
+     *            an {@link AllocationUsage}
+     * @return the target element or {@code null}
+     */
+    public Element getTargetAllocateEdge(AllocationUsage allocationUsage) {
+        var features = this.getAllocateEdgeFeatures(allocationUsage);
+        if (features.size() == 2) {
+            return this.getFeatureElement(features.get(1));
+        }
+        return null;
+    }
+
+    /**
      * Get the closest common owner for both given {@link Element}.
      *
      * @param e1
@@ -303,6 +341,47 @@ public class MetamodelQueryElementService {
     }
 
     /**
+     * Unwrap the given {@link Feature} to its referenced element.
+     *
+     * @param input
+     *            the input feature
+     * @return the unwrapped feature or {@code null}
+     */
+    public Feature unwrapFeature(Feature input) {
+        if (input instanceof ReferenceUsage) {
+            return input.getOwnedRedefinition().stream()
+                    .map(Redefinition::getRedefinedFeature)
+                    .filter(Objects::nonNull)
+                    .findFirst()
+                    .orElse(null);
+        }
+        return input;
+    }
+
+    /**
+     * Get the target of a {@link FeatureValue} edge.
+     *
+     * @param featureValue
+     *            a feature value
+     * @return the target feature or {@code null}
+     */
+    public Feature getFeatureValueTarget(FeatureValue featureValue) {
+        Expression value = featureValue.getValue();
+        Feature result = null;
+        if (!featureValue.isIsDefault()) {
+            if (value instanceof FeatureChainExpression featureChainExpression) {
+                Feature targetFeature = featureChainExpression.getTargetFeature();
+                if (targetFeature != null) {
+                    result = targetFeature.getFeatureTarget();
+                }
+            } else if (value instanceof FeatureReferenceExpression featureReferenceExpression) {
+                result = featureReferenceExpression.getReferent();
+            }
+        }
+        return result;
+    }
+
+    /**
      * Returns the framed concern target of {@link FramedConcernMembership}.
      * <p>
      *     It returns a concern when the framed concern membership owned concern is subsetted by another concern.
@@ -337,6 +416,17 @@ public class MetamodelQueryElementService {
     }
 
     /**
+     * Checks whether a transition targets a state.
+     *
+     * @param transition
+     *            a transition
+     * @return {@code true} if the transition targets a state
+     */
+    public boolean isTransitionUsageForState(TransitionUsage transition) {
+        return transition.getTarget() instanceof StateUsage;
+    }
+
+    /**
      * Get the {@link ResultExpressionMembership} contained inside a given {@link Namespace}.
      *
      * @param namespace
@@ -349,5 +439,43 @@ public class MetamodelQueryElementService {
                 .map(ResultExpressionMembership.class::cast)
                 .findFirst()
                 .orElse(null);
+    }
+
+    private List<Feature> getAllocateEdgeFeatures(AllocationUsage allocationUsage) {
+        return allocationUsage.getOwnedFeatureMembership().stream()
+                .filter(EndFeatureMembership.class::isInstance)
+                .map(EndFeatureMembership.class::cast)
+                .flatMap(endFeatureMembership -> endFeatureMembership.getOwnedRelatedElement().stream())
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .toList();
+    }
+
+    private Element getFeatureElement(Feature feature) {
+        var reference = feature.getOwnedReferenceSubsetting();
+        if (reference != null) {
+            return this.resolveFeatureElement(reference.getReferencedFeature());
+        }
+        return null;
+    }
+
+    private Usage resolveFeatureElement(Feature feature) {
+        Usage result = null;
+        if (feature instanceof Usage usage) {
+            result = usage;
+        } else if (feature != null) {
+            Optional<FeatureChaining> lastChaining = feature.getOwnedRelationship().stream()
+                    .filter(FeatureChaining.class::isInstance)
+                    .map(FeatureChaining.class::cast)
+                    .reduce((acc, element) -> element);
+            if (lastChaining.isPresent()) {
+                result = lastChaining.get().getTarget().stream()
+                        .filter(Usage.class::isInstance)
+                        .map(Usage.class::cast)
+                        .findFirst()
+                        .orElse(null);
+            }
+        }
+        return result;
     }
 }
