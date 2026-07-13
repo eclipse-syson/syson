@@ -43,7 +43,6 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
-import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
 import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
@@ -51,6 +50,7 @@ import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvid
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
+import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -115,7 +115,6 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
      * @return the list of tool section descriptions.
      */
     protected abstract List<ToolSectionDescription> getToolSections();
-
 
     /**
      * Implementors may provide the list of custom tool to add to a given tool section.
@@ -285,7 +284,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of0(ViewCreateService::elementInitializer).aql("newInstance"))
+                .expression(ServiceMethod.of0(ModelMutationAQLService::initialize).aql("newInstance"))
                 .children(updateExposedElements.build());
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()

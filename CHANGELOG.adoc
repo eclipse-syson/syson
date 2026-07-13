@@ -10,6 +10,11 @@
 
 - [services] As part of the migration to the new diagram service architecture, the methods that were exposed by `ViewToolService` (which has been deleted) are now split between `org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService` for mutation services, `org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService` for diagram query and tool precondition services, and `org.eclipse.syson.tree.services.aql.TreeQueryAQLService` for selection dialog tree query services.
 - [services] As part of the migration to the new diagram service architecture, the methods that were exposed by `ViewEdgeService` (which has been deleted) are now split between `org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService` for edge reconnection mutation services, `org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService` for diagram graphical query services, and `org.eclipse.syson.model.services.aql.ModelQueryAQLService` for model and metamodel query services.
+- [services] As part of the migration to the new diagram service architecture, `ViewCreateService` has been deleted.
+Its former AQL entry points are now split between `org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService` for diagram and tool mutations, `org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService` for diagram creation preconditions, tool preconditions, and inherited-members queries, and `org.eclipse.syson.model.services.aql.ModelMutationAQLService` for metamodel initialization.
+- [services] `ShowDiagramsInheritedMembersService` has moved from `syson-diagram-common-view` to `syson-diagram-services`.
+Downstream code should now depend on the diagram services module for that bean.
+- [services] `InheritedCompartmentItemFilterSwitch` has moved from `syson-diagram-common-view` to `syson-diagram-services` as part of the inherited-compartment query migration.
 
 === Dependency update
 

@@ -90,7 +90,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of0(ViewCreateService::elementInitializer).aqlSelf());
+                .expression(ServiceMethod.of0(ModelMutationAQLService::initialize).aqlSelf());
 
         var setClient = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getDependency_Client().getName())
@@ -136,7 +136,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of0(ViewCreateService::elementInitializer).aqlSelf());
+                .expression(ServiceMethod.of0(ModelMutationAQLService::initialize).aqlSelf());
 
         var setSubclassifier = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getSubclassification_Subclassifier().getName())
@@ -199,7 +199,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of0(ViewCreateService::elementInitializer).aqlSelf());
+                .expression(ServiceMethod.of0(ModelMutationAQLService::initialize).aqlSelf());
 
         var setRedefiningFeature = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getRedefinition_RedefiningFeature().getName())
@@ -272,7 +272,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of0(ViewCreateService::elementInitializer).aqlSelf());
+                .expression(ServiceMethod.of0(ModelMutationAQLService::initialize).aqlSelf());
 
         var setSubsettingFeature = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getSubsetting_SubsettingFeature().getName())
@@ -336,7 +336,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of0(ViewCreateService::elementInitializer).aqlSelf());
+                .expression(ServiceMethod.of0(ModelMutationAQLService::initialize).aqlSelf());
 
         var setReferencedFeature = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature().getName())
@@ -476,7 +476,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of0(ViewCreateService::elementInitializer).aqlSelf());
+                .expression(ServiceMethod.of0(ModelMutationAQLService::initialize).aqlSelf());
 
         var setTypedFeature = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getFeatureTyping_TypedFeature().getName())
@@ -581,7 +581,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callService = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of5(ViewCreateService::createTransitionUsage).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE,
+                .expression(ServiceMethod.of5(DiagramMutationAQLService::createTransitionUsage).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE,
                         EdgeDescription.EDGE_TARGET, IDiagramService.DIAGRAM_SERVICES, IEditingContext.EDITING_CONTEXT));
 
         return builder
@@ -599,7 +599,7 @@ public class ViewEdgeToolService {
                 .findFirst().get();
 
         var body = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of1(ViewCreateService::createIncludeUseCaseUsage).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET));
+                .expression(ServiceMethod.of1(DiagramMutationAQLService::createIncludeUseCaseUsage).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET));
 
         return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getIncludeUseCaseUsage()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getIncludeUseCaseUsage().getName() + SVG)
@@ -615,7 +615,7 @@ public class ViewEdgeToolService {
                 .toArray(NodeDescription[]::new);
 
         var body = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of4(ViewCreateService::createAllocateEdge).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE,
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::createAllocateEdge).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE,
                         IEditingContext.EDITING_CONTEXT, IDiagramService.DIAGRAM_SERVICES));
 
         return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getAllocationUsage()))
@@ -628,7 +628,7 @@ public class ViewEdgeToolService {
     public EdgeTool createSuccessionEdgeTool(List<NodeDescription> targetElementDescriptions) {
         var builder = this.diagramBuilderHelper.newEdgeTool();
         var body = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of5(ViewCreateService::createSuccessionEdge).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE,
+                .expression(ServiceMethod.of5(DiagramMutationAQLService::createSuccessionEdge).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE,
                         EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT, IDiagramService.DIAGRAM_SERVICES));
 
         return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSuccession()))

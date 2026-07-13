@@ -71,7 +71,6 @@ import org.eclipse.syson.diagram.common.view.nodes.StartStateNodeDescriptionProv
 import org.eclipse.syson.diagram.common.view.nodes.StateTransitionCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.DecisionActionNodeToolProvider;
@@ -85,6 +84,7 @@ import org.eclipse.syson.diagram.common.view.tools.SetAsViewToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StartActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.standard.diagrams.view.edges.AllocateEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.BindingConnectorAsUsageEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.ConnectionUsageEdgeDescriptionProvider;
@@ -349,7 +349,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 .domainType(domainType)
                 .layoutOption(DiagramLayoutOption.NONE)
                 .minimapVisible(true)
-                .preconditionExpression(ServiceMethod.of0(ViewCreateService::canCreateDiagram).aqlSelf())
+                .preconditionExpression(ServiceMethod.of0(DiagramQueryAQLService::canCreateDiagram).aqlSelf())
                 .name(DESCRIPTION_NAME)
                 .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .conditionalStyles(emptyDiagramStyle)

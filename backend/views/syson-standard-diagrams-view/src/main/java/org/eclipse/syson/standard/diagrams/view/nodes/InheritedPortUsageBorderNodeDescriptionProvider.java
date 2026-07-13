@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractPortUsageBorderNodeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
@@ -44,7 +44,7 @@ public class InheritedPortUsageBorderNodeDescriptionProvider extends AbstractPor
 
     @Override
     protected String getSemanticCandidatesExpression() {
-        return ServiceMethod.of1(ViewCreateService::getInheritedCompartmentItems).aqlSelf(AQLUtils.aqlString(this.eReference.getName()));
+        return ServiceMethod.of1(DiagramQueryAQLService::getInheritedCompartmentItems).aqlSelf(AQLUtils.aqlString(this.eReference.getName()));
     }
 
     @Override

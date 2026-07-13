@@ -14,7 +14,7 @@ package org.eclipse.syson.diagram.common.view.tools;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -51,10 +51,10 @@ public class CompartmentNodeToolProvider extends AbstractCompartmentNodeToolProv
     @Override
     protected String getServiceCallExpression() {
         if (this.featureDirectionKind != null) {
-            return ServiceMethod.of2(ViewCreateService::createCompartmentItemWithDirection).aqlSelf(AQLUtils.aqlString(this.eReference.getName()),
+            return ServiceMethod.of2(DiagramMutationAQLService::createCompartmentItemWithDirection).aqlSelf(AQLUtils.aqlString(this.eReference.getName()),
                     AQLUtils.aqlString(this.featureDirectionKind.getLiteral()));
         } else {
-            return ServiceMethod.of1(ViewCreateService::createCompartmentItem).aqlSelf(AQLUtils.aqlString(this.eReference.getName()));
+            return ServiceMethod.of1(DiagramMutationAQLService::createCompartmentItem).aqlSelf(AQLUtils.aqlString(this.eReference.getName()));
         }
     }
 

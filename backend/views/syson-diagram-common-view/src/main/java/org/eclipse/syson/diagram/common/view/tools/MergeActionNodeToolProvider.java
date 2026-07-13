@@ -18,7 +18,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
@@ -41,7 +41,7 @@ public class MergeActionNodeToolProvider extends AbstractFreeFormCompartmentNode
 
     @Override
     protected String getCreationServiceCallExpression() {
-        return ServiceMethod.of0(ViewCreateService::createMergeAction).aqlSelf();
+        return ServiceMethod.of0(DiagramMutationAQLService::createMergeAction).aqlSelf();
     }
 
     @Override

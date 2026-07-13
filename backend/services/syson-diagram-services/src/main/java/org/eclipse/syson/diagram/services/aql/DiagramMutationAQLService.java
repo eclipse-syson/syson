@@ -28,23 +28,28 @@ import org.eclipse.syson.diagram.services.DiagramMutationElementService;
 import org.eclipse.syson.diagram.services.DiagramMutationExposeService;
 import org.eclipse.syson.diagram.services.DiagramMutationLabelService;
 import org.eclipse.syson.diagram.services.DiagramMutationToolService;
+import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
+import org.eclipse.syson.sysml.ConnectionDefinition;
 import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.IncludeUseCaseUsage;
+import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.InterfaceUsage;
+import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
-import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.TransitionUsage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
@@ -132,6 +137,55 @@ public class DiagramMutationAQLService {
     }
 
     /**
+     * {@link DiagramMutationToolService#createAcceptAction(Element)}.
+     */
+    public Element createAcceptAction(Element ownerElement) {
+        return this.diagramMutationToolService.createAcceptAction(ownerElement);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createAcceptActionPayload(AcceptActionUsage, String)}.
+     */
+    public Element createAcceptActionPayload(AcceptActionUsage self, String payloadEClassName) {
+        return this.diagramMutationToolService.createAcceptActionPayload(self, payloadEClassName);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createAcceptActionReceiver(AcceptActionUsage)}.
+     */
+    public Element createAcceptActionReceiver(AcceptActionUsage self) {
+        return this.diagramMutationToolService.createAcceptActionReceiver(self);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#addDoneAction(Element)}.
+     */
+    public ActionUsage addDoneAction(Element ownerElement) {
+        return this.diagramMutationToolService.addDoneAction(ownerElement);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#addDoneState(Element)}.
+     */
+    public ActionUsage addDoneState(Element ownerElement) {
+        return this.diagramMutationToolService.addDoneState(ownerElement);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#addStartAction(Element)}.
+     */
+    public ActionUsage addStartAction(Element ownerElement) {
+        return this.diagramMutationToolService.addStartAction(ownerElement);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#addStartState(Element)}.
+     */
+    public ActionUsage addStartState(Element ownerElement) {
+        return this.diagramMutationToolService.addStartState(ownerElement);
+    }
+
+    /**
      * {@link DiagramMutationElementService#createBindingConnectorAsUsage(Feature, Feature, Node, Node, IEditingContext, DiagramContext)}.
      */
     public BindingConnectorAsUsage createBindingConnectorAsUsage(Feature source, Feature target, Node sourceNode, Node targetNode, IEditingContext editingContext,
@@ -163,11 +217,68 @@ public class DiagramMutationAQLService {
     }
 
     /**
+     * {@link DiagramMutationToolService#createActionParameter(Element, String)}.
+     */
+    public Element createActionParameter(Element self, String direction) {
+        return this.diagramMutationToolService.createActionParameter(self, direction);
+    }
+
+    /**
+     * {@link DiagramMutationElementService#createAllocateEdge(Element, Element, Node, IEditingContext, org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService)}.
+     */
+    public Element createAllocateEdge(Element source, Element target, Node sourceNode, IEditingContext editingContext,
+            org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService diagramService) {
+        return this.diagramMutationElementService.createAllocateEdge(source, target, sourceNode, editingContext, diagramService);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createAssignmentAction(Element)}.
+     */
+    public Element createAssignmentAction(Element ownerElement) {
+        return this.diagramMutationToolService.createAssignmentAction(ownerElement);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createCompartmentItem(Element, String)}.
+     */
+    public Element createCompartmentItem(Element element, String eReferenceName) {
+        return this.diagramMutationToolService.createCompartmentItem(element, eReferenceName);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createCompartmentItemWithDirection(Element, String, String)}.
+     */
+    public Element createCompartmentItemWithDirection(Element element, String eReferenceName, String directionLiteral) {
+        return this.diagramMutationToolService.createCompartmentItemWithDirection(element, eReferenceName, directionLiteral);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createConnectionDefinitionEnd(ConnectionDefinition)}.
+     */
+    public Element createConnectionDefinitionEnd(ConnectionDefinition self) {
+        return this.diagramMutationToolService.createConnectionDefinitionEnd(self);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createDecisionAction(Element)}.
+     */
+    public Element createDecisionAction(Element ownerElement) {
+        return this.diagramMutationToolService.createDecisionAction(ownerElement);
+    }
+
+    /**
      * {@link DiagramMutationElementService#createFlowUsage(Feature, Feature, Node, Node, IEditingContext, DiagramContext)}.
      */
     public FlowUsage createFlowUsage(Feature source, Feature target, Node sourceNode, Node targetNode, IEditingContext editingContext,
             DiagramContext diagramContext) {
         return this.diagramMutationElementService.createFlowUsage(source, target, sourceNode, targetNode, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createForkAction(Element)}.
+     */
+    public Element createForkAction(Element ownerElement) {
+        return this.diagramMutationToolService.createForkAction(ownerElement);
     }
 
     /**
@@ -183,6 +294,120 @@ public class DiagramMutationAQLService {
     public InterfaceUsage createInterfaceUsage(PortUsage sourcePort, PortUsage targetPort, Node sourceNode, Node targetNode, IEditingContext editingContext,
             DiagramContext diagramContext) {
         return this.diagramMutationElementService.createInterfaceUsage(sourcePort, targetPort, sourceNode, targetNode, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createInterfaceDefinitionEnd(InterfaceDefinition)}.
+     */
+    public Element createInterfaceDefinitionEnd(InterfaceDefinition self) {
+        return this.diagramMutationToolService.createInterfaceDefinitionEnd(self);
+    }
+
+    /**
+     * {@link DiagramMutationElementService#createIncludeUseCaseUsage(UseCaseUsage, UseCaseUsage)}.
+     */
+    public IncludeUseCaseUsage createIncludeUseCaseUsage(UseCaseUsage source, UseCaseUsage target) {
+        return this.diagramMutationElementService.createIncludeUseCaseUsage(source, target);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createJoinAction(Element)}.
+     */
+    public Element createJoinAction(Element ownerElement) {
+        return this.diagramMutationToolService.createJoinAction(ownerElement);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createMergeAction(Element)}.
+     */
+    public Element createMergeAction(Element ownerElement) {
+        return this.diagramMutationToolService.createMergeAction(ownerElement);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createNamespaceImport(Element, Namespace)}.
+     */
+    public Element createNamespaceImport(Element self, Namespace importedNamespace) {
+        return this.diagramMutationToolService.createNamespaceImport(self, importedNamespace);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createPartDefinitionAndFeatureTyping(PartUsage)}.
+     */
+    public Element createPartDefinitionAndFeatureTyping(PartUsage self) {
+        return this.diagramMutationToolService.createPartDefinitionAndFeatureTyping(self);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createPartUsageAndSubsetting(PartUsage)}.
+     */
+    public PartUsage createPartUsageAndSubsetting(PartUsage self) {
+        return this.diagramMutationToolService.createPartUsageAndSubsetting(self);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createPartUsageAsActor(Element, Element)}.
+     */
+    public Element createPartUsageAsActor(Element self, Element selectedObject) {
+        return this.diagramMutationToolService.createPartUsageAsActor(self, selectedObject);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createPartUsageAsStakeholder(Element, Element)}.
+     */
+    public Element createPartUsageAsStakeholder(Element self, Element selectedObject) {
+        return this.diagramMutationToolService.createPartUsageAsStakeholder(self, selectedObject);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createPerformAction(Element)}.
+     */
+    public Element createPerformAction(Element ownerElement) {
+        return this.diagramMutationToolService.createPerformAction(ownerElement);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createReferenceUsageAsSubject(Element, Element)}.
+     */
+    public Element createReferenceUsageAsSubject(Element self, Element selectedObject) {
+        return this.diagramMutationToolService.createReferenceUsageAsSubject(self, selectedObject);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createRequirementUsageAsObjectiveRequirement(Element, Element)}.
+     */
+    public Element createRequirementUsageAsObjectiveRequirement(Element self, Element selectedObject) {
+        return this.diagramMutationToolService.createRequirementUsageAsObjectiveRequirement(self, selectedObject);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createStateSubaction(Element, ActionUsage, String)}.
+     */
+    public Element createStateSubaction(Element self, ActionUsage performedAction, String kindLiteral) {
+        return this.diagramMutationToolService.createStateSubaction(self, performedAction, kindLiteral);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#createSubActionUsage(Element)}.
+     */
+    public ActionUsage createSubActionUsage(Element ownerElement) {
+        return this.diagramMutationToolService.createSubActionUsage(ownerElement);
+    }
+
+    /**
+     * {@link DiagramMutationElementService#createSuccessionEdge(Element, Element, Node, Node, IEditingContext, org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService)}.
+     */
+    public Element createSuccessionEdge(Element successionSource, Element successionTarget, Node sourceNode, Node targetNode, IEditingContext editingContext,
+            org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService diagramService) {
+        return this.diagramMutationElementService.createSuccessionEdge(successionSource, successionTarget, sourceNode, targetNode, editingContext, diagramService);
+    }
+
+    /**
+     * {@link DiagramMutationElementService#createTransitionUsage(Feature, Feature, Node, Node, org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService, IEditingContext)}.
+     */
+    public Feature createTransitionUsage(Feature sourceUsage, Feature targetUsage, Node source, Node target,
+            org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService diagramService, IEditingContext editingContext) {
+        return this.diagramMutationElementService.createTransitionUsage(sourceUsage, targetUsage, source, target, diagramService, editingContext);
     }
 
     /**

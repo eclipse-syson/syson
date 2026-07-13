@@ -24,8 +24,8 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
-import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
+import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
 import org.eclipse.syson.sysml.AnnotatingElement;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -63,7 +63,7 @@ public class AnnotatingElementOnRelationshipNodeToolProvider implements INodeToo
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of0(ViewCreateService::elementInitializer).aql("newInstance"))
+                .expression(ServiceMethod.of0(ModelMutationAQLService::initialize).aql("newInstance"))
                 .children(updateExposedElements.build());
 
         var setAnnotatedElement = this.viewBuilderHelper.newSetValue()

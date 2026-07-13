@@ -17,7 +17,8 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuild
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
-import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -39,7 +40,7 @@ public class AcceptActionPortUsageReceiverToolNodeProvider implements INodeToolP
         var builder = this.diagramBuilderHelper.newNodeTool();
 
         var creationPayloadServiceCall = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of0(ViewCreateService::createAcceptActionReceiver).aqlSelf())
+                .expression(ServiceMethod.of0(DiagramMutationAQLService::createAcceptActionReceiver).aqlSelf())
                 .build();
 
         var rootChangContext = this.viewBuilderHelper.newChangeContext()
@@ -50,7 +51,7 @@ public class AcceptActionPortUsageReceiverToolNodeProvider implements INodeToolP
         return builder.name("New Port as Receiver")
                 .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getPortUsage().getName() + ".svg")
                 .body(rootChangContext)
-                .preconditionExpression(ServiceMethod.of0(ViewCreateService::isEmptyAcceptActionUsageReceiver).aqlSelf())
+                .preconditionExpression(ServiceMethod.of0(DiagramQueryAQLService::isEmptyAcceptActionUsageReceiver).aqlSelf())
                 .build();
     }
 }

@@ -25,11 +25,11 @@ import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
-import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
-import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
@@ -66,7 +66,7 @@ public class NamespaceImportNodeToolProvider implements INodeToolProvider {
                 .semanticElementExpression(AQLConstants.AQL_SELF);
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of1(ViewCreateService::createNamespaceImport).aqlSelf("selectedObject"))
+                .expression(ServiceMethod.of1(DiagramMutationAQLService::createNamespaceImport).aqlSelf("selectedObject"))
                 .children(createView.build());
 
         var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()

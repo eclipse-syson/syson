@@ -28,11 +28,11 @@ import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
-import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
-import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.sysml.StateSubactionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.ServiceMethod;
@@ -61,7 +61,7 @@ public class StateSubactionNodeToolProvider implements INodeToolProvider {
                 .name(this.getNodeToolLabel())
                 .iconURLsExpression("/icons/full/obj16/PerformActionUsage.svg")
                 .body(this.getCreateSubactionOperation())
-                .preconditionExpression(ServiceMethod.of1(ViewCreateService::isEmptyOfActionKindCompartment).aqlSelf(AQLUtils.aqlString(this.kind.getLiteral())))
+                .preconditionExpression(ServiceMethod.of1(DiagramQueryAQLService::isEmptyOfActionKindCompartment).aqlSelf(AQLUtils.aqlString(this.kind.getLiteral())))
                 .dialogDescription(this.getExistingActionSelectionDialog())
                 .build();
     }
@@ -76,7 +76,7 @@ public class StateSubactionNodeToolProvider implements INodeToolProvider {
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         return this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of2(ViewCreateService::createStateSubaction).aqlSelf("selectedObject", AQLUtils.aqlString(this.kind.getLiteral())))
+                .expression(ServiceMethod.of2(DiagramMutationAQLService::createStateSubaction).aqlSelf("selectedObject", AQLUtils.aqlString(this.kind.getLiteral())))
                 .children(revealOperation.build())
                 .build();
     }

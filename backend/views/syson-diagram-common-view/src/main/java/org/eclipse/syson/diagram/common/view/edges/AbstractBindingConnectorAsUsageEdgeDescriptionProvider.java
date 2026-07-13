@@ -117,7 +117,6 @@ public abstract class AbstractBindingConnectorAsUsageEdgeDescriptionProvider ext
         }
     }
 
-
     private EdgeStyle createEdgeStyle() {
         return this.diagramBuilderHelper.newEdgeStyle()
                 .borderSize(0)
@@ -140,7 +139,6 @@ public abstract class AbstractBindingConnectorAsUsageEdgeDescriptionProvider ext
                 .body(callEditService.build())
                 .build();
     }
-
 
     @Override
     protected ChangeContextBuilder getSourceReconnectToolBody() {

@@ -16,7 +16,6 @@ import java.util.List;
 
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
-import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
@@ -45,7 +44,6 @@ public class SDVJavaServiceProvider implements IJavaServiceProvider {
                 .findFirst();
         if (optGVDescription.isPresent()) {
             return List.of(DeleteService.class,
-                    ViewCreateService.class,
                     ViewLabelService.class,
                     UtilService.class,
                     DiagramMutationAQLService.class,

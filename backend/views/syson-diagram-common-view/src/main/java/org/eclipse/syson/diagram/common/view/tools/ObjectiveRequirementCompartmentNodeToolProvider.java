@@ -15,10 +15,11 @@ package org.eclipse.syson.diagram.common.view.tools;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
-import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
-import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -37,7 +38,7 @@ public class ObjectiveRequirementCompartmentNodeToolProvider extends AbstractCom
 
     @Override
     protected String getServiceCallExpression() {
-        return ServiceMethod.of1(ViewCreateService::createRequirementUsageAsObjectiveRequirement).aqlSelf("selectedObject");
+        return ServiceMethod.of1(DiagramMutationAQLService::createRequirementUsageAsObjectiveRequirement).aqlSelf("selectedObject");
     }
 
     @Override
@@ -79,7 +80,7 @@ public class ObjectiveRequirementCompartmentNodeToolProvider extends AbstractCom
 
     @Override
     protected String getPreconditionExpression() {
-        return ServiceMethod.of0(ViewCreateService::isEmptyObjectiveRequirementCompartment).aqlSelf();
+        return ServiceMethod.of0(DiagramQueryAQLService::isEmptyObjectiveRequirementCompartment).aqlSelf();
     }
 
     @Override

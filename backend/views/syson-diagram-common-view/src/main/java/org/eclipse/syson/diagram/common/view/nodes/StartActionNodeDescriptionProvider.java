@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
-import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -92,7 +92,7 @@ public class StartActionNodeDescriptionProvider extends AbstractNodeDescriptionP
                 .iconURLsExpression("/icons/full/obj16/Succession.svg")
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression(
-                                ServiceMethod.of5(ViewCreateService::createSuccessionEdge).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE,
+                                ServiceMethod.of5(DiagramMutationAQLService::createSuccessionEdge).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE,
                                         EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT, IDiagramService.DIAGRAM_SERVICES))
                         .build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))

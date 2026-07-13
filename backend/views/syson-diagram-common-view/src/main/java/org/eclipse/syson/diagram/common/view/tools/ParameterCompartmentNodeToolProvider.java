@@ -14,7 +14,7 @@ package org.eclipse.syson.diagram.common.view.tools;
 
 import java.util.Objects;
 
-import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.ServiceMethod;
@@ -34,7 +34,7 @@ public class ParameterCompartmentNodeToolProvider extends AbstractCompartmentNod
 
     @Override
     protected String getServiceCallExpression() {
-        return ServiceMethod.of1(ViewCreateService::createActionParameter).aqlSelf(AQLUtils.aqlString(this.direction.getName()));
+        return ServiceMethod.of1(DiagramMutationAQLService::createActionParameter).aqlSelf(AQLUtils.aqlString(this.direction.getName()));
     }
 
     @Override

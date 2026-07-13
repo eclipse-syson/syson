@@ -15,9 +15,9 @@ package org.eclipse.syson.diagram.common.view.tools;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
-import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
-import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -31,7 +31,7 @@ public class ActorCompartmentNodeToolProvider extends AbstractCompartmentNodeToo
 
     @Override
     protected String getServiceCallExpression() {
-        return ServiceMethod.of1(ViewCreateService::createPartUsageAsActor).aqlSelf("selectedObject");
+        return ServiceMethod.of1(DiagramMutationAQLService::createPartUsageAsActor).aqlSelf("selectedObject");
     }
 
     @Override

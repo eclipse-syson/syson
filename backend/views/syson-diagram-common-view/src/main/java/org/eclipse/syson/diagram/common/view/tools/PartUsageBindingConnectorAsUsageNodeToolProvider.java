@@ -71,4 +71,3 @@ public class PartUsageBindingConnectorAsUsageNodeToolProvider implements INodeTo
                 .build();
     }
 }
-

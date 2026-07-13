@@ -32,9 +32,8 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
-import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
-import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.Element;
@@ -196,7 +195,6 @@ public class ToolDescriptionService {
      */
     public NodeTool addExistingElementsTool(boolean recursive, boolean nested) {
         var builder = this.diagramBuilderHelper.newNodeTool();
-
 
         var addToExposedElements = this.viewBuilderHelper.newChangeContext()
                 .expression(
@@ -475,7 +473,7 @@ public class ToolDescriptionService {
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of0(ViewCreateService::elementInitializer).aql(NEW_INSTANCE));
+                .expression(ServiceMethod.of0(ModelMutationAQLService::initialize).aql(NEW_INSTANCE));
 
         var createDiagramIfNeeded = this.viewBuilderHelper.newChangeContext()
                 .expression(ServiceMethod.of1(DiagramMutationAQLService::createDiagram).aqlSelf(IEditingContext.EDITING_CONTEXT));
@@ -563,7 +561,7 @@ public class ToolDescriptionService {
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of0(ViewCreateService::elementInitializer).aql(NEW_INSTANCE));
+                .expression(ServiceMethod.of0(ModelMutationAQLService::initialize).aql(NEW_INSTANCE));
 
         if (direction != null) {
             changeContextNewInstance.children(setDirection.build(), updateExposedElements.build());

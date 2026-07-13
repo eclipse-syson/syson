@@ -22,9 +22,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
@@ -72,8 +74,8 @@ import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
-import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.TransitionUsage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.sysml.ViewUsage;
@@ -81,6 +83,7 @@ import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
 import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationElementService;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
+import org.eclipse.syson.util.NodeFinder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -714,6 +717,106 @@ public class DiagramMutationElementService {
     }
 
     /**
+     * Create a new IncludeUseCaseUsage.
+     *
+     * @param source
+     *            the source usage
+     * @param target
+     *            the target usage
+     * @return a new {@link IncludeUseCaseUsage}
+     */
+    public IncludeUseCaseUsage createIncludeUseCaseUsage(UseCaseUsage source, UseCaseUsage target) {
+        var ownerMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        source.getOwnedRelationship().add(ownerMembership);
+
+        IncludeUseCaseUsage includeUsage = SysmlFactory.eINSTANCE.createIncludeUseCaseUsage();
+        ownerMembership.getOwnedRelatedElement().add(includeUsage);
+
+        ReferenceSubsetting refSub = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        includeUsage.getOwnedRelationship().add(refSub);
+        refSub.setReferencedFeature(target);
+        return includeUsage;
+    }
+
+    /**
+     * Create a new allocate edge between the given source and target.
+     *
+     * @param source
+     *            the source element
+     * @param target
+     *            the target element
+     * @param sourceNode
+     *            the source graphical node
+     * @param editingContext
+     *            the current editing context
+     * @param diagramService
+     *            the current diagram service
+     * @return the given source element
+     */
+    public Element createAllocateEdge(Element source, Element target, Node sourceNode, IEditingContext editingContext, IDiagramService diagramService) {
+        var owner = source.getOwner();
+        var ownerMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+        owner.getOwnedRelationship().add(ownerMembership);
+        var allocation = SysmlFactory.eINSTANCE.createAllocationUsage();
+        ownerMembership.getOwnedRelatedElement().add(allocation);
+        this.addEndToAllocateEdge(allocation, source);
+        this.addEndToAllocateEdge(allocation, target);
+        return source;
+    }
+
+    /**
+     * Create a new succession edge between the given source and target.
+     *
+     * @param successionSource
+     *            the source end
+     * @param successionTarget
+     *            the target end
+     * @param sourceNode
+     *            the source graphical node
+     * @param targetNode
+     *            the target graphical node
+     * @param editingContext
+     *            the current editing context
+     * @param diagramService
+     *            the current diagram service
+     * @return the given source element
+     */
+    public Element createSuccessionEdge(Element successionSource, Element successionTarget, Node sourceNode, Node targetNode, IEditingContext editingContext, IDiagramService diagramService) {
+        if (!this.isInSameGraphicalContainer(sourceNode, targetNode, diagramService)) {
+            this.feedbackMessageService.addFeedbackMessage(new Message("Can't create cross container SuccessionAsUsage", MessageLevel.WARNING));
+            return successionSource;
+        }
+        EObject successionOwner = this.getSourceOwner(sourceNode, editingContext, diagramService);
+        return this.createSuccessionEdge(successionSource, successionTarget, successionOwner);
+    }
+
+    /**
+     * Create a new transition usage between the given source and target.
+     *
+     * @param sourceUsage
+     *            the source feature
+     * @param targetUsage
+     *            the target feature
+     * @param source
+     *            the source graphical node
+     * @param target
+     *            the target graphical node
+     * @param diagramService
+     *            the current diagram service
+     * @param editingContext
+     *            the current editing context
+     * @return the given source feature
+     */
+    public Feature createTransitionUsage(Feature sourceUsage, Feature targetUsage, Node source, Node target, IDiagramService diagramService, IEditingContext editingContext) {
+        if (!this.isInSameGraphicalContainer(source, target, diagramService)) {
+            this.feedbackMessageService.addFeedbackMessage(new Message("Can't create cross container TransitionUsage", MessageLevel.WARNING));
+            return sourceUsage;
+        }
+        EObject transitionOwner = this.getSourceOwner(source, editingContext, diagramService);
+        return this.createTransitionUsage(sourceUsage, targetUsage, transitionOwner);
+    }
+
+    /**
      * Reconnects the source of an allocate edge.
      *
      * @param allocationUsage
@@ -733,6 +836,18 @@ public class DiagramMutationElementService {
             }
         }
         return allocationUsage;
+    }
+
+    private void addEndToAllocateEdge(AllocationUsage edge, Element end) {
+        if (end instanceof Usage usage) {
+            var featureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
+            edge.getOwnedRelationship().add(featureMembership);
+            var feature = SysmlFactory.eINSTANCE.createFeature();
+            featureMembership.getOwnedRelatedElement().add(feature);
+            var reference = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+            feature.getOwnedRelationship().add(reference);
+            reference.setReferencedFeature(usage);
+        }
     }
 
     /**
@@ -795,6 +910,21 @@ public class DiagramMutationElementService {
         return succession;
     }
 
+    private Element createSuccessionEdge(Element successionSource, Element successionTarget, EObject successionOwner) {
+        if (successionOwner instanceof Element ownerElement) {
+            var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+            ownerElement.getOwnedRelationship().add(featureMembership);
+            var succession = SysmlFactory.eINSTANCE.createSuccessionAsUsage();
+            featureMembership.getOwnedRelatedElement().add(succession);
+            this.metamodelMutationElementService.initialize(succession);
+            var sourceEnd = this.createEndFeatureMembershipFor(successionSource);
+            var targetEnd = this.createEndFeatureMembershipFor(successionTarget);
+            succession.getOwnedRelationship().add(sourceEnd);
+            succession.getOwnedRelationship().add(targetEnd);
+        }
+        return successionSource;
+    }
+
     /**
      * Reconnects the source of a transition edge.
      *
@@ -827,6 +957,32 @@ public class DiagramMutationElementService {
                                 .findFirst()
                                 .ifPresent(referenceSubsetting -> referenceSubsetting.setReferencedFeature(newSource))));
         return transition;
+    }
+
+    private Feature createTransitionUsage(Feature sourceUsage, Feature targetUsage, EObject transitionOwner) {
+        if (transitionOwner instanceof Element ownerElement) {
+            TransitionUsage newTransitionUsage = SysmlFactory.eINSTANCE.createTransitionUsage();
+            var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+            featureMembership.getOwnedRelatedElement().add(newTransitionUsage);
+            ownerElement.getOwnedRelationship().add(featureMembership);
+
+            var sourceMembership = SysmlFactory.eINSTANCE.createMembership();
+            newTransitionUsage.getOwnedRelationship().add(sourceMembership);
+            sourceMembership.setMemberElement(sourceUsage);
+
+            Succession succession = SysmlFactory.eINSTANCE.createSuccession();
+            this.metamodelMutationElementService.initialize(succession);
+            var successionFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+            successionFeatureMembership.getOwnedRelatedElement().add(succession);
+            newTransitionUsage.getOwnedRelationship().add(successionFeatureMembership);
+
+            succession.getOwnedRelationship().add(this.createConnectorEndFeatureMembership(sourceUsage));
+            succession.getOwnedRelationship().add(this.createConnectorEndFeatureMembership(targetUsage));
+            this.metamodelMutationElementService.initialize(newTransitionUsage);
+        } else {
+            this.feedbackMessageService.addFeedbackMessage(new Message("Unable to find a suitable semantic owner for the new transition", MessageLevel.WARNING));
+        }
+        return sourceUsage;
     }
 
     /**
@@ -890,6 +1046,64 @@ public class DiagramMutationElementService {
             referenceSubsetting.setReferencedFeature(newTarget);
         }
         return includeUseCaseUsage;
+    }
+
+    private EndFeatureMembership createEndFeatureMembershipFor(Element sourceOrTarget) {
+        var endFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
+        var referenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+        referenceUsage.setIsEnd(true);
+        var referenceSubSetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        if (sourceOrTarget instanceof Membership membership) {
+            if (membership.getMemberElement() instanceof ActionUsage actionUsage) {
+                referenceSubSetting.setReferencedFeature(actionUsage);
+            }
+        } else if (sourceOrTarget instanceof ActionUsage actionUsage) {
+            referenceSubSetting.setReferencedFeature(actionUsage);
+        }
+        referenceUsage.getOwnedRelationship().add(referenceSubSetting);
+        endFeatureMembership.getOwnedRelatedElement().add(referenceUsage);
+        return endFeatureMembership;
+    }
+
+    private EndFeatureMembership createConnectorEndFeatureMembership(Feature feature) {
+        var successionSourceEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
+        var successionSourceEndFeatureFeature = SysmlFactory.eINSTANCE.createFeature();
+        successionSourceEndFeatureMembership.getOwnedRelatedElement().add(successionSourceEndFeatureFeature);
+
+        var successionSourceRefSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        successionSourceRefSubsetting.setReferencedFeature(feature);
+        successionSourceEndFeatureFeature.getOwnedRelationship().add(successionSourceRefSubsetting);
+        return successionSourceEndFeatureMembership;
+    }
+
+    private Element getSourceOwner(Node sourceNode, IEditingContext editingContext, IDiagramService diagramService) {
+        Diagram diagram = diagramService.getDiagramContext().diagram();
+        var parentNode = new NodeFinder(diagram).getParent(sourceNode);
+        if (parentNode instanceof Node node) {
+            return this.objectSearchService.getObject(editingContext, node.getTargetObjectId())
+                    .filter(Element.class::isInstance)
+                    .map(Element.class::cast)
+                    .orElse(null);
+        }
+        return this.objectSearchService.getObject(editingContext, diagram.getTargetObjectId())
+                .filter(Element.class::isInstance)
+                .map(Element.class::cast)
+                .map(this::resolveSemanticOwnerForBackgroundNodeInDiagramContext)
+                .orElse(null);
+    }
+
+    private Element resolveSemanticOwnerForBackgroundNodeInDiagramContext(Element diagramTarget) {
+        if (diagramTarget instanceof ViewUsage viewUsage && viewUsage.getOwner() != null) {
+            return viewUsage.getOwner();
+        }
+        return diagramTarget;
+    }
+
+    private boolean isInSameGraphicalContainer(Node sourceNode, Node targetNode, IDiagramService diagramService) {
+        Diagram diagram = diagramService.getDiagramContext().diagram();
+        var sourceParentNode = new NodeFinder(diagram).getParent(sourceNode);
+        var targetParentNode = new NodeFinder(diagram).getParent(targetNode);
+        return Objects.equals(sourceParentNode, targetParentNode);
     }
 
     /**

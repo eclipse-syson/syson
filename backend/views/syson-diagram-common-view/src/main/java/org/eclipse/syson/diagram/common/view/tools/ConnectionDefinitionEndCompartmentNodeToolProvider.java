@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
-import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.util.ServiceMethod;
 
 /**
@@ -24,7 +24,7 @@ public class ConnectionDefinitionEndCompartmentNodeToolProvider extends Abstract
 
     @Override
     protected String getServiceCallExpression() {
-        return ServiceMethod.of0(ViewCreateService::createConnectionDefinitionEnd).aqlSelf();
+        return ServiceMethod.of0(DiagramMutationAQLService::createConnectionDefinitionEnd).aqlSelf();
     }
 
     @Override

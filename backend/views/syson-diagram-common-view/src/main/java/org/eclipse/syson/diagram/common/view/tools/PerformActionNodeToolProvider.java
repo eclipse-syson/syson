@@ -20,10 +20,10 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
-import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
-import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
+import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -37,7 +37,7 @@ public class PerformActionNodeToolProvider extends AbstractCompartmentNodeToolPr
 
     @Override
     protected String getServiceCallExpression() {
-        return ServiceMethod.of0(ViewCreateService::createPerformAction).aqlSelf();
+        return ServiceMethod.of0(DiagramMutationAQLService::createPerformAction).aqlSelf();
     }
 
     @Override
@@ -68,7 +68,7 @@ public class PerformActionNodeToolProvider extends AbstractCompartmentNodeToolPr
                 .children(setReferencedFeature.build());
 
         var initializeReferenceSubsetting = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of0(ViewCreateService::elementInitializer).aql("newRefSubsetting"));
+                .expression(ServiceMethod.of0(ModelMutationAQLService::initialize).aql("newRefSubsetting"));
 
         var createReferenceSubsettingInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getReferenceSubsetting()))

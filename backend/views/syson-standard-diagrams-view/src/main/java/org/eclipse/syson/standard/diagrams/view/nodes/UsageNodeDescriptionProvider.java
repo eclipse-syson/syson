@@ -35,8 +35,8 @@ import org.eclipse.syson.diagram.common.view.nodes.ForkActionNodeDescriptionProv
 import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.diagram.common.view.nodes.StartStateNodeDescriptionProvider;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.standard.diagrams.view.SDVDiagramDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.services.SDVNodeToolSectionSwitch;

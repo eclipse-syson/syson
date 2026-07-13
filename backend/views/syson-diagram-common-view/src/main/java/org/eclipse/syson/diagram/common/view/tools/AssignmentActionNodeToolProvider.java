@@ -14,7 +14,7 @@ package org.eclipse.syson.diagram.common.view.tools;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
@@ -37,7 +37,7 @@ public class AssignmentActionNodeToolProvider extends AbstractFreeFormCompartmen
 
     @Override
     protected String getCreationServiceCallExpression() {
-        return ServiceMethod.of0(ViewCreateService::createAssignmentAction).aqlSelf();
+        return ServiceMethod.of0(DiagramMutationAQLService::createAssignmentAction).aqlSelf();
     }
 
     @Override

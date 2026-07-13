@@ -23,7 +23,6 @@ import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
-import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
 import org.eclipse.syson.sysml.PortionKind;
@@ -64,7 +63,7 @@ public class OccurrenceUsageTimesliceNodeToolProvider implements INodeToolProvid
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of0(ViewCreateService::elementInitializer).aql("newInstance"))
+                .expression(ServiceMethod.of0(ModelMutationAQLService::initialize).aql("newInstance"))
                 .children(
                     updateExposedElements.build(),
                     setTimeSlice.build()

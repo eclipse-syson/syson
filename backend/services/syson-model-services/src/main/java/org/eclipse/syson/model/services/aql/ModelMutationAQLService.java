@@ -61,6 +61,13 @@ public class ModelMutationAQLService {
     }
 
     /**
+     * {@link MetamodelMutationElementService#initialize(Element)}.
+     */
+    public Element initialize(Element element) {
+        return this.metamodelElementMutationService.initialize(element);
+    }
+
+    /**
      * {@link ModelMutationElementService#createPartUsageAndInterface(PartUsage)}.
      */
     public Element createPartUsageAndInterface(PartUsage self) {

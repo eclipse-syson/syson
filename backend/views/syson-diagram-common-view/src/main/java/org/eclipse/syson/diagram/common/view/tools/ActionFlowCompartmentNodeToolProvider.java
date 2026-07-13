@@ -21,7 +21,6 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
-import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.ServiceMethod;
@@ -58,7 +57,7 @@ public class ActionFlowCompartmentNodeToolProvider implements INodeToolProvider 
 
         var letNewInstance = this.viewBuilderHelper.newLet()
                 .variableName(NEW_INSTANCE)
-                .valueExpression(ServiceMethod.of0(ViewCreateService::createSubActionUsage).aqlSelf())
+                .valueExpression(ServiceMethod.of0(DiagramMutationAQLService::createSubActionUsage).aqlSelf())
                 .children(creationServiceCall)
                 .build();
 

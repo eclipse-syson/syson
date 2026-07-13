@@ -117,7 +117,6 @@ public abstract class AbstractFlowUsageEdgeDescriptionProvider extends AbstractE
         }
     }
 
-
     private EdgeStyle createEdgeStyle() {
         return this.diagramBuilderHelper.newEdgeStyle()
                 .borderSize(0)
@@ -140,7 +139,6 @@ public abstract class AbstractFlowUsageEdgeDescriptionProvider extends AbstractE
                 .body(callEditService.build())
                 .build();
     }
-
 
     @Override
     protected ChangeContextBuilder getSourceReconnectToolBody() {

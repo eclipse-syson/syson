@@ -36,6 +36,7 @@ import org.eclipse.syson.sysml.ControlNode;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
@@ -104,6 +105,13 @@ public class DiagramQueryAQLService {
      */
     public boolean canCreateFlowUsage(ConnectionUsage connection) {
         return this.diagramQueryElementService.canCreateFlowUsage(connection);
+    }
+
+    /**
+     * {@link DiagramQueryViewService#canCreateDiagram(Element)}.
+     */
+    public boolean canCreateDiagram(Element element) {
+        return this.diagramQueryViewService.canCreateDiagram(element);
     }
 
     /**
@@ -201,6 +209,13 @@ public class DiagramQueryAQLService {
     }
 
     /**
+     * {@link DiagramQueryToolService#getInheritedCompartmentItems(Type, String)}.
+     */
+    public List<Feature> getInheritedCompartmentItems(Type type, String eReferenceName) {
+        return this.diagramQueryToolService.getInheritedCompartmentItems(type, eReferenceName);
+    }
+
+    /**
      * {@link DiagramQueryExposeService#getExposedStakeholders(Element, EClass, List, IEditingContext, DiagramContext)}.
      */
     public List<PartUsage> getExposedStakeholders(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
@@ -272,6 +287,41 @@ public class DiagramQueryAQLService {
      */
     public boolean isControlNodeActionCreationToolInsideActionOnAFV(Element element, IEditingContext editingContext, DiagramContext diagramContext) {
         return this.diagramQueryToolService.isControlNodeActionCreationToolInsideActionOnAFV(element, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramQueryToolService#isEmptyAcceptActionUsagePayload(Element)}.
+     */
+    public boolean isEmptyAcceptActionUsagePayload(Element element) {
+        return this.diagramQueryToolService.isEmptyAcceptActionUsagePayload(element);
+    }
+
+    /**
+     * {@link DiagramQueryToolService#isEmptyAcceptActionUsageReceiver(Element)}.
+     */
+    public boolean isEmptyAcceptActionUsageReceiver(Element element) {
+        return this.diagramQueryToolService.isEmptyAcceptActionUsageReceiver(element);
+    }
+
+    /**
+     * {@link DiagramQueryToolService#isEmptyObjectiveRequirementCompartment(Element)}.
+     */
+    public boolean isEmptyObjectiveRequirementCompartment(Element self) {
+        return this.diagramQueryToolService.isEmptyObjectiveRequirementCompartment(self);
+    }
+
+    /**
+     * {@link DiagramQueryToolService#isEmptyOfActionKindCompartment(Element, String)}.
+     */
+    public boolean isEmptyOfActionKindCompartment(Element self, String kind) {
+        return this.diagramQueryToolService.isEmptyOfActionKindCompartment(self, kind);
+    }
+
+    /**
+     * {@link DiagramQueryToolService#isEmptySubjectCompartment(Element)}.
+     */
+    public boolean isEmptySubjectCompartment(Element self) {
+        return this.diagramQueryToolService.isEmptySubjectCompartment(self);
     }
 
     /**
