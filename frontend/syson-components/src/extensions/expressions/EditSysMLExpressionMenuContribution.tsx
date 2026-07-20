@@ -54,8 +54,7 @@ export const EditSysMLExpressionMenuContribution = forwardRef(
           onClick={() => setModalOpened(true)}
           data-testid="edit-sysml-expression-menu"
           disabled={readOnly}
-          ref={ref}
-          aria-disabled>
+          ref={ref}>
           <ListItemIcon>
             <EditIcon fontSize="small" />
           </ListItemIcon>
