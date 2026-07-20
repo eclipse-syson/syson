@@ -46,8 +46,7 @@ export const DeleteExpressionExplorerToolOverriddenContribution = forwardRef(
           onClick={handleDeleteExpression}
           data-testid="delete-sysml-expression-menu"
           disabled={readOnly}
-          ref={ref}
-          aria-disabled>
+          ref={ref}>
           <ListItemIcon>
             <DeleteIcon fontSize="small" />
           </ListItemIcon>

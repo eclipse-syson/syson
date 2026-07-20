@@ -48,8 +48,7 @@ export const InsertTextualSysMLMenuContribution = forwardRef(
           onClick={() => setModal(true)}
           data-testid="insert-textual-sysmlv2-menu"
           disabled={readOnly}
-          ref={ref}
-          aria-disabled>
+          ref={ref}>
           <ListItemIcon>
             <AddIcon fontSize="small" />
           </ListItemIcon>

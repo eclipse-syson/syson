@@ -54,8 +54,7 @@ export const NewExpressionExplorerToolOverriddenContribution = forwardRef(
           onClick={() => setModalOpened(true)}
           data-testid="new-sysml-expression-menu"
           disabled={readOnly}
-          ref={ref}
-          aria-disabled>
+          ref={ref}>
           <ListItemIcon>
             <AddIcon fontSize="small" />
           </ListItemIcon>
