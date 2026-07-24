@@ -14,6 +14,8 @@
 
 * In diagrams:
 
+** Fix `Comment` graphical nodes so changing their background color no longer changes their border color.
+
 * In textual import/export:
 
 

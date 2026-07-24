@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,8 @@ import org.eclipse.syson.application.libraries.SysONLibraryImportTestServer;
 public class ProjectWithLibraryDependencyTestProjectData {
 
     public static final String PROJECT_NAME = "ProjectUsingMyLibraryV1";
+
+    public static final String PROJECT_ID = "3a06824a-a634-42ea-918f-817adc4b17a3";
 
     public static final String LIBRARY_PROJECT_ID = "c493d950-f81a-4e56-a454-f9e5ce1c839f";
 
