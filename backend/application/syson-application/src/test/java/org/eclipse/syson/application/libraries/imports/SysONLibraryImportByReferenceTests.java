@@ -27,13 +27,12 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.validation.dto.ValidationEventInput;
 import org.eclipse.sirius.components.collaborative.validation.dto.ValidationRefreshedEventPayload;
-import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
-import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.library.dto.ImportLibrariesInput;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.tests.graphql.ValidationEventSubscriptionRunner;
+import org.eclipse.syson.InvalidateStandardLibrariesCache;
 import org.eclipse.syson.application.libraries.SysONLibraryImportTestServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -59,10 +58,8 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(OutputCaptureExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
+@InvalidateStandardLibrariesCache
 public class SysONLibraryImportByReferenceTests extends SysONLibraryImportTests {
-
-    @Autowired
-    private IEditingContextSearchService editingContextSearchService;
 
     @Autowired
     private ValidationEventSubscriptionRunner validationEventSubscriptionRunner;
@@ -106,13 +103,24 @@ public class SysONLibraryImportByReferenceTests extends SysONLibraryImportTests 
     @SysONLibraryImportTestServer
     public void testImportingProjectSemanticDataHaveChanged(CapturedOutput capturedOutput) {
         this.importLibraryV1();
-        final ResourceSet projectResourceSet = ((IEMFEditingContext) this.projectEditingContext).getDomain().getResourceSet();
         final SemanticData myLibraryV1SemanticData = this.loadMyLibraryV1SemanticData();
-        final List<Resource> libraryResources = ((IEMFEditingContext) this.editingContextSearchService.findById(myLibraryV1SemanticData.getId().toString())
-                .orElseThrow())
-                        .getDomain()
-                        .getResourceSet()
-                        .getResources();
+        this.executeInEditingContext(this.projectEditingContextId, projectEditingContext -> {
+            final List<Resource> libraryResources = this.loadPublishedLibraryResources(myLibraryV1SemanticData.getId().toString());
+            this.assertImportedProjectResources(projectEditingContext.getDomain().getResourceSet(), myLibraryV1SemanticData, libraryResources);
+        });
+    }
+
+    /**
+     * Asserts that the project contains local library resources linked to their source library metadata.
+     *
+     * @param projectResourceSet
+     *            the project resource set
+     * @param myLibraryV1SemanticData
+     *            the imported library semantic data
+     * @param libraryResources
+     *            the source library resources
+     */
+    private void assertImportedProjectResources(final ResourceSet projectResourceSet, final SemanticData myLibraryV1SemanticData, final List<Resource> libraryResources) {
         // The importing project already had a resource before the import.
         assertThat(projectResourceSet.getResources()).hasSize(libraryResources.size() + 1);
 
@@ -162,7 +170,7 @@ public class SysONLibraryImportByReferenceTests extends SysONLibraryImportTests 
     @DisplayName("The validation view of the project displays the same amount of validation rules after the import")
     @SysONLibraryImportTestServer
     public void testValidationAfterImport() {
-        ValidationEventInput validationEventInput = new ValidationEventInput(UUID.randomUUID(), this.projectEditingContext.getId(), "validation://");
+        ValidationEventInput validationEventInput = new ValidationEventInput(UUID.randomUUID(), this.projectEditingContextId, "validation://");
         var validationFlux = this.validationEventSubscriptionRunner.run(validationEventInput).flux();
 
         AtomicReference<Integer> diagnosticCount = new AtomicReference<>(0);
@@ -199,11 +207,13 @@ public class SysONLibraryImportByReferenceTests extends SysONLibraryImportTests 
     }
 
     private void importLibraryV1() {
-        final ImportLibrariesInput importLibrariesInput = new ImportLibrariesInput(
-                UUID.randomUUID(),
-                super.projectEditingContext.getId(),
-                "import",
-                List.of(this.loadMyLibraryV1().getId().toString()));
-        this.projectEditingContextEventProcessor.handle(importLibrariesInput);
+        this.executeInEditingContext(this.projectEditingContextId, projectEditingContext -> {
+            final ImportLibrariesInput importLibrariesInput = new ImportLibrariesInput(
+                    UUID.randomUUID(),
+                    this.projectEditingContextId,
+                    "import",
+                    List.of(this.loadMyLibraryV1().getId().toString()));
+            this.createEditingContextEventProcessor(projectEditingContext).handle(importLibrariesInput);
+        });
     }
 }

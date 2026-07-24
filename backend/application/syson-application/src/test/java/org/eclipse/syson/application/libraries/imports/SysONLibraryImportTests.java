@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,27 +16,33 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
+import java.util.UUID;
+import java.util.function.Consumer;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessorFactory;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
+import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.application.data.ProjectWithLibraryDependencyTestProjectData;
+import org.eclipse.syson.application.data.ProjectWithoutLibraryDependencyTestProjectData;
+import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.ScrollPosition;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**
@@ -48,9 +54,7 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
  */
 public abstract class SysONLibraryImportTests extends AbstractIntegrationTests {
 
-    protected IEditingContext projectEditingContext;
-
-    protected IEditingContextEventProcessor projectEditingContextEventProcessor;
+    protected String projectEditingContextId;
 
     protected Instant myLibraryV1LastModifiedInstantBefore;
 
@@ -60,22 +64,22 @@ public abstract class SysONLibraryImportTests extends AbstractIntegrationTests {
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private IProjectSearchService projectSearchService;
-
-    @Autowired
     private ISemanticDataSearchService semanticDataSearchService;
 
     @Autowired
     private ILibrarySearchService librarySearchService;
 
     @Autowired
-    private IEditingContextSearchService editingContextSearchService;
-
-    @Autowired
     private IProjectSemanticDataSearchService projectSemanticDataSearchService;
 
     @Autowired
-    private EditingContextEventProcessorFactory factory;
+    private IEditingContextSearchService editingContextSearchService;
+
+    @Autowired
+    private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
+
+    @Autowired
+    private EditingContextEventProcessorFactory editingContextEventProcessorFactory;
 
     @BeforeEach
     public void initializeServerState() {
@@ -91,8 +95,7 @@ public abstract class SysONLibraryImportTests extends AbstractIntegrationTests {
         assertThat(projectSemanticData.getDependencies().isEmpty());
         assertThat(projectSemanticData.getDocuments()).hasSize(1);
 
-        this.projectEditingContext = this.editingContextSearchService.findById(projectSemanticData.getId().toString()).orElseThrow();
-        this.projectEditingContextEventProcessor = this.factory.createEditingContextEventProcessor(this.projectEditingContext);
+        this.projectEditingContextId = projectSemanticData.getId().toString();
 
         this.myLibraryV1LastModifiedInstantBefore = this.loadMyLibraryV1().getLastModifiedOn();
         this.myLibraryV1SemanticDataLastModifiedInstantBefore = myLibraryV1SemanticData.getLastModifiedOn();
@@ -101,7 +104,7 @@ public abstract class SysONLibraryImportTests extends AbstractIntegrationTests {
     protected Library loadMyLibraryV1() {
         return this.librarySearchService
                 .findByNamespaceAndNameAndVersion(
-                        this.loadProjectByName("MyLibrary").getId(),
+                        ProjectWithLibraryDependencyTestProjectData.LIBRARY_PROJECT_ID,
                         "MyLibrary",
                         "v1")
                 .orElseThrow();
@@ -112,8 +115,9 @@ public abstract class SysONLibraryImportTests extends AbstractIntegrationTests {
     }
 
     protected SemanticData loadProjectSemanticData() {
-        final Project project = this.loadProjectByName("ProjectUsingNoLibraries");
-        final ProjectSemanticData projectSemanticData = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(project.getId())).orElseThrow();
+        final ProjectSemanticData projectSemanticData = this.projectSemanticDataSearchService
+                .findByProjectId(AggregateReference.to(ProjectWithoutLibraryDependencyTestProjectData.PROJECT_ID))
+                .orElseThrow();
         return this.semanticDataSearchService.findById(projectSemanticData.getSemanticData().getId()).orElseThrow();
     }
 
@@ -126,14 +130,58 @@ public abstract class SysONLibraryImportTests extends AbstractIntegrationTests {
                 .getName();
     }
 
-    private Project loadProjectByName(final String projectName) {
-        final List<Project> candidates = this.projectSearchService.findAll(ScrollPosition.keyset(), 10, Map.of()).stream()
-                .filter(project -> project.getName().equals(projectName))
-                .toList();
-        if (candidates.size() != 1) {
-            return null;
-        } else {
-            return candidates.get(0);
-        }
+    /**
+     * Loads the resources of a published library editing context.
+     * <p>
+     * Published libraries are read-only, so the editing-context dispatcher rejects the test function runner for their
+     * semantic data. Loading this context through the search service is therefore required to inspect its resources.
+     * </p>
+     *
+     * @param librarySemanticDataId
+     *            the semantic data identifier of the published library
+     * @return the library resources
+     */
+    protected List<Resource> loadPublishedLibraryResources(final String librarySemanticDataId) {
+        return ((IEMFEditingContext) this.editingContextSearchService.findById(librarySemanticDataId).orElseThrow())
+                .getDomain()
+                .getResourceSet()
+                .getResources();
     }
+
+    /**
+     * Executes a function using an editing context initialized with its standard libraries.
+     *
+     * @param editingContextId
+     *            the identifier of the editing context to use
+     * @param consumer
+     *            the function to execute
+     */
+    protected void executeInEditingContext(final String editingContextId, final Consumer<IEMFEditingContext> consumer) {
+        var input = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), editingContextId, (editingContext, executeInput) -> {
+            assertThat(editingContext)
+                    .as("Editing context %s must be an EMF editing context", editingContextId)
+                    .isInstanceOf(IEMFEditingContext.class);
+            IEMFEditingContext emfEditingContext = (IEMFEditingContext) editingContext;
+            assertThat(emfEditingContext.getDomain().getResourceSet().getResources())
+                    .as("Editing context %s must contain standard libraries", editingContextId)
+                    .anyMatch(ElementUtil::isStandardLibraryResource);
+            consumer.accept(emfEditingContext);
+            return new SuccessPayload(executeInput.id());
+        });
+
+        IPayload payload = this.executeEditingContextFunctionRunner.execute(input).block();
+        assertThat(payload).isInstanceOf(SuccessPayload.class);
+    }
+
+    /**
+     * Creates an event processor for an editing context supplied by the editing-context function runner.
+     *
+     * @param editingContext
+     *            the editing context to handle events
+     * @return an event processor for the editing context
+     */
+    protected IEditingContextEventProcessor createEditingContextEventProcessor(final IEditingContext editingContext) {
+        return this.editingContextEventProcessorFactory.createEditingContextEventProcessor(editingContext);
+    }
+
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,12 +20,11 @@ import java.util.UUID;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
-import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.library.dto.ImportLibrariesInput;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.syson.InvalidateStandardLibrariesCache;
 import org.eclipse.syson.application.libraries.SysONLibraryImportTestServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,7 +32,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
@@ -49,22 +47,25 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(OutputCaptureExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
+@InvalidateStandardLibrariesCache
 public class SysONLibraryImportByCopyTests extends SysONLibraryImportTests {
 
-    @Autowired
-    private IEditingContextSearchService editingContextSearchService;
+    private ResourceSet projectResourceSet;
 
     @Override
     @BeforeEach
     public void initializeServerState() {
         super.initializeServerState();
 
-        final ImportLibrariesInput importLibrariesInput = new ImportLibrariesInput(
-                UUID.randomUUID(),
-                super.projectEditingContext.getId(),
-                "copy",
-                List.of(this.loadMyLibraryV1().getId().toString()));
-        this.projectEditingContextEventProcessor.handle(importLibrariesInput);
+        this.executeInEditingContext(this.projectEditingContextId, projectEditingContext -> {
+            final ImportLibrariesInput importLibrariesInput = new ImportLibrariesInput(
+                    UUID.randomUUID(),
+                    this.projectEditingContextId,
+                    "copy",
+                    List.of(this.loadMyLibraryV1().getId().toString()));
+            this.createEditingContextEventProcessor(projectEditingContext).handle(importLibrariesInput);
+            this.projectResourceSet = projectEditingContext.getDomain().getResourceSet();
+        });
     }
 
     @Test
@@ -95,20 +96,29 @@ public class SysONLibraryImportByCopyTests extends SysONLibraryImportTests {
     @DisplayName("The project importing the libraries now has a copy of the library documents")
     @SysONLibraryImportTestServer
     public void testImportingProjectSemanticDataHaveChanged(CapturedOutput capturedOutput) {
-        final ResourceSet projectResourceSet = ((IEMFEditingContext) this.projectEditingContext).getDomain().getResourceSet();
         final SemanticData myLibraryV1SemanticData = this.loadMyLibraryV1SemanticData();
-        final List<Resource> libraryResources = ((IEMFEditingContext) this.editingContextSearchService.findById(myLibraryV1SemanticData.getId().toString())
-                .orElseThrow())
-                        .getDomain()
-                        .getResourceSet()
-                        .getResources();
+        final List<Resource> libraryResources = this.loadPublishedLibraryResources(myLibraryV1SemanticData.getId().toString());
+        this.assertImportedProjectResources(this.projectResourceSet, myLibraryV1SemanticData, libraryResources);
+    }
+
+    /**
+     * Asserts that the project contains independent copies of the library resources.
+     *
+     * @param resourceSet
+     *            the project resource set
+     * @param myLibraryV1SemanticData
+     *            the imported library semantic data
+     * @param libraryResources
+     *            the source library resources
+     */
+    private void assertImportedProjectResources(final ResourceSet resourceSet, final SemanticData myLibraryV1SemanticData, final List<Resource> libraryResources) {
         // The importing project already had a resource before the import.
-        assertThat(projectResourceSet.getResources()).hasSize(libraryResources.size() + 1);
+        assertThat(resourceSet.getResources()).hasSize(libraryResources.size() + 1);
 
         // Now we want to compare the new contents in our project with the contents of the library (disregarding the
         // default libraries).
-        final List<Resource> projectResourcesCopiedFromLibrary = projectResourceSet.getResources().stream()
-                .skip(projectResourceSet.getResources().size() - myLibraryV1SemanticData.getDocuments().size())
+        final List<Resource> projectResourcesCopiedFromLibrary = resourceSet.getResources().stream()
+                .skip(resourceSet.getResources().size() - myLibraryV1SemanticData.getDocuments().size())
                 .toList();
         final List<Resource> libraryCopiedResources = libraryResources.stream()
                 .skip(libraryResources.size() - myLibraryV1SemanticData.getDocuments().size())

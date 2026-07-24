@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.lang3.stream.Streams;
@@ -32,8 +31,6 @@ import org.eclipse.sirius.web.application.library.dto.UpdateLibraryInput;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
@@ -41,6 +38,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.I
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.InvalidateStandardLibrariesCache;
+import org.eclipse.syson.application.data.ProjectWithLibraryDependencyTestProjectData;
 import org.eclipse.syson.application.libraries.SysONLibraryImportTestServer;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Type;
@@ -53,7 +51,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.system.OutputCaptureExtension;
-import org.springframework.data.domain.ScrollPosition;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,9 +81,6 @@ public class SysONLibraryUpdateTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
-    @Autowired
-    private IProjectSearchService projectSearchService;
 
     @Autowired
     private ISemanticDataSearchService semanticDataSearchService;
@@ -238,7 +232,7 @@ public class SysONLibraryUpdateTests extends AbstractIntegrationTests {
     protected Library loadMyLibraryV1() {
         return this.librarySearchService
                 .findByNamespaceAndNameAndVersion(
-                        this.loadProjectByName("MyLibrary").getId(),
+                        ProjectWithLibraryDependencyTestProjectData.LIBRARY_PROJECT_ID,
                         "MyLibrary",
                         "v1")
                 .orElseThrow();
@@ -251,7 +245,7 @@ public class SysONLibraryUpdateTests extends AbstractIntegrationTests {
     protected Library loadMyLibraryV2() {
         return this.librarySearchService
                 .findByNamespaceAndNameAndVersion(
-                        this.loadProjectByName("MyLibrary").getId(),
+                        ProjectWithLibraryDependencyTestProjectData.LIBRARY_PROJECT_ID,
                         "MyLibrary",
                         "v2")
                 .orElseThrow();
@@ -262,8 +256,9 @@ public class SysONLibraryUpdateTests extends AbstractIntegrationTests {
     }
 
     protected SemanticData loadProjectSemanticData() {
-        final Project project = this.loadProjectByName("ProjectUsingMyLibraryV1");
-        final ProjectSemanticData projectSemanticData = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(project.getId())).orElseThrow();
+        final ProjectSemanticData projectSemanticData = this.projectSemanticDataSearchService
+                .findByProjectId(AggregateReference.to(ProjectWithLibraryDependencyTestProjectData.PROJECT_ID))
+                .orElseThrow();
         return this.semanticDataSearchService.findById(projectSemanticData.getSemanticData().getId()).orElseThrow();
     }
 
@@ -276,14 +271,4 @@ public class SysONLibraryUpdateTests extends AbstractIntegrationTests {
                 .getName();
     }
 
-    private Project loadProjectByName(final String projectName) {
-        final List<Project> candidates = this.projectSearchService.findAll(ScrollPosition.keyset(), 10, Map.of()).stream()
-                .filter(project -> project.getName().equals(projectName))
-                .toList();
-        if (candidates.size() != 1) {
-            return null;
-        } else {
-            return candidates.get(0);
-        }
-    }
 }

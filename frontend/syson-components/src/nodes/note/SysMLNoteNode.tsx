@@ -35,9 +35,8 @@ import React, { memo } from 'react';
 
 import { NodeComponentsMap, SysMLNoteNodeData } from './SysMLNoteNode.types';
 
-const sysMLNoteNodeStyle = (
+export const getSysMLNoteNodeContainerStyle = (
   theme: Theme,
-  style: React.CSSProperties,
   selected: boolean,
   hovered: boolean,
   faded: boolean
@@ -49,10 +48,9 @@ const sysMLNoteNodeStyle = (
     height: '100%',
     position: 'relative',
     opacity: faded ? '0.4' : '',
-    ...style,
-    // No border nor background color: this is handled by the SVG image
+    // Appearance is rendered exclusively by the SVG paths below.
     border: 'none',
-    backgroundColor: 'transparent',
+    background: 'transparent',
   };
 
   if (selected || hovered) {
@@ -62,8 +60,12 @@ const sysMLNoteNodeStyle = (
   return sysMLNoteNodeStyle;
 };
 
-const svgPathStyle = (theme: Theme, style: React.CSSProperties, faded: boolean): React.CSSProperties => {
-  const svgPathStyle: React.CSSProperties = {
+export const getSysMLNotePathProps = (
+  theme: Theme,
+  style: React.CSSProperties,
+  faded: boolean
+): React.SVGProps<SVGPathElement> => {
+  const svgPathProps: React.SVGProps<SVGPathElement> = {
     stroke: getCSSColor(String(style.borderColor), theme),
     fill: getCSSColor(String(style.background), theme),
     fillOpacity: faded ? '0.4' : '1',
@@ -71,7 +73,7 @@ const svgPathStyle = (theme: Theme, style: React.CSSProperties, faded: boolean):
     strokeWidth: style.borderWidth,
     vectorEffect: 'non-scaling-stroke',
   };
-  return svgPathStyle;
+  return svgPathProps;
 };
 
 export const SysMLNoteNode: NodeComponentsMap['sysMLNoteNode'] = memo(
@@ -126,7 +128,7 @@ export const SysMLNoteNode: NodeComponentsMap['sysMLNoteNode'] = memo(
         <Resizer data={data} selected={!!selected} />
         <div
           style={{
-            ...sysMLNoteNodeStyle(theme, data.style, !!selected, data.isHovered, data.faded),
+            ...getSysMLNoteNodeContainerStyle(theme, !!selected, data.isHovered, data.faded),
             ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
             ...connectionLineActiveNodeStyle,
@@ -145,16 +147,14 @@ export const SysMLNoteNode: NodeComponentsMap['sysMLNoteNode'] = memo(
             }}>
             <svg viewBox={`0 0 ${nodeWidth} ${nodeHeight}`} data-svg="svg">
               <path
-                style={svgPathStyle(theme, data.style, data.faded)}
+                {...getSysMLNotePathProps(theme, data.style, data.faded)}
                 d={`M ${borderOffset},${borderOffset} H ${nodeWidth - 15} L ${nodeWidth - borderOffset} 15 V ${
                   nodeHeight - borderOffset
                 } H ${borderOffset} Z`}
               />
               <path
-                style={{
-                  ...svgPathStyle(theme, data.style, data.faded),
-                  fillOpacity: 0,
-                }}
+                {...getSysMLNotePathProps(theme, data.style, data.faded)}
+                fillOpacity={0}
                 d={`M ${nodeWidth - 15},${borderOffset} V 15 H ${nodeWidth - borderOffset}`}
               />
             </svg>
