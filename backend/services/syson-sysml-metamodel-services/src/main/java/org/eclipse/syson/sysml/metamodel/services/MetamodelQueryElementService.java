@@ -13,6 +13,7 @@
 package org.eclipse.syson.sysml.metamodel.services;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,13 +21,13 @@ import java.util.function.Predicate;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.syson.sysml.ActorMembership;
+import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.BooleanExpression;
 import org.eclipse.syson.sysml.ConcernUsage;
-import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.Connector;
-import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChainExpression;
@@ -37,13 +38,13 @@ import org.eclipse.syson.sysml.FramedConcernMembership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
-import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.ResultExpressionMembership;
-import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.StakeholderMembership;
+import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.TransitionUsage;
@@ -140,7 +141,8 @@ public class MetamodelQueryElementService {
     }
 
     /**
-     * Check is a given {@code element} has a single/non-ambiguous existing {@link Expression} definition associated.
+     * Check if a given {@code element} has a single/non-ambiguous existing {@link Expression} definition associated,
+     * either directly or through an owned {@link FeatureValue}.
      *
      * @param element
      *            the element to test
@@ -182,11 +184,12 @@ public class MetamodelQueryElementService {
     }
 
     /**
-     * Check is a given {@code element} has a single/non-ambiguous existing {@link Expression} definition associated.
+     * Finds a single/non-ambiguous existing {@link Expression} definition associated with a given {@code element},
+     * either directly or through an owned {@link FeatureValue}.
      *
      * @param element
      *            the element to test
-     * @return true if the element has a single existing associated expression definition.
+     * @return the single associated expression definition, or an empty optional if none or more than one exists.
      */
     public Optional<Expression> findSingleExpressionDefinition(Element element) {
         Optional<Expression> result = Optional.empty();
@@ -199,9 +202,22 @@ public class MetamodelQueryElementService {
             } else {
                 ownedElements = element.getOwnedElement();
             }
-            var ownedExpressions = ownedElements.stream().filter(child -> this.isExpressionDefinition(child)).toList();
-            if (ownedExpressions.size() == 1) {
-                result = Optional.of((Expression) ownedExpressions.get(0));
+            var expressionCandidates = new LinkedHashSet<Expression>();
+            ownedElements.stream()
+                    .filter(this::isExpressionDefinition)
+                    .map(Expression.class::cast)
+                    .forEach(expressionCandidates::add);
+            if (element instanceof Feature feature) {
+                feature.getOwnedRelationship().stream()
+                        .filter(FeatureValue.class::isInstance)
+                        .map(FeatureValue.class::cast)
+                        .map(FeatureValue::getValue)
+                        .filter(Objects::nonNull)
+                        .filter(this::isExpressionDefinition)
+                        .forEach(expressionCandidates::add);
+            }
+            if (expressionCandidates.size() == 1) {
+                result = Optional.of(expressionCandidates.getFirst());
             }
         }
         return result;

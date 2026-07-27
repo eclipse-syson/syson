@@ -21,6 +21,7 @@ Downstream code should now depend on the diagram services module for that bean.
 === Bug fixes
 
 - https://github.com/eclipse-syson/syson/issues/2359[#2359] [diagrams] Fix `Comment` graphical nodes so changing their background color no longer changes their border color.
+- https://github.com/eclipse-syson/syson/issues/2358[#2358] [details] Fix expression creation and editing on `SuccessionAsUsage` elements.
 
 === Improvements
 

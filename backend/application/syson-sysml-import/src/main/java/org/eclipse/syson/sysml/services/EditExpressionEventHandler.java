@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.dto.EditExpressionInput;
 import org.eclipse.syson.sysml.dto.EditExpressionSuccessPayload;
@@ -89,7 +90,7 @@ public class EditExpressionEventHandler implements IEditingContextEventHandler {
 
             if (optionalParent.isPresent() && optionalExpression.isPresent()) {
                 var parentElement = optionalParent.get();
-                if (parentElement instanceof Relationship relationship) {
+                if (parentElement instanceof Relationship relationship && !(parentElement instanceof Feature)) {
                     parentElement = relationship.getOwningRelatedElement();
                 }
                 var result = this.expressionEditor.editExpression(emfEditingContext, parentElement, optionalExpression.get(), editExpressionInput.newExpressionText(),
