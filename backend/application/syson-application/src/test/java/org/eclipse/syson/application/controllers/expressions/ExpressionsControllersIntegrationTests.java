@@ -68,6 +68,7 @@ import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.dto.CreateExpressionInput;
 import org.eclipse.syson.sysml.dto.CreateExpressionSuccessPayload;
@@ -630,6 +631,45 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
                 .then(createExpression)
                 .consumeNextWith(treeRefreshed)
                 .then(checkCreatedExpression)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a SysML succession with a feature value expression, WHEN editing it from the succession THEN the expression is replaced")
+    @GivenSysONServer({ ExpressionSamplesProjectData.SCRIPT_PATH })
+    @Test
+    public void canEditFeatureValueExpressionOnSuccession() {
+        String editingContextId = ExpressionSamplesProjectData.EDITING_CONTEXT_ID;
+
+        List<String> defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(editingContextId, this.sysONExplorerTreeDescriptionId);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, List.of(), defaultFilters);
+        var explorerInput = new ExplorerEventInput(UUID.randomUUID(), editingContextId, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(explorerInput).flux();
+
+        var treeId = new AtomicReference<String>();
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            treeId.set(tree.getId());
+        });
+
+        String successionId = ExpressionSamplesProjectData.SemanticIds.THERMAL_CONTROL_TO_HEATING_SUCCESSION_ID;
+        Runnable createExpression = this.createExpression(editingContextId, successionId, "true");
+        Consumer<Object> treeRefreshed = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getId()).isEqualTo(treeId.get());
+        });
+        Runnable checkCreatedExpression = this.checkElementHasExpression(editingContextId, successionId, SuccessionAsUsage.class, new AtomicReference<>(), "true");
+        Runnable editExpression = this.editExpression(editingContextId, () -> successionId, "false");
+        Runnable checkEditedExpression = this.checkElementHasExpression(editingContextId, successionId, SuccessionAsUsage.class, new AtomicReference<>(), "false");
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTreeContentConsumer)
+                .then(createExpression)
+                .consumeNextWith(treeRefreshed)
+                .then(checkCreatedExpression)
+                .then(editExpression)
+                .consumeNextWith(treeRefreshed)
+                .then(checkEditedExpression)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

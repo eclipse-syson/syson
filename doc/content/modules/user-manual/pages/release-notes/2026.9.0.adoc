@@ -16,6 +16,10 @@
 
 ** Fix `Comment` graphical nodes so changing their background color no longer changes their border color.
 
+* In all views:
+
+** Fix expression creation and editing on `SuccessionAsUsage` elements.
+
 * In textual import/export:
 
 
