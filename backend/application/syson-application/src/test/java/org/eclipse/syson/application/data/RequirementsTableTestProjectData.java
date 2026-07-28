@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,8 @@ public class RequirementsTableTestProjectData {
         public static final String PACKAGE_1_ELEMENT_ID = "51ef7a57-034b-4061-9b46-b647fbeb6451";
 
         public static final String VIEW_1_ELEMENT_ID = "cf05a05e-62c0-4e28-9874-b2900b9096d7";
+
+        public static final String REQUIREMENT_1_ID = "36dbf043-a777-4053-8793-1029ccbe14dc";
     }
 
 }

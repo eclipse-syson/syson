@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput
 import org.eclipse.sirius.components.collaborative.tables.TableEventInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.InvokeRowContextMenuEntryInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.InvokeToolMenuEntryInput;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.tables.TextareaCell;
 import org.eclipse.sirius.components.tables.TextfieldCell;
@@ -38,9 +39,14 @@ import org.eclipse.sirius.components.tables.tests.graphql.TableEventSubscription
 import org.eclipse.sirius.components.tables.tests.graphql.ToolMenuEntriesQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedTableSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.GivenSysONServer;
+import org.eclipse.syson.application.controller.editingcontext.checkers.ISemanticChecker;
+import org.eclipse.syson.application.controller.editingcontext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.data.RequirementsTableTestProjectData;
+import org.eclipse.syson.services.SemanticRunnableFactory;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.table.requirements.view.RTVTableToolMenuEntriesProvider;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,6 +71,9 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RequirementsTableControllerIntegrationTests extends AbstractIntegrationTests {
 
+    public static final String REQUIREMENT_2_LABEL = "requirement2";
+    public static final String REQUIREMENT_1_LABEL = "requirement1";
+
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
@@ -85,6 +94,15 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
 
     @Autowired
     private ToolMenuEntriesQueryRunner toolMenuEntriesQueryRunner;
+
+    @Autowired
+    private RepresentationIdBuilder representationIdBuilder;
+
+    @Autowired
+    private SemanticRunnableFactory semanticRunnableFactory;
+
+    @Autowired
+    private IObjectSearchService objectSearchService;
 
     @BeforeEach
     public void beforeEach() {
@@ -111,7 +129,7 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
         return flux;
     }
 
-    @DisplayName("Given a new requirements view table description, when a subscription is created, then the table is render")
+    @DisplayName("GIVEN a new requirements view table description, WHEN a subscription is created, THEN the table is render")
     @Sql(scripts = { RequirementsTableTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -139,7 +157,7 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("Given a existing requirements view table description, when a subscription is created, then the table is render")
+    @DisplayName("GIVEN a existing requirements view table description, WHEN a subscription is created, THEN the table is render")
     @Sql(scripts = { RequirementsTableTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -167,7 +185,7 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("Given a requirements view table, when the create requirement table action invoked, then the create requirement table action is correctly executed")
+    @DisplayName("GIVEN a requirements view table, WHEN the create requirement table action invoked, THEN the create requirement table action is correctly executed")
     @Sql(scripts = { RequirementsTableTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -209,7 +227,7 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("Given a requirements view table, when the expose requirements table action invoked, then the expose requirements table action is correctly executed")
+    @DisplayName("GIVEN a requirements view table, WHEN the expose requirements table action invoked, THEN the expose requirements table action is correctly executed")
     @Sql(scripts = { RequirementsTableTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -240,10 +258,10 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
         Consumer<Object> updatedTableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
             assertThat(table.getLines()).hasSize(2);
-            assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("requirement1");
+            assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo(REQUIREMENT_1_LABEL);
             assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(1)).getValue()).isEqualTo("ReqR1");
             assertThat(((TextareaCell) table.getLines().get(0).getCells().get(2)).getValue()).isEqualTo("doc R1");
-            assertThat(((TextfieldCell) table.getLines().get(1).getCells().get(0)).getValue()).isEqualTo("requirement2");
+            assertThat(((TextfieldCell) table.getLines().get(1).getCells().get(0)).getValue()).isEqualTo(REQUIREMENT_2_LABEL);
             assertThat(((TextfieldCell) table.getLines().get(1).getCells().get(1)).getValue()).isEqualTo("ReqR2");
             assertThat(((TextareaCell) table.getLines().get(1).getCells().get(2)).getValue()).isEqualTo("doc R2");
         });
@@ -256,7 +274,7 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("Given a requirements view table, when the delete from table row action invoked, then the delete from table row action is correctly executed")
+    @DisplayName("GIVEN a requirements view table, WHEN the delete from table row action invoked, THEN the delete from table row action is correctly executed")
     @Sql(scripts = { RequirementsTableTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -289,8 +307,8 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
         Consumer<Object> updatedTableContentConsumerFirst = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
             assertThat(table.getLines()).hasSize(2);
-            assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("requirement1");
-            assertThat(((TextfieldCell) table.getLines().get(1).getCells().get(0)).getValue()).isEqualTo("requirement2");
+            assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo(REQUIREMENT_1_LABEL);
+            assertThat(((TextfieldCell) table.getLines().get(1).getCells().get(0)).getValue()).isEqualTo(REQUIREMENT_2_LABEL);
             rowId.set(table.getLines().get(0).getId());
         });
 
@@ -304,9 +322,10 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
 
             var result = this.rowContextMenuQueryRunner.run(variables);
             List<String> actionLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].label");
-            assertThat(actionLabels).isNotEmpty().hasSize(2);
+            assertThat(actionLabels).isNotEmpty().hasSize(3);
             assertThat(actionLabels.get(0)).isEqualTo("Delete from model");
             assertThat(actionLabels.get(1)).isEqualTo("Delete from table");
+            assertThat(actionLabels.get(2)).isEqualTo("New Nested Requirement");
 
             List<String> actionIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].id");
             actionId.set(actionIds.get(1));
@@ -329,7 +348,7 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
         Consumer<Object> updatedTableContentConsumerSecond = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
             assertThat(table.getLines()).hasSize(1);
-            assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("requirement2");
+            assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo(REQUIREMENT_2_LABEL);
         });
 
         StepVerifier.create(flux)
@@ -343,7 +362,7 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("Given a requirements view table, when the delete from model row action invoked, then the delete from model row action is correctly executed")
+    @DisplayName("GIVEN a requirements view table, WHEN the delete from model row action invoked, THEN the delete from model row action is correctly executed")
     @Sql(scripts = { RequirementsTableTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -376,8 +395,8 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
         Consumer<Object> updatedTableContentConsumerFirst = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
             assertThat(table.getLines()).hasSize(2);
-            assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("requirement1");
-            assertThat(((TextfieldCell) table.getLines().get(1).getCells().get(0)).getValue()).isEqualTo("requirement2");
+            assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo(REQUIREMENT_1_LABEL);
+            assertThat(((TextfieldCell) table.getLines().get(1).getCells().get(0)).getValue()).isEqualTo(REQUIREMENT_2_LABEL);
             rowId.set(table.getLines().get(0).getId());
         });
 
@@ -391,8 +410,10 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
 
             var result = this.rowContextMenuQueryRunner.run(variables);
             List<String> actionLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].label");
-            assertThat(actionLabels).isNotEmpty().hasSize(2);
+            assertThat(actionLabels).isNotEmpty().hasSize(3);
             assertThat(actionLabels.get(0)).isEqualTo("Delete from model");
+            assertThat(actionLabels.get(1)).isEqualTo("Delete from table");
+            assertThat(actionLabels.get(2)).isEqualTo("New Nested Requirement");
 
             List<String> actionIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].id");
             actionId.set(actionIds.get(0));
@@ -415,7 +436,7 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
         Consumer<Object> updatedTableContentConsumerSecond = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
             assertThat(table.getLines()).hasSize(1);
-            assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("requirement2");
+            assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo(REQUIREMENT_2_LABEL);
         });
 
         StepVerifier.create(flux)
@@ -431,7 +452,122 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
 
     @Test
     @GivenSysONServer({ RequirementsTableTestProjectData.SCRIPT_PATH })
-    @DisplayName("Given a requirements view table, when tool menu entries query is triggered, then all related tools are returned")
+    @DisplayName("GIVEN a requirements view table, WHEN the new nested requirement row action invoked, THEN the new nested requirement row action creates a nested Requirement below the given Requirement")
+    public void testNewNestedRequirement() {
+        var flux = this.givenSubscriptionToExistingViewTableRepresentation();
+        var tableId = new AtomicReference<String>();
+        var rowId = new AtomicReference<UUID>();
+
+        Consumer<Object> tableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(0);
+            tableId.set(table.getId());
+        });
+
+        Runnable exposeRequirementsTask = () -> {
+            var invokeToolMenuEntryInput = new InvokeToolMenuEntryInput(
+                    UUID.randomUUID(),
+                    RequirementsTableTestProjectData.EDITING_CONTEXT_ID,
+                    tableId.get(),
+                    tableId.get(),
+                    RTVTableToolMenuEntriesProvider.IMPORT_EXISTING_REQUIREMENTS_TABLE_TOOL_ENTRY);
+
+            var result = this.invokeToolMenuEntryMutationRunner.run(invokeToolMenuEntryInput);
+            String typename = JsonPath.read(result.data(), "$.data.invokeToolMenuEntry.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedTableContentConsumerFirst = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(2);
+            assertThat(table.getLines().get(0).isHasChildren()).isFalse();
+            assertThat(table.getLines().get(1).isHasChildren()).isFalse();
+            rowId.set(table.getLines().get(0).getId());
+        });
+
+        var actionId = new AtomicReference<String>();
+        Runnable getContextMenuEntriesTask = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", RequirementsTableTestProjectData.EDITING_CONTEXT_ID,
+                    "representationId", tableId.get(),
+                    "tableId", tableId.get(),
+                    "rowId", rowId.get().toString());
+
+            var result = this.rowContextMenuQueryRunner.run(variables);
+            List<String> actionLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].label");
+            assertThat(actionLabels).isNotEmpty().hasSize(3);
+            assertThat(actionLabels.get(0)).isEqualTo("Delete from model");
+            assertThat(actionLabels.get(1)).isEqualTo("Delete from table");
+            assertThat(actionLabels.get(2)).isEqualTo("New Nested Requirement");
+
+            List<String> actionIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].id");
+            actionId.set(actionIds.get(2));
+        };
+
+        Runnable invokeNewNestedRequirementAction = () -> {
+            var invokeRowContextMenuEntryInput = new InvokeRowContextMenuEntryInput(
+                    UUID.randomUUID(),
+                    RequirementsTableTestProjectData.EDITING_CONTEXT_ID,
+                    tableId.get(),
+                    tableId.get(),
+                    rowId.get(),
+                    actionId.get());
+
+            var result = this.invokeRowContextMenuEntryMutationRunner.run(invokeRowContextMenuEntryInput);
+            String typename = JsonPath.read(result.data(), "$.data.invokeRowContextMenuEntry.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedTableContentConsumerSecond = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(2);
+            assertThat(table.getLines().get(0).isHasChildren()).isTrue(); // now this requirement has a child
+            assertThat(table.getLines().get(1).isHasChildren()).isFalse();
+        });
+
+        SemanticCheckerService semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, RequirementsTableTestProjectData.EDITING_CONTEXT_ID, RequirementsTableTestProjectData.SemanticIds.REQUIREMENT_1_ID);
+        ISemanticChecker semanticChecker = semanticCheckerService.getElementInParentSemanticChecker(REQUIREMENT_1_LABEL, SysmlPackage.eINSTANCE.getNamespace_OwnedMember(), SysmlPackage.eINSTANCE.getRequirementUsage());
+
+        Runnable editingContextChecker = semanticCheckerService.checkEditingContext(semanticChecker);
+
+        StepVerifier.create(flux)
+                .consumeNextWith(tableContentConsumer)
+                .then(exposeRequirementsTask)
+                .consumeNextWith(updatedTableContentConsumerFirst)
+                .then(getContextMenuEntriesTask)
+                .then(invokeNewNestedRequirementAction)
+                .consumeNextWith(updatedTableContentConsumerSecond)
+                .then(editingContextChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        this.expandRequirement1Test(tableId);
+    }
+
+    private void expandRequirement1Test(AtomicReference<String> tableId) {
+        String representationId = this.representationIdBuilder.buildTableRepresentationId(tableId.get(), null, "NEXT", 10, List.of(RequirementsTableTestProjectData.SemanticIds.REQUIREMENT_1_ID), List.of(), List.of());
+        var tableEventInput = new TableEventInput(UUID.randomUUID(), RequirementsTableTestProjectData.EDITING_CONTEXT_ID, representationId);
+        var expandedFlux = this.tableEventSubscriptionRunner.run(tableEventInput).flux();
+
+        TestTransaction.start();
+
+        Consumer<Object> expandedTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(3);
+            assertThat(table.getLines().get(0).getDepthLevel()).isEqualTo(0);
+            assertThat(table.getLines().get(1).getDepthLevel()).isEqualTo(1);
+            assertThat(table.getLines().get(2).getDepthLevel()).isEqualTo(0);
+        });
+
+        StepVerifier.create(expandedFlux)
+                .consumeNextWith(expandedTableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSysONServer({ RequirementsTableTestProjectData.SCRIPT_PATH })
+    @DisplayName("GIVEN a requirements view table, WHEN tool menu entries query is triggered, THEN all related tools are returned")
     public void testToolMenuEntriesQuery() {
 
         Map<String, Object> variables = Map.of(

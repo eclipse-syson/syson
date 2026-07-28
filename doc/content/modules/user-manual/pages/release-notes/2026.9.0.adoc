@@ -29,6 +29,16 @@
 
 * In textual import/export:
 
+* In Requirements table view:
+
+** The _Requirements table_ view now displays nested `Requirements`.
+Nested `Requirements` are displayed in the table using a hierarchical way.
++
+image::release-notes-hierarchical-requirements-table-view.png[Hierarchical requirements table view]
+
+** On a `Requirement` row, its menu now includes a new action that allows users to create a nested `Requirement`
++
+image::release-notes-hierarchical-requirements-table-view-create-nested-requirement.png[New sub requirement in row action menu]
 
 == Technical details
 

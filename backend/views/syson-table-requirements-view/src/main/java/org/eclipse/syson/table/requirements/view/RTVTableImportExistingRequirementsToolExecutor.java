@@ -12,8 +12,10 @@
  *******************************************************************************/
 package org.eclipse.syson.table.requirements.view;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.tables.api.IToolMenuEntryExecutor;
@@ -77,13 +79,37 @@ public class RTVTableImportExistingRequirementsToolExecutor implements IToolMenu
         owningNamespace.getOwnedMember().stream()
                 .filter(RequirementUsage.class::isInstance)
                 .map(RequirementUsage.class::cast)
-                .forEach(req -> {
-                    if (!viewUsage.getExposedElement().contains(req)) {
-                        var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
-                        viewUsage.getOwnedRelationship().add(membershipExpose);
-                        new ElementInitializerSwitch().doSwitch(membershipExpose);
-                        membershipExpose.setImportedMembership(req.getOwningMembership());
-                    }
-                });
+                .flatMap(this::flattenRequirements)
+                .forEach(requirementUsage -> this.addExposedRequirement(viewUsage, requirementUsage));
+    }
+
+    /**
+     * Return the stream consisting of the results of concatenating the given RequirementUsage and all its nested RequirementUsage.
+     *
+     * @param requirementUsage
+     *         a RequirementUsage
+     * @return the new Stream
+     */
+    private Stream<RequirementUsage> flattenRequirements(RequirementUsage requirementUsage) {
+        return Stream.concat(
+                Stream.of(requirementUsage),
+                this.getRequirementChildren(requirementUsage).stream().flatMap(this::flattenRequirements)
+        );
+    }
+
+    private List<RequirementUsage> getRequirementChildren(RequirementUsage requirementUsage) {
+        return requirementUsage.getOwnedMember().stream()
+                .filter(RequirementUsage.class::isInstance)
+                .map(RequirementUsage.class::cast)
+                .toList();
+    }
+
+    private void addExposedRequirement(ViewUsage viewUsage, RequirementUsage requirementUsage) {
+        if (!viewUsage.getExposedElement().contains(requirementUsage)) {
+            var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
+            viewUsage.getOwnedRelationship().add(membershipExpose);
+            new ElementInitializerSwitch().doSwitch(membershipExpose);
+            membershipExpose.setImportedMembership(requirementUsage.getOwningMembership());
+        }
     }
 }

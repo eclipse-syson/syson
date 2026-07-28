@@ -12,10 +12,16 @@
  *******************************************************************************/
 package org.eclipse.syson.table.requirements.view.services;
 
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.tables.ColumnFilter;
 import org.eclipse.sirius.components.tables.ColumnSort;
 import org.eclipse.syson.sysml.Documentation;
@@ -40,15 +46,124 @@ public class RTVQueryServices {
 
     private final ObjectMapper objectMapper;
 
-    public RTVQueryServices(ObjectMapper objectMapper) {
+    private final IIdentityService identityService;
+
+    public RTVQueryServices(ObjectMapper objectMapper, IIdentityService identityService) {
         this.objectMapper = objectMapper;
+        this.identityService = identityService;
     }
 
-    public List<RequirementUsage> getExposedRequirements(ViewUsage viewUsage) {
-        return viewUsage.getExposedElement().stream()
+    /**
+     * Returns the list of RequirementUsage that are visible in the Requirements Table View according to expanding/collapsing elements.
+     *
+     * @param viewUsage
+     *         the ViewUsage containing the table.
+     * @param expandedIds
+     *         the list of RequirementUsage ids that are expanded in the table.
+     * @param expandAll
+     *         whether all rows should be expanded or not.
+     * @return the list of RequirementUsage contained by the table contained by the given ViewUsage.
+     */
+    public List<RequirementUsage> getExposedRequirements(ViewUsage viewUsage, List<String> expandedIds, boolean expandAll) {
+        var allExposedRequirementUsages = viewUsage.getExposedElement().stream()
+                .filter(RequirementUsage.class::isInstance)
+                .map(RequirementUsage.class::cast)
+                .filter(eObject -> this.hasExpandedParent(eObject, expandedIds, expandAll))
+                .toList();
+        // exposed element in ViewUsage are not in correct order to by displayed in the hierarchical table.
+        // we have to sort them by depth first order
+        return allExposedRequirementUsages.stream()
+                .sorted(this.byDepthFirstOrder(allExposedRequirementUsages))
+                .toList();
+    }
+
+    /**
+     * Returns the comparator that can be used to sort the given list of RequirementUsage following a depth first order.
+     *
+     * @param requirements
+     *         the unordered list of RequirementUsage
+     * @return the comparator to use on the given RequirementUsage list to sort its elements following a depth first order.
+     */
+    private Comparator<RequirementUsage> byDepthFirstOrder(List<RequirementUsage> requirements) {
+        // 1. Identify requirements that are children of another RequirementUsage
+        Set<RequirementUsage> isChild = Collections.newSetFromMap(new IdentityHashMap<>());
+        requirements.forEach(e -> isChild.addAll(this.getChildren(e)));
+
+        // 2. Roots = requirements that are not children of anyone
+        List<RequirementUsage> roots = requirements.stream()
+                .filter(e -> !isChild.contains(e))
+                .toList();
+
+        // 3. Compute DFS order -> positions in a Map
+        Map<RequirementUsage, Integer> positions = new IdentityHashMap<>();
+        int[] index = {0};
+        roots.forEach(r -> this.depthFirstPositions(r, positions, index));
+
+        // 4. Comparator based on this positions
+        return Comparator.comparingInt(positions::get);
+    }
+
+    /**
+     * Compute recursively depth position of the given RequirementUsage and all its children.
+     *
+     * @param requirementUsage
+     *         the root RequirementUsage of the computation.
+     * @param positions
+     *         the computation Map result containing the given RequirementUsage position and those of its children.
+     * @param index
+     *         the position of the given RequirementUsage.
+     */
+    private void depthFirstPositions(RequirementUsage requirementUsage, Map<RequirementUsage, Integer> positions, int[] index) {
+        positions.put(requirementUsage, index[0]++);
+        for (RequirementUsage child : this.getChildren(requirementUsage)) {
+            this.depthFirstPositions(child, positions, index);
+        }
+    }
+
+    private List<RequirementUsage> getChildren(RequirementUsage elem) {
+        return elem.getOwnedMember().stream()
                 .filter(RequirementUsage.class::isInstance)
                 .map(RequirementUsage.class::cast)
                 .toList();
+    }
+
+    private boolean hasExpandedParent(EObject eObject, List<String> expandedIds, boolean expandAll) {
+        EObject parent = eObject.eContainer().eContainer();
+        if (!expandAll && parent != null && !this.isRootRequirement(eObject)) {
+            var parentId = this.identityService.getId(parent);
+            return expandedIds.contains(parentId) && this.hasExpandedParent(parent, expandedIds, false);
+        }
+        return true;
+    }
+
+    /**
+     * Returns whether the given RequirementUsage has children or not.
+     *
+     * @param requirementUsage
+     *         a RequirementUsage
+     * @return {@code true} if the given RequirementUsage is not contained by another RequirementUsage and {@code false} otherwise.
+     */
+    public boolean hasRequirementChildren(RequirementUsage requirementUsage) {
+        return requirementUsage.getOwnedMember().stream().anyMatch(RequirementUsage.class::isInstance);
+    }
+
+    /**
+     * Returns the depth level of the given RequirementUsage in the Requirements Table View. This is used to indent this element according to its parent.
+     *
+     * @param requirementUsage
+     *         a RequirementUsage
+     * @return an {@code int} representing the depth of the given element. This method should return {@code 0} for root elements, {@code 1} for their direct children, and so on.
+     */
+    public int getRequirementDepthLevel(RequirementUsage requirementUsage) {
+        if (this.isRootRequirement(requirementUsage)) {
+            return 0;
+        } else {
+            return this.getRequirementDepthLevel((RequirementUsage) requirementUsage.getOwner()) + 1;
+        }
+    }
+
+    private boolean isRootRequirement(EObject eObject) {
+        return eObject instanceof RequirementUsage requirementUsage && !(requirementUsage.getOwner() instanceof RequirementUsage);
     }
 
     public String getDocumentationBody(RequirementUsage requirementUsage) {
