@@ -206,6 +206,11 @@
 				<artifactId>syson-tree-services</artifactId>
 				<version>${syson.version}</version>
 			</dependency>
+            <dependency>
+              <groupId>org.liquibase</groupId>
+              <artifactId>liquibase-core</artifactId>
+              <version>4.33.0</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 
