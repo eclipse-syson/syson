@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.table.RowContextMenuEntry;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.table.requirements.view.services.RTVMutationServices;
+import org.eclipse.syson.table.requirements.view.services.RTVQueryServices;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -52,13 +53,15 @@ public class RTVTableDescriptionProvider implements IRepresentationDescriptionPr
         var reqRowDescription = this.tableBuilders.newRowDescription()
                 .name("RTV-RowDescription-Requirement")
                 .semanticCandidatesExpression(
-                        "aql:self.getExposedRequirements()->sortAndFilterRequirements(columnSort, columnFilters, globalFilterData)->toPaginatedData(cursor,direction,size)")
+                        "aql:self.getExposedRequirements(expandedIds, expandAll)->sortAndFilterRequirements(columnSort, columnFilters, globalFilterData)->toPaginatedData(cursor,direction,size)")
                 .contextMenuEntries(this.createContextMenuEntries().toArray(RowContextMenuEntry[]::new))
                 .depthLevelExpression("0")
                 .headerIconExpression("/icons/full/obj16/RequirementUsage.svg")
                 .headerLabelExpression("")
                 .initialHeightExpression("-1")
                 .isResizableExpression(AQLConstants.AQL_FALSE)
+                .depthLevelExpression(ServiceMethod.of0(RTVQueryServices::getRequirementDepthLevel).aqlSelf())
+                .hasChildrenExpression(ServiceMethod.of0(RTVQueryServices::hasRequirementChildren).aqlSelf())
                 .build();
 
         return this.tableBuilders.newTableDescription()
@@ -70,6 +73,7 @@ public class RTVTableDescriptionProvider implements IRepresentationDescriptionPr
                 .rowDescription(reqRowDescription)
                 .pageSizeOptionsExpression("aql:Sequence{10,20,50}")
                 .useStripedRowsExpression("aql:true")
+                .enableSubRows(true)
                 .build();
     }
 
@@ -176,8 +180,18 @@ public class RTVTableDescriptionProvider implements IRepresentationDescriptionPr
                         .build())
                 .build();
 
+        var newNestedRequirementContextMenuEntry = this.tableBuilders.newRowContextMenuEntry()
+                .name("RTV-ContextMenuEntry-NewNestedRequirement")
+                .labelExpression("New Nested Requirement")
+                .iconURLExpression("/images/createRequirement.svg")
+                .body(this.viewBuilders.newChangeContext()
+                        .expression(ServiceMethod.of2(RTVMutationServices::createNestedRequirement).aqlSelf(IEditingContext.EDITING_CONTEXT, TableDescription.TABLE))
+                        .build())
+                .build();
+
         entries.add(removeContextMenuEntry);
         entries.add(deleteContextMenuEntry);
+        entries.add(newNestedRequirementContextMenuEntry);
 
         return entries;
     }

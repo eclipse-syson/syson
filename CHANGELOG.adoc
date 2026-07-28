@@ -31,6 +31,8 @@ In any case, it is strongly recommended to back up your data before proceeding w
 
 === Improvements
 
+- https://github.com/eclipse-syson/syson/issues/2364[#2364] [requirements table] Support nested `Requirements` in _Requirements table_ view.
+
 === New features
 
 - https://github.com/eclipse-syson/syson/issues/2316[#2316] [diagrams] Add support for list item inheritance in _perform actions_ compartments
