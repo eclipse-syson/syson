@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -132,18 +131,12 @@ public class DiagramMutationDndService {
     public Element dropElementFromExplorer(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         Optional<Object> optTargetElement;
-        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> optNodeDescription = Optional.empty();
         if (selectedNode != null) {
             optTargetElement = this.siriusWebCoreServices.objectSearchService().getObject(editingContext, selectedNode.getTargetObjectId());
-            optNodeDescription = convertedNodes.entrySet().stream().filter(entry -> entry.getValue().getId().equals(selectedNode.getDescriptionId())).map(Entry::getKey).findFirst();
         } else {
             optTargetElement = this.siriusWebCoreServices.objectSearchService().getObject(editingContext, diagramContext.diagram().getTargetObjectId());
         }
-        if (optNodeDescription.isPresent() && optNodeDescription.get().getName().contains("EmptyDiagram")) {
-            // The element is dropped on the information box displayed on an empty diagram. This box is visible only if
-            // the diagram is empty, so we want to actually perform the drop on the diagram itself.
-            return this.dropElementFromExplorer(element, editingContext, diagramContext, null, convertedNodes);
-        } else if (optTargetElement.isPresent() && optTargetElement.get() instanceof Element targetElement) {
+        if (optTargetElement.isPresent() && optTargetElement.get() instanceof Element targetElement) {
             // Check if the element we attempt to drop is in the ancestors of the target element and we attempt to drop
             // it on anything else than the diagram background. If it is the case we want to prevent the drop.
             if (EMFUtils.isAncestor(element, targetElement) && selectedNode != null) {
@@ -457,14 +450,19 @@ public class DiagramMutationDndService {
             } else {
                 Node newSelectedNode = selectedNode;
                 if (selectedNode == null) {
-                    // try to get the graphical node corresponding to the semantic parent
+                    // Try to get the graphical node corresponding to the semantic parent.
                     var parentId = new EObjectIDManager().findId(sourceElement.getOwner());
-                    var optParentNode = diagramContext.diagram().getNodes().stream().filter(n -> parentId.isPresent() && Objects.equals(n.getTargetObjectId(), parentId.get())).findFirst();
+                    var optParentNode = diagramContext.diagram().getNodes().stream()
+                            .filter(node -> parentId.isPresent() && Objects.equals(node.getTargetObjectId(), parentId.get()))
+                            .findFirst();
                     if (optParentNode.isPresent()) {
                         newSelectedNode = optParentNode.get();
                     }
                 }
                 this.diagramMutationExposeService.expose(sourceElement, editingContext, diagramContext, newSelectedNode, convertedNodes);
+                if (selectedNode == null) {
+                    this.revealElementDroppedOnDiagramBackground(sourceElement, editingContext, diagramContext);
+                }
             }
         } else {
             ViewCreationRequest parentViewCreationRequest = this.diagramMutationElementService.createView(sourceElement, editingContext, diagramContext, selectedNode, convertedNodes);
@@ -488,6 +486,31 @@ public class DiagramMutationDndService {
                 // make sure its compartment won't be visible after the drop.
                 this.hideCompartments(parentViewCreationRequest, editingContext, diagramContext, convertedNodes);
             }
+        }
+    }
+
+    /**
+     * Reveals the root graphical node created for an element dropped on the diagram background.
+     *
+     * @param sourceElement
+     *            the dropped semantic element.
+     * @param editingContext
+     *            the editing context of the tool.
+     * @param diagramContext
+     *            the {@link DiagramContext} of the tool.
+     */
+    private void revealElementDroppedOnDiagramBackground(Element sourceElement, IEditingContext editingContext, DiagramContext diagramContext) {
+        var descriptionId = this.diagramQueryElementService.getNodeDescriptionId(sourceElement, diagramContext.diagram(), editingContext);
+        if (descriptionId.isPresent()) {
+            var nodeId = new NodeIdProvider().getNodeId(diagramContext.diagram().getId(), descriptionId.get(), NodeContainmentKind.CHILD_NODE,
+                    this.siriusWebCoreServices.identityService().getId(sourceElement));
+            diagramContext.diagramEvents().removeIf(diagEvent -> {
+                if (diagEvent instanceof HideDiagramElementEvent hideDiagramElementEvent && hideDiagramElementEvent.getElementIds().contains(nodeId)) {
+                    return true;
+                }
+                return false;
+            });
+            diagramContext.diagramEvents().add(new HideDiagramElementEvent(Set.of(nodeId), false));
         }
     }
 
@@ -633,11 +656,22 @@ public class DiagramMutationDndService {
         return parentTargetObjectId;
     }
 
-    private Set<Node> findSubNodesBySemanticElementId(DiagramContext diagramContext, Node parenNode, String semanticElementId) {
+    /**
+     * Finds the direct graphical representations of a semantic element in the specified drop target.
+     *
+     * @param diagramContext
+     *            the {@link DiagramContext} of the tool.
+     * @param parentNode
+     *            the graphical drop target, or {@code null} for the diagram background.
+     * @param semanticElementId
+     *            the identifier of the semantic element to find.
+     * @return the matching graphical nodes.
+     */
+    private Set<Node> findSubNodesBySemanticElementId(DiagramContext diagramContext, Node parentNode, String semanticElementId) {
         Set<Node> subnodes = new HashSet<>();
-        if (parenNode != null) {
-            subnodes.addAll(parenNode.getChildNodes());
-            subnodes.addAll(parenNode.getBorderNodes());
+        if (parentNode != null) {
+            subnodes.addAll(parentNode.getChildNodes());
+            subnodes.addAll(parentNode.getBorderNodes());
         } else {
             subnodes.addAll(diagramContext.diagram().getNodes());
         }
