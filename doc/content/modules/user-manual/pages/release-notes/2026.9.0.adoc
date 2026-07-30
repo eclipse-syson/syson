@@ -8,6 +8,8 @@
 
 ** Add support for list item inheritance in _perform actions_ compartments.
 
+** Add support of `ItemUsage` inheritance in _items_ compartments of `PortUsage` and `PortDefinition` graphical nodes.
+
 * In textual import/export:
 
 == Bug fixes

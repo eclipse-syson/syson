@@ -67,6 +67,10 @@ public class GeneralViewWithTopNodesTestProjectData {
         public static final String STATE_DEFINITION_ID = "dbf7eccb-35e6-3ff1-b7b8-fc71f1a4094a";
 
         public static final String STATE_USAGE_ID = "1541c013-2cc7-3dd7-a39f-6e33d07b411e";
+
+        public static final String PORT_USAGE_ID = "553e0e65-aa2b-3f4e-b710-d8f82ced4fbb";
+
+        public static final String PORT_DEFINITION_ID = "bad8fa43-eb03-35dd-a025-34fd2e71d5a3";
     }
 
     /**
