@@ -670,9 +670,11 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 } else if (SysmlPackage.eINSTANCE.getPortDefinition().equals(eClass) && SysmlPackage.eINSTANCE.getDefinition_OwnedItem().equals(eReference)) {
                     compartmentNodeDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
                     compartmentNodeDescriptionProviders.add(new PortDefinitionOwnedItemCompartmentItemNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+                    compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                 }  else if (SysmlPackage.eINSTANCE.getPortUsage().equals(eClass) && SysmlPackage.eINSTANCE.getUsage_NestedItem().equals(eReference)) {
                     compartmentNodeDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
                     compartmentNodeDescriptionProviders.add(new PortUsageNestedItemCompartmentItemNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+                    compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                 } else {
                     compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                     compartmentNodeDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));

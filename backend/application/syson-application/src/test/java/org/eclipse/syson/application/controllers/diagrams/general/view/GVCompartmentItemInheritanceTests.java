@@ -393,6 +393,54 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
                 .run();
     }
 
+    @DisplayName("GIVEN a base PortUsage with an item, WHEN subsetting the base PortUsage with another PortUsage, THEN the PortUsage items are inherited from the base PortUsage")
+    @Test
+    public void checkPortUsageItemsInheritanceWithSubsetting() {
+        new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(SysmlPackage.eINSTANCE.getPortUsage())
+                .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PORT_USAGE_ID)
+                .elementToInheritCreationToolName("New Item")
+                .elementToInheritExpectedListItemLabelText("item1")
+                .alsoRepresentedByBorderNode()
+                .compartmentName("items")
+                .elementThatInheritFromBaseElementCreationToolName("New Port")
+                .elementThatInheritFromBaseElementEClass(SysmlPackage.eINSTANCE.getPortUsage())
+                .specializationToolName("New Subsetting")
+                .run();
+    }
+
+    @DisplayName("GIVEN a base PortUsage with an item, WHEN a PortUsage is subsetting by reference the PortUsage, THEN the PortUsage items are inherited from the base PortUsage")
+    @Test
+    public void checkPortUsageItemsInheritanceWithReferenceSubsetting() {
+        new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(SysmlPackage.eINSTANCE.getPortUsage())
+                .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PORT_USAGE_ID)
+                .elementToInheritCreationToolName("New Item")
+                .elementToInheritExpectedListItemLabelText("item1")
+                .alsoRepresentedByBorderNode()
+                .compartmentName("items")
+                .elementThatInheritFromBaseElementCreationToolName("New Port")
+                .elementThatInheritFromBaseElementEClass(SysmlPackage.eINSTANCE.getPortUsage())
+                .specializationToolName("New Reference Subsetting")
+                .run();
+    }
+
+    @DisplayName("GIVEN a base PortDefinition with an item, WHEN PortDefinition is subclassifying the base PortDefinition, THEN the PortDefinition items are inherited from the base PortDefinition")
+    @Test
+    public void checkPortDefinitionItemsInheritanceWithSubclassification() {
+        new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(SysmlPackage.eINSTANCE.getPortDefinition())
+                .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PORT_DEFINITION_ID)
+                .elementToInheritCreationToolName("New Item")
+                .elementToInheritExpectedListItemLabelText("item1")
+                .alsoRepresentedByBorderNode()
+                .compartmentName("items")
+                .elementThatInheritFromBaseElementCreationToolName("New Port Definition")
+                .elementThatInheritFromBaseElementEClass(SysmlPackage.eINSTANCE.getPortDefinition())
+                .specializationToolName("New Subclassification")
+                .run();
+    }
+
     /**
      * This test runner verifies that creating a specializing relationship create inherited elements.
      *
@@ -547,7 +595,7 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
             Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
             List<ToolVariable> toolVariables = new ArrayList<>();
-            selectedElementId.ifPresent(s -> toolVariables.add(new ToolVariable("selectedObject", s, ToolVariableType.OBJECT_ID)));
+            this.selectedElementId.ifPresent(s -> toolVariables.add(new ToolVariable("selectedObject", s, ToolVariableType.OBJECT_ID)));
 
             // Create an element in the base element to inherit
             String createActionToolId = diagramDescriptionIdProvider.getNodeToolId(GVCompartmentItemInheritanceTests.this.descriptionNameGenerator.getNodeName(this.baseElementToInheritFromEClass), this.elementToInheritCreationToolName);
@@ -558,7 +606,7 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
                     expectedBorderNodeCount = 1;
                 }
                 int expectEdgeCount = 0;
-                if (withEdgeExpected) {
+                if (this.withEdgeExpected) {
                     expectEdgeCount = 1;
                     if (this.selectedElementId.isPresent() && !this.selectedElementId.get().isBlank()) {
                         expectEdgeCount = 2;
