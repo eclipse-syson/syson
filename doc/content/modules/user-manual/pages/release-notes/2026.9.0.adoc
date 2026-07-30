@@ -14,6 +14,8 @@
 
 * In diagrams:
 
+** Fix dropping a nested `AttributeUsage` from the _Explorer_ onto a _General View_ diagram so it is visible on the first drop.
+
 ** Fix `Comment` graphical nodes so changing their background color no longer changes their border color.
 
 * In all views:

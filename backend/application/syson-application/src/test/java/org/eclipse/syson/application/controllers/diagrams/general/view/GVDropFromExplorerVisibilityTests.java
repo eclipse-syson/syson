@@ -36,7 +36,7 @@ import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.SysONTestsProperties;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.data.GeneralViewItemAndAttributeProjectData;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
@@ -44,8 +44,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.test.StepVerifier;
@@ -56,7 +54,7 @@ import reactor.test.StepVerifier;
  * @author mcharfadi
  */
 @Transactional
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { SysONTestsProperties.NO_DEFAULT_LIBRARIES_PROPERTY })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVDropFromExplorerVisibilityTests extends AbstractIntegrationTests {
 
     @Autowired
@@ -74,10 +72,11 @@ public class GVDropFromExplorerVisibilityTests extends AbstractIntegrationTests 
     @Autowired
     private InvokeSingleClickOnDiagramElementToolMutationRunner invokeSingleClickOnDiagramElementToolMutationRunner;
 
-    @DisplayName("GIVEN a diagram, WHEN we drop a PartUsage with no empty compartments from the Explorer view, THEN the PartUsage is displayed on the diagram with its compartments hidden")
-    @Sql(scripts = { GeneralViewItemAndAttributeProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    /**
+     * Verifies that a restored Part and an Attribute contained in it are visible after their first Explorer drops.
+     */
+    @DisplayName("GIVEN a diagram, WHEN a Part is dropped then a contained Attribute is also dropped from the Explorer, THEN both are visible on their first drop")
+    @GivenSysONServer({ GeneralViewItemAndAttributeProjectData.SCRIPT_PATH })
     @Test
     public void dropPartFromTheExplorer() {
         this.givenInitialServerState.initialize();
@@ -87,26 +86,20 @@ public class GVDropFromExplorerVisibilityTests extends AbstractIntegrationTests 
 
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
 
-        var diagramId = new AtomicReference<String>();
         var removeFromDiagramToolId = new AtomicReference<String>();
-        var diagramTargetId = new AtomicReference<String>();
         var partNodeId = new AtomicReference<String>();
-        var partNodeSemanticId = new AtomicReference<String>();
 
         Consumer<Object> diagramContentConsumerBeforeDrop = assertRefreshedDiagramThat(diagram -> {
-            assertThat(diagram.getNodes()).hasSize(3);
-            diagramTargetId.set(diagram.getTargetObjectId());
-            diagramId.set(diagram.getId());
+            assertThat(diagram.getNodes()).hasSize(5);
             var partNode = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "p1").getNode();
             assertThat(partNode.getChildNodes().stream().filter(node -> node.getModifiers().contains(ViewModifier.Hidden))).hasSize(10);
-            partNodeSemanticId.set(partNode.getTargetObjectId());
             partNodeId.set(partNode.getId());
         });
 
         Runnable getRemoveFromDiagramTool = () -> {
             Map<String, Object> variables = Map.of(
                     "editingContextId", GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
-                    "representationId", diagramId.get(),
+                    "representationId", GeneralViewItemAndAttributeProjectData.GraphicalIds.DIAGRAM_ID,
                     "diagramElementIds", List.of(partNodeId.get())
             );
             var result = this.paletteQueryRunner.run(variables);
@@ -120,33 +113,33 @@ public class GVDropFromExplorerVisibilityTests extends AbstractIntegrationTests 
 
         // Remove the node from the diagram
         Runnable executeRemoveFromDiagramTool = () -> {
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, diagramId.get(), List.of(partNodeId.get()), removeFromDiagramToolId.get(), 0, 0, List.of());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
+                    GeneralViewItemAndAttributeProjectData.GraphicalIds.DIAGRAM_ID, List.of(partNodeId.get()), removeFromDiagramToolId.get(), 0, 0, List.of());
             var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
             String typename = JsonPath.read(result.data(), "$.data.invokeSingleClickOnDiagramElementTool.__typename");
             assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
         };
 
         Consumer<Object> diagramContentConsumerAfterRemove = assertRefreshedDiagramThat(diagram -> {
-            assertThat(diagram.getNodes()).hasSize(2);
+            assertThat(diagram.getNodes()).hasSize(3);
         });
 
-        // Drop from the explorer
-        Runnable executeDropPartOnDiagram = () -> {
-            var dropOnDiagramInput = new DropOnDiagramInput(UUID.randomUUID(), GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, diagramId.get(),
-                    diagramTargetId.get(), List.of(partNodeSemanticId.get()), 0, 0);
-            var dropOnDiagramResult = this.dropOnDiagramMutationRunner.run(dropOnDiagramInput);
-            var typename = JsonPath.read(dropOnDiagramResult.data(), "$.data.dropOnDiagram.__typename");
-            assertThat(typename).isEqualTo(DropOnDiagramSuccessPayload.class.getSimpleName());
-        };
+        Runnable executeDropPartOnDiagram = () -> this.dropFromExplorer(GeneralViewItemAndAttributeProjectData.GraphicalIds.DIAGRAM_ID, GeneralViewItemAndAttributeProjectData.SemanticIds.P1_ID);
 
-        Consumer<Object> diagramContentConsumerAfterDrop = assertRefreshedDiagramThat(diagram -> {
-            assertThat(diagram.getNodes()).hasSize(3);
-            diagramTargetId.set(diagram.getTargetObjectId());
-            diagramId.set(diagram.getId());
+        Consumer<Object> diagramContentConsumerAfterPartDrop = assertRefreshedDiagramThat(diagram -> {
+            assertThat(diagram.getNodes()).hasSize(4);
             var partNode = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "p1").getNode();
+            assertThat(partNode).extracting(node -> node.getState()).isEqualTo(ViewModifier.Normal);
             assertThat(partNode.getChildNodes().stream().filter(node -> node.getModifiers().contains(ViewModifier.Hidden))).hasSize(11);
-            partNodeSemanticId.set(partNode.getTargetObjectId());
-            partNodeId.set(partNode.getId());
+        });
+
+        Runnable executeDropAttributeOnDiagram = () -> this.dropFromExplorer(GeneralViewItemAndAttributeProjectData.GraphicalIds.DIAGRAM_ID,
+                GeneralViewItemAndAttributeProjectData.SemanticIds.P1_X1_ID);
+
+        Consumer<Object> diagramContentConsumerAfterAttributeDrop = assertRefreshedDiagramThat(diagram -> {
+            assertThat(diagram.getNodes()).hasSize(5);
+            var attributeNode = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "attribute" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "x1").getNode();
+            assertThat(attributeNode).extracting(node -> node.getState()).isEqualTo(ViewModifier.Normal);
         });
 
         StepVerifier.create(flux)
@@ -155,8 +148,26 @@ public class GVDropFromExplorerVisibilityTests extends AbstractIntegrationTests 
                 .then(executeRemoveFromDiagramTool)
                 .consumeNextWith(diagramContentConsumerAfterRemove)
                 .then(executeDropPartOnDiagram)
-                .consumeNextWith(diagramContentConsumerAfterDrop)
+                .consumeNextWith(diagramContentConsumerAfterPartDrop)
+                .then(executeDropAttributeOnDiagram)
+                .consumeNextWith(diagramContentConsumerAfterAttributeDrop)
                 .thenCancel()
-                .verify(Duration.ofSeconds(10));
+                .verify(Duration.ofSeconds(1000));
+    }
+
+    /**
+     * Drops an Explorer element on the diagram background and verifies the successful GraphQL payload.
+     *
+     * @param diagramId
+     *            the diagram representation identifier.
+     * @param semanticElementId
+     *            the semantic identifier of the dropped element.
+     */
+    private void dropFromExplorer(String diagramId, String semanticElementId) {
+        var dropOnDiagramInput = new DropOnDiagramInput(UUID.randomUUID(), GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, diagramId,
+                diagramId, List.of(semanticElementId), 0, 0);
+        var dropOnDiagramResult = this.dropOnDiagramMutationRunner.run(dropOnDiagramInput);
+        var typename = JsonPath.read(dropOnDiagramResult.data(), "$.data.dropOnDiagram.__typename");
+        assertThat(typename).isEqualTo(DropOnDiagramSuccessPayload.class.getSimpleName());
     }
 }
