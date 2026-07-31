@@ -38,6 +38,8 @@ public class GeneralViewWithTopNodesTestProjectData {
 
         public static final String ATTRIBUTE_USAGE_ID = "7b8e6835-c563-35cd-8991-e2f894fc2139";
 
+        public static final String CONCERN_DEFINITION_ID = "d205329d-0c96-3e95-b7fa-ba1998dad21e";
+
         public static final String CONCERN_USAGE_ID = "0999b8c3-d37c-3644-a1d6-b9777a499d11";
 
         public static final String CONSTRAINT_USAGE_ID = "22da3b61-32f6-346e-9deb-7dd1f64bfd69";
@@ -71,6 +73,8 @@ public class GeneralViewWithTopNodesTestProjectData {
         public static final String PORT_USAGE_ID = "553e0e65-aa2b-3f4e-b710-d8f82ced4fbb";
 
         public static final String PORT_DEFINITION_ID = "bad8fa43-eb03-35dd-a025-34fd2e71d5a3";
+
+        public static final String SATISFY_REQUIREMENT_USAGE_ID = "450a4e50-c67b-3c40-8801-64aa0cd85bd6";
     }
 
     /**
