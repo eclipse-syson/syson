@@ -52,6 +52,8 @@ public class AssumeConstraintCompartmentNodeDescription extends AbstractCompartm
         cache.getNodeDescription(this.getCompartmentName()).ifPresent(nodeDescription -> {
             cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, this.eReference) + AssumeConstraintCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME)
                     .ifPresent(itemNodeDescription -> nodeDescription.getChildrenDescriptions().add(itemNodeDescription));
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getInheritedCompartmentItemName(this.eClass, this.eReference)).ifPresent(nodeDescription.getChildrenDescriptions()::add);
+
             nodeDescription.setPalette(this.createCompartmentPalette(cache));
         });
     }

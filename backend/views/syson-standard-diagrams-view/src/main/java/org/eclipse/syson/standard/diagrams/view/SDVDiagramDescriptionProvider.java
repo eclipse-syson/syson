@@ -802,6 +802,11 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new AssumeConstraintCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(),
                 colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), colorProvider, this.getDescriptionNameGenerator()));
+
         return compartmentNodeDescriptionProviders;
     }
 
