@@ -39,6 +39,7 @@ In any case, it is strongly recommended to back up your data before proceeding w
 - https://github.com/eclipse-syson/syson/issues/2316[#2316] [diagrams] Add support for list item inheritance in _perform actions_ compartments
 - https://github.com/eclipse-syson/syson/issues/2370[#2370] [diagrams] Add support of `ItemUsage` inheritance in _items_ compartments of `PortUsage` and `PortDefinition` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/2372[#2372] [diagrams] Add support of assume constraint inheritance in _assume constraints_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/2375[#2375] [diagrams] Add support of require constraints inheritance in _require constraints_ compartments of `RequirementUsage`, `RequirementDefinition` and subtypes graphical nodes.
 
 == v2026.7.0
 
