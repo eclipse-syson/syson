@@ -11,6 +11,7 @@
 ** Add support of `ItemUsage` inheritance in _items_ compartments of `PortUsage` and `PortDefinition` graphical nodes.
 
 ** Add support of assume constraint inheritance in _assume constraints_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
+** Add support of require constraints inheritance in _require constraints_ compartments of `RequirementUsage`, `RequirementDefinition` and subtypes graphical nodes.
 
 * In textual import/export:
 

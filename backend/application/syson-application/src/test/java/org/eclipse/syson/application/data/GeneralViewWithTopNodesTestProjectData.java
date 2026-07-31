@@ -75,6 +75,7 @@ public class GeneralViewWithTopNodesTestProjectData {
         public static final String PORT_DEFINITION_ID = "bad8fa43-eb03-35dd-a025-34fd2e71d5a3";
 
         public static final String SATISFY_REQUIREMENT_USAGE_ID = "450a4e50-c67b-3c40-8801-64aa0cd85bd6";
+
     }
 
     /**

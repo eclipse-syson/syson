@@ -567,6 +567,132 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
                 .run();
     }
 
+    @DisplayName("GIVEN a base RequirementDefinition with a require constraint, WHEN a RequirementDefinition is subclassifying the base RequirementDefinition, THEN the RequirementDefinition require constraints are inherited from the base RequirementDefinition")
+    @Test
+    public void checkRequirementDefinitionRequireConstraintsInheritanceWithSubclassification() {
+        var eClass = SysmlPackage.eINSTANCE.getRequirementDefinition();
+        new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(eClass)
+                .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.REQUIREMENT_DEFINITION_ID)
+                .elementToInheritCreationToolName("New Require constraint")
+                .withEdgeExpected()
+                .withSelectedElementId("")
+                .elementToInheritExpectedListItemLabelText("constraint1")
+                .compartmentName("require constraints")
+                .elementThatInheritFromBaseElementCreationToolName("New Requirement Definition")
+                .elementThatInheritFromBaseElementEClass(eClass)
+                .specializationToolName("New Subclassification")
+                .run();
+    }
+
+    private ElementSpecializationInheritanceTestRunner getRequirementUsageRequireConstraintsInheritanceTestRunner() {
+        var eClass = SysmlPackage.eINSTANCE.getRequirementUsage();
+        return new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(eClass)
+                .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.REQUIREMENT_USAGE_ID)
+                .elementToInheritCreationToolName("New Require constraint")
+                .withEdgeExpected()
+                .withSelectedElementId("")
+                .elementToInheritExpectedListItemLabelText("constraint1")
+                .compartmentName("require constraints")
+                .elementThatInheritFromBaseElementCreationToolName("New Requirement")
+                .elementThatInheritFromBaseElementEClass(eClass);
+    }
+
+    @DisplayName("GIVEN a base RequirementUsage with a require constraint, WHEN a RequirementUsage is subsetting the base RequirementUsage, THEN the RequirementUsage require constraints are inherited from the base RequirementUsage")
+    @Test
+    public void checkRequirementUsageRequireConstraintsInheritanceWithSubsetting() {
+        this.getRequirementUsageRequireConstraintsInheritanceTestRunner()
+                .specializationToolName("New Subsetting")
+                .run();
+    }
+
+    @DisplayName("GIVEN a base RequirementUsage with a require constraint, WHEN a RequirementUsage is subsetting by reference the base RequirementUsage, THEN the RequirementUsage require constraints are inherited from the base RequirementUsage")
+    @Test
+    public void checkRequirementUsageRequireConstraintsInheritanceWithReferenceSubsetting() {
+        this.getRequirementUsageRequireConstraintsInheritanceTestRunner()
+                .specializationToolName("New Reference Subsetting")
+                .run();
+    }
+
+    private ElementSpecializationInheritanceTestRunner getSatisfyRequirementUsageRequireConstraintsInheritanceTestRunner() {
+        var eClass = SysmlPackage.eINSTANCE.getSatisfyRequirementUsage();
+        return new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(eClass)
+                .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.SATISFY_REQUIREMENT_USAGE_ID)
+                .elementToInheritCreationToolName("New Require constraint")
+                .withEdgeExpected()
+                .withSelectedElementId("")
+                .elementToInheritExpectedListItemLabelText("constraint1")
+                .compartmentName("require constraints")
+                .elementThatInheritFromBaseElementCreationToolName("New Satisfy Requirement")
+                .elementThatInheritFromBaseElementEClass(eClass);
+    }
+
+    @DisplayName("GIVEN a base SatisfyRequirementUsage with a require constraint, WHEN a SatisfyRequirementUsage is subsetting the base SatisfyRequirementUsage, THEN the SatisfyRequirementUsage require constraints are inherited from the base SatisfyRequirementUsage")
+    @Test
+    public void checkSatisfyRequirementUsageRequireConstraintsInheritanceWithSubsetting() {
+        this.getSatisfyRequirementUsageRequireConstraintsInheritanceTestRunner()
+                .specializationToolName("New Subsetting")
+                .run();
+    }
+
+    @DisplayName("GIVEN a base SatisfyRequirementUsage with a require constraint, WHEN a SatisfyRequirementUsage is subsetting by reference the base SatisfyRequirementUsage, THEN the SatisfyRequirementUsage require constraints are inherited from the base SatisfyRequirementUsage")
+    @Test
+    public void checkSatisfyRequirementUsageRequireConstraintsInheritanceWithReferenceSubsetting() {
+        this.getSatisfyRequirementUsageRequireConstraintsInheritanceTestRunner()
+                .specializationToolName("New Reference Subsetting")
+                .run();
+    }
+
+    @DisplayName("GIVEN a base ConcernDefinition with a require constraint, WHEN a ConcernDefinition is subclassifying the base ConcernDefinition, THEN the ConcernDefinition require constraints are inherited from the base ConcernDefinition")
+    @Test
+    public void checkConcernDefinitionRequireConstraintsInheritanceWithSubclassification() {
+        var eClass = SysmlPackage.eINSTANCE.getConcernDefinition();
+        new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(eClass)
+                .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.CONCERN_DEFINITION_ID)
+                .elementToInheritCreationToolName("New Require constraint")
+                .withEdgeExpected()
+                .withSelectedElementId("")
+                .elementToInheritExpectedListItemLabelText("constraint1")
+                .compartmentName("require constraints")
+                .elementThatInheritFromBaseElementCreationToolName("New Concern Definition")
+                .elementThatInheritFromBaseElementEClass(eClass)
+                .specializationToolName("New Subclassification")
+                .run();
+    }
+
+    private ElementSpecializationInheritanceTestRunner getConcernUsageRequireConstraintsInheritanceTestRunner() {
+        var eClass = SysmlPackage.eINSTANCE.getConcernUsage();
+        return new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(eClass)
+                .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.CONCERN_USAGE_ID)
+                .elementToInheritCreationToolName("New Require constraint")
+                .withEdgeExpected()
+                .withSelectedElementId("")
+                .elementToInheritExpectedListItemLabelText("constraint1")
+                .compartmentName("require constraints")
+                .elementThatInheritFromBaseElementCreationToolName("New Concern")
+                .elementThatInheritFromBaseElementEClass(eClass);
+    }
+
+    @DisplayName("GIVEN a base ConcernUsage with a require constraint, WHEN a ConcernUsage is subsetting the base ConcernUsage, THEN the ConcernUsage require constraints are inherited from the base ConcernUsage")
+    @Test
+    public void checkConcernUsageRequireConstraintsInheritanceWithSubsetting() {
+        this.getConcernUsageRequireConstraintsInheritanceTestRunner()
+                .specializationToolName("New Subsetting")
+                .run();
+    }
+
+    @DisplayName("GIVEN a base ConcernUsage with a require constraint, WHEN a ConcernUsage is subsetting by reference the base ConcernUsage, THEN the ConcernUsage require constraints are inherited from the base ConcernUsage")
+    @Test
+    public void checkConcernUsageRequireConstraintsInheritanceWithReferenceSubsetting() {
+        this.getConcernUsageRequireConstraintsInheritanceTestRunner()
+                .specializationToolName("New Reference Subsetting")
+                .run();
+    }
+
     /**
      * This test runner verifies that creating a specializing relationship create inherited elements.
      *
