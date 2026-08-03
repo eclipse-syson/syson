@@ -325,7 +325,7 @@ public class DiagramQueryAQLService {
     }
 
     /**
-     * {@link DiagramQueryElementService#isDiagramEmpty(editingContext, diagramContext, previousDiagram)}.
+     * {@link DiagramQueryElementService#isDiagramEmpty(IEditingContext, DiagramContext, Diagram, int)}.
      */
     public boolean isDiagramEmpty(IEditingContext editingContext, DiagramContext diagramContext, Diagram previousDiagram, int exposedElements) {
         return this.diagramQueryElementService.isDiagramEmpty(editingContext, diagramContext, previousDiagram, exposedElements);

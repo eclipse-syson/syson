@@ -693,6 +693,54 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
                 .run();
     }
 
+    @DisplayName("GIVEN a base RequirementDefinition with a framed concern, WHEN a RequirementDefinition is subclassifying the base RequirementDefinition, THEN the RequirementDefinition frames are inherited from the base RequirementDefinition")
+    @Test
+    public void checkRequirementDefinitionFramesInheritanceWithSubclassification() {
+        var eClass = SysmlPackage.eINSTANCE.getRequirementDefinition();
+        new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(eClass)
+                .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.REQUIREMENT_DEFINITION_ID)
+                .elementToInheritCreationToolName("New Framed Concern")
+                .withEdgeExpected()
+                .withSelectedElementId("")
+                .elementToInheritExpectedListItemLabelText("concern1")
+                .compartmentName("frames")
+                .elementThatInheritFromBaseElementCreationToolName("New Requirement Definition")
+                .elementThatInheritFromBaseElementEClass(eClass)
+                .specializationToolName("New Subclassification")
+                .run();
+    }
+
+    private ElementSpecializationInheritanceTestRunner getRequirementUsageFramesInheritanceTestRunner() {
+        var eClass = SysmlPackage.eINSTANCE.getRequirementUsage();
+        return new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(eClass)
+                .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.REQUIREMENT_USAGE_ID)
+                .elementToInheritCreationToolName("New Framed Concern")
+                .withEdgeExpected()
+                .withSelectedElementId("")
+                .elementToInheritExpectedListItemLabelText("concern1")
+                .compartmentName("frames")
+                .elementThatInheritFromBaseElementCreationToolName("New Requirement")
+                .elementThatInheritFromBaseElementEClass(eClass);
+    }
+
+    @DisplayName("GIVEN a base RequirementUsage with a framed concern, WHEN a RequirementUsage is subsetting the base RequirementUsage, THEN the RequirementUsage frames are inherited from the base RequirementUsage")
+    @Test
+    public void checkRequirementUsageFramesInheritanceWithSubsetting() {
+        this.getRequirementUsageFramesInheritanceTestRunner()
+                .specializationToolName("New Subsetting")
+                .run();
+    }
+
+    @DisplayName("GIVEN a base RequirementUsage with a framed concern, WHEN a RequirementUsage is subsetting by reference the base RequirementUsage, THEN the RequirementUsage frames are inherited from the base RequirementUsage")
+    @Test
+    public void checkRequirementUsageFramesInheritanceWithReferenceSubsetting() {
+        this.getRequirementUsageFramesInheritanceTestRunner()
+                .specializationToolName("New Reference Subsetting")
+                .run();
+    }
+
     /**
      * This test runner verifies that creating a specializing relationship create inherited elements.
      *

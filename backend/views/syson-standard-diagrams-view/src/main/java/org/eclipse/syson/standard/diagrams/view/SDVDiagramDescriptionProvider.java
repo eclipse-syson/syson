@@ -758,6 +758,9 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new FramedConcernCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_FramedConcern(),
                 colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_FramedConcern(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_FramedConcern(), colorProvider, this.getDescriptionNameGenerator()));
+
         return compartmentNodeDescriptionProviders;
     }
 

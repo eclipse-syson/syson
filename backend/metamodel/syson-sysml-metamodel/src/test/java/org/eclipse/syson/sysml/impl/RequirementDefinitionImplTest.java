@@ -102,4 +102,27 @@ public class RequirementDefinitionImplTest {
         assertEquals("DECLARED_SHORT_NAME", REQUIREMENT_DEFINITION.getReqId());
         assertEquals("DECLARED_SHORT_NAME", REQUIREMENT_DEFINITION.getDeclaredShortName());
     }
+
+
+    @Test
+    public void testFramedConcern() {
+        // Check that framed concern property of RequirementDefinition subclassifying another RequirementDefinition
+        // contains base RequirementDefinition frame concerns
+
+        // 1. RequirementDefinition with a framed concern
+        var baseRequirementDefinition = FACTORY.createRequirementDefinition();
+        var framedConcernMembership = FACTORY.createFramedConcernMembership();
+        var ownedConcern = FACTORY.createConcernUsage();
+        framedConcernMembership.getOwnedRelatedElement().add(ownedConcern);
+        baseRequirementDefinition.getOwnedRelationship().add(framedConcernMembership);
+        // 2. another empty RequirementDefinition
+        var inheritedRequirementDefinition = FACTORY.createRequirementDefinition();
+        // 3. subclassify the second by the first one
+        var subclassification = FACTORY.createSubclassification();
+        subclassification.setSuperclassifier(baseRequirementDefinition);
+        subclassification.setSubclassifier(inheritedRequirementDefinition);
+        inheritedRequirementDefinition.getOwnedRelationship().add(subclassification);
+        // 4. check that base framed concern is visible in the second RequirementDefinition
+        assertThat(inheritedRequirementDefinition.getFramedConcern()).hasSize(1);
+    }
 }
