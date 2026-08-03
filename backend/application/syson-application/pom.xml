@@ -101,6 +101,11 @@
 
 		<!-- Test Dependencies -->
 		<dependency>
+			<groupId>org.eclipse.syson</groupId>
+			<artifactId>syson-tests</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-tests</artifactId>
 			<version>${sirius.web.version}</version>

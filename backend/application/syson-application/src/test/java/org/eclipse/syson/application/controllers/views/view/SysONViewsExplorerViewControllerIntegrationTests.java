@@ -27,9 +27,9 @@ import org.eclipse.sirius.web.application.views.viewsexplorer.services.ViewsExpl
 import org.eclipse.sirius.web.tests.graphql.ViewsExplorerEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.data.InterconnectionViewEmptyTestProjectData;
 import org.eclipse.syson.application.data.RequirementsTableTestProjectData;
+import org.eclipse.syson.tests.api.GivenSysONServer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

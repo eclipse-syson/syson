@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson;
+package org.eclipse.syson.tests.api;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -23,20 +23,20 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 
 /**
- * Initializes the test with SQL scripts and cleans up the database after the test.
+ * Executes SQL scripts before the test method in an isolated transaction.
  *
  * @author theogiraudet
  */
 @Documented
 @Target({ ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-@SysONServerInit
-@Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-public @interface GivenSysONServer {
+@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+public @interface SysONServerInit {
 
     /**
      * SQL scripts to execute before the test.
      */
-    @AliasFor(annotation = SysONServerInit.class, attribute = "value")
+    @AliasFor(annotation = Sql.class, attribute = "scripts")
     String[] value() default {};
+
 }

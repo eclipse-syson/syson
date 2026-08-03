@@ -42,6 +42,7 @@ import org.eclipse.syson.services.api.ISysMLMoveElementServiceDelegate;
 import org.eclipse.syson.services.api.MoveStatus;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.tests.api.GivenSysONServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
