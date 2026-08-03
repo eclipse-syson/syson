@@ -31,6 +31,7 @@ import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
+import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -183,6 +184,18 @@ public class InheritedCompartmentItemFilterSwitch extends SysmlSwitch<Boolean> {
         EClassifier eType = this.eReference.getEType();
         EClass eClass = object.eClass();
         return eType.equals(eClass) || (eType instanceof EClass eTypeEClass && eTypeEClass.isSuperTypeOf(eClass));
+    }
+
+    /**
+     * Filters inherited satisfy requirement usages against the targeted compartment.
+     *
+     * @param object
+     *         the inherited satisfy requirement usage.
+     * @return {@code true} when the satisfy requirement belongs to the requested compartment
+     */
+    @Override
+    public Boolean caseSatisfyRequirementUsage(SatisfyRequirementUsage object) {
+        return SysmlPackage.eINSTANCE.getUsage_NestedRequirement().equals(this.eReference) || SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement().equals(this.eReference);
     }
 
     /**

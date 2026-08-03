@@ -55,6 +55,7 @@ public class SatisfyRequirementCompartmentNodeDescription extends AbstractCompar
         cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(this.eClass, this.eReference) + COMPARTMENT_NAME).ifPresent(nodeDescription -> {
             cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, this.eReference) + SatisfyRequirementCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME)
                     .ifPresent(itemNodeDesc -> nodeDescription.getChildrenDescriptions().add(itemNodeDesc));
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getInheritedCompartmentItemName(this.eClass, this.eReference) + SatisfyRequirementCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME).ifPresent(nodeDescription.getChildrenDescriptions()::add);
             nodeDescription.setPalette(this.createCompartmentPalette(cache));
         });
     }
