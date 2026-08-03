@@ -26,10 +26,10 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshed
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controller.editingcontext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.data.ControlNodesInOldDiagramsTestProjectData;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
+import org.eclipse.syson.tests.api.GivenSysONServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

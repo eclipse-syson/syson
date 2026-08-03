@@ -35,10 +35,10 @@ import org.eclipse.sirius.web.application.nodeaction.managevisibility.ManageVisi
 import org.eclipse.sirius.web.application.nodeaction.managevisibility.ManageVisibilityRevealAllAction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.data.GeneralViewManageVisibilityTestsProjectData;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.services.nodeactions.managevisibility.ManageVisibilityRevealValuedContentAction;
+import org.eclipse.syson.tests.api.GivenSysONServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

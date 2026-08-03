@@ -29,13 +29,13 @@ import org.eclipse.sirius.components.diagrams.tests.graphql.ResetNodeAppearanceM
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controllers.diagrams.graphql.EditSysMLImportedPackageNodeAppearanceMutationRunner;
 import org.eclipse.syson.application.data.AllCustomNodesProjectData;
 import org.eclipse.syson.application.nodes.SysMLImportedPackageNodeStyle;
 import org.eclipse.syson.application.nodes.dto.EditSysMLImportedPackageNodeAppearanceInput;
 import org.eclipse.syson.application.nodes.dto.SysMLImportedPackageNodeAppearanceInput;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
+import org.eclipse.syson.tests.api.GivenSysONServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
