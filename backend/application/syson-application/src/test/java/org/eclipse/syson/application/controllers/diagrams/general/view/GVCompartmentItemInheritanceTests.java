@@ -741,6 +741,55 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
                 .run();
     }
 
+    @DisplayName("GIVEN a base PartDefinition with a satisfy requirement, WHEN a PartDefinition is subclassifying the base PartDefinition, THEN the PartDefinition satisfy requirements are inherited from the base PartDefinition")
+    @Test
+    public void checkPartDefinitionSatisfyRequirementsInheritanceWithSubclassification() {
+        var eClass = SysmlPackage.eINSTANCE.getPartDefinition();
+        new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(eClass)
+                .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_ID)
+                .elementToInheritCreationToolName("New Satisfy Requirement")
+                .withEdgeExpected()
+                .withSelectedElementId("")
+                .elementToInheritExpectedListItemLabelText("satisfyRequirement1")
+                .compartmentName("satisfy requirements")
+                .elementThatInheritFromBaseElementCreationToolName("New Part Definition")
+                .elementThatInheritFromBaseElementEClass(eClass)
+                .specializationToolName("New Subclassification")
+                .run();
+    }
+
+    private ElementSpecializationInheritanceTestRunner getPartUsageSatisfyRequirementsInheritanceTestRunner() {
+        var eClass = SysmlPackage.eINSTANCE.getPartUsage();
+        return new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(eClass)
+                .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID)
+                .elementToInheritCreationToolName("New Satisfy Requirement")
+                .withEdgeExpected()
+                .withSelectedElementId("")
+                .withInnerBaseElementCreationExtraEdges(1)
+                .elementToInheritExpectedListItemLabelText("satisfyRequirement1")
+                .compartmentName("satisfy requirements")
+                .elementThatInheritFromBaseElementCreationToolName("New Part")
+                .elementThatInheritFromBaseElementEClass(eClass);
+    }
+
+    @DisplayName("GIVEN a base PartUsage with a satisfy requirement, WHEN a PartUsage is subsetting the base PartUsage, THEN the PartUsage satisfy requirements are inherited from the base PartUsage")
+    @Test
+    public void checkRequirementUsageSatisfyRequirementsInheritanceWithSubsetting() {
+        this.getPartUsageSatisfyRequirementsInheritanceTestRunner()
+                .specializationToolName("New Subsetting")
+                .run();
+    }
+
+    @DisplayName("GIVEN a base PartUsage with a satisfy requirement, WHEN a PartUsage is subsetting by reference the base PartUsage, THEN the PartUsage satisfy requirements are inherited from the base PartUsage")
+    @Test
+    public void checkRequirementUsageSatisfyRequirementsInheritanceWithReferenceSubsetting() {
+        this.getPartUsageSatisfyRequirementsInheritanceTestRunner()
+                .specializationToolName("New Reference Subsetting")
+                .run();
+    }
+
     /**
      * This test runner verifies that creating a specializing relationship create inherited elements.
      *
@@ -771,6 +820,14 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
          * </p>
          */
         private boolean withEdgeExpected;
+
+        /**
+         * Additional edges could be created when the {@code elementToInheritCreationToolName} tool on {@code baseElementToInheritFromNodeId} is performed.
+         * <p>
+         *     Satisfy edge for instance, from a {@code PartUsage} to a nested {@code SatisfyRequiremenUsage}.
+         * </p>
+         */
+        private int withInnerBaseElementCreationExtraEdges;
 
         /**
          * The selected element required for the creation tool applied on the base element.
@@ -824,6 +881,11 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
 
         public ElementSpecializationInheritanceTestRunner withEdgeExpected() {
             this.withEdgeExpected = true;
+            return this;
+        }
+
+        public ElementSpecializationInheritanceTestRunner withInnerBaseElementCreationExtraEdges(int extraEdgesExpected) {
+            this.withInnerBaseElementCreationExtraEdges = extraEdgesExpected;
             return this;
         }
 
@@ -910,6 +972,9 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
                     expectEdgeCount = 1;
                     if (this.selectedElementId.isPresent() && !this.selectedElementId.get().isBlank()) {
                         expectEdgeCount = 2;
+                    }
+                    if (this.withInnerBaseElementCreationExtraEdges > 0) {
+                        expectEdgeCount += this.withInnerBaseElementCreationExtraEdges;
                     }
                 }
                 new CheckDiagramElementCount(GVCompartmentItemInheritanceTests.this.diagramComparator)

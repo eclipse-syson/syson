@@ -66,6 +66,7 @@ import org.eclipse.syson.diagram.common.view.nodes.RequireConstraintCompartmentI
 import org.eclipse.syson.diagram.common.view.nodes.RequireConstraintCompartmentNodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.SatisfyRequirementCompartmentItemNodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.SatisfyRequirementCompartmentNodeDescription;
+import org.eclipse.syson.diagram.common.view.nodes.SatisfyRequirementInheritedCompartmentItemNodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartStateNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StateTransitionCompartmentNodeDescriptionProvider;
@@ -745,6 +746,8 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new SatisfyRequirementCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedRequirement(),
                 colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new SatisfyRequirementInheritedCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedRequirement(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new SatisfyRequirementInheritedCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(), colorProvider, this.getDescriptionNameGenerator()));
         return compartmentNodeDescriptionProviders;
     }
 
