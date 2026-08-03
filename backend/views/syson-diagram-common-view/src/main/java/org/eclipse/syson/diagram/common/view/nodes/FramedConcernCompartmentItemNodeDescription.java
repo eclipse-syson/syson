@@ -16,8 +16,10 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.syson.model.services.aql.ModelQueryAQLService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -50,5 +52,10 @@ public class FramedConcernCompartmentItemNodeDescription extends CompartmentItem
     @Override
     protected String getName() {
         return super.getName() + COMPARTMENT_ITEM_NAME;
+    }
+
+    @Override
+    protected String getSemanticCandidateExpression() {
+        return ServiceMethod.of0(ModelQueryAQLService::getFramedConcerns).aqlSelf();
     }
 }

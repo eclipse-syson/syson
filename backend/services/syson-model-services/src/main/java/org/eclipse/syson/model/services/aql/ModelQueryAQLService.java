@@ -25,6 +25,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.FramedConcernMembership;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
@@ -142,5 +143,12 @@ public class ModelQueryAQLService {
      */
     public Feature unwrapFeature(Feature input) {
         return this.metamodelQueryElementService.unwrapFeature(input);
+    }
+
+    /**
+     * {@link MetamodelQueryElementService#getFramedConcerns(Namespace)}.
+     */
+    public List<ConcernUsage> getFramedConcerns(Namespace namespace) {
+        return this.metamodelQueryElementService.getFramedConcerns(namespace);
     }
 }

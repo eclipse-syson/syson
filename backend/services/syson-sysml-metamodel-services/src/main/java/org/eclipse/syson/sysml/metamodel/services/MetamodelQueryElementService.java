@@ -42,6 +42,8 @@ import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
+import org.eclipse.syson.sysml.RequirementDefinition;
+import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.ResultExpressionMembership;
 import org.eclipse.syson.sysml.StakeholderMembership;
 import org.eclipse.syson.sysml.StateUsage;
@@ -493,5 +495,29 @@ public class MetamodelQueryElementService {
             }
         }
         return result;
+    }
+
+    /**
+     * Retrieves framed {@link ConcernUsage} of the given element.
+     * <p>
+     *     The {@link RequirementUsage#getFramedConcern()} and {@link RequirementDefinition#getFramedConcern()}
+     *     are not suitable because they collect inherited framed concerns as well owned ones.
+     *     We are only looking for directly owned framed concerns of the given requirement.
+     * </p>
+     *
+     * @param namespace
+     *         Could be a {@link RequirementUsage} or a {@link RequirementDefinition}
+     * @return the list of owned framed concern of the given requirement.
+     */
+    public List<ConcernUsage> getFramedConcerns(Namespace namespace) {
+        List<ConcernUsage> framedConcerns = new ArrayList<>();
+        if (namespace instanceof RequirementUsage || namespace instanceof RequirementDefinition) {
+            namespace.getOwnedRelationship().stream()
+                    .filter(FramedConcernMembership.class::isInstance)
+                    .map(FramedConcernMembership.class::cast)
+                    .map(FramedConcernMembership::getOwnedConcern)
+                    .forEach(framedConcerns::add);
+        }
+        return framedConcerns;
     }
 }

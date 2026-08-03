@@ -52,6 +52,7 @@ public class FramedConcernCompartmentNodeDescription extends AbstractCompartment
         cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(this.eClass, this.eReference) + COMPARTMENT_NAME).ifPresent(nodeDescription -> {
             cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, this.eReference) + FramedConcernCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME)
                     .ifPresent(itemNodeDescription -> nodeDescription.getChildrenDescriptions().add(itemNodeDescription));
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getInheritedCompartmentItemName(this.eClass, this.eReference)).ifPresent(nodeDescription.getChildrenDescriptions()::add);
             nodeDescription.setPalette(this.createCompartmentPalette(cache));
         });
     }
