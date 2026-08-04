@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.Behavior;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
@@ -32,6 +33,7 @@ import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
+import org.eclipse.syson.sysml.StakeholderMembership;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -140,12 +142,35 @@ public class InheritedCompartmentItemFilterSwitch extends SysmlSwitch<Boolean> {
      */
     @Override
     public Boolean casePartUsage(PartUsage object) {
+        boolean result;
         if (this.shouldConsiderParameter(object)) {
-            return this.isInheritedParameter(object);
+            result = this.isInheritedParameter(object);
+        } else if (this.isStakeholderReference()) {
+            // We are dealing with a stakeholder
+            var membership = object.getOwningMembership();
+            // so the part usage is a stakeholder if and only if, it is contained by a StakeholderMembership
+            result =  membership instanceof StakeholderMembership;
+        } if (this.isActorReference()) {
+            // We are dealing with an Actor?
+            var membership = object.getOwningMembership();
+            // so the part usage is an actor if and only if, it is contained by a ActorMembership
+            result =  membership instanceof ActorMembership;
+        } else {
+            EClassifier eType = this.eReference.getEType();
+            EClass eClass = object.eClass();
+            result = eType.equals(eClass) || (eType instanceof EClass eTypeEClass && eTypeEClass.isSuperTypeOf(eClass));
         }
-        EClassifier eType = this.eReference.getEType();
-        EClass eClass = object.eClass();
-        return eType.equals(eClass) || (eType instanceof EClass eTypeEClass && eTypeEClass.isSuperTypeOf(eClass));
+        return result;
+    }
+
+    private boolean isStakeholderReference() {
+        return this.eReference.equals(SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter())
+                || this.eReference.equals(SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter());
+    }
+
+    private boolean isActorReference() {
+        return this.eReference.equals(SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter())
+                || this.eReference.equals(SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter());
     }
 
     /**

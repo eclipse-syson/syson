@@ -790,6 +790,132 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
                 .run();
     }
 
+    @DisplayName("GIVEN a base RequirementDefinition with a stakeholder, WHEN a RequirementDefinition is subclassifying the base RequirementDefinition, THEN the RequirementDefinition stakeholders are inherited from the base RequirementDefinition")
+    @Test
+    public void checkRequirementDefinitionStakeholdersInheritanceWithSubclassification() {
+        var eClass = SysmlPackage.eINSTANCE.getRequirementDefinition();
+        new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(eClass)
+                .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.REQUIREMENT_DEFINITION_ID)
+                .elementToInheritCreationToolName("New Stakeholder")
+                .withEdgeExpected()
+                .withSelectedElementId("")
+                .elementToInheritExpectedListItemLabelText("stakeholder1")
+                .compartmentName("stakeholders")
+                .elementThatInheritFromBaseElementCreationToolName("New Requirement Definition")
+                .elementThatInheritFromBaseElementEClass(eClass)
+                .specializationToolName("New Subclassification")
+                .run();
+    }
+
+    private ElementSpecializationInheritanceTestRunner getRequirementUsageStakeholdersInheritanceTestRunner() {
+        var eClass = SysmlPackage.eINSTANCE.getRequirementUsage();
+        return new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(eClass)
+                .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.REQUIREMENT_USAGE_ID)
+                .elementToInheritCreationToolName("New Stakeholder")
+                .withEdgeExpected()
+                .withSelectedElementId("")
+                .elementToInheritExpectedListItemLabelText("stakeholder1")
+                .compartmentName("stakeholders")
+                .elementThatInheritFromBaseElementCreationToolName("New Requirement")
+                .elementThatInheritFromBaseElementEClass(eClass);
+    }
+
+    @DisplayName("GIVEN a base RequirementUsage with a stakeholder, WHEN a RequirementUsage is subsetting the base RequirementUsage, THEN the RequirementUsage stakeholders are inherited from the base RequirementUsage")
+    @Test
+    public void checkRequirementUsageStakeholdersInheritanceWithSubsetting() {
+        this.getRequirementUsageStakeholdersInheritanceTestRunner()
+                .specializationToolName("New Subsetting")
+                .run();
+    }
+
+    @DisplayName("GIVEN a base RequirementUsage with a stakeholder, WHEN a RequirementUsage is subsetting by reference the base RequirementUsage, THEN the RequirementUsage stakeholders are inherited from the base RequirementUsage")
+    @Test
+    public void checkRequirementUsageStakeholdersInheritanceWithReferenceSubsetting() {
+        this.getRequirementUsageStakeholdersInheritanceTestRunner()
+                .specializationToolName("New Reference Subsetting")
+                .run();
+    }
+
+    private ElementSpecializationInheritanceTestRunner getSatisfyRequirementUsageStakeholdersInheritanceTestRunner() {
+        var eClass = SysmlPackage.eINSTANCE.getSatisfyRequirementUsage();
+        return new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(eClass)
+                .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.SATISFY_REQUIREMENT_USAGE_ID)
+                .elementToInheritCreationToolName("New Stakeholder")
+                .withEdgeExpected()
+                .withSelectedElementId("")
+                .elementToInheritExpectedListItemLabelText("stakeholder1")
+                .compartmentName("stakeholders")
+                .elementThatInheritFromBaseElementCreationToolName("New Satisfy Requirement")
+                .elementThatInheritFromBaseElementEClass(eClass);
+    }
+
+    @DisplayName("GIVEN a base SatisfyRequirementUsage with a stakeholder, WHEN a SatisfyRequirementUsage is subsetting the base SatisfyRequirementUsage, THEN the SatisfyRequirementUsage stakeholders are inherited from the base SatisfyRequirementUsage")
+    @Test
+    public void checkSatisfyRequirementUsageStakeholdersInheritanceWithSubsetting() {
+        this.getSatisfyRequirementUsageStakeholdersInheritanceTestRunner()
+                .specializationToolName("New Subsetting")
+                .run();
+    }
+
+    @DisplayName("GIVEN a base SatisfyRequirementUsage with a stakeholder, WHEN a SatisfyRequirementUsage is subsetting by reference the base SatisfyRequirementUsage, THEN the SatisfyRequirementUsage stakeholders are inherited from the base SatisfyRequirementUsage")
+    @Test
+    public void checkSatisfyRequirementUsageStakeholdersInheritanceWithReferenceSubsetting() {
+        this.getSatisfyRequirementUsageStakeholdersInheritanceTestRunner()
+                .specializationToolName("New Reference Subsetting")
+                .run();
+    }
+
+    @DisplayName("GIVEN a base ConcernDefinition with a stakeholder, WHEN a ConcernDefinition is subclassifying the base ConcernDefinition, THEN the ConcernDefinition assume constraints are inherited from the base ConcernDefinition")
+    @Test
+    public void checkConcernDefinitionStakeholdersInheritanceWithSubclassification() {
+        var eClass = SysmlPackage.eINSTANCE.getConcernDefinition();
+        new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(eClass)
+                .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.CONCERN_DEFINITION_ID)
+                .elementToInheritCreationToolName("New Stakeholder")
+                .withEdgeExpected()
+                .withSelectedElementId("")
+                .elementToInheritExpectedListItemLabelText("stakeholder1")
+                .compartmentName("stakeholders")
+                .elementThatInheritFromBaseElementCreationToolName("New Concern Definition")
+                .elementThatInheritFromBaseElementEClass(eClass)
+                .specializationToolName("New Subclassification")
+                .run();
+    }
+
+    private ElementSpecializationInheritanceTestRunner getConcernUsageStakeholdersInheritanceTestRunner() {
+        var eClass = SysmlPackage.eINSTANCE.getConcernUsage();
+        return new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(eClass)
+                .baseElementToInheritFromNodeId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.CONCERN_USAGE_ID)
+                .elementToInheritCreationToolName("New Stakeholder")
+                .withEdgeExpected()
+                .withSelectedElementId("")
+                .elementToInheritExpectedListItemLabelText("stakeholder1")
+                .compartmentName("stakeholders")
+                .elementThatInheritFromBaseElementCreationToolName("New Concern")
+                .elementThatInheritFromBaseElementEClass(eClass);
+    }
+
+    @DisplayName("GIVEN a base ConcernUsage with a stakeholder, WHEN a ConcernUsage is subsetting the base ConcernUsage, THEN the ConcernUsage assume constraints are inherited from the base ConcernUsage")
+    @Test
+    public void checkConcernUsageStakeholdersInheritanceWithSubsetting() {
+        this.getConcernUsageStakeholdersInheritanceTestRunner()
+                .specializationToolName("New Subsetting")
+                .run();
+    }
+
+    @DisplayName("GIVEN a base ConcernUsage with a stakeholder, WHEN a ConcernUsage is subsetting by reference the base ConcernUsage, THEN the ConcernUsage assume constraints are inherited from the base ConcernUsage")
+    @Test
+    public void checkConcernUsageStakeholdersInheritanceWithReferenceSubsetting() {
+        this.getConcernUsageStakeholdersInheritanceTestRunner()
+                .specializationToolName("New Reference Subsetting")
+                .run();
+    }
+
     /**
      * This test runner verifies that creating a specializing relationship create inherited elements.
      *
