@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import { fuzzyMatch, PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
 import { TreePaletteContext, TreePaletteContextValue } from '@eclipse-sirius/sirius-components-trees';
 import AddIcon from '@mui/icons-material/Add';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -19,8 +19,13 @@ import MenuItem from '@mui/material/MenuItem';
 import { forwardRef, Fragment, useContext, useState } from 'react';
 import { EditSysMLExpressionModal } from './EditSysMLExpressionModal';
 
+const label = 'New expression';
+
 export const NewExpressionExplorerToolOverriddenContribution = forwardRef(
-  ({}: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+  (
+    { onInvoked, searchedValue }: PaletteToolOverriddenContributionComponentProps,
+    ref: React.ForwardedRef<HTMLLIElement>
+  ) => {
     const { editingContextId, item, treeId, readOnly, onClose } =
       useContext<TreePaletteContextValue>(TreePaletteContext);
 
@@ -34,6 +39,11 @@ export const NewExpressionExplorerToolOverriddenContribution = forwardRef(
       setModalOpened(false);
       onClose();
     };
+
+    const matchResult = searchedValue ? fuzzyMatch(label, searchedValue) : null;
+    if (!!searchedValue && !matchResult?.matches) {
+      return null;
+    }
 
     let modalElement: JSX.Element | null = null;
     if (modalOpened === true) {
@@ -51,14 +61,17 @@ export const NewExpressionExplorerToolOverriddenContribution = forwardRef(
       <Fragment key="new-sysml-expression-context-menu-contribution">
         <MenuItem
           key="new-sysml-expression-menu"
-          onClick={() => setModalOpened(true)}
+          onClick={() => {
+            onInvoked();
+            setModalOpened(true);
+          }}
           data-testid="new-sysml-expression-menu"
           disabled={readOnly}
           ref={ref}>
           <ListItemIcon>
             <AddIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="New expression" />
+          <ListItemText primary={label} />
         </MenuItem>
         {modalElement}
       </Fragment>

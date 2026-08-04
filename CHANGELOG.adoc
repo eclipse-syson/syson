@@ -15,9 +15,18 @@ Its former AQL entry points are now split between `org.eclipse.syson.diagram.ser
 - [services] `ShowDiagramsInheritedMembersService` has moved from `syson-diagram-common-view` to `syson-diagram-services`.
 Downstream code should now depend on the diagram services module for that bean.
 - [services] `InheritedCompartmentItemFilterSwitch` has moved from `syson-diagram-common-view` to `syson-diagram-services` as part of the inherited-compartment query migration.
+- [releng] Frontend packages published from `frontend` do not provide UMD bundles anymore.
+They are now distributed as ES modules and CommonJS bundles only.
+Downstream consumers relying on the previous `.umd.js` artifacts or on direct browser script-tag usage must migrate to a bundler-based integration or consume the new CommonJS entry points instead.
 
 === Dependency update
 
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.7.1].
+- [releng] Update the version of `turbo` used for the frontend from 2.4.4 to 2.10.5.
+- [releng] Update `vite` from 8.0.14 to 8.1.5.
+- [releng] Update `playwright` from 1.57.0 to 1.62.0
+- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v4.1.0[Spring Boot 4.1.0]
+- [releng] Remove usage of the development dependency `rollup-plugin-peer-deps-external` in favor of native Vite based solution
 - Downgrade liquibase from 5.0.3 to 4.33.0.
 Liquibase 5 has switched from the Apache License v2.0 to the Functional Source License.
 As a result, future versions of Liquibase cannot be used directly in SysON (downstream projects can do anything they want of course) since the FSL is not an approved license for third party dependencies in the Eclipse Foundation.
@@ -34,6 +43,9 @@ In any case, it is strongly recommended to back up your data before proceeding w
 === Improvements
 
 - https://github.com/eclipse-syson/syson/issues/2364[#2364] [requirements table] Support nested `Requirements` in _Requirements table_ view.
+- [releng] Improve the frontend package build by replacing UMD outputs with CommonJS outputs for reusable npm libraries.
+This removes Rollup warnings about missing global names for externalized peer dependencies while keeping React, MUI, Apollo and other shared dependencies outside the published bundles.
+- [releng] Reduce the log of the frontend tasks `format-lint` and `build-dev` by default to make tasks such as `build` or `start` less verbose.
 
 === New features
 

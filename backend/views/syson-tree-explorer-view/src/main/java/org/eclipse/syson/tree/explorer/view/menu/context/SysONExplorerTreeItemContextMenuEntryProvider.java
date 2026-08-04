@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
+import org.eclipse.sirius.web.application.messages.ISiriusWebApplicationMessageService;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerTreeItemContextMenuEntryProvider;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
@@ -84,17 +85,21 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
 
     private final MetamodelQueryElementService metamodelQueryElementService;
 
-    public SysONExplorerTreeItemContextMenuEntryProvider(IObjectSearchService objectSearchService, ILibrarySearchService librarySearchService, ISemanticDataSearchService semanticDataSearchService,
-            IRepresentationMetadataSearchService representationMetadataSearchService,
-            SysONTreeViewDescriptionProvider sysONTreeViewDescriptionProvider, ISysONExplorerService sysonExplorerService, IReadOnlyObjectPredicate readOnlyObjectPredicate) {
-        this.objectSearchService = Objects.requireNonNull(objectSearchService);
-        this.librarySearchService = Objects.requireNonNull(librarySearchService);
-        this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
-        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
+    private final ISiriusWebApplicationMessageService messageService;
+
+    public SysONExplorerTreeItemContextMenuEntryProvider(SysONExplorerSearchServiceParameters searchServices,
+            SysONTreeViewDescriptionProvider sysONTreeViewDescriptionProvider, ISysONExplorerService sysonExplorerService, IReadOnlyObjectPredicate readOnlyObjectPredicate,
+            ISiriusWebApplicationMessageService messageService) {
+        this.objectSearchService = Objects.requireNonNull(searchServices.objectSearchService());
+        this.librarySearchService = Objects.requireNonNull(searchServices.librarySearchService());
+        this.semanticDataSearchService = Objects.requireNonNull(searchServices.semanticDataSearchService());
+        this.representationMetadataSearchService = Objects.requireNonNull(searchServices.representationMetadataSearchService());
         this.sysONTreeViewDescriptionProvider = Objects.requireNonNull(sysONTreeViewDescriptionProvider);
         this.sysonExplorerService = Objects.requireNonNull(sysonExplorerService);
         this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.metamodelQueryElementService = new MetamodelQueryElementService();
+        this.messageService = Objects.requireNonNull(messageService);
+
     }
 
     @Override
@@ -113,7 +118,7 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
             result.addAll(this.getLibraryRelatedEntries(emfEditingContext, treeItem));
         }
         if (this.sysonExplorerService.canExpandAll(treeItem, editingContext)) {
-            result.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, "", List.of(), false, List.of()));
+            result.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, this.messageService.treeToolExpandAll(), List.of(), false, List.of()));
         }
         return result;
     }
@@ -127,9 +132,9 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
 
             List<ITreeItemContextMenuEntry> entries = new ArrayList<>();
             if (this.sysonExplorerService.isEditable(resource)) {
-                entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_ROOT_OBJECT, "", List.of(), false, List.of()));
+                entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_ROOT_OBJECT, this.messageService.treeToolNewObject(), List.of(), false, List.of()));
             }
-            entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT, "", List.of(), false, List.of()));
+            entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT, this.messageService.treeToolDownload(), List.of(), false, List.of()));
             return entries;
         }
         return List.of();
@@ -143,9 +148,10 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
         if (optionalEObject.isPresent()) {
             var object = optionalEObject.get();
             if (this.sysonExplorerService.isEditable(object)) {
-                entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT, "", List.of(), false, List.of()));
+                entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT, this.messageService.treeToolNewObject(), List.of(), false, List.of()));
                 if (this.canHaveNewRepresentation(editingContext, treeItem.getId(), object)) {
-                    entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION, "", List.of(), false, List.of()));
+                    entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION, this.messageService.treeToolNewRepresentation(), List.of(), false,
+                            List.of()));
                 }
                 entries.add(new SingleClickTreeItemContextMenuEntry(NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID, "", List.of(), false, List.of()));
                 if (this.canHaveNewExpression(editingContext, object)) {
@@ -153,7 +159,8 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
                 }
 
                 if (object instanceof Element && !(object instanceof Relationship)) {
-                    entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT, "", List.of(), false, List.of()));
+                    entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT, this.messageService.treeToolDuplicateObject(), List.of(), false,
+                            List.of()));
                 }
             }
             if (!this.readOnlyObjectPredicate.test(object) && object instanceof Element element) {
@@ -210,7 +217,8 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
             if (!SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID.equals(representationMetadata.getDescriptionId())
                     && !SysONRepresentationDescriptionIdentifiers.REQUIREMENTS_TABLE_VIEW_DESCRIPTION_ID.equals(representationMetadata.getDescriptionId())) {
                 return List.of(
-                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_REPRESENTATION, "", List.of(), false, List.of()));
+                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_REPRESENTATION, this.messageService.treeToolDuplicateRepresentation(), List.of(),
+                                false, List.of()));
             }
         }
         return List.of();
@@ -240,8 +248,9 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
             var libraryMetadataAdapter = optionalLibraryMetadataAdapter.get();
             if (this.isDirectDependency(editingContext, libraryMetadataAdapter) && !this.sysonExplorerService.isEditable(optionalNotifier.get())) {
                 // We do not support the update or removal of a transitive dependency for the moment.
-                result.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.UPDATE_LIBRARY, "", List.of(), true, List.of()));
-                result.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY, "Remove library", List.of("/icons/remove_library.svg"), true, List.of()));
+                result.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.UPDATE_LIBRARY, this.messageService.treeToolUpdateLibrary(), List.of(), true, List.of()));
+                result.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY, this.messageService.treeToolRemoveLibrary(),
+                        List.of("/icons/remove_library.svg"), true, List.of()));
             }
         }
         return result;

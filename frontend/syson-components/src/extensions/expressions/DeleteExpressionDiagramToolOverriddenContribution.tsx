@@ -12,7 +12,11 @@
  *******************************************************************************/
 import { IconOverlay, useDeletionConfirmationDialog } from '@eclipse-sirius/sirius-components-core';
 import { DiagramContext, DiagramContextValue, EdgeData, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
-import { PaletteToolOverriddenContributionComponentProps, usePalette } from '@eclipse-sirius/sirius-components-palette';
+import {
+  fuzzyMatch,
+  PaletteToolOverriddenContributionComponentProps,
+  usePalette,
+} from '@eclipse-sirius/sirius-components-palette';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -39,9 +43,13 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
+const toolLabel = 'Delete Expression';
+const toolIconURL = '/api/images/diagram-images/semanticDelete.svg';
+
 export const DeleteExpressionDiagramToolOverriddenContribution = ({
   representationElementIds,
   onInvoked,
+  searchedValue,
 }: PaletteToolOverriddenContributionComponentProps) => {
   const { classes } = useStyle();
   const { editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
@@ -49,6 +57,11 @@ export const DeleteExpressionDiagramToolOverriddenContribution = ({
   const { deleteExpression } = useDeleteExpression();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
   const { hidePalette } = usePalette();
+
+  const matchResult = searchedValue ? fuzzyMatch(toolLabel, searchedValue) : null;
+  if (!!searchedValue && !matchResult?.matches) {
+    return null;
+  }
 
   let elementId = '';
   const targetedNodes: InternalNode<Node<NodeData>>[] = representationElementIds
@@ -76,9 +89,6 @@ export const DeleteExpressionDiagramToolOverriddenContribution = ({
     });
     onInvoked();
   };
-
-  const toolLabel = 'Delete Expression';
-  const toolIconURL = '/api/images/diagram-images/semanticDelete.svg';
 
   return (
     <ListItemButton
