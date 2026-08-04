@@ -29,6 +29,7 @@ In any case, it is strongly recommended to back up your data before proceeding w
 - https://github.com/eclipse-syson/syson/issues/2344[#2344] [diagrams] Fix dropping a nested `AttributeUsage` from the _Explorer_ onto a _General View_ diagram so it is visible on the first drop.
 - https://github.com/eclipse-syson/syson/issues/2359[#2359] [diagrams] Fix `Comment` graphical nodes so changing their background color no longer changes their border color.
 - https://github.com/eclipse-syson/syson/issues/2358[#2358] [details] Fix expression creation and editing on `SuccessionAsUsage` elements.
+- https://github.com/eclipse-syson/syson/issues/2388[#2388] [search] Fix concurrent creation of SysML model search indices.
 
 === Improvements
 

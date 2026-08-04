@@ -21,19 +21,21 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.web.infrastructure.elasticsearch.services.api.IIndexCreationService;
+import org.eclipse.sirius.web.infrastructure.elasticsearch.services.api.IIndexDeletionService;
 import org.eclipse.sirius.web.infrastructure.elasticsearch.services.api.IIndexUpdateService;
 import org.eclipse.sirius.web.tests.graphql.ProjectsOmniboxSearchQueryRunner;
 import org.eclipse.syson.AbstractIntegrationTestWithElasticsearch;
 import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.data.SimpleProjectElementsTestProjectData;
+import org.eclipse.syson.tests.api.GivenSysONServer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
@@ -55,16 +57,37 @@ public class ProjectsOmniboxControllerIntegrationTests extends AbstractIntegrati
     private IIndexUpdateService indexUpdateService;
 
     @Autowired
+    private IIndexCreationService indexCreationService;
+
+    @Autowired
+    private IIndexDeletionService indexDeletionService;
+
+    @Autowired
     private Optional<ElasticsearchClient> optionalElasticSearchClient;
 
     @Autowired
     private IEditingContextSearchService editingContextSearchService;
 
+    /**
+     * Verifies that creating an already existing index is handled as an idempotent operation.
+     */
     @Test
+    @DisplayName("GIVEN an existing index, WHEN it is created again, THEN the creation is ignored")
+    public void givenExistingIndexWhenIndexIsCreatedAgainThenCreationIsIgnored() throws IOException {
+        String editingContextId = UUID.randomUUID().toString();
+        try {
+            assertThat(this.indexCreationService.createIndex(editingContextId)).isTrue();
+            assertThat(this.indexCreationService.createIndex(editingContextId)).isFalse();
+            assertThat(this.optionalElasticSearchClient.orElseThrow().indices()
+                    .exists(existsRequest -> existsRequest.index("editing-context-" + editingContextId)).value()).isTrue();
+        } finally {
+            this.indexDeletionService.deleteIndex(editingContextId);
+        }
+    }
+
     @DisplayName("GIVEN a query, WHEN the objects are searched in the projects omnibox, THEN the objects are returned")
-    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ SimpleProjectElementsTestProjectData.SCRIPT_PATH })
+    @Test
     public void givenQueryWhenObjectsAreSearchedInProjectsOmniboxThenObjectsAreReturned() {
         assertThat(this.optionalElasticSearchClient.isPresent());
         this.editingContextSearchService.findById(SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID).ifPresent(this.indexUpdateService::updateIndex);
