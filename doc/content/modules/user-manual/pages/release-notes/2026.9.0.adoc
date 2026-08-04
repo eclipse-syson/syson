@@ -8,10 +8,7 @@
 
 ** Add support for list item inheritance in _perform actions_ compartments.
 ** Add support of framed concern inheritance in _frames_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
-
-
 ** Add support of `ItemUsage` inheritance in _items_ compartments of `PortUsage` and `PortDefinition` graphical nodes.
-
 ** Add support of assume constraint inheritance in _assume constraints_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
 ** Add support of require constraints inheritance in _require constraints_ compartments of `RequirementUsage`, `RequirementDefinition` and subtypes graphical nodes.
 
@@ -22,7 +19,6 @@
 * In diagrams:
 
 ** Fix dropping a nested `AttributeUsage` from the _Explorer_ onto a _General View_ diagram so it is visible on the first drop.
-
 ** Fix `Comment` graphical nodes so changing their background color no longer changes their border color.
 
 * In all views:
