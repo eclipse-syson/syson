@@ -934,6 +934,8 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(),
                 SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(),
+                SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
 
         // RequirementUsage: stakeholder compartment & items
         compartmentNodeDescriptionProviders.add(new RequirementUsageStakeholdersCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(),
@@ -941,11 +943,15 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         compartmentNodeDescriptionProviders
                 .add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(),
                         colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(),
+                SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
 
         // ConcernDefinition: stakeholder compartment & items
         compartmentNodeDescriptionProviders.add(new RequirementDefinitionStakeholdersCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernDefinition(),
                 SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernDefinition(),
+                SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernDefinition(),
                 SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
 
         // ConcernUsage: stakeholder compartment & items
@@ -953,11 +959,15 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(),
                 SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(),
+                SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
 
         // SatisfyRequirementUsage: stakeholder compartment & items
         compartmentNodeDescriptionProviders.add(new RequirementUsageStakeholdersCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(),
                 SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(),
+                SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(),
                 SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
 
         return compartmentNodeDescriptionProviders;

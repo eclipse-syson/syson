@@ -12,6 +12,7 @@
 ** Add support of assume constraint inheritance in _assume constraints_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
 
 ** Add support of require constraints inheritance in _require constraints_ compartments of `RequirementUsage`, `RequirementDefinition` and subtypes graphical nodes.
+** Add support of stakeholder inheritance in _stakeholders_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
 
 ** Add support of `SatisfyRequirementUsage` inheritance in _satisfy requirements_ compartment of `PartUsage` and `PartDefinition` graphical nodes.
 
