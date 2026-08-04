@@ -19,13 +19,14 @@
     "./frontend/*"
   ],
   "scripts": {
-    "build": "turbo run build",
+     "build": "turbo run build --output-logs=errors-only",
+    "build-verbose": "turbo run build",
     "start": "turbo run start",
     "test": "turbo run test",
     "format": "turbo run format",
     "format-lint": "turbo run format-lint"
   },
   "devDependencies": {
-    "turbo": "2.4.4"
+    "turbo": "2.10.5"
   }
 }

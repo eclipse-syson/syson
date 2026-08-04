@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { DiagramContext, DiagramContextValue } from '@eclipse-sirius/sirius-components-diagrams';
-import { PaletteToolContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import { fuzzyMatch, PaletteToolContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
 import Rotate90DegreesCwIcon from '@mui/icons-material/Rotate90DegreesCw';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -21,14 +21,24 @@ import { useRotateNode } from './useRotateNode';
 
 export const RotateNodeToolOverriddenContribution = ({
   representationElementIds,
+  onInvoked,
+  searchedValue,
 }: PaletteToolContributionComponentProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { rotate } = useRotateNode();
 
+  const label = 'Rotate';
+  const matchResult = searchedValue ? fuzzyMatch(label, searchedValue) : null;
+  if (!!searchedValue && !matchResult?.matches) {
+    return null;
+  }
   return (
     <Fragment key="overridden_tool_node-rotate-contribution">
       <ListItemButton
-        onClick={() => rotate(representationElementIds)}
+        onClick={() => {
+          onInvoked();
+          rotate(representationElementIds);
+        }}
         data-testid="overridden_tool_node-rotate"
         disabled={readOnly}
         sx={{ paddingTop: 0, paddingBottom: 0 }}>
@@ -37,7 +47,7 @@ export const RotateNodeToolOverriddenContribution = ({
           <Rotate90DegreesCwIcon fontSize="small" />
         </ListItemIcon>
         <ListItemText
-          primary={'Rotate'}
+          primary={label}
           sx={{ '& .MuiListItemText-primary': { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }}
         />
       </ListItemButton>

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import { fuzzyMatch, PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
 import { TreePaletteContext, TreePaletteContextValue } from '@eclipse-sirius/sirius-components-trees';
 import AddIcon from '@mui/icons-material/Add';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -20,7 +20,10 @@ import { forwardRef, Fragment, useContext, useState } from 'react';
 import { InsertTextualSysMLv2Modal } from './InsertTextualSysMLv2Modal';
 
 export const InsertTextualSysMLv2ExplorerToolOverriddenContribution = forwardRef(
-  ({}: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+  (
+    { onInvoked, searchedValue, tool }: PaletteToolOverriddenContributionComponentProps,
+    ref: React.ForwardedRef<HTMLLIElement>
+  ) => {
     const { editingContextId, item, treeId, readOnly, expandItem, onClose } =
       useContext<TreePaletteContextValue>(TreePaletteContext);
 
@@ -29,6 +32,12 @@ export const InsertTextualSysMLv2ExplorerToolOverriddenContribution = forwardRef
     if (!treeId.startsWith('explorer://') || readOnly) {
       return null;
     }
+
+    const matchResult = searchedValue ? fuzzyMatch(tool.label, searchedValue) : null;
+    if (!!searchedValue && !matchResult?.matches) {
+      return null;
+    }
+
     const onDialogClose = () => {
       onClose();
       expandItem();
@@ -45,7 +54,10 @@ export const InsertTextualSysMLv2ExplorerToolOverriddenContribution = forwardRef
       <Fragment key="insert-textual-sysmlv2-context-menu-contribution">
         <MenuItem
           key="insert-textual-sysmlv2-menu"
-          onClick={() => setModal(true)}
+          onClick={() => {
+            onInvoked();
+            setModal(true);
+          }}
           data-testid="insert-textual-sysmlv2-menu"
           disabled={readOnly}
           ref={ref}>

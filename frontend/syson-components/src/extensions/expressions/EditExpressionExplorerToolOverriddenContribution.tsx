@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import { fuzzyMatch, PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
 import { TreePaletteContext, TreePaletteContextValue } from '@eclipse-sirius/sirius-components-trees';
 import EditIcon from '@mui/icons-material/Edit';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -20,8 +20,13 @@ import MenuItem from '@mui/material/MenuItem';
 import React, { forwardRef, Fragment, useContext, useState } from 'react';
 import { EditSysMLExpressionModal } from './EditSysMLExpressionModal';
 
+const toolLabel = 'Edit expression';
+
 export const EditExpressionExplorerToolOverriddenContribution = forwardRef(
-  ({}: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+  (
+    { onInvoked, searchedValue }: PaletteToolOverriddenContributionComponentProps,
+    ref: React.ForwardedRef<HTMLLIElement>
+  ) => {
     const { editingContextId, item, treeId, readOnly, onClose } =
       useContext<TreePaletteContextValue>(TreePaletteContext);
     const [modalOpened, setModalOpened] = useState<boolean>(false);
@@ -34,6 +39,11 @@ export const EditExpressionExplorerToolOverriddenContribution = forwardRef(
       setModalOpened(false);
       onClose();
     };
+
+    const matchResult = searchedValue ? fuzzyMatch(toolLabel, searchedValue) : null;
+    if (!!searchedValue && !matchResult?.matches) {
+      return null;
+    }
 
     let modalElement: JSX.Element | null = null;
     if (modalOpened === true) {
@@ -51,14 +61,17 @@ export const EditExpressionExplorerToolOverriddenContribution = forwardRef(
       <Fragment key="edit-sysml-expression-context-menu-contribution">
         <MenuItem
           key="edit-sysml-expression-menu"
-          onClick={() => setModalOpened(true)}
+          onClick={() => {
+            onInvoked();
+            setModalOpened(true);
+          }}
           data-testid="edit-sysml-expression-menu"
           disabled={readOnly}
           ref={ref}>
           <ListItemIcon>
             <EditIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="Edit expression" />
+          <ListItemText primary={toolLabel} />
         </MenuItem>
         {modalElement}
       </Fragment>

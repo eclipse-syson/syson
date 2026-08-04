@@ -12,7 +12,11 @@
  *******************************************************************************/
 import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import { DiagramContext, DiagramContextValue, EdgeData, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
-import { PaletteToolOverriddenContributionComponentProps, usePalette } from '@eclipse-sirius/sirius-components-palette';
+import {
+  fuzzyMatch,
+  PaletteToolOverriddenContributionComponentProps,
+  usePalette,
+} from '@eclipse-sirius/sirius-components-palette';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -39,9 +43,13 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
+const toolLabel = 'New Expression';
+const toolIconURL = '/api/images/palette/create.svg';
+
 export const NewExpressionDiagramToolOverriddenContribution = ({
   representationElementIds,
   onInvoked,
+  searchedValue,
 }: PaletteToolOverriddenContributionComponentProps) => {
   const { classes } = useStyle();
   const { editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
@@ -49,6 +57,10 @@ export const NewExpressionDiagramToolOverriddenContribution = ({
   const { hidePalette } = usePalette();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
+  const matchResult = searchedValue ? fuzzyMatch(toolLabel, searchedValue) : null;
+  if (!!searchedValue && !matchResult?.matches) {
+    return null;
+  }
   let elementId = '';
   const targetedNodes: InternalNode<Node<NodeData>>[] = representationElementIds
     .map((elementId) => store.getState().nodeLookup.get(elementId))
@@ -84,9 +96,6 @@ export const NewExpressionDiagramToolOverriddenContribution = ({
       />
     );
   }
-
-  const toolLabel = 'New Expression';
-  const toolIconURL = '/api/images/palette/create.svg';
 
   return (
     <Fragment key="new-overridden_tool_new_expression-modal-contribution">

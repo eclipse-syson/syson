@@ -5,7 +5,8 @@
       "outputs": []
     },
     "format-lint": {
-      "outputs": []
+      "outputs": [],
+      "outputLogs": "errors-only"
     },
     "build": {
       "dependsOn": ["format-lint", "^build"],
@@ -21,7 +22,9 @@
       "dependsOn": ["build"]
     },
     "build-dev": {
-      "dependsOn": ["format-lint", "^build-dev"]
+      "dependsOn": ["format-lint", "^build-dev"],
+      "cache": false,
+      "outputLogs": "hash-only"
     },
     "start": {
       "dependsOn": ["format-lint", "^build-dev"],

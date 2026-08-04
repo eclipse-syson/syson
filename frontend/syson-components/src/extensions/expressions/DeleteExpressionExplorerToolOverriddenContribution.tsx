@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { useDeletionConfirmationDialog } from '@eclipse-sirius/sirius-components-core';
-import { PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import { fuzzyMatch, PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
 import { TreePaletteContext, TreePaletteContextValue } from '@eclipse-sirius/sirius-components-trees';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -21,8 +21,13 @@ import MenuItem from '@mui/material/MenuItem';
 import React, { forwardRef, Fragment, useContext } from 'react';
 import { useDeleteExpression } from './useDeleteExpression';
 
+const toolLabel = 'Delete expression';
+
 export const DeleteExpressionExplorerToolOverriddenContribution = forwardRef(
-  ({}: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+  (
+    { onInvoked, searchedValue }: PaletteToolOverriddenContributionComponentProps,
+    ref: React.ForwardedRef<HTMLLIElement>
+  ) => {
     const { editingContextId, item, treeId, readOnly, onClose } =
       useContext<TreePaletteContextValue>(TreePaletteContext);
     const { deleteExpression } = useDeleteExpression();
@@ -32,8 +37,14 @@ export const DeleteExpressionExplorerToolOverriddenContribution = forwardRef(
       return null;
     }
 
+    const matchResult = searchedValue ? fuzzyMatch(toolLabel, searchedValue) : null;
+    if (!!searchedValue && !matchResult?.matches) {
+      return null;
+    }
+
     const handleDeleteExpression = () => {
       showDeletionConfirmation(() => {
+        onInvoked();
         deleteExpression(editingContextId, item.id);
         onClose();
       });
@@ -50,7 +61,7 @@ export const DeleteExpressionExplorerToolOverriddenContribution = forwardRef(
           <ListItemIcon>
             <DeleteIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="Delete expression" />
+          <ListItemText primary={toolLabel} />
         </MenuItem>
       </Fragment>
     );

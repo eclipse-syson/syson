@@ -32,7 +32,7 @@ export class PlaywrightNode {
   }
 
   async resetNodeLabelPosition() {
-    this.openPalette();
+    await this.openPalette();
     await this.page.locator(`[data-testid="Reset outside labels positions - Tool"]`).first().click();
   }
 
@@ -102,13 +102,13 @@ export class PlaywrightNode {
     await this.page.mouse.up();
   }
 
-  async resize(offset: { height: number; width: number }, anchor: string = 'bottom.right') {
+  async resize(offset: { height: number; width: number }, anchor: string = 'bottom.right', steps: number = 2) {
     const resizeAnchor = this.nodeLocator.locator(`.react-flow__resize-control.${anchor}`).first();
 
     const box = (await resizeAnchor.boundingBox())!;
-    await resizeAnchor.hover();
+    await resizeAnchor.hover({ force: true });
     await this.page.mouse.down();
-    await this.page.mouse.move(box.x + offset.width, box.y + offset.height, { steps: 2 });
+    await this.page.mouse.move(box.x + offset.width, box.y + offset.height, { steps });
     await this.page.mouse.up();
   }
 
@@ -123,7 +123,7 @@ export class PlaywrightNode {
   async waitForAnimationToFinish() {
     // Playwright performs checks before making actions, so Playwright waits for the animation to finish before performing the next action.
     // see https://playwright.dev/docs/actionability
-    await this.nodeLocator.click();
+    await this.nodeLocator.click({ trial: true });
   }
 
   async revealElement(name: string) {
