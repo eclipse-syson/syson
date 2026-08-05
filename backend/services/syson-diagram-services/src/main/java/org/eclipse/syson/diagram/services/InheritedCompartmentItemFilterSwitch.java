@@ -142,19 +142,17 @@ public class InheritedCompartmentItemFilterSwitch extends SysmlSwitch<Boolean> {
      */
     @Override
     public Boolean casePartUsage(PartUsage object) {
-        boolean result;
+        final boolean result;
         if (this.shouldConsiderParameter(object)) {
             result = this.isInheritedParameter(object);
         } else if (this.isStakeholderReference()) {
             // We are dealing with a stakeholder
-            var membership = object.getOwningMembership();
             // so the part usage is a stakeholder if and only if, it is contained by a StakeholderMembership
-            result =  membership instanceof StakeholderMembership;
-        } if (this.isActorReference()) {
-            // We are dealing with an Actor?
-            var membership = object.getOwningMembership();
+            result = object.getOwningMembership() instanceof StakeholderMembership;
+        } else if (this.isActorReference()) {
+            // We are dealing with an Actor
             // so the part usage is an actor if and only if, it is contained by a ActorMembership
-            result =  membership instanceof ActorMembership;
+            result = object.getOwningMembership() instanceof ActorMembership;
         } else {
             EClassifier eType = this.eReference.getEType();
             EClass eClass = object.eClass();

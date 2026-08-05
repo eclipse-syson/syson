@@ -23,6 +23,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.BooleanExpression;
+import org.eclipse.syson.sysml.CaseDefinition;
+import org.eclipse.syson.sysml.CaseUsage;
 import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.ConstraintUsage;
@@ -519,5 +521,38 @@ public class MetamodelQueryElementService {
                     .forEach(framedConcerns::add);
         }
         return framedConcerns;
+    }
+
+    /**
+     * Retrieves actors of the given element.
+     * <p>
+     * The {@link CaseDefinition#getActorParameter()}, {@link CaseUsage#getActorParameter()},
+     * {@link RequirementDefinition#getActorParameter()} and {@link RequirementUsage#getActorParameter()}
+     * *     are not suitable because they collect inherited actors as well as owned ones.
+     * *     We are only looking for directly owned actors of the given element.
+     * </p>
+     *
+     * @param namespace
+     *         an element that could own an actor.
+     *         It could be {@link CaseDefinition}, {@link CaseUsage}, {@link RequirementDefinition} or {@link RequirementUsage}.
+     * @return the list of actor owned by the given element.
+     */
+    public List<PartUsage> getActors(Namespace namespace) {
+        List<PartUsage> actors = new ArrayList<>();
+        if (this.canContainActor(namespace)) {
+            namespace.getOwnedRelationship().stream()
+                    .filter(ActorMembership.class::isInstance)
+                    .map(ActorMembership.class::cast)
+                    .map(ActorMembership::getOwnedActorParameter)
+                    .forEach(actors::add);
+        }
+        return actors;
+    }
+
+    private boolean canContainActor(Namespace namespace) {
+        return namespace instanceof CaseDefinition ||
+                namespace instanceof CaseUsage ||
+                namespace instanceof RequirementDefinition ||
+                namespace instanceof RequirementUsage;
     }
 }
