@@ -28,6 +28,7 @@ import org.eclipse.syson.sysml.FramedConcernMembership;
 import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
@@ -159,5 +160,12 @@ public class ModelQueryAQLService {
      */
     public List<PortUsage> getInterfaceEnds(InterfaceDefinition interfaceDefinition) {
         return this.metamodelQueryElementService.getInterfaceEnds(interfaceDefinition);
+    }
+
+    /**
+     * {@link MetamodelQueryElementService#getActors(Namespace)}.
+     */
+    public List<PartUsage> getActors(Namespace namespace) {
+        return this.metamodelQueryElementService.getActors(namespace);
     }
 }

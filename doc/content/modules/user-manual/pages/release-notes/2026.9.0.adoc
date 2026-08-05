@@ -14,6 +14,14 @@
 ** Add support of stakeholder inheritance in _stakeholders_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
 ** Add support of `SatisfyRequirementUsage` inheritance in _satisfy requirements_ compartment of `PartUsage` and `PartDefinition` graphical nodes.
 ** Add support of objective requirement inheritance in _objective_ compartments of `CaseUsage` and `CaseDefinition` graphical nodes.
+** Add support of actor inheritance in _actors_ compartment of `CaseDefinition` and `CaseUsage` graphical nodes.
+The actor inheritance in _actors_ compartment is also visible in the following graphical nodes:
+
+*** `RequirementDefinition`
+*** `RequireUsage`
+*** `ConcernDefinition`
+*** `ConcernUsage`
+*** `SatisfyRequirementUsage`
 
 * In textual import/export:
 

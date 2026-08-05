@@ -151,11 +151,11 @@ public class InheritedCompartmentItemFilterSwitch extends SysmlSwitch<Boolean> {
         } else if (this.isStakeholderReference()) {
             // We are dealing with a stakeholder
             // so the part usage is a stakeholder if and only if, it is contained by a StakeholderMembership
-            result =  object.getOwningMembership() instanceof StakeholderMembership;
+            result = object.getOwningMembership() instanceof StakeholderMembership;
         } else if (this.isActorReference()) {
             // We are dealing with an Actor
             // so the part usage is an actor if and only if, it is contained by a ActorMembership
-            result =  object.getOwningMembership() instanceof ActorMembership;
+            result = object.getOwningMembership() instanceof ActorMembership;
         } else {
             EClassifier eType = this.eReference.getEType();
             EClass eClass = object.eClass();

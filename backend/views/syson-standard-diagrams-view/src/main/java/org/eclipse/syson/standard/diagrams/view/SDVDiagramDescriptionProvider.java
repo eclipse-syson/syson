@@ -114,6 +114,7 @@ import org.eclipse.syson.standard.diagrams.view.nodes.ActionDefinitionParameters
 import org.eclipse.syson.standard.diagrams.view.nodes.ActionItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.ActionUsageParametersCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.ActorNodeDescriptionProvider;
+import org.eclipse.syson.standard.diagrams.view.nodes.ActorsCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.AllocationDefinitionEndsCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.AllocationDefinitionEndsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.CaseDefinitionActorsCompartmentNodeDescriptionProvider;
@@ -245,8 +246,8 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
             Map.entry(SysmlPackage.eINSTANCE.getPerformActionUsage(),      List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), SysmlPackage.eINSTANCE.getUsage_NestedAction())),
             Map.entry(SysmlPackage.eINSTANCE.getPortDefinition(),          List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem())),
             Map.entry(SysmlPackage.eINSTANCE.getPortUsage(),               List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference(), SysmlPackage.eINSTANCE.getUsage_NestedPort(), SysmlPackage.eINSTANCE.getUsage_NestedItem())),
-            Map.entry(SysmlPackage.eINSTANCE.getRequirementDefinition(),   List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement())),
-            Map.entry(SysmlPackage.eINSTANCE.getRequirementUsage(),        List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
+            Map.entry(SysmlPackage.eINSTANCE.getRequirementDefinition(),   List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement())),
+            Map.entry(SysmlPackage.eINSTANCE.getRequirementUsage(),        List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
             Map.entry(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
             Map.entry(SysmlPackage.eINSTANCE.getStateDefinition(),         List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), SysmlPackage.eINSTANCE.getDefinition_OwnedState())),
             Map.entry(SysmlPackage.eINSTANCE.getStateUsage(),              List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), SysmlPackage.eINSTANCE.getUsage_NestedState())),
@@ -895,31 +896,34 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
     private List<IDiagramElementDescriptionProvider<?>> createCompartmentsForActorParameter(IColorProvider colorProvider) {
         final List<IDiagramElementDescriptionProvider<?>> compartmentNodeDescriptionProviders = new ArrayList<>();
 
+        // CaseDefinition
         compartmentNodeDescriptionProviders.add(new CaseDefinitionActorsCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
-        compartmentNodeDescriptionProviders
-                .add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter(), colorProvider,
-                        this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new ActorsCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        // CaseUsage
         compartmentNodeDescriptionProviders.add(new CaseUsageActorsCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
-        compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter(), colorProvider,
-                this.getDescriptionNameGenerator()));
-        compartmentNodeDescriptionProviders.add(new RequirementDefinitionActorsCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernDefinition(),
-                SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
-        compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernDefinition(),
-                SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
-        compartmentNodeDescriptionProviders.add(new RequirementUsageActorsCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(),
-                SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
-        compartmentNodeDescriptionProviders.add(new RequirementUsageActorsCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(),
-                SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
-        compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(),
-                SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
-        compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(),
-                SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new ActorsCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        // ConcernDefinition
+        compartmentNodeDescriptionProviders.add(new RequirementDefinitionActorsCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new ActorsCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        // ConcernUsage
+        compartmentNodeDescriptionProviders.add(new RequirementUsageActorsCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new ActorsCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        // SatisfyRequirementUsage
+        compartmentNodeDescriptionProviders.add(new RequirementUsageActorsCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new ActorsCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        // RequirementDefinition
         compartmentNodeDescriptionProviders.add(new RequirementDefinitionActorsCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
-        compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(),
-                SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new ActorsCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        // RequirementUsage
         compartmentNodeDescriptionProviders.add(new RequirementUsageActorsCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
-        compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(),
-                colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new ActorsCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
 
         return compartmentNodeDescriptionProviders;
     }
