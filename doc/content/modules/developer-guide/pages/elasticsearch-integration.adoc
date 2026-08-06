@@ -3,7 +3,7 @@
 include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 {product} can be configured to index models in Elasticsearch.
-When configured, this feature allows to transparently index models created and modified by the users.
+When configured, this feature transparently indexes models created and modified by users.
 These indices can be queried through the xref:user-manual:features/cross-project-search.adoc[cross project search] to find an element regardless of its containing project.
 
 Let's consider that you are trying to debug an issue related to the indexing of models in Elasticsearch.
@@ -63,7 +63,7 @@ Copy the Elasticsearch certificate from the Docker container:
 docker cp elasticsearch:/usr/share/elasticsearch/config/certs/http_ca.crt .
 ----
 
-Put this certificate somewhere in your computer and use it to test the connexion to Elasticsearch
+Put this certificate somewhere on your computer and use it to test the connection to Elasticsearch.
 
 [source, bash]
 ----
@@ -94,7 +94,7 @@ sudo keytool -J-Duser.language=en -import -trustcacerts -alias elasticsearch-sir
 ----
 
 TIP: `keytool` will ask you for a password for the JVM's keystore.
-If you never set a custom password, https://docs.oracle.com/en/java/javase/21/docs//specs/man/keytool.html[the default is `changeit`].
+If you never set a custom password, https://docs.oracle.com/en/java/javase/21/docs/specs/man/keytool.html[the default is `changeit`].
 
 == Configure {product} to use Elasticsearch
 
@@ -160,7 +160,7 @@ For example, you can perform a full-text search on a given index with the follow
 GET editing-context-<Editing Context ID>/_search?q=Batmobile
 ----
 
-You can use the query DSL to define more complex queries with a Json-based DSL, for example, you can get all the instances of of a given type that also have a name matching a given pattern:
+You can use the query DSL to define more complex queries. For example, you can get all instances of a given type that have a name matching a given pattern:
 
 ----
 // Get all the components with "Compo" at the beginning of their name
@@ -202,7 +202,7 @@ POST /_query?format=txt
 }
 ----
 
-Note that query above uses a _wildcard_ in the name of the index it queries, meaning that all the indexes starting with "project-" are queried.
+The query above uses a _wildcard_ in the index name, so it queries all indexes that start with `editing-context-`.
 
 ES|QL allows to define complex queries, including https://www.elastic.co/blog/esql-lookup-join-elasticsearch[joins]:
 

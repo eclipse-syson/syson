@@ -5,7 +5,7 @@
 
 include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
-Allows to select in the {explorer} view what is selected in the main editor area (in the visible diagram/table).
+Selects in the {explorer} view the item selected in the main editor area (in the visible diagram or table).
 
 image::explorer-toolbar-select-action.png[Explorer toolbar Select action, width=40%,height=40%]
 
@@ -58,22 +58,23 @@ Ensure the desired tree items are expanded to effectively use the filter and hig
 [#filter-explorer]
 === Filter from kind
 
-Six filters are available in the {explorer} to filter element by kind:
+Seven filters are available in the {explorer} to filter elements by kind:
 
 * Hide Memberships,
 * Hide {kerml} Standard Libraries,
-* Hide {sysml} Standard Libraries.
-* Hide Root Namespaces
-* Hide User Librairies
-* Hide Root Namespaces
+* Hide {sysml} Standard Libraries,
+* Hide User Libraries
+* Hide Root Namespaces,
+* Hide Expose Elements,
+* Hide Expression Internals.
 
 These filters allow to clear the {explorer} view.
-By hiding the technical elements, only the data directly exploited by the user are displayed, which make the model more readable in the {explorer} view.
+By hiding technical elements, only the data directly used by the user is displayed, making the model more readable in the {explorer} view.
 
 To filter elements in the {explorer} by their kind using the filter tool:
 
-. Click filter button,
-. Select filters to activate.
+. Click the filter button.
+. Select the filters to activate.
 
 image::hands-on-filter-element.png[Filter kind]
 
@@ -119,4 +120,3 @@ It is strongly recommended to keep this option enabled to ensure a consistent mo
 * _Update incoming reference_ : This option is not yet fully implemented in SysON and currently has no effect.
 
 image::explorer-duplicate-object-dialog.png[Duplicate Object dialog, width=25%,height=25%]
-

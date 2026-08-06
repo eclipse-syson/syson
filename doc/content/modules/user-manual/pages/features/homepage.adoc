@@ -47,7 +47,7 @@ image::homepage-new-project.png[Create a New Project]
 Within the platform, initiating a new project is a user-friendly process that accommodates various preferences:
 
 * **Create a Blank Project**: Users can start their modeling journey with an empty project, building a project from the ground up.
-With blank project, there is no model and no representation at creation.
+When you create a blank project, it contains no model or representation.
 * **Create a Project from Existing Templates**: For efficiency and consistency, users can select from predefined templates that streamline project initiation, aligning with common modeling scenarios.
 The 3 first possible templates are displayed unitary at the beginning of Project sections and they're also available in "Show all templates" section.
 For now, there exist three available templates :

@@ -28,7 +28,7 @@ Make sure you have included the correct argument to your `java` command accordin
 
 TIP: Check that you are consulting the documentation version that matches the JAR version you are trying to run.
 
-Refer to the xref:installation-guide:how-tos/install.adoc#start-app[] section for detailed instructions according to your version.
+Refer to the xref:installation-guide:how-tos/install/production_deploy.adoc#start-app[] section for detailed instructions according to your version.
 
 == Empty page in web browser
 If you encounter an empty page while accessing to {product} through your web browser, it might be because you have installed {product} on a local server or machine and want to access it from another one.

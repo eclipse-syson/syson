@@ -23,7 +23,7 @@ It's possible to delete a representation either from the {explorer} or the {repr
 
 [WARNING]
 ====
-This operation is irreversible, once done there is no mean to get the representation back.
+This operation is irreversible. Once completed, there is no way to recover the representation.
 ====
 
 [NOTE]

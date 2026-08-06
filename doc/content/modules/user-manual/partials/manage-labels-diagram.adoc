@@ -43,7 +43,7 @@ Element labels can be edited in the following ways:
 With direct edit, user can't change the keyword but user can change the name.
 If it's a simple label, he can rename the element.
 If user modify the multiplicity defined in the label then the multiplicity of the relationship is changed in the model.
-User can alos set/change the specialization of a given element.
+Users can also set or change the specialization of a given element.
 
 Explore further by referring to the following how-tos for xref:hands-on/how-tos/model-management.adoc#direct-edit[direct edit action]
 

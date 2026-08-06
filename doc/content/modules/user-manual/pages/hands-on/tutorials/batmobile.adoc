@@ -23,7 +23,7 @@ A default `{gv}` representation associated with the package is opened in the mai
 The new elements created from the {diag-toolbar} are visible either from the {explorer} or the {editor} main central area.
 ====
 +
-. Rename the part definition to `Vehicle` using the xref:hands-on/how-tos/model-management.adoc#representation[direct-edit action] or the xref:hands-on/how-tos/model-management.adoc#update-element#details[{details} view].
+. Rename the part definition to `Vehicle` using the xref:hands-on/how-tos/model-management.adoc#representation[direct-edit action] or the xref:hands-on/how-tos/model-management.adoc#details[{details} view].
 . Select the `Vehicle` part definition and click on the `Structure` -> `New Item` tool to create an item usage.
 . Rename the item usage to `driver`.
 . Select the `Vehicle` part definition and click on the `Structure` -> `New Part` tool to create a new part usage.

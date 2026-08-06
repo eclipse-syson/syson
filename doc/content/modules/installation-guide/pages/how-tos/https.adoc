@@ -46,7 +46,7 @@ networks:
 ----
 
 . If you have installed {product} manually, place the certificate file next to your `{product}-application` JAR file
-. Launch your JAR as explained in the xref:installation-guide:how-tos/install.adoc#start-app[start the application section] with the following extra properties:
+. Launch your JAR as explained in the xref:installation-guide:how-tos/install/production_deploy.adoc#start-app[start the application section] with the following extra properties:
 +
 [source, bash]
 ----
