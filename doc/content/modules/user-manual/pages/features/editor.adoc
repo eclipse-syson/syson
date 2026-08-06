@@ -64,7 +64,7 @@ image::editor-editor.png[{editor} Main Editor]
 
 Discover the diverse range of representation options available and find the most suitable ones for your specific modeling needs.
 
-xref:features/features.adoc#sysmlv2-views[Explore various types of representations...]
+xref:features/sysmlv2-overview.adoc[Explore various types of representations...]
 
 === Right sidebar
 

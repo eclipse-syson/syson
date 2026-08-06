@@ -150,7 +150,7 @@ image::SetupDev_SpringToolSuite_Check_Java.png[Check installed JRE in Spring Too
 All {product} backend modules use Checkstyle to verify formatting, coding rules... so you must install Checkstyle plugin in Eclipse.
 The version to use is the *13.3.0* version.
 
-Go to _Help > Install New Software..._ menu, then add _https://checkstyle.org/eclipse-cs-update-site/_ in the _Work with:_ select widget and type _enter_.
+Go to the _Help > Install New Software..._ menu, then add _https://checkstyle.org/eclipse-cs-update-site/_ in the _Work with:_ selection field and press _Enter_.
 Then, select _Eclipse Checkstyle Plug-in_, click on _Next >_, _Next >_, accept the terms of the license agreement and click on _Finish_.
 
 image::SetupDev_SpringToolSuite_Install_Checkstyle.png[Install Checkstyle in Spring Tool Suite, 80%]
@@ -161,7 +161,7 @@ Trust all available authorities and artifacts, and restart your Eclipse when ask
 
 Some {product} backend modules use EMF ecore metamodels. At some point, you may need to modify those metamodels. To do that, you will need EMF plugins. The version to use is the latest available from the update-site below.
 
-Go to _Help > Install New Software..._ menu, then select _https://download.eclipse.org/modeling/emf/emf/builds/release/latest_ in the _Work with:_ select widget and type _enter_.
+Go to the _Help > Install New Software..._ menu, then select _https://download.eclipse.org/modeling/emf/emf/builds/release/latest/_ in the _Work with:_ selection field and press _Enter_.
 Then, select _Modeling > EMF - Eclipse Modeling Framework SDK_, click on _Next >_, _Next >_, accept the terms of the license agreement and click on _Finish_.
 
 image::SetupDev_SpringToolSuite_Install_EMF.png[Install EMF in Spring Tool Suite, 80%]
@@ -180,7 +180,7 @@ From the preferences menu, go to _Java > Code Style > Clean Up_  and then click 
 +
 image::SetupDev_SpringToolSuite_Configure_Clean_Up.png[Configure Clean Up, 60%]
 +
-Be sure the the active profile is `SysON`, then click on the _Apply_ button.
+Make sure that the active profile is `SysON`, then click the _Apply_ button.
 
 . Configure the source code templates
 +
@@ -196,7 +196,7 @@ From the preferences menu, go to _Java > Code Style > Formatter_  and then click
 +
 image::SetupDev_SpringToolSuite_Configure_Formatter.png[Configure Formatter, 60%]
 +
-Be sure the the active profile is `SysON`, then click on the _Apply_ button.
+Make sure that the active profile is `SysON`, then click the _Apply_ button.
 
 . Configure the Organize Imports action
 +

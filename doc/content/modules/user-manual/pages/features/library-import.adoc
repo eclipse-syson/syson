@@ -14,7 +14,7 @@ image::release-notes-publication-import-dialog.png[Import published library comm
 
 The import is done either *by reference* or *by copy*.
 With the former, a dependency is added from the project to the library, and the contents of the library are accessed in read-only mode.
-With the latter, a copy of the contents of the library are copied into the project, and they may be used and edited as if they had been manually created into the project. There is no link between the copied contents and the original library contents so there is no way to "re-synchronize" these contents (e.g. in case the library has a new version).
+With the latter, a copy of the library contents is copied into the project. The copied contents can be used and edited as if they had been created in the project. There is no link between the copied contents and the original library contents, so they cannot be resynchronized (for example, when the library has a new version).
 
 image::release-notes-publication-import-choices.png[Import published library command dialog, width=85%,height=85%]
 
@@ -40,7 +40,7 @@ Note that imported-by-reference libraries have `library-name@library-version` in
 == Updating the version of a library dependency
 
 The version of a published library used by a project may be updated.
-Since publish library versions are strings, there is no natural order on the versions of libraries.
+Because published library versions are strings, there is no natural order for library versions.
 This means library versions have no particular "semantic meaning", so updating from one version to another version of a library may have very large or very small impacts.
 This is totally up to the library authors.
 
@@ -80,7 +80,7 @@ After the library update has been performed, if successful, a notification appea
 image::release-notes-library-update-success.png[Dialog for the 'Update library' action, width=30%,height=30%]
 
 Updating a library means that the contents of the project are modified, possibly breaking some aspects of the project, so validation errors may occur as a consequence.
-Libraries may add, remove or edit their contents freely between versions, so there is no guarantees that two versions of a library are compatible or even somewhat resembling.
+Libraries may add, remove, or edit their contents freely between versions, so there is no guarantee that two versions of a library are compatible or even similar.
 This means projects may become invalid because some of the library elements it was built upon no longer exist, or their identity has changed.
 
 Library authors should note that the identity of a document is based on its namespace (ID of the authoring project from which the library is published) and its name.

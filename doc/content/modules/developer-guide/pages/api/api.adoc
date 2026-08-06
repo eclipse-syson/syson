@@ -26,7 +26,7 @@ GraphQL enables clients to request only the data they need, reducing over-fetchi
 
 This is particularly useful in complex modeling scenarios where different clients may require different subsets of data.
 
-For more information about the GraphQL API, refer to the https://github.com/eclipse-sirius/sirius-web[Sirius Web repository] (on which SysON is built upon) which contains all GraphQL API used by SysON.
+For more information about the GraphQL API, refer to the https://github.com/eclipse-sirius/sirius-web[Sirius Web repository], on which SysON is built. It contains all GraphQL APIs used by SysON.
 
 == APIs Cookbook
 

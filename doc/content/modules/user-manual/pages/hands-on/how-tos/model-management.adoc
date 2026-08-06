@@ -239,7 +239,7 @@ include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 [WARNING]
 ====
-This operation is irreversible, once done there is no mean to get the element back.
+This operation is irreversible. Once completed, there is no way to recover the element.
 The element and its children - semantic element and representations - are deleted.
 ====
 
