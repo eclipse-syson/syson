@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
@@ -49,9 +50,12 @@ import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
 import org.eclipse.syson.tests.api.GivenSysONServer;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -917,6 +921,159 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
     }
 
     /**
+     * Record that bundles all test case parameters used for testing inheritance of items inside a compartment of an element.
+     *
+     * @param subclassifierCreationToolName
+     *         The name of the tool to create sub classifier.
+     *         This tool should create a element of type {@code eClass}
+     * @param eClass
+     *         The type of element to test
+     * @param baseElementNodeId
+     *         The of the existing graphical node of type {@code eClass}.
+     * @param withEdgeExpected
+     *         Whether the creation of the item in the tested element will create an edge or not.
+     * @param specializationCreationExtraEdges
+     *         The number of extra edges created when specialization is made between elements of type {@code eClass}.
+     */
+    record ElementSpecializationInheritanceTestCase(
+            String subclassifierCreationToolName,
+            EClass eClass,
+            String baseElementNodeId,
+            boolean withEdgeExpected,
+            int specializationCreationExtraEdges
+    ) {
+        public @NonNull String toString() {
+            return this.subclassifierCreationToolName;
+        }
+    }
+
+    private static Stream<ElementSpecializationInheritanceTestCase> actorDefinitionParameters() {
+        return Stream.of(
+                new ElementSpecializationInheritanceTestCase(
+                        "New Requirement Definition",
+                        SysmlPackage.eINSTANCE.getRequirementDefinition(),
+                        GeneralViewWithTopNodesTestProjectData.GraphicalIds.REQUIREMENT_DEFINITION_ID,
+                        true,
+                        1
+                ),
+                new ElementSpecializationInheritanceTestCase(
+                        "New Case Definition",
+                        SysmlPackage.eINSTANCE.getCaseDefinition(),
+                        GeneralViewWithTopNodesTestProjectData.GraphicalIds.CASE_DEFINITION_ID,
+                        true,
+                        1
+                ),
+                // when https://github.com/eclipse-syson/syson/issues/2393 will be fixed, ConcernXXX should be aligned with other elements
+                // then withEdgeExpected should be true and specializationCreationExtraEdges should be 1.
+                // It should be possible to remove these parameters from here.
+                new ElementSpecializationInheritanceTestCase(
+                        "New Concern Definition",
+                        SysmlPackage.eINSTANCE.getConcernDefinition(),
+                        GeneralViewWithTopNodesTestProjectData.GraphicalIds.CONCERN_DEFINITION_ID,
+                        false,
+                        0
+                )
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("actorDefinitionParameters")
+    public void checkActorInheritanceWithSubclassification(ElementSpecializationInheritanceTestCase testCase) {
+        var runner = new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(testCase.eClass())
+                .baseElementToInheritFromNodeId(testCase.baseElementNodeId())
+                .elementToInheritCreationToolName("New Actor")
+                .withSelectedElementId("")
+                .elementToInheritExpectedListItemLabelText("actor1")
+                .compartmentName("actors")
+                .elementThatInheritFromBaseElementCreationToolName(testCase.subclassifierCreationToolName())
+                .elementThatInheritFromBaseElementEClass(testCase.eClass())
+                .specializationToolName("New Subclassification")
+                .withSpecializationCreationExtraEdges(testCase.specializationCreationExtraEdges());
+        if (testCase.withEdgeExpected()) {
+            runner.withEdgeExpected();
+        }
+        runner.run();
+    }
+
+    private static Stream<ElementSpecializationInheritanceTestCase> actorUsageParameters() {
+        return Stream.of(
+                new ElementSpecializationInheritanceTestCase(
+                        "New Requirement",
+                        SysmlPackage.eINSTANCE.getRequirementUsage(),
+                        GeneralViewWithTopNodesTestProjectData.GraphicalIds.REQUIREMENT_USAGE_ID,
+                        true,
+                        1
+                ),
+                new ElementSpecializationInheritanceTestCase(
+                        "New Case",
+                        SysmlPackage.eINSTANCE.getCaseUsage(),
+                        GeneralViewWithTopNodesTestProjectData.GraphicalIds.CASE_USAGE_ID,
+                        true,
+                        1
+                ),
+                new ElementSpecializationInheritanceTestCase(
+                        "New Satisfy Requirement",
+                        SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(),
+                        GeneralViewWithTopNodesTestProjectData.GraphicalIds.SATISFY_REQUIREMENT_USAGE_ID,
+                        true,
+                        1
+                ),
+                // when https://github.com/eclipse-syson/syson/issues/2393 will be fixed, ConcernXXX should be aligned with other elements
+                // then withEdgeExpected should be true and specializationCreationExtraEdges should be 1.
+                // It should be possible to remove these parameters from here.
+                new ElementSpecializationInheritanceTestCase(
+                        "New Concern",
+                        SysmlPackage.eINSTANCE.getConcernUsage(),
+                        GeneralViewWithTopNodesTestProjectData.GraphicalIds.CONCERN_USAGE_ID,
+                        false,
+                        0
+                )
+        );
+    }
+
+    private ElementSpecializationInheritanceTestRunner getUsageActorsInheritanceRunner(ElementSpecializationInheritanceTestCase testCase) {
+        var runner = new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(testCase.eClass())
+                .baseElementToInheritFromNodeId(testCase.baseElementNodeId())
+                .elementToInheritCreationToolName("New Actor")
+                .withSelectedElementId("")
+                .elementToInheritExpectedListItemLabelText("actor1")
+                .compartmentName("actors")
+                .elementThatInheritFromBaseElementCreationToolName(testCase.subclassifierCreationToolName())
+                .elementThatInheritFromBaseElementEClass(testCase.eClass())
+                .withSpecializationCreationExtraEdges(testCase.specializationCreationExtraEdges());
+        if (testCase.withEdgeExpected()) {
+            runner.withEdgeExpected();
+        }
+        return runner;
+    }
+
+    @ParameterizedTest
+    @MethodSource("actorUsageParameters")
+    public void checkActorInheritanceWithRedefinition(ElementSpecializationInheritanceTestCase testCase) {
+        this.getUsageActorsInheritanceRunner(testCase)
+                .specializationToolName("New Redefinition")
+                .run();
+    }
+
+    @ParameterizedTest
+    @MethodSource("actorUsageParameters")
+    public void checkActorInheritanceWithSubsetting(ElementSpecializationInheritanceTestCase testCase) {
+        this.getUsageActorsInheritanceRunner(testCase)
+                .specializationToolName("New Subsetting")
+                .run();
+    }
+
+    @ParameterizedTest
+    @MethodSource("actorUsageParameters")
+    public void checkActorInheritanceWithReferenceSubsetting(ElementSpecializationInheritanceTestCase testCase) {
+        this.getUsageActorsInheritanceRunner(testCase)
+                .specializationToolName("New Reference Subsetting")
+                .run();
+    }
+
+    /**
      * This test runner verifies that creating a specializing relationship create inherited elements.
      *
      * It executes the following steps then verifies the inherited elements.
@@ -955,6 +1112,13 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
          */
         private int withInnerBaseElementCreationExtraEdges;
 
+        /**
+         * Additional edges could be created when the specialization tool ({@code specializationToolName} is performed.
+         * <p>
+         *     For instance, when subclassification is created on a RequirementDefinition containing an actor an extra
+         * </p>
+         */
+        private int withSpecializationCreationExtraEdges;
         /**
          * The selected element required for the creation tool applied on the base element.
          */
@@ -1012,6 +1176,11 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
 
         public ElementSpecializationInheritanceTestRunner withInnerBaseElementCreationExtraEdges(int extraEdgesExpected) {
             this.withInnerBaseElementCreationExtraEdges = extraEdgesExpected;
+            return this;
+        }
+
+        public ElementSpecializationInheritanceTestRunner withSpecializationCreationExtraEdges(int extraEdgesExpected) {
+            this.withSpecializationCreationExtraEdges = extraEdgesExpected;
             return this;
         }
 
@@ -1141,10 +1310,14 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
 
             // Check new created element inherits from the base element, and thus, contains a list item with '^' in its label
             Consumer<Object> createFeatureTypeDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
+                var expectedNewEdgesCount = 1;  // The specialization edge
+                if (this.withSpecializationCreationExtraEdges > 0) {
+                    expectedNewEdgesCount += this.withSpecializationCreationExtraEdges;
+                }
                 new CheckDiagramElementCount(GVCompartmentItemInheritanceTests.this.diagramComparator)
                         .hasNewBorderNodeCount(0)
                         .hasNewNodeCount(1) // The list item inherited from the base element
-                        .hasNewEdgeCount(1) // The specialization edge
+                        .hasNewEdgeCount(expectedNewEdgesCount)
                         .check(diagram.get(), newDiagram);
 
                 var parameterCompartment = new DiagramNavigator(newDiagram)
