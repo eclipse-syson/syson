@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
@@ -52,6 +53,9 @@ import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -913,6 +917,43 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
     public void checkConcernUsageStakeholdersInheritanceWithReferenceSubsetting() {
         this.getConcernUsageStakeholdersInheritanceTestRunner()
                 .specializationToolName("New Reference Subsetting")
+                .run();
+    }
+
+    private static Stream<Arguments> subjectInheritanceParameters() {
+        return Stream.of(
+                Arguments.of("New Requirement Definition", "New Subclassification", SysmlPackage.eINSTANCE.getRequirementDefinition(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.REQUIREMENT_DEFINITION_ID),
+                Arguments.of("New Requirement", "New Redefinition", SysmlPackage.eINSTANCE.getRequirementUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.REQUIREMENT_USAGE_ID),
+                Arguments.of("New Requirement", "New Subsetting", SysmlPackage.eINSTANCE.getRequirementUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.REQUIREMENT_USAGE_ID),
+                Arguments.of("New Requirement", "New Reference Subsetting", SysmlPackage.eINSTANCE.getRequirementUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.REQUIREMENT_USAGE_ID),
+                Arguments.of("New Satisfy Requirement", "New Redefinition", SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.SATISFY_REQUIREMENT_USAGE_ID),
+                Arguments.of("New Satisfy Requirement", "New Subsetting", SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.SATISFY_REQUIREMENT_USAGE_ID),
+                Arguments.of("New Satisfy Requirement", "New Reference Subsetting", SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.SATISFY_REQUIREMENT_USAGE_ID),
+                Arguments.of("New Concern Definition", "New Subclassification", SysmlPackage.eINSTANCE.getConcernDefinition(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.CONCERN_DEFINITION_ID),
+                Arguments.of("New Concern", "New Redefinition", SysmlPackage.eINSTANCE.getConcernUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.CONCERN_USAGE_ID),
+                Arguments.of("New Concern", "New Subsetting", SysmlPackage.eINSTANCE.getConcernUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.CONCERN_USAGE_ID),
+                Arguments.of("New Concern", "New Reference Subsetting", SysmlPackage.eINSTANCE.getConcernUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.CONCERN_USAGE_ID),
+                Arguments.of("New Case Definition", "New Subclassification", SysmlPackage.eINSTANCE.getCaseDefinition(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.CASE_DEFINITION_ID),
+                Arguments.of("New Case", "New Redefinition", SysmlPackage.eINSTANCE.getCaseUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.CASE_USAGE_ID),
+                Arguments.of("New Case", "New Subsetting", SysmlPackage.eINSTANCE.getCaseUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.CASE_USAGE_ID),
+                Arguments.of("New Case", "New Reference Subsetting", SysmlPackage.eINSTANCE.getCaseUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.CASE_USAGE_ID)
+        );
+    }
+
+    @DisplayName("GIVEN a base ConcernDefinition with a stakeholder, WHEN a ConcernDefinition is subclassifying the base ConcernDefinition, THEN the ConcernDefinition assume constraints are inherited from the base ConcernDefinition")
+    @ParameterizedTest
+    @MethodSource("subjectInheritanceParameters")
+    public void checkSubjectInheritanceWithSubclassification(String subclassifier, String specialization, EClass eClass, String baseElementNodeId) {
+        new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(eClass)
+                .baseElementToInheritFromNodeId(baseElementNodeId)
+                .elementToInheritCreationToolName("New Subject")
+                .withSelectedElementId("")
+                .elementToInheritExpectedListItemLabelText("ref subject")
+                .compartmentName("subject")
+                .elementThatInheritFromBaseElementCreationToolName(subclassifier)
+                .elementThatInheritFromBaseElementEClass(eClass)
+                .specializationToolName(specialization)
                 .run();
     }
 
