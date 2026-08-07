@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
@@ -52,6 +53,9 @@ import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -913,6 +917,32 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
     public void checkConcernUsageStakeholdersInheritanceWithReferenceSubsetting() {
         this.getConcernUsageStakeholdersInheritanceTestRunner()
                 .specializationToolName("New Reference Subsetting")
+                .run();
+    }
+
+    private static Stream<Arguments> objectiveInheritanceParameters() {
+        return Stream.of(
+                Arguments.of("New Case Definition", "New Subclassification", SysmlPackage.eINSTANCE.getCaseDefinition(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.CASE_DEFINITION_ID),
+                Arguments.of("New Case", "New Redefinition", SysmlPackage.eINSTANCE.getCaseUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.CASE_USAGE_ID),
+                Arguments.of("New Case", "New Subsetting", SysmlPackage.eINSTANCE.getCaseUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.CASE_USAGE_ID),
+                Arguments.of("New Case", "New Reference Subsetting", SysmlPackage.eINSTANCE.getCaseUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.CASE_USAGE_ID)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("objectiveInheritanceParameters")
+    public void checkObjectiveInheritanceWithSpecialization(String subclassifier, String specialization, EClass eClass, String baseElementNodeId) {
+        new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(eClass)
+                .baseElementToInheritFromNodeId(baseElementNodeId)
+                .elementToInheritCreationToolName("New Objective")
+                .withEdgeExpected()
+                .withSelectedElementId("")
+                .elementToInheritExpectedListItemLabelText("requirement1")
+                .compartmentName("objective")
+                .elementThatInheritFromBaseElementCreationToolName(subclassifier)
+                .elementThatInheritFromBaseElementEClass(eClass)
+                .specializationToolName(specialization)
                 .run();
     }
 

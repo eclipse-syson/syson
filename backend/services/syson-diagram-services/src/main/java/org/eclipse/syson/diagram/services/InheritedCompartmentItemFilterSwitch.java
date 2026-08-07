@@ -26,12 +26,14 @@ import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
+import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.StakeholderMembership;
 import org.eclipse.syson.sysml.StateUsage;
@@ -142,19 +144,17 @@ public class InheritedCompartmentItemFilterSwitch extends SysmlSwitch<Boolean> {
      */
     @Override
     public Boolean casePartUsage(PartUsage object) {
-        boolean result;
+        final boolean result;
         if (this.shouldConsiderParameter(object)) {
             result = this.isInheritedParameter(object);
         } else if (this.isStakeholderReference()) {
             // We are dealing with a stakeholder
-            var membership = object.getOwningMembership();
             // so the part usage is a stakeholder if and only if, it is contained by a StakeholderMembership
-            result =  membership instanceof StakeholderMembership;
-        } if (this.isActorReference()) {
-            // We are dealing with an Actor?
-            var membership = object.getOwningMembership();
+            result =  object.getOwningMembership() instanceof StakeholderMembership;
+        } else if (this.isActorReference()) {
+            // We are dealing with an Actor
             // so the part usage is an actor if and only if, it is contained by a ActorMembership
-            result =  membership instanceof ActorMembership;
+            result =  object.getOwningMembership() instanceof ActorMembership;
         } else {
             EClassifier eType = this.eReference.getEType();
             EClass eClass = object.eClass();
@@ -209,6 +209,26 @@ public class InheritedCompartmentItemFilterSwitch extends SysmlSwitch<Boolean> {
         EClassifier eType = this.eReference.getEType();
         EClass eClass = object.eClass();
         return eType.equals(eClass) || (eType instanceof EClass eTypeEClass && eTypeEClass.isSuperTypeOf(eClass));
+    }
+
+    @Override
+    public Boolean caseRequirementUsage(RequirementUsage object) {
+        final boolean result;
+        if (this.isObjectiveReference()) {
+            // We are dealing with an objective
+            // so the part usage is an objective if and only if, it is contained by an ObjectiveMembership
+            result =  object.getOwningMembership() instanceof ObjectiveMembership;
+        } else {
+            EClassifier eType = this.eReference.getEType();
+            EClass eClass = object.eClass();
+            return eType.equals(eClass) || (eType instanceof EClass eTypeEClass && eTypeEClass.isSuperTypeOf(eClass));
+        }
+        return result;
+    }
+
+    private boolean isObjectiveReference() {
+        return this.eReference.equals(SysmlPackage.eINSTANCE.getCaseDefinition_ObjectiveRequirement()) ||
+                this.eReference.equals(SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement());
     }
 
     /**
