@@ -41,6 +41,9 @@ In any case, it is strongly recommended to back up your data before proceeding w
 - https://github.com/eclipse-syson/syson/issues/2407[#2407] [diagrams] Fix the nested composition edge tool label on `ConcernUsage` graphical nodes in _General View_ diagrams.
 It is now _Become nested Concern_ instead of _Become nested Requirement_.
 - https://github.com/eclipse-syson/syson/issues/2388[#2388] [search] Fix concurrent creation of SysML model search indices.
+- https://github.com/eclipse-syson/syson/issues/2397[#2397] [metamodel] Fix the resolution of the ends of a connector so the ends declared with the `end` keyword inside a connection body are taken into account.
+Following KerML, where `endFeature` is defined as the owned features having `isEnd = true`, the ends owned through a plain `FeatureMembership` are now collected as well, and not only those owned through an `EndFeatureMembership`.
+This also fixes `relatedFeature`, `sourceFeature` and `targetFeature`, which were all empty for such connections.
 
 === Improvements
 
@@ -66,7 +69,9 @@ This removes Rollup warnings about missing global names for externalized peer de
 It is also now possible to create new requirements using the _New Requirement_ tool from the `PartUsage` and `PartDefinition` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/2410[#2410] [diagrams] Add _concerns_ compartments to `PartUsage` and `PartDefinition` graphical nodes.
 It is also now possible to create new concerns using the _New Concern_ tool from the `PartUsage` and `PartDefinition` graphical nodes.
-
+- https://github.com/eclipse-syson/syson/issues/2397[#2397] [diagrams] Display existing binary requirement derivations as edges in the _General View_.
+A requirement derivation is a `ConnectionUsage` annotated with the `#derivation` metadata or typed by `DerivationConnections::Derivation`.
+The edge goes from the derived requirement to the original one and is displayed as a dashed `«derive»` line, so it can be distinguished from a `«satisfy»` edge.
 
 == v2026.7.0
 

@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.model.services.ModelQueryElementService;
 import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.ConcernUsage;
+import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.ConnectorAsUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
@@ -76,6 +77,27 @@ public class ModelQueryAQLService {
      */
     public List<Feature> getConnectorTarget(ConnectorAsUsage connector) {
         return this.metamodelQueryElementService.getConnectorTarget(connector);
+    }
+
+    /**
+     * {@link MetamodelQueryElementService#getDerivationDerivedEnd(ConnectionUsage)}.
+     */
+    public Feature getDerivationDerivedEnd(ConnectionUsage connectionUsage) {
+        return this.metamodelQueryElementService.getDerivationDerivedEnd(connectionUsage);
+    }
+
+    /**
+     * {@link MetamodelQueryElementService#getDerivationOriginalEnd(ConnectionUsage)}.
+     */
+    public Feature getDerivationOriginalEnd(ConnectionUsage connectionUsage) {
+        return this.metamodelQueryElementService.getDerivationOriginalEnd(connectionUsage);
+    }
+
+    /**
+     * {@link MetamodelQueryElementService#isRequirementDerivation(ConnectionUsage)}.
+     */
+    public boolean isRequirementDerivation(ConnectionUsage connectionUsage) {
+        return this.metamodelQueryElementService.isRequirementDerivation(connectionUsage);
     }
 
     /**

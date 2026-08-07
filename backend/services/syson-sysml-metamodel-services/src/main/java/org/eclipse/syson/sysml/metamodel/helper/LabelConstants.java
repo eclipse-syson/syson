@@ -47,6 +47,13 @@ public class LabelConstants {
 
     public static final String DEFAULT = SysMLv2Keywords.DEFAULT;
 
+    /**
+     * Label used for requirement derivation edges. This is the short name of the {@code RequirementDerivation}
+     * standard library metadata used to annotate the derived end of a derivation, and not the {@code derived} feature
+     * modifier keyword held by {@link #DERIVED}.
+     */
+    public static final String DERIVE = "derive";
+
     public static final String DERIVED = SysMLv2Keywords.DERIVED;
 
     public static final String END = SysMLv2Keywords.END;
