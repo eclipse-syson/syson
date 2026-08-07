@@ -1008,6 +1008,42 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
                 .run();
     }
 
+    private static Stream<Arguments> subjectInheritanceParameters() {
+        return Stream.of(
+                Arguments.of("New Requirement Definition", "New Subclassification", SysmlPackage.eINSTANCE.getRequirementDefinition(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.REQUIREMENT_DEFINITION_ID),
+                Arguments.of("New Requirement", "New Redefinition", SysmlPackage.eINSTANCE.getRequirementUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.REQUIREMENT_USAGE_ID),
+                Arguments.of("New Requirement", "New Subsetting", SysmlPackage.eINSTANCE.getRequirementUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.REQUIREMENT_USAGE_ID),
+                Arguments.of("New Requirement", "New Reference Subsetting", SysmlPackage.eINSTANCE.getRequirementUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.REQUIREMENT_USAGE_ID),
+                Arguments.of("New Satisfy Requirement", "New Redefinition", SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.SATISFY_REQUIREMENT_USAGE_ID),
+                Arguments.of("New Satisfy Requirement", "New Subsetting", SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.SATISFY_REQUIREMENT_USAGE_ID),
+                Arguments.of("New Satisfy Requirement", "New Reference Subsetting", SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.SATISFY_REQUIREMENT_USAGE_ID),
+                Arguments.of("New Concern Definition", "New Subclassification", SysmlPackage.eINSTANCE.getConcernDefinition(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.CONCERN_DEFINITION_ID),
+                Arguments.of("New Concern", "New Redefinition", SysmlPackage.eINSTANCE.getConcernUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.CONCERN_USAGE_ID),
+                Arguments.of("New Concern", "New Subsetting", SysmlPackage.eINSTANCE.getConcernUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.CONCERN_USAGE_ID),
+                Arguments.of("New Concern", "New Reference Subsetting", SysmlPackage.eINSTANCE.getConcernUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.CONCERN_USAGE_ID),
+                Arguments.of("New Case Definition", "New Subclassification", SysmlPackage.eINSTANCE.getCaseDefinition(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.CASE_DEFINITION_ID),
+                Arguments.of("New Case", "New Redefinition", SysmlPackage.eINSTANCE.getCaseUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.CASE_USAGE_ID),
+                Arguments.of("New Case", "New Subsetting", SysmlPackage.eINSTANCE.getCaseUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.CASE_USAGE_ID),
+                Arguments.of("New Case", "New Reference Subsetting", SysmlPackage.eINSTANCE.getCaseUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.CASE_USAGE_ID)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("subjectInheritanceParameters")
+    public void checkSubjectInheritanceWithSubclassification(String subclassifier, String specialization, EClass eClass, String baseElementNodeId) {
+        new ElementSpecializationInheritanceTestRunner()
+                .baseElementToInheritFromEClass(eClass)
+                .baseElementToInheritFromNodeId(baseElementNodeId)
+                .elementToInheritCreationToolName("New Subject")
+                .withSelectedElementId("")
+                .elementToInheritExpectedListItemLabelText("ref subject")
+                .compartmentName("subject")
+                .elementThatInheritFromBaseElementCreationToolName(subclassifier)
+                .elementThatInheritFromBaseElementEClass(eClass)
+                .specializationToolName(specialization)
+                .run();
+    }
+
     /**
      * This test runner verifies that creating a specializing relationship create inherited elements.
      *

@@ -22,6 +22,14 @@ The actor inheritance in _actors_ compartment is also visible in the following g
 *** `ConcernDefinition`
 *** `ConcernUsage`
 *** `SatisfyRequirementUsage`
+** Add support of subject inheritance in _subject_ compartment of `CaseDefinition` and `CaseUsage` graphical nodes.
+The subject inheritance in _subject_ compartment is also visible in the following graphical nodes:
+
+*** `RequirementDefinition`
+*** `RequireUsage`
+*** `ConcernDefinition`
+*** `ConcernUsage`
+*** `SatisfyRequirementUsage`
 
 * In textual import/export:
 
