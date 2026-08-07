@@ -41,6 +41,7 @@ import org.eclipse.syson.diagram.tests.checkers.NodeDescriptionIsReusedByChecker
 import org.eclipse.syson.diagram.tests.checkers.NodeDescriptionReusesChecker;
 import org.eclipse.syson.diagram.tests.predicates.DiagramPredicates;
 import org.eclipse.syson.services.ColorProvider;
+import org.eclipse.syson.standard.diagrams.view.edges.RequirementDerivationEdgeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -99,6 +100,10 @@ public class SDVDiagramDescriptionTests {
                 .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getFramedConcernMembership()).negate())
                 // RequirementConstraintMembership edges have a label (assume or require) but they are a constant and should not be modifiable
                 .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getRequirementConstraintMembership()).negate())
+                // The requirement derivation edge has a label (derive) but it is a constant and should not be modifiable.
+                // It is filtered by name and not by domain type, because it shares its ConnectionUsage domain type with
+                // the generic connection edge, whose label is the name of the connection and is modifiable.
+                .filter(this.diagramPredicates.hasName(new SDVDescriptionNameGenerator().getEdgeName(RequirementDerivationEdgeDescriptionProvider.EDGE_TYPE)).negate())
                 .toList();
         new EdgeDescriptionHasDirectEditToolChecker().checkAll(edgeDescriptionCandidates);
     }

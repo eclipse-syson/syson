@@ -26,6 +26,7 @@ import org.eclipse.syson.sysml.BooleanExpression;
 import org.eclipse.syson.sysml.CaseDefinition;
 import org.eclipse.syson.sysml.CaseUsage;
 import org.eclipse.syson.sysml.ConcernUsage;
+import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Element;
@@ -38,11 +39,13 @@ import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.FramedConcernMembership;
 import org.eclipse.syson.sysml.InterfaceDefinition;
+import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
@@ -65,6 +68,26 @@ import org.eclipse.syson.sysml.metamodel.services.textual.utils.FileNameDeresolv
  * @author arichard
  */
 public class MetamodelQueryElementService {
+
+    /**
+     * Qualified name of the metadata used to annotate a requirement derivation connection ({@code #derivation}).
+     */
+    private static final String DERIVATION_METADATA = "RequirementDerivation::DerivationMetadata";
+
+    /**
+     * Qualified name of the metadata used to annotate the original requirement end ({@code #original}).
+     */
+    private static final String ORIGINAL_REQUIREMENT_METADATA = "RequirementDerivation::OriginalRequirementMetadata";
+
+    /**
+     * Qualified name of the metadata used to annotate a derived requirement end ({@code #derive}).
+     */
+    private static final String DERIVED_REQUIREMENT_METADATA = "RequirementDerivation::DerivedRequirementMetadata";
+
+    /**
+     * Qualified name of the standard library {@code ConnectionDefinition} used to type a requirement derivation.
+     */
+    private static final String DERIVATION_CONNECTION_DEFINITION = "DerivationConnections::Derivation";
 
     /**
      * Return {@code true} if the provided {@code element} is an actor, {@code false} otherwise.
@@ -282,6 +305,152 @@ public class MetamodelQueryElementService {
                 .filter(Objects::nonNull)
                 .map(Feature::getFeatureTarget)
                 .toList();
+    }
+
+    /**
+     * Return {@code true} if the provided {@link ConnectionUsage} is a requirement derivation, {@code false} otherwise.
+     * <p>
+     * SysML v2 has no dedicated metaclass for requirement derivation: a derivation is a {@link ConnectionUsage} either
+     * annotated with the {@code #derivation} metadata or typed by the {@code DerivationConnections::Derivation}
+     * connection definition (see SysML v2 specification, {@code RequirementDerivation} and
+     * {@code DerivationConnections} standard libraries).
+     * </p>
+     *
+     * @param connectionUsage
+     *            the {@link ConnectionUsage} to check
+     * @return {@code true} if the provided {@link ConnectionUsage} is a requirement derivation, {@code false} otherwise
+     */
+    public boolean isRequirementDerivation(ConnectionUsage connectionUsage) {
+        if (connectionUsage == null) {
+            return false;
+        }
+        // The metadata is checked first: it does not need the types of the connection to be resolved.
+        return this.hasAppliedMetadata(connectionUsage, DERIVATION_METADATA)
+                || connectionUsage.getConnectionDefinition().stream()
+                        .filter(Objects::nonNull)
+                        .anyMatch(definition -> DERIVATION_CONNECTION_DEFINITION.equals(definition.getQualifiedName()));
+    }
+
+    /**
+     * Get the original requirement of the given requirement derivation, i.e. the requirement the other ends are derived
+     * from.
+     * <p>
+     * The original end is the one annotated with the {@code #original} metadata. When no end carries that metadata (for
+     * example when the derivation is only typed by {@code DerivationConnections::Derivation}), the first related
+     * feature is used, as the standard library declares {@code originalRequirement} as the first end of a
+     * {@code Derivation}.
+     * </p>
+     *
+     * @param connectionUsage
+     *            a requirement derivation
+     * @return the original requirement, or {@code null} if it cannot be computed
+     */
+    public Feature getDerivationOriginalEnd(ConnectionUsage connectionUsage) {
+        return this.getAnnotatedDerivationEnd(connectionUsage, ORIGINAL_REQUIREMENT_METADATA)
+                .orElseGet(() -> this.getDerivationEndAt(connectionUsage, 0));
+    }
+
+    /**
+     * Get the derived requirement of the given binary requirement derivation.
+     * <p>
+     * The derived end is the one annotated with the {@code #derive} metadata. When no end carries that metadata, the
+     * second related feature is used, as the standard library declares the {@code derivedRequirements} ends after the
+     * {@code originalRequirement} one. Only binary derivations are handled: for an n-ary derivation the first derived
+     * end is returned.
+     * </p>
+     *
+     * @param connectionUsage
+     *            a requirement derivation
+     * @return the derived requirement, or {@code null} if it cannot be computed
+     */
+    public Feature getDerivationDerivedEnd(ConnectionUsage connectionUsage) {
+        return this.getAnnotatedDerivationEnd(connectionUsage, DERIVED_REQUIREMENT_METADATA)
+                .orElseGet(() -> this.getDerivationEndAt(connectionUsage, 1));
+    }
+
+    /**
+     * Get the feature referenced by the connector end annotated with the given metadata.
+     *
+     * @param connectionUsage
+     *            a requirement derivation
+     * @param metadataQualifiedName
+     *            the qualified name of the metadata identifying the searched end
+     * @return an optional feature referenced by the matching end
+     */
+    private Optional<Feature> getAnnotatedDerivationEnd(ConnectionUsage connectionUsage, String metadataQualifiedName) {
+        if (connectionUsage == null) {
+            return Optional.empty();
+        }
+        return connectionUsage.getConnectorEnd().stream()
+                .filter(end -> this.hasAppliedMetadata(end, metadataQualifiedName))
+                .map(this::resolveEnd)
+                .filter(Objects::nonNull)
+                .findFirst();
+    }
+
+    /**
+     * Resolve the element referenced by a connection end.
+     *
+     * @param end
+     *            an end feature
+     * @return the referenced feature, or {@code null} if the end references nothing
+     */
+    private Feature resolveEnd(Feature end) {
+        ReferenceSubsetting referenceSubsetting = end.getOwnedReferenceSubsetting();
+        if (referenceSubsetting == null || referenceSubsetting.getSubsettedFeature() == null) {
+            return null;
+        }
+        return referenceSubsetting.getSubsettedFeature().getFeatureTarget();
+    }
+
+    /**
+     * Get the related feature of the given connector at the given index.
+     *
+     * @param connector
+     *            a {@link Connector}
+     * @param index
+     *            the index of the searched related feature
+     * @return the related feature at the given index, or {@code null} if there is no such feature
+     */
+    private Feature getDerivationEndAt(ConnectionUsage connectionUsage, int index) {
+        Feature end = null;
+        if (connectionUsage != null) {
+            EList<Feature> ends = connectionUsage.getConnectorEnd();
+            if (ends.size() > index) {
+                end = ends.get(index);
+            }
+        }
+        if (end == null) {
+            return null;
+        }
+        return this.resolveEnd(end);
+    }
+
+    /**
+     * Return {@code true} if the given element has the metadata with the given qualified name applied on it.
+     * <p>
+     * Prefix metadata (e.g. {@code #derivation}) are stored as {@link MetadataUsage} owned by the annotated element.
+     * </p>
+     *
+     * @param element
+     *            the element to check
+     * @param metadataQualifiedName
+     *            the qualified name of the searched metadata definition
+     * @return {@code true} if the metadata is applied on the given element, {@code false} otherwise
+     */
+    private boolean hasAppliedMetadata(Element element, String metadataQualifiedName) {
+        if (element == null) {
+            return false;
+        }
+        return element.getOwnedRelationship().stream()
+                .filter(OwningMembership.class::isInstance)
+                .map(OwningMembership.class::cast)
+                .flatMap(owningMembership -> owningMembership.getOwnedRelatedElement().stream())
+                .filter(MetadataUsage.class::isInstance)
+                .map(MetadataUsage.class::cast)
+                .map(MetadataUsage::getMetadataDefinition)
+                .filter(Objects::nonNull)
+                .anyMatch(metadataDefinition -> metadataQualifiedName.equals(metadataDefinition.getQualifiedName()));
     }
 
     /**

@@ -103,6 +103,7 @@ import org.eclipse.syson.standard.diagrams.view.edges.NestedSubjectEdgeDescripti
 import org.eclipse.syson.standard.diagrams.view.edges.RedefinitionEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.ReferenceSubsettingEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.RequirementConstraintEdgeDescriptionProvider;
+import org.eclipse.syson.standard.diagrams.view.edges.RequirementDerivationEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.SatisfyRequirementEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.SubclassificationEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.SubsettingEdgeDescriptionProvider;
@@ -1022,6 +1023,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         edgeDescriptionProviders.add(new FeatureValueEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         edgeDescriptionProviders.add(new IncludeUseCaseDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         edgeDescriptionProviders.add(new ConnectionUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        edgeDescriptionProviders.add(new RequirementDerivationEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         edgeDescriptionProviders.add(new SatisfyRequirementEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         edgeDescriptionProviders.add(new FrameConcernEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         edgeDescriptionProviders.add(new RequirementConstraintEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));

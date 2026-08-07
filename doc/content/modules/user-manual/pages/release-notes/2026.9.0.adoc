@@ -48,6 +48,30 @@ image::release-notes-concerns-compartment-parts.png[Concerns compartments in Par
 +
 image::release-notes-new-concern-parts.png[New Concern tool on PartUsage and PartDefinition graphical nodes, width=60%,height=60%]
 
+** Requirement derivations are now displayed as edges in _General View_ diagrams.
+A requirement derivation records that a requirement has been derived from another one, which is what allows a detailed requirement to be traced back to the requirement it comes from.
++
+The edge goes from the derived requirement to the original one, and is displayed as a dashed line labelled `«derive»`, so that it can be told apart from a `«satisfy»` edge.
++
+image::release-notes-requirement-derivation-edge.png[Requirement derivation displayed as an edge in a General View diagram]
++
+Requirement derivations are created from SysML v2 text, using the _Upload model_ action of the _Explorer_ or its _New objects from text_ action.
+The following text creates two requirements and a derivation between them:
++
+[source,sysml]
+----
+private import RequirementDerivation::*;
+requirement article5Compliance;
+requirement paymentDelayPrevention;
+#derivation connection {
+    end #original ::> article5Compliance;
+    end #derive ::> paymentDelayPrevention;
+}
+----
++
+Once both requirements are displayed in a _General View_ diagram, by dropping them from the _Explorer_ for example, the `«derive»` edge between them appears automatically.
+The direction of the edge is given by the `#original` and `#derive` metadata of its ends, so it does not depend on the order in which those ends are declared.
+
 
 == Bug fixes
 
@@ -59,6 +83,8 @@ image::release-notes-new-concern-parts.png[New Concern tool on PartUsage and Par
 It is now _Become nested Concern_ instead of _Become nested Requirement_.
 
 ** Fix the support of `PortUsage` as end inheritance in _ends_ compartment of `InterfaceDefinition` graphical node.
+** Fix the ends of the connections whose ends are declared with the `end` keyword inside the body of the connection, which were not resolved.
+Those connections were missing their source and their target, and were therefore never displayed as edges.
 
 * In all views:
 

@@ -32,7 +32,7 @@ import org.eclipse.syson.sysml.Association;
 import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.ConnectorAsUsage;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.EndFeatureMembership;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Relationship;
@@ -289,10 +289,14 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
      */
     @Override
     public EList<Feature> getConnectorEnd() {
+        // KerML defines endFeature as the owned features having isEnd = true. An EndFeatureMembership is one syntactic
+        // form implying it, but the ends declared with the "end" keyword inside a connection body are owned through a
+        // plain FeatureMembership, so both forms have to be collected here.
         List<Feature> endFeatures = this.getOwnedRelationship().stream()
-                .filter(EndFeatureMembership.class::isInstance)
-                .map(EndFeatureMembership.class::cast)
-                .map(EndFeatureMembership::getOwnedMemberFeature)
+                .filter(FeatureMembership.class::isInstance)
+                .map(FeatureMembership.class::cast)
+                .map(FeatureMembership::getOwnedMemberFeature)
+                .filter(Objects::nonNull)
                 .filter(Feature::isIsEnd)
                 .toList();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnector_ConnectorEnd(), endFeatures.size(), endFeatures.toArray());
