@@ -848,18 +848,15 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         final List<IDiagramElementDescriptionProvider<?>> compartmentNodeDescriptionProviders = new ArrayList<>();
 
         compartmentNodeDescriptionProviders.add(new CaseDefinitionObjectiveRequirementCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
-        compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseDefinition(),
-                SysmlPackage.eINSTANCE.getCaseDefinition_ObjectiveRequirement(), colorProvider, this.getDescriptionNameGenerator()));
-        compartmentNodeDescriptionProviders
-                .add(new ObjectiveDocumentationCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ObjectiveRequirement(),
-                        colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ObjectiveRequirement(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new ObjectiveDocumentationCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ObjectiveRequirement(), colorProvider, this.getDescriptionNameGenerator()));
 
         compartmentNodeDescriptionProviders.add(new CaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
-        compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement(),
-                colorProvider, this.getDescriptionNameGenerator()));
-        compartmentNodeDescriptionProviders
-                .add(new ObjectiveDocumentationCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement(),
-                        colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new ObjectiveDocumentationCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement(), colorProvider, this.getDescriptionNameGenerator()));
+
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ObjectiveRequirement(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement(), colorProvider, this.getDescriptionNameGenerator()));
 
         return compartmentNodeDescriptionProviders;
     }
