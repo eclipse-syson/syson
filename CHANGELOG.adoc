@@ -58,6 +58,7 @@ This removes Rollup warnings about missing global names for externalized peer de
 - https://github.com/eclipse-syson/syson/issues/2382[#2382] [diagrams] Add support of stakeholder inheritance in _stakeholders_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/2387[#2387] [diagrams] Add support of objective requirement inheritance in _objective_ compartments of `CaseUsage` and `CaseDefinition` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/2391[#2391] [diagrams] Add support of actor inheritance in _actors_ compartment of `CaseDefinition` and `CaseUsage` graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/2389[#2389] [diagrams] Add support of inheritance of subject in _subject_ compartment of `CaseDefinition` and `CaseUsage` (and more) graphical nodes.
 
 == v2026.7.0
 

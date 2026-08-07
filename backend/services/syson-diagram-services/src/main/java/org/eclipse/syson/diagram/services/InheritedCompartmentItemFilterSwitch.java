@@ -39,6 +39,7 @@ import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.StakeholderMembership;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Step;
+import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
@@ -156,6 +157,10 @@ public class InheritedCompartmentItemFilterSwitch extends SysmlSwitch<Boolean> {
             // We are dealing with an Actor
             // so the part usage is an actor if and only if, it is contained by a ActorMembership
             result = object.getOwningMembership() instanceof ActorMembership;
+        } else if (this.isSubjectReference()) {
+            // We are dealing with a subject
+            // so the reference usage is a subject if and only if, it is contained by a SubjectMembership
+            result = object.getOwningMembership() instanceof SubjectMembership;
         } else {
             EClassifier eType = this.eReference.getEType();
             EClass eClass = object.eClass();
@@ -218,13 +223,26 @@ public class InheritedCompartmentItemFilterSwitch extends SysmlSwitch<Boolean> {
      */
     @Override
     public Boolean caseReferenceUsage(ReferenceUsage object) {
+        final boolean result;
         if (this.shouldConsiderParameter(object)) {
-            return this.isInheritedParameter(object);
+            result = this.isInheritedParameter(object);
+        } else if (this.isSubjectReference()) {
+            // We are dealing with a subject
+            // so the reference usage is a subject if and only if, it is contained by a SubjectMembership
+            result = object.getOwningMembership() instanceof SubjectMembership;
+        } else {
+            EClassifier eType = this.eReference.getEType();
+            EClass eClass = object.eClass();
+            result = eType.equals(eClass) || (eType instanceof EClass eTypeEClass && eTypeEClass.isSuperTypeOf(eClass));
         }
+        return result;
+    }
 
-        EClassifier eType = this.eReference.getEType();
-        EClass eClass = object.eClass();
-        return eType.equals(eClass) || (eType instanceof EClass eTypeEClass && eTypeEClass.isSuperTypeOf(eClass));
+    private boolean isSubjectReference() {
+        return this.eReference.equals(SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter())
+                || this.eReference.equals(SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter())
+                || this.eReference.equals(SysmlPackage.eINSTANCE.getCaseDefinition_SubjectParameter())
+                || this.eReference.equals(SysmlPackage.eINSTANCE.getCaseUsage_SubjectParameter());
     }
 
     @Override
@@ -234,6 +252,10 @@ public class InheritedCompartmentItemFilterSwitch extends SysmlSwitch<Boolean> {
             // We are dealing with an objective
             // so the part usage is an objective if and only if, it is contained by an ObjectiveMembership
             result =  object.getOwningMembership() instanceof ObjectiveMembership;
+        } else if (this.isSubjectReference()) {
+            // We are dealing with a subject
+            // so the reference usage is a subject if and only if, it is contained by a SubjectMembership
+            result = object.getOwningMembership() instanceof SubjectMembership;
         } else {
             EClassifier eType = this.eReference.getEType();
             EClass eClass = object.eClass();
