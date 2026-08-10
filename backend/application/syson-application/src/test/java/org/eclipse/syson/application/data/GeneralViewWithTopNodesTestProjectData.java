@@ -50,6 +50,8 @@ public class GeneralViewWithTopNodesTestProjectData {
 
         public static final String ITEM_USAGE_ID = "78a84b8a-e91c-3338-b447-864793773dd9";
 
+        public static final String INTERFACE_DEFINITION_ID = "3991a939-b68e-3505-9fd4-fda25147b35b";
+
         public static final String INTERFACE_USAGE_ID = "6bc0765c-4f9f-3a9e-ab45-3d717519535c";
 
         public static final String PART_DEFINITION_ID = "fa617798-658e-3812-92f2-52e2fc39f851";

@@ -30,6 +30,7 @@ import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
+import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
@@ -189,6 +190,21 @@ public class InheritedCompartmentItemFilterSwitch extends SysmlSwitch<Boolean> {
             result = this.isInheritedAction(object);
         } else {
             result = super.casePerformActionUsage(object);
+        }
+        return result;
+    }
+
+    @Override
+    public Boolean casePortUsage(PortUsage object) {
+        final boolean result;
+        if (this.eReference.equals(SysmlPackage.eINSTANCE.getInterfaceDefinition_InterfaceEnd())) {
+            // we are dealing with interface end
+            // the given PortUsage is an end if it has the isEnd property set.
+            result = object.isIsEnd();
+        } else {
+            EClassifier eType = this.eReference.getEType();
+            EClass eClass = object.eClass();
+            result = eType.equals(eClass) || (eType instanceof EClass eTypeEClass && eTypeEClass.isSuperTypeOf(eClass));
         }
         return result;
     }

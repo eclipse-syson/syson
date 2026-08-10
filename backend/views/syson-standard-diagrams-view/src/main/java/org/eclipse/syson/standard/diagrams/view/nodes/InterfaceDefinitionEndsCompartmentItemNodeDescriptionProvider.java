@@ -35,6 +35,6 @@ public class InterfaceDefinitionEndsCompartmentItemNodeDescriptionProvider exten
 
     @Override
     protected String getSemanticCandidateExpression() {
-        return AQLConstants.AQL_SELF + "." + this.eReference.getName() + "->select(endElt | not endElt.isFromStandardLibrary())";
+        return AQLConstants.AQL_SELF + ".getInterfaceEnds()->select(endElt | not endElt.isFromStandardLibrary())";
     }
 }

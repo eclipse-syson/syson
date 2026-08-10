@@ -23,6 +23,7 @@
 
 ** Fix dropping a nested `AttributeUsage` from the _Explorer_ onto a _General View_ diagram so it is visible on the first drop.
 ** Fix `Comment` graphical nodes so changing their background color no longer changes their border color.
+** Fix the support of `PortUsage` as end inheritance in _ends_ compartment of `InterfaceDefinition` graphical node.
 
 * In all views:
 
