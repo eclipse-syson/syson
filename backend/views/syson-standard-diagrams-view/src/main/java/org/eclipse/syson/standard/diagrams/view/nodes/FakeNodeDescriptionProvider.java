@@ -86,14 +86,6 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getInterfaceDefinition(), SysmlPackage.eINSTANCE.getInterfaceDefinition_InterfaceEnd()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
-                .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
-                .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
-                .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getBehavior_Parameter()))
-                .ifPresent(childrenNodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
