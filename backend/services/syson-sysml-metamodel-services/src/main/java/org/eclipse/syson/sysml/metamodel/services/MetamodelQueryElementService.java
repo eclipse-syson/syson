@@ -35,9 +35,11 @@ import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.FramedConcernMembership;
+import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Relationship;
@@ -519,5 +521,24 @@ public class MetamodelQueryElementService {
                     .forEach(framedConcerns::add);
         }
         return framedConcerns;
+    }
+
+    /**
+     * Retrieves interface ends ({@link PortUsage}) of the given {@link InterfaceDefinition}.
+     * <p>
+     *     The {@link InterfaceDefinition#getInterfaceEnd()} is not suitable because it collects inherited interface ends as well.
+     *     We are only looking for direct owned interface ends of the given {@link InterfaceDefinition}.
+     * </p>
+     * @param interfaceDefinition an {@link InterfaceDefinition}
+     * @return the list of {@link PortUsage} defined as end of the given interface.
+     */
+    public List<PortUsage> getInterfaceEnds(InterfaceDefinition interfaceDefinition) {
+        List<PortUsage> interfaceEnds = new ArrayList<>();
+        interfaceDefinition.getOwnedFeature().stream()
+                .filter(Feature::isIsEnd)
+                .filter(PortUsage.class::isInstance)
+                .map(PortUsage.class::cast)
+                .forEach(interfaceEnds::add);
+        return interfaceEnds;
     }
 }

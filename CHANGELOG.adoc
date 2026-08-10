@@ -98,6 +98,7 @@ It has long been unused by Sirius Web itself (since the transition to MUI).
 The initial value is now an empty string instead of the computed display label, so validating it without changes no longer writes the display label into the element's declared name.
 - https://github.com/eclipse-syson/syson/issues/2342[#2342] [diagrams] Fix the creation of `Succession` and `Transition` elements from _New Succession_ and _New Transition_ graphical edge tools.
 The problem was that the `Succession` and `Transition` were created in the wrong container, which was the `ViewUsage` instead of the common ancestor `Element` containing the source and target.
+- https://github.com/eclipse-syson/syson/issues/2386[#2386] [diagrams] Fix inheritance of `PortUsage as end` in _ends_ compartment of `InterfaceDefinition` graphical node.
 
 === Improvements
 
