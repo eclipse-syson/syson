@@ -58,7 +58,7 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { SysONTestsProperties.NO_DEFAULT_LIBRARIES_PROPERTY })
 public class GVAddNewSubsettingFromPartUsageTests extends AbstractIntegrationTests {
 
-    private static final int PART_USAGE_COMPARTMENT_COUNT = 12;
+    private static final int PART_USAGE_COMPARTMENT_COUNT = 13;
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;

@@ -172,8 +172,8 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), 2, 0, 0, 0, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH, false),
                 // A package doesn't have a compartment: it is handled as a custom node
                 Arguments.of(SysmlPackage.eINSTANCE.getPackage(), 0, 0, 0, 0, ViewConstants.DEFAULT_PACKAGE_NODE_HEIGHT, ViewConstants.DEFAULT_PACKAGE_NODE_WIDTH, false),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), 12, 0, 0, 0, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH, false),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), 12, 0, 0, 0, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), 13, 0, 0, 0, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), 13, 0, 0, 0, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH, false),
                 Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), 5, 0, 0, 0, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH, false),
                 Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), 5, 0, 0, 0, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH, false),
                 Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), 0, 0, 0, 0, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH, false),

@@ -294,7 +294,7 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(14) // One node and 13 compartments
+                    .hasNewNodeCount(15) // One node and 14 compartments
                     .check(initialDiagram, newDiagram);
             Node newNode = this.diagramComparator.newNodes(initialDiagram, newDiagram).get(0);
             assertEquals(ViewUsageExposedElementsTestProjectData.SemanticIds.PART_A_SIRIUS_ID, newNode.getTargetObjectId());

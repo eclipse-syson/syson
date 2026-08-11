@@ -64,6 +64,8 @@ This removes Rollup warnings about missing global names for externalized peer de
 - https://github.com/eclipse-syson/syson/issues/2402[#2402] [diagrams] Add support for the inheritance of the parameter border nodes of `ActionDefinition` and `ActionUsage` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/2409[#2409] [diagrams] Add _requirements_ compartments to `PartUsage` and `PartDefinition` graphical nodes.
 It is also now possible to create new requirements using the _New Requirement_ tool from the `PartUsage` and `PartDefinition` graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/2410[#2410] [diagrams] Add _concerns_ compartments to `PartUsage` and `PartDefinition` graphical nodes.
+It is also now possible to create new concerns using the _New Concern_ tool from the `PartUsage` and `PartDefinition` graphical nodes.
 
 
 == v2026.7.0
