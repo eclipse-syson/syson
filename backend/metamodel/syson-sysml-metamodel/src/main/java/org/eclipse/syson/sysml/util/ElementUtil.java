@@ -43,8 +43,11 @@ import org.eclipse.syson.sysml.VisibilityKind;
 /**
  * Util class for SysML elements.
  *
+ * @deprecated use /syson-sysml-metamodel-services/src/main/java/org/eclipse/syson/sysml/metamodel/util/ElementUtil.java
+ *             instead.
  * @author arichard
  */
+@Deprecated
 public class ElementUtil {
 
     /**

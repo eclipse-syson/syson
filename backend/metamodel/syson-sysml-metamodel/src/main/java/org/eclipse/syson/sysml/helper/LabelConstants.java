@@ -17,8 +17,12 @@ import org.eclipse.syson.sysml.textual.SysMLv2Keywords;
 /**
  * Label-related constants.
  *
+ * @deprecated use
+ *             /syson-sysml-metamodel-services/src/main/java/org/eclipse/syson/sysml/metamodel/helper/LabelConstants.java
+ *             instead.
  * @author arichard
  */
+@Deprecated
 public class LabelConstants {
 
     public static final String ABSTRACT = SysMLv2Keywords.ABSTRACT;

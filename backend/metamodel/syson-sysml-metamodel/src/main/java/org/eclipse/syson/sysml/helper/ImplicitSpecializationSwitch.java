@@ -26,8 +26,12 @@ import org.eclipse.syson.sysml.util.SysmlSwitch;
 /**
  * Switch allowing to compute implicit specializations for a given Element.
  *
+ * @deprecated use
+ *             /syson-sysml-metamodel-services/src/main/java/org/eclipse/syson/sysml/metamodel/helper/ImplicitSpecializationSwitch.java
+ *             instead.
  * @author arichard
  */
+@Deprecated
 public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specialization>> {
 
     private final ImplicitSpecializationAccumulator implicitSpecializations;

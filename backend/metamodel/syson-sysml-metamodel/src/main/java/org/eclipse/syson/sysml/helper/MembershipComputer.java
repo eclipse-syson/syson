@@ -45,8 +45,12 @@ import org.eclipse.syson.sysml.VisibilityKind;
  *
  * @param <T>
  *            the type on which to apply the computation
+ * @deprecated use
+ *             /syson-sysml-metamodel-services/src/main/java/org/eclipse/syson/sysml/metamodel/helper/MembershipComputer.java
+ *             instead.
  * @author Arthur Daussy
  */
+@Deprecated
 public class MembershipComputer<T extends Element> {
 
     private final Set<Element> visited;

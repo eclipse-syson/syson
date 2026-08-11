@@ -18,11 +18,16 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.syson.sysml.textual.SysMLv2Keywords;
+
 /**
  * Set of static methods to help to manipulate/escape name/qualified name of sysml elements.
  *
+ * @deprecated use
+ *             /syson-sysml-metamodel-services/src/main/java/org/eclipse/syson/sysml/metamodel/helper/NameHelper.java
+ *             instead.
  * @author Guillaume Escande
  */
+@Deprecated
 public final class NameHelper {
 
     private static final java.util.regex.Pattern VALID_CHARS = Pattern.compile("[^a-zA-Z0-9_]");
