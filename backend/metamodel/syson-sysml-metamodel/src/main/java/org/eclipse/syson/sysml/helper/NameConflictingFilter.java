@@ -30,8 +30,12 @@ import org.eclipse.syson.sysml.Membership;
  * any name conflict.
  * </p>
  *
+ * @deprecated use
+ *             /syson-sysml-metamodel-services/src/main/java/org/eclipse/syson/sysml/metamodel/helper/NameConflictingFilter.java
+ *             instead.
  * @author Arthur Daussy
  */
+@Deprecated
 public class NameConflictingFilter implements Predicate<Membership> {
 
     private final Set<String> usedNames = new HashSet<>();

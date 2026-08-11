@@ -25,8 +25,12 @@ import org.eclipse.syson.sysml.Subsetting;
 /**
  * Accumulator of {@link Specialization} that keeps track of the type of the added {@link Specialization}.
  *
+ * @deprecated use
+ *             /syson-sysml-metamodel-services/src/main/java/org/eclipse/syson/sysml/metamodel/helper/ImplicitSpecializationAccumulator.java
+ *             instead.
  * @author Arthur Daussy
  */
+@Deprecated
 public class ImplicitSpecializationAccumulator {
 
     private boolean hasSubSetting;

@@ -38,8 +38,11 @@ import org.slf4j.LoggerFactory;
 /**
  * Utils class to browse or edit EMF model.
  *
+ * @deprecated use /syson-sysml-metamodel-services/src/main/java/org/eclipse/syson/sysml/metamodel/helper/EMFUtils.java
+ *             instead.
  * @author Arthur Daussy
  */
+@Deprecated
 public class EMFUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EMFUtils.class);
