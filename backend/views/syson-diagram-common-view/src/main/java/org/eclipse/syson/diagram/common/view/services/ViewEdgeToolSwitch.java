@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
@@ -35,6 +36,7 @@ import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.ControlNode;
 import org.eclipse.syson.sysml.Definition;
@@ -154,6 +156,11 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     }
 
     @Override
+    public List<EdgeTool> caseConcernUsage(ConcernUsage object) {
+        return this.createRequirementUsageEdgeTools(SysmlPackage.eINSTANCE.getConcernUsage(), object);
+    }
+
+    @Override
     public List<EdgeTool> caseControlNode(ControlNode object) {
         var edgeTools = new ArrayList<EdgeTool>();
         edgeTools.add(this.edgeToolService.createSuccessionEdgeTool(this.getSuccessionEdgeTargets()));
@@ -266,12 +273,25 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
 
     @Override
     public List<EdgeTool> caseRequirementUsage(RequirementUsage object) {
+        return this.createRequirementUsageEdgeTools(SysmlPackage.eINSTANCE.getRequirementUsage(), object);
+    }
+
+    /**
+     * Creates the edge tools shared by requirement-like usages.
+     *
+     * @param eClass
+     *            the concrete class represented by the source node
+     * @param requirementUsage
+     *            the requirement-like usage from which inherited tools are created
+     * @return the edge tools for the given requirement-like usage
+     */
+    private List<EdgeTool> createRequirementUsageEdgeTools(EClass eClass, RequirementUsage requirementUsage) {
         var edgeTools = new ArrayList<EdgeTool>();
         var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
                 || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getRequirementDefinition())).collect(Collectors.toList());
         targetNodes.removeIf(nodeDesc -> this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPortUsage()));
         targetNodes.removeIf(nodeDesc -> this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAttributeUsage()));
-        edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getRequirementUsage(), targetNodes));
+        edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(eClass, targetNodes));
         targetNodes.forEach(targetNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(targetNode)));
         var objectiveTargets = this.allNodeDescriptions.stream()
                 .filter(n -> this.edgeToolService.isTheNodeDescriptionFor(n, SysmlPackage.eINSTANCE.getUseCaseUsage())
@@ -281,7 +301,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         edgeTools.add(this.edgeToolService.createFramedConcernEdgeTool());
         edgeTools.add(this.edgeToolService.createAssumeConstraintEdgeTool());
         edgeTools.add(this.edgeToolService.createRequireConstraintEdgeTool());
-        edgeTools.addAll(this.caseUsage(object));
+        edgeTools.addAll(this.caseUsage(requirementUsage));
         return edgeTools;
     }
 

@@ -211,4 +211,5 @@ public class SDVDiagramDescriptionTests {
                 .collect(Collectors.toSet());
         new AQLExpressionCallsExistingServicesChecker(this.diagramServices).checkAll(aqlExpressions);
     }
+
 }
