@@ -118,7 +118,7 @@ public class GeneralPurposeTests {
     );
 
     private static final List<String> CHECKSTYLE_HIDDEN_FIELD_WHITELIST_CLASSNAME = List.of(
-            "ElementSpecializationInheritanceTestRunner"
+            "GraphicalInheritanceTestRunner"
     );
 
     /**
