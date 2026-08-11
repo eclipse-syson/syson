@@ -27,9 +27,9 @@ Other versions, such as intermediate releases, are intended solely for testing p
 
 == 2026.5.0
 
-Adopting the 2026.5.0 version doesn't require a migration process.
+As of version 2026.5.0, SysON now requires *Java 21* or later.
 
-But in any case, please download all your models/projects and back up your database before upgrading to 2026.5.0.
+Please download all your models/projects and back up your database before upgrading to 2026.5.0.
 
 Also please remember only YEAR.MONTH.0 versions are stable and suitable for production deployments.
 Other versions, such as intermediate releases, are intended solely for testing purposes.
