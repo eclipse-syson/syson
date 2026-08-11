@@ -52,15 +52,17 @@ This removes Rollup warnings about missing global names for externalized peer de
 === New features
 
 - https://github.com/eclipse-syson/syson/issues/2316[#2316] [diagrams] Add support for list item inheritance in _perform actions_ compartments
-- https://github.com/eclipse-syson/syson/issues/2370[#2370] [diagrams] Add support of `ItemUsage` inheritance in _items_ compartments of `PortUsage` and `PortDefinition` graphical nodes.
-- https://github.com/eclipse-syson/syson/issues/2372[#2372] [diagrams] Add support of assume constraint inheritance in _assume constraints_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
-- https://github.com/eclipse-syson/syson/issues/2375[#2375] [diagrams] Add support of require constraints inheritance in _require constraints_ compartments of `RequirementUsage`, `RequirementDefinition` and subtypes graphical nodes.
-- https://github.com/eclipse-syson/syson/issues/2378[#2378] [diagrams] Add support of framed concern inheritance in frames compartment of RequirementUsage and RequirementDefinition.
-- https://github.com/eclipse-syson/syson/issues/2380[#2380] [diagrams] Add support of `SatisfyRequirementUsage` inheritance in _satisfy requirements_ compartment of `PartUsage` and `PartDefinition` graphical nodes.
-- https://github.com/eclipse-syson/syson/issues/2382[#2382] [diagrams] Add support of stakeholder inheritance in _stakeholders_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
-- https://github.com/eclipse-syson/syson/issues/2387[#2387] [diagrams] Add support of objective requirement inheritance in _objective_ compartments of `CaseUsage` and `CaseDefinition` graphical nodes.
-- https://github.com/eclipse-syson/syson/issues/2391[#2391] [diagrams] Add support of actor inheritance in _actors_ compartment of `CaseDefinition` and `CaseUsage` graphical nodes.
-- https://github.com/eclipse-syson/syson/issues/2389[#2389] [diagrams] Add support of inheritance of subject in _subject_ compartment of `CaseDefinition` and `CaseUsage` (and more) graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/2370[#2370] [diagrams] Add support for `ItemUsage` inheritance in _items_ compartments of `PortUsage` and `PortDefinition` graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/2372[#2372] [diagrams] Add support for assume constraint inheritance in _assume constraints_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/2375[#2375] [diagrams] Add support for require constraints inheritance in _require constraints_ compartments of `RequirementUsage`, `RequirementDefinition` and subtypes graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/2378[#2378] [diagrams] Add support for framed concern inheritance in frames compartment of RequirementUsage and RequirementDefinition.
+- https://github.com/eclipse-syson/syson/issues/2380[#2380] [diagrams] Add support for `SatisfyRequirementUsage` inheritance in _satisfy requirements_ compartment of `PartUsage` and `PartDefinition` graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/2382[#2382] [diagrams] Add support for stakeholder inheritance in _stakeholders_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/2387[#2387] [diagrams] Add support for objective requirement inheritance in _objective_ compartments of `CaseUsage` and `CaseDefinition` graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/2391[#2391] [diagrams] Add support for actor inheritance in _actors_ compartment of `CaseDefinition` and `CaseUsage` graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/2389[#2389] [diagrams] Add support for inheritance of subject in _subject_ compartment of `CaseDefinition` and `CaseUsage` (and more) graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/2402[#2402] [diagrams] Add support for the inheritance of the parameter border nodes of `ActionDefinition` and `ActionUsage` graphical nodes.
+
 
 == v2026.7.0
 
