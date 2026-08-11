@@ -62,6 +62,8 @@ This removes Rollup warnings about missing global names for externalized peer de
 - https://github.com/eclipse-syson/syson/issues/2391[#2391] [diagrams] Add support for actor inheritance in _actors_ compartment of `CaseDefinition` and `CaseUsage` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/2389[#2389] [diagrams] Add support for inheritance of subject in _subject_ compartment of `CaseDefinition` and `CaseUsage` (and more) graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/2402[#2402] [diagrams] Add support for the inheritance of the parameter border nodes of `ActionDefinition` and `ActionUsage` graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/2409[#2409] [diagrams] Add _requirements_ compartments to `PartUsage` and `PartDefinition` graphical nodes.
+It is also now possible to create new requirements using the _New Requirement_ tool from the `PartUsage` and `PartDefinition` graphical nodes.
 
 
 == v2026.7.0

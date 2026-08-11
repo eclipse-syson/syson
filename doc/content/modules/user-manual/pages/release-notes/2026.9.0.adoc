@@ -32,7 +32,13 @@ The subject inheritance in _subject_ compartment is also visible in the followin
 *** `SatisfyRequirementUsage`
 ** Add support for the inheritance of the parameter border nodes of `ActionDefinition` and `ActionUsage` graphical nodes.
 
-* In textual import/export:
+** Add _requirements_ compartments to `PartUsage` and `PartDefinition` graphical nodes.
++
+image::release-notes-requirements-compartment-parts.png[Requirements compartments in PartUsage and PartDefinition graphical nodes, width=60%,height=60%]
+
+** It is now possible to create new requirements using the _New Requirement_ tool from the `PartUsage` and `PartDefinition` graphical nodes.
++
+image::release-notes-new-requirement-parts.png[New Requirement tool on PartUsage and PartDefinition graphical nodes, width=60%,height=60%]
 
 == Bug fixes
 
@@ -49,9 +55,6 @@ It is now _Become nested Concern_ instead of _Become nested Requirement_.
 
 ** Fix expression creation and editing on `SuccessionAsUsage` elements.
 
-* In textual import/export:
-
-
 == Improvements
 
 * In diagrams:
@@ -63,11 +66,11 @@ It is now _Become nested Concern_ instead of _Become nested Requirement_.
 ** The _Requirements table_ view now displays nested `Requirements`.
 Nested `Requirements` are displayed in the table using a hierarchical way.
 +
-image::release-notes-hierarchical-requirements-table-view.png[Hierarchical requirements table view]
+image::release-notes-hierarchical-requirements-table-view.png[Hierarchical requirements table view, width=90%,height=90%]
 
 ** On a `Requirement` row, its menu now includes a new action that allows users to create a nested `Requirement`
 +
-image::release-notes-hierarchical-requirements-table-view-create-nested-requirement.png[New sub requirement in row action menu]
+image::release-notes-hierarchical-requirements-table-view-create-nested-requirement.png[New sub requirement in row action menu, width=90%,height=90%]
 
 == Technical details
 

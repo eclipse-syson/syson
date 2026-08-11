@@ -155,19 +155,19 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> connectionDefinitionSiblingNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), PARTS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 11, 2))
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), PARTS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 12, 2))
                 .map(TestNameGenerator::namedArguments);
     }
 
     private static Stream<Arguments> allocationDefinitionSiblingNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), PARTS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 11, 2))
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), PARTS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 12, 2))
                 .map(TestNameGenerator::namedArguments);
     }
 
     private static Stream<Arguments> interfaceDefinitionSiblingNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), PARTS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 11, 2))
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), PARTS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 12, 2))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -187,7 +187,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
     private static Stream<Arguments> itemUsageSiblingNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 11),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 12),
                 Arguments.of(SysmlPackage.eINSTANCE.getComment(), SysmlPackage.eINSTANCE.getElement_OwnedElement(), 0))
                 .map(TestNameGenerator::namedArguments);
     }
@@ -231,8 +231,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), ownedMember, 2, 0, 0),
                 // A package doesn't have a compartment: it is handled as a custom node
                 Arguments.of(SysmlPackage.eINSTANCE.getPackage(), ownedMember, 0, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), ownedMember, 11, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), ownedMember, 11, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), ownedMember, 12, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), ownedMember, 12, 0, 0),
                 Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), ownedMember, 5, 0, 0),
                 Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), ownedMember, 5, 0, 0),
                 Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), ownedMember, 9, 0, 0),
@@ -283,7 +283,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> partUsageSiblingAndChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), "parts", SysmlPackage.eINSTANCE.getUsage_NestedPart(), 13, 1, ""),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), "parts", SysmlPackage.eINSTANCE.getUsage_NestedPart(), 14, 1, ""),
                 Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), "satisfy requirements", SysmlPackage.eINSTANCE.getUsage_NestedRequirement(), 10, 2,
                         SatisfyRequirementCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME))
                 .map(TestNameGenerator::namedArguments);

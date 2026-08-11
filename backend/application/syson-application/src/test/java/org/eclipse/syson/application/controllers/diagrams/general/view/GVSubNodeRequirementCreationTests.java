@@ -134,7 +134,7 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
     private static Stream<Arguments> concernUsageSiblingNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 11),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 12),
                 Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getUsage_NestedRequirement(), 9))
                 .map(TestNameGenerator::namedArguments);
     }
@@ -195,7 +195,7 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
     private static Stream<Arguments> constraintUsageSiblingNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 11))
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 12))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -220,7 +220,7 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
 
     private static Stream<Arguments> constraintDefinitionSiblingNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedUsage(), 11))
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedUsage(), 12))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -239,7 +239,7 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
     private static Stream<Arguments> requirementUsageSiblingNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 11),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 12),
                 Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getUsage_NestedRequirement(), 9))
                 .map(TestNameGenerator::namedArguments);
     }
@@ -261,6 +261,13 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute()),
                 Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
+                .map(TestNameGenerator::namedArguments);
+    }
+
+    private static Stream<Arguments> partRequirementChildNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_DEFINITION_ID, "PartDefinition", SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement()),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID, "part", SysmlPackage.eINSTANCE.getUsage_NestedRequirement()))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -954,6 +961,45 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
                 .verify(Duration.ofMinutes(10));
     }
 
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @ParameterizedTest
+    @MethodSource("partRequirementChildNodeParameters")
+    public void createPartRequirementChildNodes(EClass parentEClass, String targetObjectId, String parentLabel, EReference containmentReference) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, SysmlPackage.eINSTANCE.getRequirementUsage());
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(11)
+                    .hasNewEdgeCount(1)
+                    .check(diagram.get(), newDiagram);
+            String compartmentItemNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
+            new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
+                    .withTargetObjectId(targetObjectId)
+                    .withCompartmentName("requirements")
+                    .hasNodeDescriptionName(compartmentItemNodeDescription)
+                    .hasCompartmentCount(0)
+                    .check(diagram.get(), newDiagram);
+        });
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference,
+                SysmlPackage.eINSTANCE.getRequirementUsage()));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
     @DisplayName("GIVEN a Requirement Usage, WHEN creating a New Framed Concern without referencing another concern, THEN a New Framed Concern is created")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
@@ -1413,7 +1459,7 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(9)
+                    .hasNewNodeCount(10)
                     .hasNewEdgeCount(1)
                     .check(initialDiagram, newDiagram);
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)

@@ -138,7 +138,7 @@ public class PartDefinitionCompartmentRevealTests extends AbstractIntegrationTes
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
                     .withTargetObjectId(InterconnectionViewPartDefinitionCompartmentRevealTestProjectData.SemanticIds.PART_DEFINITION_ROOT_ELEMENT_ID)
                     .withCompartmentName("interconnection")
-                    .hasCompartmentCount(12)
+                    .hasCompartmentCount(13)
                     .hasNodeDescriptionName(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()))
                     .isRevealed()
                     .check(diagram.get(), diagramRefreshed);
@@ -208,7 +208,7 @@ public class PartDefinitionCompartmentRevealTests extends AbstractIntegrationTes
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
                     .withTargetObjectId(InterconnectionViewPartDefinitionCompartmentRevealTestProjectData.SemanticIds.PART_DEFINITION_ROOT_ELEMENT_ID)
                     .withCompartmentName("interconnection")
-                    .hasCompartmentCount(12)
+                    .hasCompartmentCount(13)
                     .hasNodeDescriptionName(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()))
                     .isRevealed()
                     .check(diagram.get(), diagramRefreshed);
@@ -278,7 +278,7 @@ public class PartDefinitionCompartmentRevealTests extends AbstractIntegrationTes
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
                     .withTargetObjectId(InterconnectionViewPartDefinitionCompartmentRevealTestProjectData.SemanticIds.PART_DEFINITION_ROOT_ELEMENT_ID)
                     .withCompartmentName("interconnection")
-                    .hasCompartmentCount(12)
+                    .hasCompartmentCount(13)
                     .hasNodeDescriptionName(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()))
                     .isHidden()
                     .check(diagram.get(), diagramRefreshed);
@@ -349,7 +349,7 @@ public class PartDefinitionCompartmentRevealTests extends AbstractIntegrationTes
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
                     .withTargetObjectId(InterconnectionViewPartDefinitionCompartmentRevealTestProjectData.SemanticIds.PART_DEFINITION_ROOT_ELEMENT_ID)
                     .withCompartmentName("interconnection")
-                    .hasCompartmentCount(12)
+                    .hasCompartmentCount(13)
                     .hasNodeDescriptionName(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()))
                     .isRevealed()
                     .check(diagram.get(), diagramRefreshed);
