@@ -141,9 +141,9 @@ public class GVTimesliceSnapshotNodeCreationTests extends AbstractIntegrationTes
                 Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.OCCURRENCE_USAGE_ID, "occurrence", 2, 2, true, SysmlPackage.eINSTANCE.getOccurrenceUsage()),
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.ITEM_USAGE_ID, "item", 2, 1, true, SysmlPackage.eINSTANCE.getOccurrenceUsage()),
                 Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID, "part", 2, 1, true, SysmlPackage.eINSTANCE.getOccurrenceUsage()),
-                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.OCCURRENCE_USAGE_ID, "occurrence", 11, 1, true, SysmlPackage.eINSTANCE.getPartUsage()),
-                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.ITEM_USAGE_ID, "item", 11, 1, true, SysmlPackage.eINSTANCE.getPartUsage()),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID, "part", 11, 2, true, SysmlPackage.eINSTANCE.getPartUsage()),
+                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.OCCURRENCE_USAGE_ID, "occurrence", 12, 1, true, SysmlPackage.eINSTANCE.getPartUsage()),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.ITEM_USAGE_ID, "item", 12, 1, true, SysmlPackage.eINSTANCE.getPartUsage()),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID, "part", 12, 2, true, SysmlPackage.eINSTANCE.getPartUsage()),
                 Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.OCCURRENCE_USAGE_ID, "occurrence", 4, 1, true, SysmlPackage.eINSTANCE.getItemUsage()),
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.ITEM_USAGE_ID, "item", 4, 1, true, SysmlPackage.eINSTANCE.getItemUsage()),
                 Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID, "part", 4, 1, true, SysmlPackage.eINSTANCE.getItemUsage())
