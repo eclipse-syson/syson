@@ -43,6 +43,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnTwoDiagramElementsToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -61,6 +62,7 @@ import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
 import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
 import org.eclipse.syson.tests.api.GivenSysONServer;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -148,6 +150,24 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
     @BeforeEach
     public void setUp() {
         this.givenInitialServerState.initialize();
+    }
+
+    @DisplayName("GIVEN a General View diagram description, WHEN inspecting the ConcernUsage edge tools, THEN the nested composition tool is correctly labelled")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void concernUsageHasCorrectlyLabelledNestedCompositionEdgeTool() {
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var concernUsageNodeDescriptionName = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getConcernUsage());
+
+        var concernUsageNodeDescription = EMFUtils.allContainedObjectOfType(diagramDescription, NodeDescription.class)
+                .filter(nodeDescription -> concernUsageNodeDescriptionName.equals(nodeDescription.getName()))
+                .findFirst();
+
+        assertThat(concernUsageNodeDescription).isPresent();
+        assertThat(concernUsageNodeDescription.get().getPalette().getEdgeTools())
+                .extracting(edgeTool -> edgeTool.getName())
+                .contains("Become nested Concern");
     }
 
     @DisplayName("GIVEN a SysML Project, WHEN the edge tool 'Add as nested Attribute' is applied between a Definition/Usage graphical node and an AttributeUsage graphical node, THEN an edge is created between the Definition/Usage graphical node and an AttributeUsage graphical node")

@@ -39,6 +39,9 @@ The subject inheritance in _subject_ compartment is also visible in the followin
 
 ** Fix dropping a nested `AttributeUsage` from the _Explorer_ onto a _General View_ diagram so it is visible on the first drop.
 ** Fix `Comment` graphical nodes so changing their background color no longer changes their border color.
+** Fix the nested composition edge tool label on `ConcernUsage` graphical nodes in _General View_ diagrams.
+It is now _Become nested Concern_ instead of _Become nested Requirement_.
+
 ** Fix the support of `PortUsage` as end inheritance in _ends_ compartment of `InterfaceDefinition` graphical node.
 
 * In all views:
