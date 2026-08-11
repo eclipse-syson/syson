@@ -122,7 +122,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
     private static Stream<Arguments> caseUsageSiblingNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 12))
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 13))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -148,7 +148,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
     private static Stream<Arguments> useCaseUsageSiblingNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 12))
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 13))
                 .map(TestNameGenerator::namedArguments);
     }
 

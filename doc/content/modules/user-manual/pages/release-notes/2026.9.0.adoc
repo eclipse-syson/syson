@@ -40,6 +40,15 @@ image::release-notes-requirements-compartment-parts.png[Requirements compartment
 +
 image::release-notes-new-requirement-parts.png[New Requirement tool on PartUsage and PartDefinition graphical nodes, width=60%,height=60%]
 
+** Add _concerns_ compartments to `PartUsage` and `PartDefinition` graphical nodes.
++
+image::release-notes-concerns-compartment-parts.png[Concerns compartments in PartUsage and PartDefinition graphical nodes, width=60%,height=60%]
+
+** It is now possible to create new concerns using the _New Concern_ tool from the `PartUsage` and `PartDefinition` graphical nodes.
++
+image::release-notes-new-concern-parts.png[New Concern tool on PartUsage and PartDefinition graphical nodes, width=60%,height=60%]
+
+
 == Bug fixes
 
 * In diagrams:

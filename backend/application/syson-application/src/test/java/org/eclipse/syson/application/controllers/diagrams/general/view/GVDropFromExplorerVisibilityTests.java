@@ -92,7 +92,7 @@ public class GVDropFromExplorerVisibilityTests extends AbstractIntegrationTests 
         Consumer<Object> diagramContentConsumerBeforeDrop = assertRefreshedDiagramThat(diagram -> {
             assertThat(diagram.getNodes()).hasSize(5);
             var partNode = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "p1").getNode();
-            assertThat(partNode.getChildNodes().stream().filter(node -> node.getModifiers().contains(ViewModifier.Hidden))).hasSize(11);
+            assertThat(partNode.getChildNodes().stream().filter(node -> node.getModifiers().contains(ViewModifier.Hidden))).hasSize(12);
             partNodeId.set(partNode.getId());
         });
 
@@ -130,7 +130,7 @@ public class GVDropFromExplorerVisibilityTests extends AbstractIntegrationTests 
             assertThat(diagram.getNodes()).hasSize(4);
             var partNode = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "p1").getNode();
             assertThat(partNode).extracting(node -> node.getState()).isEqualTo(ViewModifier.Normal);
-            assertThat(partNode.getChildNodes().stream().filter(node -> node.getModifiers().contains(ViewModifier.Hidden))).hasSize(12);
+            assertThat(partNode.getChildNodes().stream().filter(node -> node.getModifiers().contains(ViewModifier.Hidden))).hasSize(13);
         });
 
         Runnable executeDropAttributeOnDiagram = () -> this.dropFromExplorer(GeneralViewItemAndAttributeProjectData.GraphicalIds.DIAGRAM_ID,

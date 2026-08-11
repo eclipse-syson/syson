@@ -166,7 +166,7 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
                     .matches(nodes -> nodes.stream().anyMatch(n -> "x3".equals(n.getTargetObjectLabel())));
             new CheckDiagramElementCount(this.diagramComparator)
                     // we should have 2 more nodes the port container and the port border node
-                    .hasNewNodeCount(17) // 1 main node // 13 compartments // 3 attributes
+                    .hasNewNodeCount(18) // 1 main node // 14 compartments // 3 attributes
                     .hasNewBorderNodeCount(0)
                     .hasNewEdgeCount(0)
                     .check(initialDiagram, newDiagram);
@@ -354,7 +354,7 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
             this.assertDuplicatedContainerNodeRepresentation(initialDiagram, newDiagram, ACTION_COPY);
 
             new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(21)
+                    .hasNewNodeCount(22)
                     .hasNewBorderNodeCount(0)
                     .hasNewEdgeCount(0)
                     .check(initialDiagram, newDiagram);
@@ -442,7 +442,7 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
             this.assertDuplicatedContainerNodeRepresentation(initialDiagram, newDiagram, STATE_DEFINITION_COPY);
 
             new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(20)
+                    .hasNewNodeCount(21)
                     .hasNewBorderNodeCount(0)
                     .hasNewEdgeCount(0)
                     .check(initialDiagram, newDiagram);

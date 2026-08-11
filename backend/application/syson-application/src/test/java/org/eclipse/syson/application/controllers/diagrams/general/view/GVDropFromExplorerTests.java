@@ -180,14 +180,14 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
         Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
                 .hasNewEdgeCount(0)
-                // 1 node for the PartUsage, 12 for its compartments, 1 for the list-item for part2 in its
+                // 1 node for the PartUsage, 13 for its compartments, 1 for the list-item for part2 in its
                 // "parts" compartment
-                .hasNewNodeCount(14)
+                .hasNewNodeCount(15)
                 .check(diagram.get(), newDiagram);
             new CheckNodeOnDiagram(diagramDescriptionIdProvider, this.diagramComparator)
                 .hasNodeDescriptionName(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()))
                 .hasTargetObjectLabel("part1")
-                .hasTotalCompartmentCount(12)
+                .hasTotalCompartmentCount(13)
                 .check(diagram.get(), newDiagram);
             var background = newDiagram.getStyle().getBackground();
             assertThat(background).isEqualTo("white");
