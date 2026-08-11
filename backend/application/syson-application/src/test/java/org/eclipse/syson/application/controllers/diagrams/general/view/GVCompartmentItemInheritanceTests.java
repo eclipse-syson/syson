@@ -162,6 +162,7 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
                 .elementToInheritCreationToolName("New Parameter In")
                 .elementToInheritExpectedListItemLabelText("in ref parameter1")
                 .alsoRepresentedByBorderNode()
+                .withBorderNodeInheritance()
                 .compartmentName("parameters")
                 .elementThatInheritFromBaseElementCreationToolName("New Action Definition")
                 .elementThatInheritFromBaseElementEClass(SysmlPackage.eINSTANCE.getActionDefinition())
@@ -178,6 +179,7 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
                 .elementToInheritCreationToolName("New Parameter Out")
                 .elementToInheritExpectedListItemLabelText("out ref parameter1")
                 .alsoRepresentedByBorderNode()
+                .withBorderNodeInheritance()
                 .compartmentName("parameters")
                 .elementThatInheritFromBaseElementCreationToolName("New Action")
                 .elementThatInheritFromBaseElementEClass(SysmlPackage.eINSTANCE.getActionUsage())
@@ -1116,6 +1118,11 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
         private boolean alsoRepresentedByBorderNode;
 
         /**
+         * Whether the element represented by a border node can be represented by an inherited border node.
+         */
+        private boolean withBorderNodeInheritance;
+
+        /**
          * The compartment name in which the element created by the {@code elementToInheritCreationToolName} tool is created.
          */
         private String compartmentName;
@@ -1177,6 +1184,11 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
 
         public ElementSpecializationInheritanceTestRunner alsoRepresentedByBorderNode() {
             this.alsoRepresentedByBorderNode = true;
+            return this;
+        }
+
+        public ElementSpecializationInheritanceTestRunner withBorderNodeInheritance() {
+            this.withBorderNodeInheritance = true;
             return this;
         }
 
@@ -1258,7 +1270,6 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
                 diagram.set(newDiagram);
             });
 
-
             // Create a new element that will inherit from the base element
             AtomicReference<String> newActionActionUsageNodeId = new AtomicReference<>();
             String createActionUsageToolId = diagramDescriptionIdProvider.getDiagramCreationToolId(this.elementThatInheritFromBaseElementCreationToolName);
@@ -1274,7 +1285,6 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
                 diagram.set(newDiagram);
             });
 
-
             // Create the specialization between the newly created element and the base element
             String createFeatureTypeToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(GVCompartmentItemInheritanceTests.this.descriptionNameGenerator.getNodeName(this.elementThatInheritFromBaseElementEClass), this.specializationToolName);
             Runnable createFeatureTyping = () -> GVCompartmentItemInheritanceTests.this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, newActionActionUsageNodeId.get(), this.baseElementToInheritFromNodeId, createFeatureTypeToolId);
@@ -1285,12 +1295,15 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
                 if (this.withSpecializationCreationExtraEdges > 0) {
                     expectedNewEdgesCount += this.withSpecializationCreationExtraEdges;
                 }
+                var expectedNewBorderNodeCount = 0;
+                if (this.withBorderNodeInheritance) {
+                    expectedNewBorderNodeCount = 1;
+                }
                 new CheckDiagramElementCount(GVCompartmentItemInheritanceTests.this.diagramComparator)
-                        .hasNewBorderNodeCount(0)
-                        .hasNewNodeCount(1) // The list item inherited from the base element
+                        .hasNewBorderNodeCount(expectedNewBorderNodeCount)
+                        .hasNewNodeCount(1 + expectedNewBorderNodeCount) // The list item + the border node inherited from the base element
                         .hasNewEdgeCount(expectedNewEdgesCount)
                         .check(diagram.get(), newDiagram);
-
                 var parameterCompartment = new DiagramNavigator(newDiagram)
                         .nodeWithId(newActionActionUsageNodeId.get())
                         .childNodeWithLabel(this.compartmentName)

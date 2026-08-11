@@ -7,14 +7,14 @@
 * In diagrams:
 
 ** Add support for list item inheritance in _perform actions_ compartments.
-** Add support of framed concern inheritance in _frames_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
-** Add support of `ItemUsage` inheritance in _items_ compartments of `PortUsage` and `PortDefinition` graphical nodes.
-** Add support of assume constraint inheritance in _assume constraints_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
-** Add support of require constraints inheritance in _require constraints_ compartments of `RequirementUsage`, `RequirementDefinition` and subtypes graphical nodes.
-** Add support of stakeholder inheritance in _stakeholders_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
-** Add support of `SatisfyRequirementUsage` inheritance in _satisfy requirements_ compartment of `PartUsage` and `PartDefinition` graphical nodes.
-** Add support of objective requirement inheritance in _objective_ compartments of `CaseUsage` and `CaseDefinition` graphical nodes.
-** Add support of actor inheritance in _actors_ compartment of `CaseDefinition` and `CaseUsage` graphical nodes.
+** Add support for framed concern inheritance in _frames_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
+** Add support for `ItemUsage` inheritance in _items_ compartments of `PortUsage` and `PortDefinition` graphical nodes.
+** Add support for assume constraint inheritance in _assume constraints_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
+** Add support for require constraints inheritance in _require constraints_ compartments of `RequirementUsage`, `RequirementDefinition` and subtypes graphical nodes.
+** Add support for stakeholder inheritance in _stakeholders_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
+** Add support for `SatisfyRequirementUsage` inheritance in _satisfy requirements_ compartment of `PartUsage` and `PartDefinition` graphical nodes.
+** Add support for objective requirement inheritance in _objective_ compartments of `CaseUsage` and `CaseDefinition` graphical nodes.
+** Add support for actor inheritance in _actors_ compartment of `CaseDefinition` and `CaseUsage` graphical nodes.
 The actor inheritance in _actors_ compartment is also visible in the following graphical nodes:
 
 *** `RequirementDefinition`
@@ -22,7 +22,7 @@ The actor inheritance in _actors_ compartment is also visible in the following g
 *** `ConcernDefinition`
 *** `ConcernUsage`
 *** `SatisfyRequirementUsage`
-** Add support of subject inheritance in _subject_ compartment of `CaseDefinition` and `CaseUsage` graphical nodes.
+** Add support for subject inheritance in _subject_ compartment of `CaseDefinition` and `CaseUsage` graphical nodes.
 The subject inheritance in _subject_ compartment is also visible in the following graphical nodes:
 
 *** `RequirementDefinition`
@@ -30,6 +30,7 @@ The subject inheritance in _subject_ compartment is also visible in the followin
 *** `ConcernDefinition`
 *** `ConcernUsage`
 *** `SatisfyRequirementUsage`
+** Add support for the inheritance of the parameter border nodes of `ActionDefinition` and `ActionUsage` graphical nodes.
 
 * In textual import/export:
 
