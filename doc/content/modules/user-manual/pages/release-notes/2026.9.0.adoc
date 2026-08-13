@@ -92,6 +92,11 @@ Those connections were missing their source and their target, and were therefore
 ** Fix expression creation and editing on `SuccessionAsUsage` elements.
 ** Fix the _Typed by_ property in the _Details_ view so a `Usage` can only be typed by its corresponding `Definition` kind.
 
+* In textual import/export:
+
+** Fix the export of the keywords carried by the ends of a connection, such as the `#original` and `#derive` of a requirement derivation, which were missing from the exported text when the connection had been created from a diagram.
+Exporting such a connection and importing it back no longer loses which end is which.
+
 == Improvements
 
 * In diagrams:
