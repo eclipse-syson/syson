@@ -1681,6 +1681,51 @@ public class SysMLElementSerializerTest {
     }
 
     @Test
+    public void connectionUsageWithMetadataOnItsEnds() {
+        PartUsage rootPart = this.builder.createWithName(PartUsage.class, "owner1");
+
+        PortUsage socket = this.builder.createInWithName(PortUsage.class, rootPart, "socket");
+        PortUsage outlet = this.builder.createInWithName(PortUsage.class, rootPart, "outlet");
+
+        InterfaceUsage interfaceUsage = this.builder.createWithName(InterfaceUsage.class, "interface1");
+        this.addAsFeatureMember(rootPart, interfaceUsage);
+
+        EndFeatureMembership sourceEnd = this.createConnectionEndFeatureMembership(socket);
+        this.applyMetadataOnEnd(sourceEnd, "original");
+        EndFeatureMembership targetEnd = this.createConnectionEndFeatureMembership(outlet);
+        this.applyMetadataOnEnd(targetEnd, "derive");
+        interfaceUsage.getOwnedRelationship().add(sourceEnd);
+        interfaceUsage.getOwnedRelationship().add(targetEnd);
+
+        this.assertTextualFormEquals("connection interface1 connect #original socket to #derive outlet;", interfaceUsage);
+    }
+
+    /**
+     * Applies a prefix metadata on the end owned by the given membership, the way {@code #original} and {@code #derive}
+     * are applied on the ends of a requirement derivation.
+     */
+    private void applyMetadataOnEnd(EndFeatureMembership endFeatureMembership, String metadataDefinitionName) {
+        MetadataDefinition metadataDefinition = this.fact.createMetadataDefinition();
+        metadataDefinition.setDeclaredName(metadataDefinitionName);
+
+        MetadataUsage metadataUsage = this.fact.createMetadataUsage();
+        OwningMembership owningMembership = this.fact.createOwningMembership();
+        owningMembership.getOwnedRelatedElement().add(metadataUsage);
+        owningMembership.setMemberElement(metadataUsage);
+
+        FeatureTyping featureTyping = this.fact.createFeatureTyping();
+        featureTyping.setType(metadataDefinition);
+        featureTyping.setTypedFeature(metadataUsage);
+        metadataUsage.getOwnedRelationship().add(featureTyping);
+
+        endFeatureMembership.getOwnedRelatedElement().stream()
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .findFirst()
+                .ifPresent(endFeature -> endFeature.getOwnedRelationship().add(owningMembership));
+    }
+
+    @Test
     public void interfaceUsageWithUnresolvedPortEnd() {
         PartUsage rootPart = this.builder.createWithName(PartUsage.class, "part1");
 

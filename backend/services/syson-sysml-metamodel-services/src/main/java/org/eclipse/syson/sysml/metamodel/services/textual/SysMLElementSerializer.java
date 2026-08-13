@@ -1743,6 +1743,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private void appendConnectorEnd(Appender builder, Feature endFeature) {
+        // Prefix metadata of the end, such as the #original and #derive of a requirement derivation. Without this the
+        // metadata of an end owned through an EndFeatureMembership would be dropped by the export.
+        this.appendExtensionKeyword(builder, endFeature);
 
         // Handle ownedRelationship += OwnedMultiplicity
         endFeature.getOwnedRelationship().stream().filter(OwningMembership.class::isInstance)
