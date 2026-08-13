@@ -1421,6 +1421,20 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
         this.createNewActorWithoutSpecializationIn(SysmlPackage.eINSTANCE.getRequirementUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_USAGE_ID, "requirement");
     }
 
+    @DisplayName("GIVEN a Concern, WHEN creating a new Actor without selection, THEN the Actor without specialization is created in the Concern")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createNewActorWithoutSpecializationInConcernUsage() {
+        this.createNewActorWithoutSpecializationIn(SysmlPackage.eINSTANCE.getConcernUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CONCERN_USAGE_ID, "concern");
+    }
+
+    @DisplayName("GIVEN a ConcernDefinition, WHEN creating a new Actor without selection, THEN the Actor without specialization is created in the ConcernDefinition")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createNewActorWithoutSpecializationInConcernDefinition() {
+        this.createNewActorWithoutSpecializationIn(SysmlPackage.eINSTANCE.getConcernDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CONCERN_DEFINITION_ID, "ConcernDefinition");
+    }
+
     @DisplayName("GIVEN a RequirementDefinition, WHEN creating a new Actor selecting a Part, THEN the Actor subsetted by the Part is created in the RequirementDefinition")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test

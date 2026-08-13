@@ -77,6 +77,7 @@ The direction of the edge is given by the `#original` and `#derive` metadata of 
 
 * In diagrams:
 
+** Fix the missing graphical edge between `ConcernUsage` or `ConcernDefinition` graphical nodes and the Actors created from them.
 ** Fix dropping a nested `AttributeUsage` from the _Explorer_ onto a _General View_ diagram so it is visible on the first drop.
 ** Fix `Comment` graphical nodes so changing their background color no longer changes their border color.
 ** Fix the nested composition edge tool label on `ConcernUsage` graphical nodes in _General View_ diagrams.
