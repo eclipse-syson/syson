@@ -30,19 +30,19 @@ import org.eclipse.sirius.components.forms.LabelWidget;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.tests.graphql.HelpTextQueryRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
 import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
 import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.data.SimpleProjectElementsTestProjectData;
+import org.eclipse.syson.tests.api.GivenSysONServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.test.StepVerifier;
@@ -73,11 +73,9 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
         this.givenInitialServerState.initialize();
     }
 
-    @Test
     @DisplayName("GIVEN a PartUsage, WHEN we subscribe to its properties events, THEN the form is sent")
-    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ SimpleProjectElementsTestProjectData.SCRIPT_PATH })
+    @Test
     public void givenAPartUsageWhenWeSubscribeToItsPropertiesEventThenTheFormIsSent() {
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(SimpleProjectElementsTestProjectData.SemanticIds.PART_ID));
         var input = new DetailsEventInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, detailsRepresentationId);
@@ -107,11 +105,37 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
 
     }
 
+    @DisplayName("GIVEN a PartUsage, WHEN its Typed by widget is displayed, THEN only PartDefinitions can be selected")
+    @GivenSysONServer({ SimpleProjectElementsTestProjectData.SCRIPT_PATH })
     @Test
+    public void givenAPartUsageWhenItsTypedByWidgetIsDisplayedThenOnlyPartDefinitionsCanBeSelected() {
+        var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(SimpleProjectElementsTestProjectData.SemanticIds.PART_ID));
+        var input = new DetailsEventInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, detailsRepresentationId);
+        var flux = this.detailsEventSubscriptionRunner.run(input)
+                .flux()
+                .filter(FormRefreshedEventPayload.class::isInstance);
+
+        Consumer<Object> formContentConsumer = assertRefreshedFormThat(form -> {
+            var typedByWidget = form.getPages().stream()
+                    .flatMap(page -> page.getGroups().stream())
+                    .flatMap(group -> group.getWidgets().stream())
+                    .filter(ReferenceWidget.class::isInstance)
+                    .map(ReferenceWidget.class::cast)
+                    .filter(widget -> widget.getLabel().equals("Typed by"))
+                    .findFirst()
+                    .orElseThrow();
+            assertThat(typedByWidget.getReferenceKind()).isEqualTo("siriusComponents://semantic?domain=sysml&entity=PartDefinition");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(formContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
     @DisplayName("GIVEN a PartUsage, WHEN we request the help text, THEN the help text is send")
-    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ SimpleProjectElementsTestProjectData.SCRIPT_PATH })
+    @Test
     public void givenAPartUsageWhenWeRequestHelpTextThenHelpTextIsSend() {
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(SimpleProjectElementsTestProjectData.SemanticIds.PART_ID));
         var input = new DetailsEventInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, detailsRepresentationId);

@@ -28,6 +28,8 @@ import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.PartDefinition;
+import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
@@ -61,6 +63,40 @@ public class DetailsViewServiceTest {
                 SysmlPackage.eINSTANCE.getElement_DeclaredShortName(),
                 SysmlPackage.eINSTANCE.getFeature_Direction(),
                 SysmlPackage.eINSTANCE.getOccurrenceUsage_IsIndividual());
+    }
+
+    /**
+     * Verifies that a PartUsage exposes its PartDefinition reference in the {@code Typed by} widget.
+     */
+    @Test
+    public void getTypedByReferenceNameOfPartUsage() {
+        assertThat(this.detailsViewService.getTypedByReferenceName(SysmlFactory.eINSTANCE.createPartUsage())).isEqualTo("partDefinition");
+    }
+
+    /**
+     * Verifies that the {@code Typed by} widget accepts a definition that conforms to a PartUsage.
+     */
+    @Test
+    public void setPartUsageTypedByPartDefinition() {
+        PartUsage partUsage = SysmlFactory.eINSTANCE.createPartUsage();
+        PartDefinition partDefinition = SysmlFactory.eINSTANCE.createPartDefinition();
+
+        this.detailsViewService.handleFeatureTypingNewValue(partUsage, partDefinition);
+
+        assertThat(partUsage.getPartDefinition()).containsExactly(partDefinition);
+    }
+
+    /**
+     * Verifies that dropping a PartUsage into the {@code Typed by} widget does not mutate the model.
+     */
+    @Test
+    public void rejectPartUsageAsPartUsageTypedByValue() {
+        PartUsage partUsage = SysmlFactory.eINSTANCE.createPartUsage();
+        PartUsage droppedPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
+
+        this.detailsViewService.handleFeatureTypingNewValue(partUsage, droppedPartUsage);
+
+        assertThat(partUsage.getOwnedRelationship()).isEmpty();
     }
 
     @Test

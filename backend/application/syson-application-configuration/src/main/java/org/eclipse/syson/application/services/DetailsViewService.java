@@ -18,10 +18,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
@@ -345,6 +347,23 @@ public class DetailsViewService {
     }
 
     /**
+     * Gets the reference name used to display the {@code Typed by} widget for a feature.
+     *
+     * <p>
+     * A usage is displayed through its closest {@code *Definition} derived reference so that the reference widget
+     * exposes the definition type allowed by the SysML metamodel. Other features keep the generic {@code type}
+     * reference.
+     * </p>
+     *
+     * @param feature
+     *         the feature displayed in the details view
+     * @return the name of the reference displayed by the widget
+     */
+    public String getTypedByReferenceName(Feature feature) {
+        return this.getTypedByReference(feature).getName();
+    }
+
+    /**
      * Handle the new value (i.e. set operation) of the reference widget for the extra property "Typed by". If the real
      * element that holds the property to set does not exist, this method should create it and attach it to the current
      * feature.
@@ -356,6 +375,10 @@ public class DetailsViewService {
      * @return the real element (i.e. a FeatureTyping) that holds the property to set.
      */
     public Element handleFeatureTypingNewValue(Feature feature, Object newValue) {
+        if (!this.isValidTypedByValue(feature, newValue)) {
+            this.feedbackMessageService.addFeedbackMessage(new Message("Unable to update the value of the " + this.getTypedByReference(feature).getName() + " feature", MessageLevel.ERROR));
+            return feature;
+        }
         EList<Relationship> ownedRelationship = feature.getOwnedRelationship();
         FeatureTyping featureTyping = ownedRelationship.stream()
                 .filter(FeatureTyping.class::isInstance)
@@ -370,6 +393,59 @@ public class DetailsViewService {
                 });
         this.handleReferenceWidgetNewValue(featureTyping, SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName(), newValue);
         return featureTyping;
+    }
+
+    /**
+     * Gets the reference that defines the allowed values of the {@code Typed by} widget.
+     *
+     * @param feature
+     *         the feature displayed in the details view
+     * @return the definition reference for a usage, or the generic {@code Feature.type} reference otherwise
+     */
+    private EReference getTypedByReference(Feature feature) {
+        if (feature instanceof Usage) {
+            return Stream.concat(Stream.of(feature.eClass()), feature.eClass().getEAllSuperTypes().stream())
+                    .map(this::getDefinitionReference)
+                    .flatMap(Optional::stream)
+                    .findFirst()
+                    .orElse(SysmlPackage.eINSTANCE.getFeature_Type());
+        }
+        return SysmlPackage.eINSTANCE.getFeature_Type();
+    }
+
+    /**
+     * Gets the {@code *Definition} reference associated with a usage EClass.
+     *
+     * @param usageEClass
+     *         a usage EClass
+     * @return its corresponding definition reference, if any
+     */
+    private Optional<EReference> getDefinitionReference(EClass usageEClass) {
+        String usageName = usageEClass.getName();
+        if (!usageName.endsWith("Usage") || usageName.length() == "Usage".length()) {
+            return Optional.empty();
+        }
+        String definitionReferenceName = Character.toLowerCase(usageName.charAt(0)) + usageName.substring(1, usageName.length() - "Usage".length()) + "Definition";
+        return Optional.ofNullable(usageEClass.getEStructuralFeature(definitionReferenceName))
+                .filter(EReference.class::isInstance)
+                .map(EReference.class::cast);
+    }
+
+    /**
+     * Checks whether all values submitted by the widget conform to its displayed reference type.
+     *
+     * @param feature
+     *         the feature being typed
+     * @param newValue
+     *         the value submitted by the reference widget
+     * @return {@code true} when every submitted value has the allowed EClass
+     */
+    private boolean isValidTypedByValue(Feature feature, Object newValue) {
+        EClass allowedType = this.getTypedByReference(feature).getEReferenceType();
+        if (newValue instanceof Collection<?> values) {
+            return !values.isEmpty() && values.stream().allMatch(allowedType::isInstance);
+        }
+        return allowedType.isInstance(newValue);
     }
 
     public AcceptActionUsage getAcceptActionUsage(Element self) {
