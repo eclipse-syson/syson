@@ -45,12 +45,19 @@ export class PlaywrightExplorer {
     representationLabel: string
   ) {
     await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
-    await this.page.getByTestId('new-representation').click({ force: true });
-    await this.page.getByTestId('name').clear();
-    await this.page.getByTestId('name').fill(representationLabel);
-    await this.page.getByTestId('representationDescription').click();
-    await this.page.getByTestId(representationDescriptionName).click();
-    await this.page.getByTestId('create-representation').click();
+    const contextMenu = this.page.getByTestId('treeitem-contextmenu');
+    await expect(contextMenu).toBeVisible();
+    await contextMenu.getByTestId('new-representation').click();
+
+    const dialog = this.page.locator('[aria-labelledby="dialog-title"]');
+    await expect(dialog).toBeVisible();
+    await dialog.getByTestId('name').clear();
+    await dialog.getByTestId('name').fill(representationLabel);
+    await dialog.getByTestId('representationDescription').click();
+    await this.page.locator('.MuiPopover-root').getByTestId(representationDescriptionName).click();
+    await dialog.getByTestId('create-representation').click();
+    await expect(dialog).toBeHidden();
+    await expect(this.page.getByTestId(`representation-tab-${representationLabel}`)).toBeVisible();
   }
 
   async select(treeItemLabel: string) {
