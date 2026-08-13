@@ -45,6 +45,7 @@ import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.Annotation;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
@@ -208,7 +209,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
         }).check(input);
     }
 
-    @DisplayName("GIVEN an MetadataUsage annotating a ExposeMembership, WHEN importing the model, THEN the Annotation holding the MetadataUsage should be stored in ownedRelationships.")
+    @DisplayName("GIVEN a MetadataUsage annotating an ExposeMembership, WHEN importing the model, THEN the Annotation targets and is owned by the ExposeMembership.")
     @Test
     public void metadataUsageOnExposeMembership() throws IOException {
         var input = """
@@ -228,6 +229,9 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
             List<MembershipExpose> membershipExposes = EMFUtils.allContainedObjectOfType(resource, MembershipExpose.class).toList();
             assertThat(membershipExposes).hasSize(1);
             assertThat(membershipExposes.get(0).getOwnedRelationship()).hasSize(1);
+            Annotation annotation = (Annotation) membershipExposes.get(0).getOwnedRelationship().get(0);
+            assertThat(annotation.getAnnotatedElement()).isEqualTo(membershipExposes.get(0));
+            assertThat(membershipExposes.get(0).getOwnedAnnotation()).containsExactly(annotation);
         }).check(input);
     }
 

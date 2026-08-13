@@ -19,6 +19,8 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.syson.sysml.Annotation;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
@@ -99,6 +101,17 @@ public class ContainmentReferenceHandler {
         }
     }
 
+    /**
+     * Adds a parsed object to its containing reference and completes containment-derived relationships.
+     *
+     * @param owner
+     *            the object that contains the parsed object
+     * @param owned
+     *            the parsed object to add
+     * @param referenceName
+     *            the AST containment reference name
+     * @return {@code true} when the containment has been handled
+     */
     private boolean addChildIn(final EObject owner, final EObject owned, String referenceName) {
 
         if ("operands".equals(referenceName) && owned instanceof Expression ownedExpression && owner instanceof InvocationExpression invocationExpression) {
@@ -115,10 +128,12 @@ public class ContainmentReferenceHandler {
             featureValue.getOwnedRelatedElement().add(ownedExpression);
             invocationExpression.getOwnedRelationship().add(paramMembership);
         } else {
-
             Optional<EReference> optContainementReference = this.referenceTranslator.getContainmentReference(owner, owned.eClass(), referenceName);
             if (optContainementReference.isPresent()) {
                 this.setValue(owner, optContainementReference.get(), owned);
+                if (owned instanceof Annotation annotation && owner instanceof Element element) {
+                    annotation.setAnnotatedElement(element);
+                }
             }
         }
 
