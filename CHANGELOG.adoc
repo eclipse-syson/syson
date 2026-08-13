@@ -46,6 +46,7 @@ It is now _Become nested Concern_ instead of _Become nested Requirement_.
 - https://github.com/eclipse-syson/syson/issues/2397[#2397] [metamodel] Fix the resolution of the ends of a connector so the ends declared with the `end` keyword inside a connection body are taken into account.
 Following KerML, where `endFeature` is defined as the owned features having `isEnd = true`, the ends owned through a plain `FeatureMembership` are now collected as well, and not only those owned through an `EndFeatureMembership`.
 This also fixes `relatedFeature`, `sourceFeature` and `targetFeature`, which were all empty for such connections.
+- https://github.com/eclipse-syson/syson/issues/2226[#2226] [import] Fix textual import of annotations on relationships so their `annotatedElement` is set and they are returned by `Element#getOwnedAnnotation()`.
 
 === Improvements
 
