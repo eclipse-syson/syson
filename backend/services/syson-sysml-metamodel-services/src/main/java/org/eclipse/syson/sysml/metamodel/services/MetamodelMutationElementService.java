@@ -26,6 +26,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChaining;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Flow;
 import org.eclipse.syson.sysml.FlowEnd;
@@ -99,8 +100,8 @@ public class MetamodelMutationElementService {
      *            between the container and the ends.
      */
     public void setConnectorEnds(Connector connector, Feature source, Feature target, Element sourceContainer, Element targetContainer, Element newConnectorContainer) {
-        this.addConnectorEnd(connector, source, sourceContainer, newConnectorContainer);
-        this.addConnectorEnd(connector, target, targetContainer, newConnectorContainer);
+        this.addConnectorEnd(connector, source, sourceContainer, newConnectorContainer, FeatureDirectionKind.OUT);
+        this.addConnectorEnd(connector, target, targetContainer, newConnectorContainer, FeatureDirectionKind.IN);
     }
 
     /**
@@ -385,7 +386,7 @@ public class MetamodelMutationElementService {
         return null;
     }
 
-    private Feature addConnectorEnd(Connector connector, Feature end, Element endContainer, Element connectorContainer) {
+    private Feature addConnectorEnd(Connector connector, Feature end, Element endContainer, Element connectorContainer, FeatureDirectionKind defaultDirection) {
         List<Feature> sourceFeaturePath = List.of();
         // This code will not work to connect inherited non redefined feature.
         FeatureChainComputer cmp = new FeatureChainComputer();
@@ -428,23 +429,35 @@ public class MetamodelMutationElementService {
         }
 
         if (connector instanceof Flow) {
-            var secondEndFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-            end.getOwnedRelationship().add(secondEndFeatureMembership);
-            var endReferenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
-            secondEndFeatureMembership.getOwnedRelatedElement().add(endReferenceUsage);
-            this.elementInitializerSwitch.doSwitch(endReferenceUsage);
-
             var flowFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
             endFeature.getOwnedRelationship().add(flowFeatureMembership);
             var flowReferenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
             flowFeatureMembership.getOwnedRelatedElement().add(flowReferenceUsage);
             this.elementInitializerSwitch.doSwitch(flowReferenceUsage);
             flowReferenceUsage.setDeclaredName(null);
-            var redefinition = SysmlFactory.eINSTANCE.createRedefinition();
-            flowReferenceUsage.getOwnedRelationship().add(redefinition);
-            redefinition.setRedefiningFeature(connector);
-            redefinition.setRedefinedFeature(end);
-            this.elementInitializerSwitch.doSwitch(redefinition);
+
+            if (end.isSetDirection()) {
+                // Since the 'end' already has a direction, use the 'end' for the redefinition.
+                var redefinition = SysmlFactory.eINSTANCE.createRedefinition();
+                flowReferenceUsage.getOwnedRelationship().add(redefinition);
+                redefinition.setRedefiningFeature(connector);
+                redefinition.setRedefinedFeature(end);
+                this.elementInitializerSwitch.doSwitch(redefinition);
+            } else {
+                // Since the 'end' has no direction, the 'end' needs to contain a ReferenceUsage with a direction for the redefinition.
+                var secondEndFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+                end.getOwnedRelationship().add(secondEndFeatureMembership);
+                var endReferenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+                endReferenceUsage.setDirection(defaultDirection);
+                secondEndFeatureMembership.getOwnedRelatedElement().add(endReferenceUsage);
+                this.elementInitializerSwitch.doSwitch(endReferenceUsage);
+
+                var redefinition = SysmlFactory.eINSTANCE.createRedefinition();
+                flowReferenceUsage.getOwnedRelationship().add(redefinition);
+                redefinition.setRedefiningFeature(connector);
+                redefinition.setRedefinedFeature(endReferenceUsage);
+                this.elementInitializerSwitch.doSwitch(redefinition);
+            }
         }
         return endFeature;
     }

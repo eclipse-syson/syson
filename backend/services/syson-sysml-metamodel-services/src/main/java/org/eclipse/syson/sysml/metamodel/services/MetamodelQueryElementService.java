@@ -37,6 +37,7 @@ import org.eclipse.syson.sysml.FeatureChainExpression;
 import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.FramedConcernMembership;
 import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.MetadataUsage;
@@ -44,7 +45,6 @@ import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
-import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Relationship;
@@ -406,8 +406,8 @@ public class MetamodelQueryElementService {
     /**
      * Get the related feature of the given connector at the given index.
      *
-     * @param connector
-     *            a {@link Connector}
+     * @param connectionUsage
+     *            a {@link ConnectionUsage}
      * @param index
      *            the index of the searched related feature
      * @return the related feature at the given index, or {@code null} if there is no such feature
@@ -461,7 +461,7 @@ public class MetamodelQueryElementService {
      * @return the source element or {@code null}
      */
     public Element getSourceAllocateEdge(AllocationUsage allocationUsage) {
-        var features = this.getAllocateEdgeFeatures(allocationUsage);
+        var features = this.getConnectorEdgeFeatures(allocationUsage);
         if (features.size() == 2) {
             return this.getFeatureElement(features.getFirst());
         }
@@ -476,9 +476,39 @@ public class MetamodelQueryElementService {
      * @return the target element or {@code null}
      */
     public Element getTargetAllocateEdge(AllocationUsage allocationUsage) {
-        var features = this.getAllocateEdgeFeatures(allocationUsage);
+        var features = this.getConnectorEdgeFeatures(allocationUsage);
         if (features.size() == 2) {
             return this.getFeatureElement(features.get(1));
+        }
+        return null;
+    }
+
+    /**
+     * Get the source element of a flow usage edge.
+     *
+     * @param flowUsage
+     *            a {@link FlowUsage}
+     * @return the source element or {@code null}
+     */
+    public Element getSourceFlowUsageEdge(FlowUsage flowUsage) {
+        var features = this.getConnectorEdgeFeatures(flowUsage);
+        if (features.size() == 2) {
+            return this.getFeatureElement(features.getFirst());
+        }
+        return null;
+    }
+
+    /**
+     * Get the target element of a flow usage edge.
+     *
+     * @param flowUsage
+     *            a {@link FlowUsage}
+     * @return the target element or {@code null}
+     */
+    public Element getTargetFlowUsageEdge(FlowUsage flowUsage) {
+        var features = this.getConnectorEdgeFeatures(flowUsage);
+        if (features.size() == 2) {
+            return this.getFeatureElement(features.getLast());
         }
         return null;
     }
@@ -529,24 +559,6 @@ public class MetamodelQueryElementService {
                 .map(FeatureValue.class::cast)
                 .findFirst()
                 .map(FeatureValue::getValue);
-    }
-
-    /**
-     * Unwrap the given {@link Feature} to its referenced element.
-     *
-     * @param input
-     *            the input feature
-     * @return the unwrapped feature or {@code null}
-     */
-    public Feature unwrapFeature(Feature input) {
-        if (input instanceof ReferenceUsage) {
-            return input.getOwnedRedefinition().stream()
-                    .map(Redefinition::getRedefinedFeature)
-                    .filter(Objects::nonNull)
-                    .findFirst()
-                    .orElse(null);
-        }
-        return input;
     }
 
     /**
@@ -632,8 +644,8 @@ public class MetamodelQueryElementService {
                 .orElse(null);
     }
 
-    private List<Feature> getAllocateEdgeFeatures(AllocationUsage allocationUsage) {
-        return allocationUsage.getOwnedFeatureMembership().stream()
+    private List<Feature> getConnectorEdgeFeatures(Connector connector) {
+        return connector.getOwnedFeatureMembership().stream()
                 .filter(EndFeatureMembership.class::isInstance)
                 .map(EndFeatureMembership.class::cast)
                 .flatMap(endFeatureMembership -> endFeatureMembership.getOwnedRelatedElement().stream())

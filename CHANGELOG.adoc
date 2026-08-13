@@ -18,6 +18,7 @@ Downstream code should now depend on the diagram services module for that bean.
 - [releng] Frontend packages published from `frontend` do not provide UMD bundles anymore.
 They are now distributed as ES modules and CommonJS bundles only.
 Downstream consumers relying on the previous `.umd.js` artifacts or on direct browser script-tag usage must migrate to a bundler-based integration or consume the new CommonJS entry points instead.
+- https://github.com/eclipse-syson/syson/issues/2418[#2418] [services] Remove the `unwrapFeature` service since it is not used anymore.
 
 === Dependency update
 
@@ -87,6 +88,7 @@ The edge goes from the derived requirement to the original one and is displayed 
 - https://github.com/eclipse-syson/syson/issues/2428[#2428] [diagrams] Add the _New Derived Requirement_ edge tool on `RequirementUsage` graphical nodes, creating a requirement derivation towards another `RequirementUsage`.
 The edge is drawn from the derived requirement to the original one, and the created derivation has the same shape as one written in text: a `ConnectionUsage` annotated with `#derivation`, whose ends are annotated with `#original` and `#derive`.
 The import of the `RequirementDerivation` library is added to the owning namespace when it is missing.
+- https://github.com/eclipse-syson/syson/issues/2418[#2428] [diagrams] Improve the edge tool creating a `FlowUsage`, by creating a `ReferenceUsage` used for the redefinition of the `FlowEnd` only when it is needed.
 
 == v20
 == v2026.7.0

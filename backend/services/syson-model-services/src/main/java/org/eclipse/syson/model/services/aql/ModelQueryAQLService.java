@@ -25,6 +25,7 @@ import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.FramedConcernMembership;
 import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.Namespace;
@@ -136,6 +137,20 @@ public class ModelQueryAQLService {
     }
 
     /**
+     * {@link MetamodelQueryElementService#getSourceFlowUsageEdge(FlowUsage)}.
+     */
+    public Element getSourceFlowUsageEdge(FlowUsage flowUsage) {
+        return this.metamodelQueryElementService.getSourceFlowUsageEdge(flowUsage);
+    }
+
+    /**
+     * {@link MetamodelQueryElementService#getTargetFlowUsageEdge(FlowUsage)}.
+     */
+    public Element getTargetFlowUsageEdge(FlowUsage flowUsage) {
+        return this.metamodelQueryElementService.getTargetFlowUsageEdge(flowUsage);
+    }
+
+    /**
      * {@link MetamodelQueryElementService#isActor(Element)}.
      */
     public boolean isActor(Element element) {
@@ -161,13 +176,6 @@ public class ModelQueryAQLService {
      */
     public boolean isTransitionUsageForState(TransitionUsage transition) {
         return this.metamodelQueryElementService.isTransitionUsageForState(transition);
-    }
-
-    /**
-     * {@link MetamodelQueryElementService#unwrapFeature(Feature)}.
-     */
-    public Feature unwrapFeature(Feature input) {
-        return this.metamodelQueryElementService.unwrapFeature(input);
     }
 
     /**
