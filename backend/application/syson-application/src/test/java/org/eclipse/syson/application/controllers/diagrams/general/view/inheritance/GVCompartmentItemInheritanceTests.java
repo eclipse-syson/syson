@@ -321,7 +321,6 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
 
     private static Stream<Arguments> actorsCompartmentItemInheritanceArguments() {
         NestedElementTestArgument nestedActor = new NestedElementTestArgument("New Actor", "actors", "actor1");
-        NestedElementTestArgument nestedActorWithoutEdge = new NestedElementTestArgument("New Actor", "actors", "actor1", "", 0, 1, 0);
         return Stream.of(
                 Arguments.of(REQUIREMENT_DEFINITION_ARGUMENT, nestedActor, REQUIREMENT_DEFINITION_ARGUMENT, SUBCLASSIFICATION_ARGUMENT.withExtraEdges(1)),
                 Arguments.of(REQUIREMENT_DEFINITION_ARGUMENT, nestedActor, REQUIREMENT_USAGE_ARGUMENT, FEATURE_TYPING_ARGUMENT.withExtraEdges(1)),
@@ -336,14 +335,11 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
                 Arguments.of(SATISFY_REQUIREMENT_USAGE_ARGUMENT, nestedActor, SATISFY_REQUIREMENT_USAGE_ARGUMENT, REDEFINITION_ARGUMENT.withExtraEdges(1)),
                 Arguments.of(SATISFY_REQUIREMENT_USAGE_ARGUMENT, nestedActor, SATISFY_REQUIREMENT_USAGE_ARGUMENT, SUBSETTING_ARGUMENT.withExtraEdges(1)),
                 Arguments.of(SATISFY_REQUIREMENT_USAGE_ARGUMENT, nestedActor, SATISFY_REQUIREMENT_USAGE_ARGUMENT, REFERENCE_SUBSETTING_ARGUMENT.withExtraEdges(1)),
-                /* FIXME When https://github.com/eclipse-syson/syson/issues/2393 will be fixed,
-                     following ConcernXXX specializations used must have an extra edge and
-                     nestedActorWithoutEdge must be replaced by nestedActor */
-                Arguments.of(CONCERN_DEFINITION_ARGUMENT, nestedActorWithoutEdge, CONCERN_DEFINITION_ARGUMENT, SUBCLASSIFICATION_ARGUMENT),
-                Arguments.of(CONCERN_DEFINITION_ARGUMENT, nestedActorWithoutEdge, CONCERN_USAGE_ARGUMENT, FEATURE_TYPING_ARGUMENT),
-                Arguments.of(CONCERN_USAGE_ARGUMENT, nestedActorWithoutEdge, CONCERN_USAGE_ARGUMENT, REDEFINITION_ARGUMENT),
-                Arguments.of(CONCERN_USAGE_ARGUMENT, nestedActorWithoutEdge, CONCERN_USAGE_ARGUMENT, SUBSETTING_ARGUMENT),
-                Arguments.of(CONCERN_USAGE_ARGUMENT, nestedActorWithoutEdge, CONCERN_USAGE_ARGUMENT, REFERENCE_SUBSETTING_ARGUMENT)
+                Arguments.of(CONCERN_DEFINITION_ARGUMENT, nestedActor, CONCERN_DEFINITION_ARGUMENT, SUBCLASSIFICATION_ARGUMENT.withExtraEdges(1)),
+                Arguments.of(CONCERN_DEFINITION_ARGUMENT, nestedActor, CONCERN_USAGE_ARGUMENT, FEATURE_TYPING_ARGUMENT.withExtraEdges(1)),
+                Arguments.of(CONCERN_USAGE_ARGUMENT, nestedActor, CONCERN_USAGE_ARGUMENT, REDEFINITION_ARGUMENT.withExtraEdges(1)),
+                Arguments.of(CONCERN_USAGE_ARGUMENT, nestedActor, CONCERN_USAGE_ARGUMENT, SUBSETTING_ARGUMENT.withExtraEdges(1)),
+                Arguments.of(CONCERN_USAGE_ARGUMENT, nestedActor, CONCERN_USAGE_ARGUMENT, REFERENCE_SUBSETTING_ARGUMENT.withExtraEdges(1))
         );
     }
 
