@@ -49,7 +49,7 @@ public class PortUsageNestedItemBorderNodeDescriptionProvider extends AbstractIt
     }
 
     @Override
-    protected List<NodeDescription> getBindingConectorAsUsageToolTarget(IViewDiagramElementFinder cache) {
+    protected List<NodeDescription> getBindingConnectorAsUsageToolTarget(IViewDiagramElementFinder cache) {
         var nodeDescriptions = new ArrayList<NodeDescription>();
         cache.getNodeDescription(this.getName()).ifPresent(nodeDescriptions::add);
         cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getBehavior_Parameter())).ifPresent(nodeDescriptions::add);

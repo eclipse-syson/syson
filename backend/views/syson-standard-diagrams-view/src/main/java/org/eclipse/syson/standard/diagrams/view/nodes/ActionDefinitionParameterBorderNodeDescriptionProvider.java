@@ -44,7 +44,7 @@ public class ActionDefinitionParameterBorderNodeDescriptionProvider extends Abst
     }
 
     @Override
-    protected List<NodeDescription> getBindingConectorAsUsageToolTarget(IViewDiagramElementFinder cache) {
+    protected List<NodeDescription> getBindingConnectorAsUsageToolTarget(IViewDiagramElementFinder cache) {
         var nodeDescriptions = new ArrayList<NodeDescription>();
         cache.getNodeDescription(this.getName()).ifPresent(nodeDescriptions::add);
         cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem())).ifPresent(nodeDescriptions::add);

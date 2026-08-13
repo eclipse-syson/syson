@@ -16,9 +16,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
@@ -32,6 +29,7 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
+import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.services.DeleteService;
@@ -60,7 +58,7 @@ public abstract class AbstractItemUsageBorderNodeDescriptionProvider extends Abs
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
-    protected abstract List<NodeDescription> getBindingConectorAsUsageToolTarget(IViewDiagramElementFinder cache);
+    protected abstract List<NodeDescription> getBindingConnectorAsUsageToolTarget(IViewDiagramElementFinder cache);
 
     protected abstract String getSemanticCandidatesExpression();
 
@@ -162,47 +160,22 @@ public abstract class AbstractItemUsageBorderNodeDescriptionProvider extends Abs
                 .labelEditTool(editTool.build())
                 .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .edgeTools(
-                        this.createBindingConnectorAsUsageEdgeTool(this.getBindingConectorAsUsageToolTarget(cache)),
-                        this.createFlowUsageEdgeTool(this.getFlowUsageToolTargetDescriptions(cache, this.descriptionNameGenerator)))
+                        this.createBindingConnectorAsUsageEdgeTool(cache),
+                        this.createFlowUsageEdgeTool(cache))
                 .quickAccessTools(this.getDuplicateElementAndNodeTool())
                 .build();
     }
 
-    private EdgeTool createBindingConnectorAsUsageEdgeTool(List<NodeDescription> targetElementDescriptions) {
-        var builder = this.diagramBuilderHelper.newEdgeTool();
-
-        var body = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of5(DiagramMutationAQLService::createBindingConnectorAsUsage)
-                        .aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET,
-                                EdgeDescription.EDGE_SOURCE,
-                                EdgeDescription.EDGE_TARGET,
-                                IEditingContext.EDITING_CONTEXT,
-                                DiagramContext.DIAGRAM_CONTEXT));
-
-        return builder
-                .name(this.getDescriptionNameGenerator().getCreationToolName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage()) + " (bind)")
-                .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getBindingConnectorAsUsage().getName() + ".svg")
-                .body(body.build())
-                .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
-                .build();
+    private EdgeTool createBindingConnectorAsUsageEdgeTool(IViewDiagramElementFinder cache) {
+        return this.getViewEdgeToolService(cache).createBindingConnectorAsUsageEdgeTool(this.getBindingConnectorAsUsageToolTarget(cache));
     }
 
-    private EdgeTool createFlowUsageEdgeTool(List<NodeDescription> targetElementDescriptions) {
-        var builder = this.diagramBuilderHelper.newEdgeTool();
+    protected EdgeTool createFlowUsageEdgeTool(IViewDiagramElementFinder cache) {
+        return this.getViewEdgeToolService(cache).createFlowUsageEdgeTool(this.getFlowUsageToolTargetDescriptions(cache, this.descriptionNameGenerator));
+    }
 
-        var body = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of5(DiagramMutationAQLService::createFlowUsage)
-                        .aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET,
-                                EdgeDescription.EDGE_SOURCE,
-                                EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT,
-                                DiagramContext.DIAGRAM_CONTEXT));
-
-        return builder
-                .name(this.getDescriptionNameGenerator().getCreationToolName(SysmlPackage.eINSTANCE.getFlowUsage()) + " (flow)")
-                .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getFlowUsage().getName() + ".svg")
-                .body(body.build())
-                .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
-                .build();
+    protected ViewEdgeToolService getViewEdgeToolService(IViewDiagramElementFinder cache) {
+        return new ViewEdgeToolService(this.viewBuilderHelper, this.diagramBuilderHelper, cache.getNodeDescriptions(), this.descriptionNameGenerator);
     }
 
 }
