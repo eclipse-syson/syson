@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
+import org.eclipse.syson.model.services.aql.ModelQueryAQLService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -96,10 +97,10 @@ public abstract class AbstractFlowUsageEdgeDescriptionProvider extends AbstractE
                         // Needs this to avoid instantiation on inheriting concept
                         + " and self.oclIsTypeOf(" + domainType + ")")
                 .semanticCandidatesExpression(ServiceMethod.of1(UtilService::getAllReachable).aqlSelf(domainType))
-                .sourceExpression("aql:self.sourceOutputFeature.unwrapFeature()")
+                .sourceExpression(ServiceMethod.of0(ModelQueryAQLService::getSourceFlowUsageEdge).aqlSelf())
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetExpression("aql:self.targetInputFeature.unwrapFeature()")
+                .targetExpression(ServiceMethod.of0(ModelQueryAQLService::getTargetFlowUsageEdge).aqlSelf())
                 .build();
     }
 

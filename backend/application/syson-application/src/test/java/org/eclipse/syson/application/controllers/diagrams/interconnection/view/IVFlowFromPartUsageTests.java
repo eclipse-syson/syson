@@ -123,9 +123,10 @@ public class IVFlowFromPartUsageTests extends AbstractIntegrationTests {
         });
 
         Runnable semanticCheck = this.semanticCheckerService.checkElement(FlowUsage.class, () -> InterconnectionViewFlowConnectionTestProjectData.SemanticIds.FLOW_CONNECTION_P1_P2_ID, flowUsage -> {
-            assertThat(this.identityService.getId(flowUsage.getSourceOutputFeature().getOwnedRedefinition().get(0).getRedefinedFeature()))
+            // We are testing the owning type of the redefined feature because the source/target feature does not have a direction, and thus, within the source/target feature, the edge creation tool has created a `ReferenceUsage` used for the redefinition.
+            assertThat(this.identityService.getId(flowUsage.getSourceOutputFeature().getOwnedRedefinition().get(0).getRedefinedFeature().getOwningType()))
                     .isEqualTo(InterconnectionViewFlowConnectionTestProjectData.SemanticIds.PORT_PART_1_ID);
-            assertThat(this.identityService.getId(flowUsage.getTargetInputFeature().getOwnedRedefinition().get(0).getRedefinedFeature()))
+            assertThat(this.identityService.getId(flowUsage.getTargetInputFeature().getOwnedRedefinition().get(0).getRedefinedFeature().getOwningType()))
                     .isEqualTo(InterconnectionViewFlowConnectionTestProjectData.SemanticIds.PORT_PART_3_ID);
         });
 
@@ -166,9 +167,9 @@ public class IVFlowFromPartUsageTests extends AbstractIntegrationTests {
         });
 
         Runnable semanticCheck = this.semanticCheckerService.checkElement(FlowUsage.class, () -> InterconnectionViewFlowConnectionTestProjectData.SemanticIds.FLOW_CONNECTION_P1_P2_ID, flowUsage -> {
-            assertThat(this.identityService.getId(flowUsage.getSourceOutputFeature().getOwnedRedefinition().get(0).getRedefinedFeature()))
+            assertThat(this.identityService.getId(flowUsage.getSourceOutputFeature().getOwnedRedefinition().get(0).getRedefinedFeature().getOwningType()))
                     .isEqualTo(InterconnectionViewFlowConnectionTestProjectData.SemanticIds.PORT_PART_3_ID);
-            assertThat(this.identityService.getId(flowUsage.getTargetInputFeature().getOwnedRedefinition().get(0).getRedefinedFeature()))
+            assertThat(this.identityService.getId(flowUsage.getTargetInputFeature().getOwnedRedefinition().get(0).getRedefinedFeature().getOwningType()))
                     .isEqualTo(InterconnectionViewFlowConnectionTestProjectData.SemanticIds.PORT_PART_2_ID);
         });
 
