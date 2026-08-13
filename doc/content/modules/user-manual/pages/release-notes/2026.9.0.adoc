@@ -90,6 +90,7 @@ Those connections were missing their source and their target, and were therefore
 * In all views:
 
 ** Fix expression creation and editing on `SuccessionAsUsage` elements.
+** Fix the _Typed by_ property in the _Details_ view so a `Usage` can only be typed by its corresponding `Definition` kind.
 
 == Improvements
 

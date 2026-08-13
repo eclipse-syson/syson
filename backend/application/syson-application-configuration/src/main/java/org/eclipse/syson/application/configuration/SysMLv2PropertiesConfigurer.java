@@ -456,16 +456,15 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(TYPING_PROPERTIES);
         group.setLabelExpression("");
-        // This widget is declared on the Feature.type derived many-valuated reference.
-        // It allows to display the Typed By reference widget even if the Feature does not have a FeatureTyping yet.
-        // Feature.type is a derived many-valuated reference, containing the union of all mono-valuated
-        // "FeatureTyping.type" references of FeatureTyping children of this Feature
+        // This widget is declared on a derived type reference. For usages, the reference is the corresponding
+        // *Definition reference, which restricts selection to the definition types allowed by the metamodel.
+        // It remains available even when the FeatureTyping that stores the value does not yet exist.
         group.setSemanticCandidatesExpression("aql:self->filter(sysml::Feature)");
 
         ReferenceWidgetDescription refWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
         refWidget.setName("ExtraReferenceWidget");
         refWidget.setLabelExpression("Typed by");
-        refWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getFeature_Type().getName());
+        refWidget.setReferenceNameExpression(ServiceMethod.of0(DetailsViewService::getTypedByReferenceName).aqlSelf());
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
