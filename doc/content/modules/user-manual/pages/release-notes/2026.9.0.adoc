@@ -86,6 +86,7 @@ It is now _Become nested Concern_ instead of _Become nested Requirement_.
 ** Fix the ends of the connections whose ends are declared with the `end` keyword inside the body of the connection, which were not resolved.
 Those connections were missing their source and their target, and were therefore never displayed as edges.
 ** Replace the name of the _New Perform action_ tool to _New Perform Action_ to be consistent with other tools.
+** Remove the _New Subclassification_ edge tool from `EnumerationDefinition` graphical nodes, which cannot subclassify another `EnumerationDefinition`.
 
 * In all views:
 
