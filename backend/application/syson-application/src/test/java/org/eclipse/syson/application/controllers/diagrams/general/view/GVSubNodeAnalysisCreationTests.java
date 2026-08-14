@@ -939,7 +939,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass childEClass = SysmlPackage.eINSTANCE.getPerformActionUsage();
-        String creationToolName = "New Perform action";
+        String creationToolName = "New Perform Action";
 
         Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithoutSelectionProvided(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId,
                 creationToolName);
