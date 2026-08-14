@@ -81,6 +81,7 @@ It is also now possible to create new concerns using the _New Concern_ tool from
 - https://github.com/eclipse-syson/syson/issues/2397[#2397] [diagrams] Display existing binary requirement derivations as edges in the _General View_.
 A requirement derivation is a `ConnectionUsage` annotated with the `#derivation` metadata or typed by `DerivationConnections::Derivation`.
 The edge goes from the derived requirement to the original one and is displayed as a dashed `«derive»` line, so it can be distinguished from a `«satisfy»` edge.
+- https://github.com/eclipse-syson/syson/issues/2403[#2403] [diagrams] Add support for the inheritance of `ItemUsage` border nodes on `ActionDefinition` and `ActionUsage` graphical nodes.
 
 == v2026.7.0
 

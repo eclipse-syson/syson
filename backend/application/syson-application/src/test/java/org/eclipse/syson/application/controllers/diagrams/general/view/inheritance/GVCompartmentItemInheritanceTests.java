@@ -188,11 +188,11 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
     private static Stream<Arguments> itemsCompartmentItemInheritanceArguments() {
         NestedElementTestArgument nestedItemWithBorderNode = new NestedElementTestArgument("New Item", "items", "item1", "", 1, 1, 0);
         return Stream.of(
-                Arguments.of(ACTION_DEFINITION_ARGUMENT, nestedItemWithBorderNode, ACTION_USAGE_ARGUMENT, FEATURE_TYPING_ARGUMENT),
-                Arguments.of(ACTION_DEFINITION_ARGUMENT, nestedItemWithBorderNode, ACTION_DEFINITION_ARGUMENT, SUBCLASSIFICATION_ARGUMENT),
-                Arguments.of(ACTION_USAGE_ARGUMENT, nestedItemWithBorderNode, ACTION_USAGE_ARGUMENT, SUBSETTING_ARGUMENT),
-                Arguments.of(ACTION_USAGE_ARGUMENT, nestedItemWithBorderNode, ACTION_USAGE_ARGUMENT, REFERENCE_SUBSETTING_ARGUMENT),
-                Arguments.of(ACTION_USAGE_ARGUMENT, nestedItemWithBorderNode, ACTION_USAGE_ARGUMENT, REDEFINITION_ARGUMENT),
+                Arguments.of(ACTION_DEFINITION_ARGUMENT, nestedItemWithBorderNode, ACTION_USAGE_ARGUMENT, FEATURE_TYPING_ARGUMENT.withExtraBorderNodes(1)),
+                Arguments.of(ACTION_DEFINITION_ARGUMENT, nestedItemWithBorderNode, ACTION_DEFINITION_ARGUMENT, SUBCLASSIFICATION_ARGUMENT.withExtraBorderNodes(1)),
+                Arguments.of(ACTION_USAGE_ARGUMENT, nestedItemWithBorderNode, ACTION_USAGE_ARGUMENT, SUBSETTING_ARGUMENT.withExtraBorderNodes(1)),
+                Arguments.of(ACTION_USAGE_ARGUMENT, nestedItemWithBorderNode, ACTION_USAGE_ARGUMENT, REFERENCE_SUBSETTING_ARGUMENT.withExtraBorderNodes(1)),
+                Arguments.of(ACTION_USAGE_ARGUMENT, nestedItemWithBorderNode, ACTION_USAGE_ARGUMENT, REDEFINITION_ARGUMENT.withExtraBorderNodes(1)),
                 Arguments.of(PORT_USAGE_ARGUMENT, nestedItemWithBorderNode, PORT_USAGE_ARGUMENT, SUBSETTING_ARGUMENT),
                 Arguments.of(PORT_USAGE_ARGUMENT, nestedItemWithBorderNode, PORT_USAGE_ARGUMENT, REFERENCE_SUBSETTING_ARGUMENT),
                 Arguments.of(PORT_DEFINITION_ARGUMENT, nestedItemWithBorderNode, PORT_DEFINITION_ARGUMENT, SUBCLASSIFICATION_ARGUMENT)

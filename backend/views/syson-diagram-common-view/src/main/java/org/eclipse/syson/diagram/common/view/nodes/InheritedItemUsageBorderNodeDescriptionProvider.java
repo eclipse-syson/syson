@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,41 +23,38 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
-import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
-import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
-import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
- * Used to create the item usage border node description.
+ * Used to create the inherited item usage border node description.
  *
- * @author arthur daussy
+ * @author gcoutable
  */
-public class ItemUsageBorderNodeDescriptionProvider extends AbstractItemUsageBorderNodeDescriptionProvider {
+public class InheritedItemUsageBorderNodeDescriptionProvider extends AbstractItemUsageBorderNodeDescriptionProvider {
 
-    public ItemUsageBorderNodeDescriptionProvider(EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+    public InheritedItemUsageBorderNodeDescriptionProvider(EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(eReference, colorProvider, descriptionNameGenerator);
     }
 
     @Override
     protected String getSemanticCandidatesExpression() {
-        var itemUsage = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getItemUsage());
-        return AQLConstants.AQL_SELF + "." + this.eReference.getName() + "->select(e | e.oclIsTypeOf(" + itemUsage + "))";
+        return ServiceMethod.of1(DiagramQueryAQLService::getInheritedCompartmentItems).aqlSelf(AQLUtils.aqlString(this.eReference.getName()));
     }
 
     @Override
     protected String getName() {
-        return this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), this.eReference);
+        return this.descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), this.eReference);
     }
 
     @Override
     protected OutsideLabelDescription createOutsideLabelDescription() {
         return this.diagramBuilderHelper.newOutsideLabelDescription()
-                .labelExpression(ServiceMethod.of0(DiagramQueryAQLService::getBorderNodeUsageLabel).aqlSelf())
+                .labelExpression(AQLConstants.AQL + "'^' + self.getBorderNodeUsageLabel()")
                 .position(OutsideLabelPosition.BOTTOM_CENTER)
                 .style(this.createOutsideLabelStyle())
                 .build();
@@ -73,27 +70,9 @@ public class ItemUsageBorderNodeDescriptionProvider extends AbstractItemUsageBor
 
     @Override
     protected NodePalette createNodePalette(IViewDiagramElementFinder cache, NodeDescription nodeDescription) {
-        var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of0(DeleteService::deleteFromModel).aqlSelf());
-
-        var deleteTool = this.diagramBuilderHelper.newDeleteTool()
-                .name("Delete from Model")
-                .body(changeContext.build());
-
-        var callEditService = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of1(DiagramMutationAQLService::directEdit).aqlSelf("newLabel"));
-
-        var editTool = this.diagramBuilderHelper.newLabelEditTool()
-                .name("Edit")
-                .initialDirectEditLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getDefaultInitialDirectEditLabel).aqlSelf())
-                .body(callEditService.build());
-
         return this.diagramBuilderHelper.newNodePalette()
-                .deleteTool(deleteTool.build())
-                .labelEditTool(editTool.build())
                 .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .edgeTools(this.getEdgeTools(cache, nodeDescription).toArray(EdgeTool[]::new))
-                .quickAccessTools(this.getDuplicateElementAndNodeTool())
                 .build();
     }
 }

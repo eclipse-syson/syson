@@ -59,6 +59,7 @@ import org.eclipse.syson.diagram.common.view.nodes.FramedConcernCompartmentItemN
 import org.eclipse.syson.diagram.common.view.nodes.FramedConcernCompartmentNodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.ImportedPackageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.InheritedCompartmentItemNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.InheritedItemUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.InterconnectionCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.ItemUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
@@ -495,6 +496,8 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 .add(new InheritedPortUsageBorderNodeDescriptionProvider(SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new ItemUsageBorderNodeDescriptionProvider(SysmlPackage.eINSTANCE.getDefinition_OwnedItem(), colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new ItemUsageBorderNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUsage_NestedItem(), colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new InheritedItemUsageBorderNodeDescriptionProvider(SysmlPackage.eINSTANCE.getDefinition_OwnedItem(), colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new InheritedItemUsageBorderNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUsage_NestedItem(), colorProvider, this.getDescriptionNameGenerator()));
 
         diagramElementDescriptionProviders.add(new ReferenceUsageBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new InheritedReferenceUsageBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
