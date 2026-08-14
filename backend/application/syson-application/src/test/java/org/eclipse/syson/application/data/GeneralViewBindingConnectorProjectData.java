@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,21 +65,17 @@ public class GeneralViewBindingConnectorProjectData {
 
         public static final String DIAGRAM_ID = "219f9e4c-900d-4258-b2fc-a69c94f3f666";
 
-        public static final String I0_ID = "c0a61f94-7762-357b-a245-2d00916f612e";
+        public static final String I0_ID = "b50e0dee-7e33-3a5c-9226-f7051bb9182e";
 
-        public static final String I1_ID = "07b3e9f5-55b1-3b81-97b9-e04214393b4b";
+        public static final String I1_ID = "bbe1eabd-69b6-332d-a64b-4a8704cc9cb8";
 
-        public static final String I11 = "e43e174a-8163-3ac8-b3f5-ebe6856d9ed2";
+        public static final String I11_ID = "7c524a77-046a-335f-9dc2-f901e6604ab7";
 
-        public static final String I11TEST = "99a13645-74bd-3ca4-97fd-59d8340f7bfd";
+        public static final String I11TEST_ID = "33e0fb55-971d-3755-8f56-1081ffc312d0";
 
-        public static final String I11_ID = "e43e174a-8163-3ac8-b3f5-ebe6856d9ed2";
+        public static final String BINDING_EDGE_ID = "0a532744-6cb9-3896-9c3d-6ebcd6cbeca8";
 
-        public static final String I11TEST_ID = "99a13645-74bd-3ca4-97fd-59d8340f7bfd";
-
-        public static final String BINDING_EDGE_ID = "38487ae1-e4ee-32e6-892b-d43929582aa0";
-
-        public static final String I2_ID = "a8aa241b-5fff-3fd3-963d-60f3c5b01858";
+        public static final String I2_ID = "5218e9c1-1d67-369c-9b4f-af3ca4c2cda5";
 
     }
 }

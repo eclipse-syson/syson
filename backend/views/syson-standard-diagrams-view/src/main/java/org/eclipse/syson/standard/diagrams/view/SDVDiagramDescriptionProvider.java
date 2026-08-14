@@ -60,6 +60,7 @@ import org.eclipse.syson.diagram.common.view.nodes.FramedConcernCompartmentNodeD
 import org.eclipse.syson.diagram.common.view.nodes.ImportedPackageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.InheritedCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.InterconnectionCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.ItemUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.RequireConstraintCompartmentItemNodeDescription;
@@ -110,7 +111,6 @@ import org.eclipse.syson.standard.diagrams.view.edges.SubsettingEdgeDescriptionP
 import org.eclipse.syson.standard.diagrams.view.edges.SuccessionEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.TransitionEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.UsageNestedUsageEdgeDescriptionProvider;
-import org.eclipse.syson.standard.diagrams.view.nodes.ActionDefinitionParameterBorderNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.ActionDefinitionParametersCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.ActionItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.ActionUsageParametersCompartmentNodeDescriptionProvider;
@@ -136,10 +136,8 @@ import org.eclipse.syson.standard.diagrams.view.nodes.ObjectiveDocumentationComp
 import org.eclipse.syson.standard.diagrams.view.nodes.PerformActionsCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PerformActionsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PerformActionsInheritedCompartmentItemNodeDescriptionProvider;
-import org.eclipse.syson.standard.diagrams.view.nodes.PortDefinitionOwnedItemBorderNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PortDefinitionOwnedItemCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PortUsageBorderNodeDescriptionProvider;
-import org.eclipse.syson.standard.diagrams.view.nodes.PortUsageNestedItemBorderNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PortUsageNestedItemCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.ReferenceUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.RequirementDefinitionActorsCompartmentNodeDescriptionProvider;
@@ -495,9 +493,8 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         diagramElementDescriptionProviders.add(new InheritedPortUsageBorderNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUsage_NestedPort(), colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders
                 .add(new InheritedPortUsageBorderNodeDescriptionProvider(SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), colorProvider, this.getDescriptionNameGenerator()));
-        diagramElementDescriptionProviders.add(new ActionDefinitionParameterBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
-        diagramElementDescriptionProviders.add(new PortDefinitionOwnedItemBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
-        diagramElementDescriptionProviders.add(new PortUsageNestedItemBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new ItemUsageBorderNodeDescriptionProvider(SysmlPackage.eINSTANCE.getDefinition_OwnedItem(), colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new ItemUsageBorderNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUsage_NestedItem(), colorProvider, this.getDescriptionNameGenerator()));
 
         diagramElementDescriptionProviders.add(new ReferenceUsageBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new InheritedReferenceUsageBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
