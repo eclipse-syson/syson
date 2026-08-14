@@ -79,6 +79,7 @@ public class DefinitionNodeDescriptionProvider extends AbstractDefinitionNodeDes
         });
         if (SysmlPackage.eINSTANCE.getActionDefinition().equals(this.eClass)) {
             cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem())).ifPresent(borderNodes::add);
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem())).ifPresent(borderNodes::add);
             cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getReferenceUsage())).ifPresent(borderNodes::add);
             cache.getNodeDescription(this.getDescriptionNameGenerator().getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getReferenceUsage())).ifPresent(borderNodes::add);
         } else if (SysmlPackage.eINSTANCE.getPortDefinition().equals(this.eClass)) {
