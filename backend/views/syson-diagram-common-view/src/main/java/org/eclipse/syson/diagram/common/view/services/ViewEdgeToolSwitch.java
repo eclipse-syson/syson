@@ -178,7 +178,10 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         addAttributeAsNestedOfDefinition.forEach(nodeDesc -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(nodeDesc)));
 
         edgeTools.add(this.edgeToolService.createDependencyEdgeTool(this.allNodeDescriptions));
-        edgeTools.add(this.edgeToolService.createSubclassificationEdgeTool(List.of(this.nodeDescription)));
+        // SysML forbids an EnumerationDefinition from subclassifying another EnumerationDefinition.
+        if (!SysmlPackage.eINSTANCE.getEnumerationDefinition().isInstance(object)) {
+            edgeTools.add(this.edgeToolService.createSubclassificationEdgeTool(List.of(this.nodeDescription)));
+        }
         return edgeTools;
     }
 

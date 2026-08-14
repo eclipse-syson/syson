@@ -42,6 +42,7 @@ In any case, it is strongly recommended to back up your data before proceeding w
 - https://github.com/eclipse-syson/syson/issues/2399[#2399] [details] Fix the _Typed by_ selection dialog so a `Usage` can only be typed by its corresponding `Definition` kind.
 - https://github.com/eclipse-syson/syson/issues/2407[#2407] [diagrams] Fix the nested composition edge tool label on `ConcernUsage` graphical nodes in _General View_ diagrams.
 It is now _Become nested Concern_ instead of _Become nested Requirement_.
+- https://github.com/eclipse-syson/syson/issues/2369[#2369] [diagrams] Remove the _New Subclassification_ edge tool from `EnumerationDefinition` graphical nodes, which cannot subclassify another `EnumerationDefinition`.
 - https://github.com/eclipse-syson/syson/issues/2388[#2388] [search] Fix concurrent creation of SysML model search indices.
 - https://github.com/eclipse-syson/syson/issues/2397[#2397] [metamodel] Fix the resolution of the ends of a connector so the ends declared with the `end` keyword inside a connection body are taken into account.
 Following KerML, where `endFeature` is defined as the owned features having `isEnd = true`, the ends owned through a plain `FeatureMembership` are now collected as well, and not only those owned through an `EndFeatureMembership`.
