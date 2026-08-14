@@ -94,7 +94,6 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
         cache.getNodeDescription(descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort())).ifPresent(nodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem())).ifPresent(nodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem())).ifPresent(nodes::add);
-        cache.getNodeDescription(descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getBehavior_Parameter())).ifPresent(nodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getReferenceUsage())).ifPresent(nodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getReferenceUsage())).ifPresent(nodes::add);
         return nodes;

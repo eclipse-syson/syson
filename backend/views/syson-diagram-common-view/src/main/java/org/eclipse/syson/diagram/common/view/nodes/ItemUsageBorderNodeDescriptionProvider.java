@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.nodes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,23 +47,33 @@ import org.eclipse.syson.util.ViewConstants;
  *
  * @author arthur daussy
  */
-public abstract class AbstractItemUsageBorderNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
+public class ItemUsageBorderNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
-    protected final IDescriptionNameGenerator descriptionNameGenerator;
+    private final IDescriptionNameGenerator descriptionNameGenerator;
 
-    protected final EReference eReference;
+    private final EReference eReference;
 
-    public AbstractItemUsageBorderNodeDescriptionProvider(EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+    public ItemUsageBorderNodeDescriptionProvider(EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.eReference = Objects.requireNonNull(eReference);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
-    protected abstract List<NodeDescription> getBindingConnectorAsUsageToolTarget(IViewDiagramElementFinder cache);
+    private List<NodeDescription> getBindingConnectorAsUsageToolTarget(IViewDiagramElementFinder cache) {
+        var nodeDescriptions = new ArrayList<NodeDescription>();
+        cache.getNodeDescription(this.getName()).ifPresent(nodeDescriptions::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), this.eReference)).ifPresent(nodeDescriptions::add);
+        return nodeDescriptions;
+    }
 
-    protected abstract String getSemanticCandidatesExpression();
+    private String getSemanticCandidatesExpression() {
+        var itemUsage = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getItemUsage());
+        return AQLConstants.AQL_SELF + "." + this.eReference.getName() + "->select(e | e.oclIsTypeOf(" + itemUsage + "))";
+    }
 
-    protected abstract String getName();
+    private String getName() {
+        return this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), this.eReference);
+    }
 
     @Override
     public NodeDescription create() {
@@ -93,7 +104,7 @@ public abstract class AbstractItemUsageBorderNodeDescriptionProvider extends Abs
                 .build();
     }
 
-    private OutsideLabelDescription createOutsideLabelDescription() {
+    protected OutsideLabelDescription createOutsideLabelDescription() {
         return this.diagramBuilderHelper.newOutsideLabelDescription()
                 .labelExpression(ServiceMethod.of0(DiagramQueryAQLService::getBorderNodeUsageLabel).aqlSelf())
                 .position(OutsideLabelPosition.BOTTOM_CENTER)

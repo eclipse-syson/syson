@@ -59,6 +59,7 @@ The ends of a connector created from a diagram are owned through an `EndFeatureM
 - [releng] Improve the frontend package build by replacing UMD outputs with CommonJS outputs for reusable npm libraries.
 This removes Rollup warnings about missing global names for externalized peer dependencies while keeping React, MUI, Apollo and other shared dependencies outside the published bundles.
 - [releng] Reduce the log of the frontend tasks `format-lint` and `build-dev` by default to make tasks such as `build` or `start` less verbose.
+- [cleanup] Use only one border node description provider for all item border nodes.
 
 === New features
 

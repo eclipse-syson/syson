@@ -31,21 +31,21 @@ public class GeneralViewFlowConnectionItemUsagesProjectData {
 
         public static final String ACTION_USAGE_1_ID = "c9d5c8c3-7019-322c-9184-8c49bf1940fd";
 
-        public static final String ACTION_USAGE_1_OUT_ITEM_ID = "554af08e-3830-33ca-86f2-2f2aa1469585";
+        public static final String ACTION_USAGE_1_OUT_ITEM_ID = "f302c8f1-5a06-3e84-9da7-ebe2417c60ec";
 
         public static final String ACTION_USAGE_2_ID = "6ecd5ce8-cf92-36f4-98d5-81f63382a27e";
 
-        public static final String ACTION_USAGE_2_IN_ITEM_ID = "cf13ec0b-ed3f-3341-8fae-f0bbf74155f6";
+        public static final String ACTION_USAGE_2_IN_ITEM_ID = "28d5f1d5-90cd-3a63-a573-a5c07db919d4";
 
-        public static final String ACTION_USAGE_2_OUT_ITEM_ID = "bb06c37a-6235-3b64-93e5-bf9018e5ac95";
+        public static final String ACTION_USAGE_2_OUT_ITEM_ID = "8febbb96-09b2-3017-85ff-11d3b517af45";
 
         public static final String ACTION_USAGE_3_ID = "8996c5aa-00f3-3812-a60b-bdf8cd472320";
 
-        public static final String ACTION_USAGE_3_IN_ITEM_ID = "87610918-cc3c-32f3-b9e9-2c8fec982688";
+        public static final String ACTION_USAGE_3_IN_ITEM_ID = "af63700e-83a9-351c-969b-4af0b3da9c2d";
 
-        public static final String ACTION_USAGE_3_OUT_ITEM_ID = "66aa0a1d-2d8a-320a-80c4-38a2621d64ca";
+        public static final String ACTION_USAGE_3_OUT_ITEM_ID = "796e47ab-9a70-36d9-9ca7-2cfcd24e094b";
 
-        public static final String FLOW_CONNECTION_ID = "08697a19-1d8a-33ba-be01-dc1acafa8ac8";
+        public static final String FLOW_CONNECTION_ID = "976ca71b-5b9f-33df-beb7-e6cedef065e2";
     }
 
     /**

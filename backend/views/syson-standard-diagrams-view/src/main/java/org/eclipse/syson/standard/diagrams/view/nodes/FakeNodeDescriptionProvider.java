@@ -217,8 +217,6 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getBehavior_Parameter()))
-                .ifPresent(childrenNodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getReferenceUsage()))
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getReferenceUsage()))

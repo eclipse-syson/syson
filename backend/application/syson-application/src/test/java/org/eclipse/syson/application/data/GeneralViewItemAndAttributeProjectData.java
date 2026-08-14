@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,15 +43,15 @@ public class GeneralViewItemAndAttributeProjectData {
 
         public static final String P1_1_X1_ID = "632c779a-2810-3c1e-b897-21492656a05b";
 
-        public static final String A2_1_BORDERED_NODE_ID = "697dd8fe-9e20-3d55-8820-c55005c6ab51";
+        public static final String A2_1_BORDERED_NODE_ID = "2622d619-2e39-32a2-a650-ad0737acfeaf";
 
-        public static final String A1_1_BORDERED_NODE_ID = "0fdf46cf-f146-3554-8635-a141d632ae7d";
+        public static final String A1_1_BORDERED_NODE_ID = "32c09d74-0f1b-378f-9933-ff149b8f4798";
 
-        public static final String A1_2_BORDERED_NODE_ID = "a23fdc86-fb52-363e-8c1d-21b5d30964bb";
+        public static final String A1_2_BORDERED_NODE_ID = "1ea3d815-a0ea-38a9-9f48-3f703f2707cc";
 
-        public static final String A1_3_BORDERED_NODE_ID = "057fe580-0e2b-353c-8136-c15925b72720";
+        public static final String A1_3_BORDERED_NODE_ID = "0309364e-86d3-3dd2-9b62-5fbabf2b4d4e";
 
-        public static final String A2_2_BORDERED_NODE_ID = "91daf240-eed6-349e-9869-415e5b471def";
+        public static final String A2_2_BORDERED_NODE_ID = "6aff76d5-cf81-3d9e-b9c7-10e049b7d24d";
 
         public static final String A2_1_ICON_AND_LABEL_ID = "6f121831-91b7-3710-9ba7-136db0a7b46f";
 
@@ -59,7 +59,7 @@ public class GeneralViewItemAndAttributeProjectData {
 
         public static final String A1_1_ICON_AND_LABEL_ID = "b59e7239-d224-38da-847c-741cfe51d22b";
 
-        public static final String FEATURE_VALUE_A2_2_TO_A1_4_EDGE = "8a737b89-6a9b-36ca-b31e-01bb6e39de27";
+        public static final String FEATURE_VALUE_A2_2_TO_A1_4_EDGE = "0d938c5a-c7e5-3105-8a34-79e3beb55fa8";
 
     }
 

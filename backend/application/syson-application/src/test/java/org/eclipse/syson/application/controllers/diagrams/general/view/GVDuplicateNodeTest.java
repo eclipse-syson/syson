@@ -202,7 +202,7 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        var duplicateToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getBehavior_Parameter()), "Duplicate Element");
+        var duplicateToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem()), "Duplicate Element");
         Runnable duplicateToolRunnable = () -> this.toolTester.invokeTool(GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
                 diagram.get().getId(),
                 GeneralViewItemAndAttributeProjectData.GraphicalIds.A1_3_BORDERED_NODE_ID,
@@ -268,7 +268,7 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        var duplicateToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getBehavior_Parameter()), "Duplicate Element");
+        var duplicateToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem()), "Duplicate Element");
         Runnable duplicateToolRunnable = () -> this.toolTester.invokeTool(GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
                 diagram.get().getId(),
                 GeneralViewItemAndAttributeProjectData.GraphicalIds.A1_1_BORDERED_NODE_ID,
