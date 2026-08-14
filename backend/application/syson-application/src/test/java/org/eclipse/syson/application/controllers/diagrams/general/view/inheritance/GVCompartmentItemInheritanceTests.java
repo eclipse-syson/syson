@@ -193,9 +193,9 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
                 Arguments.of(ACTION_USAGE_ARGUMENT, nestedItemWithBorderNode, ACTION_USAGE_ARGUMENT, SUBSETTING_ARGUMENT.withExtraBorderNodes(1)),
                 Arguments.of(ACTION_USAGE_ARGUMENT, nestedItemWithBorderNode, ACTION_USAGE_ARGUMENT, REFERENCE_SUBSETTING_ARGUMENT.withExtraBorderNodes(1)),
                 Arguments.of(ACTION_USAGE_ARGUMENT, nestedItemWithBorderNode, ACTION_USAGE_ARGUMENT, REDEFINITION_ARGUMENT.withExtraBorderNodes(1)),
-                Arguments.of(PORT_USAGE_ARGUMENT, nestedItemWithBorderNode, PORT_USAGE_ARGUMENT, SUBSETTING_ARGUMENT),
-                Arguments.of(PORT_USAGE_ARGUMENT, nestedItemWithBorderNode, PORT_USAGE_ARGUMENT, REFERENCE_SUBSETTING_ARGUMENT),
-                Arguments.of(PORT_DEFINITION_ARGUMENT, nestedItemWithBorderNode, PORT_DEFINITION_ARGUMENT, SUBCLASSIFICATION_ARGUMENT)
+                Arguments.of(PORT_USAGE_ARGUMENT, nestedItemWithBorderNode, PORT_USAGE_ARGUMENT, SUBSETTING_ARGUMENT.withExtraBorderNodes(1)),
+                Arguments.of(PORT_USAGE_ARGUMENT, nestedItemWithBorderNode, PORT_USAGE_ARGUMENT, REFERENCE_SUBSETTING_ARGUMENT.withExtraBorderNodes(1)),
+                Arguments.of(PORT_DEFINITION_ARGUMENT, nestedItemWithBorderNode, PORT_DEFINITION_ARGUMENT, SUBCLASSIFICATION_ARGUMENT.withExtraBorderNodes(1))
         );
     }
 
