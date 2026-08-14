@@ -38,8 +38,8 @@ If you open the dev tools of your web browser, you may found the following messa
 In this case, please refer to xref:installation-guide:how-tos/https.adoc[].
 
 == Running docker on Mac Silicon architecture
-Docker images are build to run on x86_64 architecture.
-If you need to run {product} docker image on a Mac Silicon architecture, please execute the following command in your terminal before executing the docker image:
+{product} Docker images are multi-platform (x86_64 and arm64) starting with version v2026.9.0, so they run natively on Mac Silicon and other arm64 machines.
+If you need to run an older {product} docker image on a Mac Silicon architecture, please execute the following command in your terminal before executing the docker image:
 [source, bash]
 ----
 export DOCKER_DEFAULT_PLATFORM=linux/amd64

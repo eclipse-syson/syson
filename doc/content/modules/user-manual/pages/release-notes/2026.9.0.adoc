@@ -99,6 +99,9 @@ Exporting such a connection and importing it back no longer loses which end is w
 
 == Improvements
 
+* {product} Docker images are now multi-platform (`linux/amd64` and `linux/arm64`), so they run natively on arm64 machines such as Apple Silicon or AWS Graviton without emulation.
+Setting `DOCKER_DEFAULT_PLATFORM=linux/amd64` is no longer necessary on these machines.
+
 * In diagrams:
 
 * In textual import/export:

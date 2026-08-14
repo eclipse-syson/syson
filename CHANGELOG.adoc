@@ -53,6 +53,7 @@ The ends of a connector created from a diagram are owned through an `EndFeatureM
 
 === Improvements
 
+- https://github.com/eclipse-syson/syson/issues/2425[#2425] [releng] Publish multi-platform Docker images (`linux/amd64` and `linux/arm64`), allowing {product} to run natively on arm64 machines such as Apple Silicon or AWS Graviton without emulation.
 - https://github.com/eclipse-syson/syson/issues/2364[#2364] [requirements table] Support nested `Requirements` in _Requirements table_ view.
 - [releng] Improve the frontend package build by replacing UMD outputs with CommonJS outputs for reusable npm libraries.
 This removes Rollup warnings about missing global names for externalized peer dependencies while keeping React, MUI, Apollo and other shared dependencies outside the published bundles.

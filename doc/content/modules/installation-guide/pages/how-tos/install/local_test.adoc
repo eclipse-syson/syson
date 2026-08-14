@@ -43,8 +43,8 @@ This method deploys {product} matching the version tagged in this documentation 
 
 [TIP]
 ====
-Docker images are build to run on x86_64 architecture.
-If you need to run {product} Docker image on a Mac Silicon architecture, run the following command in your terminal before executing the Docker image:
+{product} Docker images are multi-platform (x86_64 and arm64) starting with version v2026.9.0, so they run natively on Mac Silicon and other arm64 machines.
+If you need to run an older {product} Docker image on a Mac Silicon architecture, run the following command in your terminal before executing the Docker image:
 
 [source, bash]
 ----
