@@ -76,6 +76,9 @@ The direction of the edge is given by the `#original` and `#derive` metadata of 
 ** Add support for the inheritance of `ItemUsage` border nodes on `ActionDefinition` and `ActionUsage` graphical nodes.
 +
 image::release-notes-action-inherited-item-border-nodes.png[ItemUsage border node inheritance on ActionDefinition and ActionUsage]
+** Add support for the inheritance of `ItemUsage` border nodes on `PortDefinition` and `PortUsage` graphical nodes.
++
+image::release-notes-port-inherited-item-border-nodes.png[ItemUsage border node inheritance on PortDefinition and PortUsage]
 
 == Bug fixes
 
