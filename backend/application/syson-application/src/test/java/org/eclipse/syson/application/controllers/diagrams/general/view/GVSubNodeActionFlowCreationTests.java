@@ -620,7 +620,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionUsage();
         EClass childEClass = SysmlPackage.eINSTANCE.getPerformActionUsage();
         String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID;
-        String creationToolName = "New Perform action";
+        String creationToolName = "New Perform Action";
         EReference containmentReference = SysmlPackage.eINSTANCE.getUsage_NestedAction();
 
         Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithSingleSelection(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, creationToolName, GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID);
@@ -667,7 +667,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionUsage();
         EClass childEClass = SysmlPackage.eINSTANCE.getPerformActionUsage();
         String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID;
-        String creationToolName = "New Perform action";
+        String creationToolName = "New Perform Action";
         EReference containmentReference = SysmlPackage.eINSTANCE.getUsage_NestedAction();
 
         Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithoutSelectionProvided(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, creationToolName);

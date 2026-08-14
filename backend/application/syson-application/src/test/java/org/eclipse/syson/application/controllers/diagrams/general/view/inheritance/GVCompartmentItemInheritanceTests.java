@@ -220,7 +220,7 @@ public class GVCompartmentItemInheritanceTests extends AbstractIntegrationTests 
 
     private static Stream<Arguments> performActionsCompartmentItemInheritanceArguments() {
         return Stream.of(
-                Arguments.of(ACTION_DEFINITION_ARGUMENT, new NestedElementTestArgument("New Perform action", "perform actions", "ref "), ACTION_DEFINITION_ARGUMENT, SUBCLASSIFICATION_ARGUMENT),
+                Arguments.of(ACTION_DEFINITION_ARGUMENT, new NestedElementTestArgument("New Perform Action", "perform actions", "ref "), ACTION_DEFINITION_ARGUMENT, SUBCLASSIFICATION_ARGUMENT),
                 Arguments.of(STATE_DEFINITION_ARGUMENT, new NestedElementTestArgument("New Do Action", "perform actions", "ref do ::> action", GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID, 0, 1, 0),
                         STATE_USAGE_ARGUMENT, FEATURE_TYPING_ARGUMENT),
                 Arguments.of(STATE_USAGE_ARGUMENT, new NestedElementTestArgument("New Entry Action", "perform actions", "ref entry ::> action", GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID, 0, 1, 0),

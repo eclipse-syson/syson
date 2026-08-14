@@ -42,7 +42,7 @@ public class PerformActionNodeToolProvider extends AbstractCompartmentNodeToolPr
 
     @Override
     protected String getNodeToolName() {
-        return "New Perform action";
+        return "New Perform Action";
     }
 
     @Override
@@ -117,14 +117,14 @@ public class PerformActionNodeToolProvider extends AbstractCompartmentNodeToolPr
                 .defaultTitleExpression(this.getNodeToolName())
                 .noSelectionTitleExpression(this.getNodeToolName())
                 .withSelectionTitleExpression(this.getNodeToolName())
-                .descriptionExpression("Create a Perform action:")
-                .noSelectionActionLabelExpression("Create a new Perform action")
-                .noSelectionActionDescriptionExpression("Create a new Perform action without referencing an existing Action")
+                .descriptionExpression("Create a Perform Action:")
+                .noSelectionActionLabelExpression("Create a new Perform Action")
+                .noSelectionActionDescriptionExpression("Create a new Perform Action without referencing an existing Action")
                 .withSelectionActionLabelExpression("Select an existing Action to perform:")
-                .withSelectionActionDescriptionExpression("Create a new Perform action referencing the selected Action")
-                .noSelectionActionStatusMessageExpression("It will create a new Perform action without referencing an existing Action")
-                .selectionRequiredWithoutSelectionStatusMessageExpression("Select one Action to be referenced by the new Perform action")
-                .selectionRequiredWithSelectionStatusMessageExpression(AQLConstants.AQL + "'It will create a Perform action referencing ' + selectedObjects->first().name")
+                .withSelectionActionDescriptionExpression("Create a new Perform Action referencing the selected Action")
+                .noSelectionActionStatusMessageExpression("It will create a new Perform Action without referencing an existing Action")
+                .selectionRequiredWithoutSelectionStatusMessageExpression("Select one Action to be referenced by the new Perform Action")
+                .selectionRequiredWithSelectionStatusMessageExpression(AQLConstants.AQL + "'It will create a Perform Action referencing ' + selectedObjects->first().name")
                 .optional(true)
                 .build();
     }

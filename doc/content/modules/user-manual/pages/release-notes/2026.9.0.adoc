@@ -82,10 +82,10 @@ The direction of the edge is given by the `#original` and `#derive` metadata of 
 ** Fix `Comment` graphical nodes so changing their background color no longer changes their border color.
 ** Fix the nested composition edge tool label on `ConcernUsage` graphical nodes in _General View_ diagrams.
 It is now _Become nested Concern_ instead of _Become nested Requirement_.
-
 ** Fix the support of `PortUsage` as end inheritance in _ends_ compartment of `InterfaceDefinition` graphical node.
 ** Fix the ends of the connections whose ends are declared with the `end` keyword inside the body of the connection, which were not resolved.
 Those connections were missing their source and their target, and were therefore never displayed as edges.
+** Replace the name of the _New Perform action_ tool to _New Perform Action_ to be consistent with other tools.
 
 * In all views:
 
