@@ -1,11 +1,10 @@
-# Execute this command in your shell if you want to run this docker compose file on ARM architectures
+# SysON images are multi-platform (linux/amd64 and linux/arm64) starting with v2026.9.0.
+# To run an older version on an ARM architecture, execute this command in your shell first:
 # export DOCKER_DEFAULT_PLATFORM=linux/amd64
 version: "3.8"
 services:
   database:
     image: postgres:15
-    # Uncomment this option if you want to run this docker compose file on ARM architectures
-    # platform: linux/amd64
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: username
