@@ -290,6 +290,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
      */
     private List<EdgeTool> createRequirementUsageEdgeTools(EClass eClass, RequirementUsage requirementUsage) {
         var edgeTools = new ArrayList<EdgeTool>();
+        edgeTools.add(this.edgeToolService.createRequirementDerivationEdgeTool());
         var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
                 || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getRequirementDefinition())).collect(Collectors.toList());
         targetNodes.removeIf(nodeDesc -> this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPortUsage()));

@@ -36,6 +36,8 @@ import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.services.ImportService;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationElementService;
 import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
@@ -56,9 +58,46 @@ public class ModelMutationElementService {
 
     private final MetamodelMutationElementService metamodelMutationElementService;
 
+    private final UtilService utilService;
+
+    private final ImportService importService;
+
     public ModelMutationElementService() {
         this.metamodelMutationElementService = new MetamodelMutationElementService();
         this.elementUtil = new ElementUtil();
+        this.utilService = new UtilService();
+        this.importService = new ImportService();
+    }
+
+    /**
+     * Create a requirement derivation between two {@link RequirementUsage}, the way it is written in text with
+     * {@code #derivation connection { end #original ::> ...; end #derive ::> ...; }}.
+     * <p>
+     * The metadata identifying the derivation and its ends come from the {@code RequirementDerivation} standard
+     * library, so the import of that library is added to the owning namespace when it is missing.
+     * </p>
+     *
+     * @param derived
+     *            the requirement derived from {@code original}, the source of the edge
+     * @param original
+     *            the requirement {@code derived} is derived from, the target of the edge
+     * @return the new derivation, or {@code derived} when the standard library could not be reached
+     */
+    public Element createRequirementDerivation(RequirementUsage derived, RequirementUsage original) {
+        var derivationMetadata = this.utilService.retrieveDerivationMetadata(derived);
+        var originalEndMetadata = this.utilService.retrieveOriginalRequirementMetadata(derived);
+        var derivedEndMetadata = this.utilService.retrieveDerivedRequirementMetadata(derived);
+        boolean metadataFound = derivationMetadata != null && originalEndMetadata != null && derivedEndMetadata != null;
+
+        if (metadataFound && derived.getOwner() instanceof Namespace owningNamespace) {
+            var derivation = this.metamodelMutationElementService.createRequirementDerivation(derived, original, owningNamespace, derivationMetadata, originalEndMetadata,
+                    derivedEndMetadata);
+            // The ends and the connection reference the metadata of the RequirementDerivation library, which has to be
+            // imported for the created derivation to be valid on its own.
+            this.importService.handleImport(derivation, derivationMetadata);
+            return derivation;
+        }
+        return derived;
     }
 
     /**

@@ -51,6 +51,7 @@ import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.MetadataDefinition;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.ObjectiveMembership;
@@ -653,6 +654,45 @@ public class UtilService {
      */
     public ActionUsage retrieveStandardDoneState(Element eObject) {
         return this.findByNameAndTypeInStandardLibraries(eObject, ActionUsage.class, "States::StateAction::done");
+    }
+
+    /**
+     * Retrieve the metadata definition marking a requirement derivation, defined inside the standard library
+     * <code>RequirementDerivation</code>.
+     *
+     * @param eObject
+     *            an object to access to the library resources.
+     *
+     * @return the standard <code>DerivationMetadata</code> definition.
+     */
+    public MetadataDefinition retrieveDerivationMetadata(Element eObject) {
+        return this.findByNameAndTypeInStandardLibraries(eObject, MetadataDefinition.class, "RequirementDerivation::DerivationMetadata");
+    }
+
+    /**
+     * Retrieve the metadata definition marking the original end of a requirement derivation, defined inside the
+     * standard library <code>RequirementDerivation</code>.
+     *
+     * @param eObject
+     *            an object to access to the library resources.
+     *
+     * @return the standard <code>OriginalRequirementMetadata</code> definition.
+     */
+    public MetadataDefinition retrieveOriginalRequirementMetadata(Element eObject) {
+        return this.findByNameAndTypeInStandardLibraries(eObject, MetadataDefinition.class, "RequirementDerivation::OriginalRequirementMetadata");
+    }
+
+    /**
+     * Retrieve the metadata definition marking the derived end of a requirement derivation, defined inside the standard
+     * library <code>RequirementDerivation</code>.
+     *
+     * @param eObject
+     *            an object to access to the library resources.
+     *
+     * @return the standard <code>DerivedRequirementMetadata</code> definition.
+     */
+    public MetadataDefinition retrieveDerivedRequirementMetadata(Element eObject) {
+        return this.findByNameAndTypeInStandardLibraries(eObject, MetadataDefinition.class, "RequirementDerivation::DerivedRequirementMetadata");
     }
 
     private <T extends Element> T findByNameAndTypeInStandardLibraries(Element context, Class<T> klass, String qualifiedName) {
