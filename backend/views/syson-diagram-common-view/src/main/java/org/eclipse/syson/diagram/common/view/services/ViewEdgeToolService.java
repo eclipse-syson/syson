@@ -664,6 +664,34 @@ public class ViewEdgeToolService {
                 .build();
     }
 
+    /**
+     * Creates the edge tool creating a requirement derivation between two {@link org.eclipse.syson.sysml.RequirementUsage}.
+     * <p>
+     * The edge is drawn from the derived requirement to the original one, the direction the derivation is read in and
+     * the direction its edge is displayed in.
+     * </p>
+     *
+     * @return the edge tool creating a requirement derivation
+     */
+    public EdgeTool createRequirementDerivationEdgeTool() {
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+        var body = this.viewBuilderHelper.newChangeContext()
+                .expression(ServiceMethod.of1(ModelMutationAQLService::createRequirementDerivation).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET));
+
+        var targetNodeDescriptions = new ArrayList<NodeDescription>();
+        var requirementUsageNodeDescriptionName = this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getRequirementUsage());
+        this.allNodeDescriptions.stream()
+                .filter(nd -> requirementUsageNodeDescriptionName.equals(nd.getName()))
+                .findFirst()
+                .ifPresent(targetNodeDescriptions::add);
+
+        return builder.name(this.nameGenerator.getCreationToolName("New Derived ", SysmlPackage.eINSTANCE.getRequirementUsage()))
+                .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getConnectionUsage().getName() + SVG)
+                .body(body.build())
+                .targetElementDescriptions(targetNodeDescriptions.toArray(NodeDescription[]::new))
+                .build();
+    }
+
     public EdgeTool createFramedConcernEdgeTool() {
         var builder = this.diagramBuilderHelper.newEdgeTool();
         var body = this.viewBuilderHelper.newChangeContext()

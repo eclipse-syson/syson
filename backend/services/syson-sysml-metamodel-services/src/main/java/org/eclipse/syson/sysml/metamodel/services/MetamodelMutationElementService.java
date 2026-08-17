@@ -26,14 +26,18 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChaining;
+import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Flow;
 import org.eclipse.syson.sysml.FlowEnd;
 import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.Metaclass;
+import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.OccurrenceUsage;
+import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
@@ -172,6 +176,82 @@ public class MetamodelMutationElementService {
      */
     public ConnectionUsage createConnectionUsage(Feature source, Feature target, Element sourceContainer, Element targetContainer, Namespace newConnectionContainer) {
         return (ConnectionUsage) this.createConnector(source, target, sourceContainer, targetContainer, newConnectionContainer, SysmlFactory.eINSTANCE.createConnectionUsage());
+    }
+
+    /**
+     * Creates a new requirement derivation in the given container.
+     * <p>
+     * SysML v2 has no dedicated metaclass for requirement derivation: it is a {@link ConnectionUsage} annotated with
+     * the {@code #derivation} metadata, whose ends are annotated with the {@code #original} and {@code #derive}
+     * metadata. Those three metadata definitions come from the {@code RequirementDerivation} standard library and are
+     * given as parameters, so that this service does not have to resolve them.
+     * </p>
+     * <p>
+     * The ends are annotated rather than relying on their declaration order, so that the direction of the derivation
+     * stays explicit.
+     * </p>
+     *
+     * @param derived
+     *            the requirement derived from {@code original}
+     * @param original
+     *            the requirement {@code derived} is derived from
+     * @param newConnectionContainer
+     *            the container of the new {@link ConnectionUsage}
+     * @param derivationMetadata
+     *            the {@code DerivationMetadata} definition, applied on the connection
+     * @param originalEndMetadata
+     *            the {@code OriginalRequirementMetadata} definition, applied on the end referencing {@code original}
+     * @param derivedEndMetadata
+     *            the {@code DerivedRequirementMetadata} definition, applied on the end referencing {@code derived}
+     * @return the new requirement derivation
+     */
+    public ConnectionUsage createRequirementDerivation(RequirementUsage derived, RequirementUsage original, Namespace newConnectionContainer, Metaclass derivationMetadata,
+            Metaclass originalEndMetadata, Metaclass derivedEndMetadata) {
+        // The original requirement is the first end, so that a derivation whose ends are not annotated, which is what
+        // the end order fallback of the display expects, is still oriented the same way.
+        ConnectionUsage derivation = this.createConnectionUsage(original, derived, original.getOwner(), derived.getOwner(), newConnectionContainer);
+        // A derivation is not referenced by its name, so the generated one is dropped, the way the generated name of a
+        // connector end is. It keeps the derivation anonymous, as it is when written in text.
+        derivation.setDeclaredName(null);
+        this.applyPrefixMetadata(derivation, derivationMetadata);
+
+        List<Feature> ends = derivation.getConnectorEnd();
+        if (ends.size() == 2) {
+            this.applyPrefixMetadata(ends.get(0), originalEndMetadata);
+            this.applyPrefixMetadata(ends.get(1), derivedEndMetadata);
+        }
+        return derivation;
+    }
+
+    /**
+     * Applies a prefix metadata, such as the {@code #derivation} of a requirement derivation, on the given element.
+     *
+     * @param annotatedElement
+     *            the element to annotate
+     * @param metadataDefinition
+     *            the definition of the applied metadata
+     * @return the new {@link MetadataUsage}, or {@code null} if no metadata definition was given
+     */
+    public MetadataUsage applyPrefixMetadata(Element annotatedElement, Metaclass metadataDefinition) {
+        if (metadataDefinition == null) {
+            return null;
+        }
+        MetadataUsage metadataUsage = SysmlFactory.eINSTANCE.createMetadataUsage();
+        OwningMembership owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+        owningMembership.getOwnedRelatedElement().add(metadataUsage);
+        annotatedElement.getOwnedRelationship().add(owningMembership);
+
+        FeatureTyping featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
+        featureTyping.setType(metadataDefinition);
+        featureTyping.setTypedFeature(metadataUsage);
+        metadataUsage.getOwnedRelationship().add(featureTyping);
+
+        this.elementInitializerSwitch.doSwitch(owningMembership);
+        this.elementInitializerSwitch.doSwitch(metadataUsage);
+        this.elementInitializerSwitch.doSwitch(featureTyping);
+        // A prefix metadata has no name of its own, it is identified by the definition it is typed by.
+        metadataUsage.setDeclaredName(null);
+        return metadataUsage;
     }
 
     /**

@@ -83,7 +83,11 @@ A requirement derivation is a `ConnectionUsage` annotated with the `#derivation`
 The edge goes from the derived requirement to the original one and is displayed as a dashed `«derive»` line, so it can be distinguished from a `«satisfy»` edge.
 - https://github.com/eclipse-syson/syson/issues/2403[#2403] [diagrams] Add support for the inheritance of `ItemUsage` border nodes on `ActionDefinition` and `ActionUsage` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/2404[#2404] [diagrams] Add support for the inheritance of `ItemUsage` border nodes on `PortDefinition` and `PortUsage` graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/2428[#2428] [diagrams] Add the _New Derived Requirement_ edge tool on `RequirementUsage` graphical nodes, creating a requirement derivation towards another `RequirementUsage`.
+The edge is drawn from the derived requirement to the original one, and the created derivation has the same shape as one written in text: a `ConnectionUsage` annotated with `#derivation`, whose ends are annotated with `#original` and `#derive`.
+The import of the `RequirementDerivation` library is added to the owning namespace when it is missing.
 
+== v20
 == v2026.7.0
 
 === Breaking changes

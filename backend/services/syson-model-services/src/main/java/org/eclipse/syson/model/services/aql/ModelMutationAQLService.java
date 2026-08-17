@@ -103,6 +103,13 @@ public class ModelMutationAQLService {
     }
 
     /**
+     * {@link ModelMutationElementService#createRequirementDerivation(RequirementUsage, RequirementUsage)}.
+     */
+    public Element createRequirementDerivation(RequirementUsage derived, RequirementUsage original) {
+        return this.modelMutationElementService.createRequirementDerivation(derived, original);
+    }
+
+    /**
      * {@link MetamodelMutationElementService#createOccurrenceInOccurrence(Type, EClass)}.
      */
     public EObject createOccurrenceInOccurrence(Type container, EClass eClass) {

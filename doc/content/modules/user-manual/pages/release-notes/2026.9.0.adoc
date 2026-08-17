@@ -31,7 +31,6 @@ The subject inheritance in _subject_ compartment is also visible in the followin
 *** `ConcernUsage`
 *** `SatisfyRequirementUsage`
 ** Add support for the inheritance of the parameter border nodes of `ActionDefinition` and `ActionUsage` graphical nodes.
-
 ** Add _requirements_ compartments to `PartUsage` and `PartDefinition` graphical nodes.
 +
 image::release-notes-requirements-compartment-parts.png[Requirements compartments in PartUsage and PartDefinition graphical nodes, width=60%,height=60%]
@@ -79,6 +78,15 @@ image::release-notes-action-inherited-item-border-nodes.png[ItemUsage border nod
 ** Add support for the inheritance of `ItemUsage` border nodes on `PortDefinition` and `PortUsage` graphical nodes.
 +
 image::release-notes-port-inherited-item-border-nodes.png[ItemUsage border node inheritance on PortDefinition and PortUsage]
+
+** Requirement derivations can now be created from a _General View_ diagram, with the _New Derived Requirement_ edge tool of `RequirementUsage` graphical nodes.
++
+The edge is drawn from the derived requirement to the original one, the direction the derivation is read in: _this requirement is derived from that one_.
++
+image::release-notes-new-derived-requirement-tool.png[New Derived Requirement edge tool on RequirementUsage graphical nodes, width=60%,height=60%]
++
+A derivation created this way is the same as one written in text, so both can be mixed in the same model, and exporting the model gives back the `#derivation` connection shown above.
+The `RequirementDerivation` library is imported automatically when the model does not import it yet.
 
 == Bug fixes
 
