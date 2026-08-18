@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -1213,11 +1213,12 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public FlowDefinition createFlowDefinition() {
         FlowDefinitionImpl flowDefinition = new FlowDefinitionImpl();
+        flowDefinition.setElementId(ElementUtil.generateUUID(flowDefinition).toString());
         return flowDefinition;
     }
 
