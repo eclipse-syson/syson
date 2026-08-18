@@ -33,6 +33,13 @@ include::user-manual:partial$nav-integration.adoc[]
 --
 +
 
+* xref:developer-guide:index.adoc[]
++
+--
+include::developer-guide:partial$nav.adoc[]
+--
++
+
 * xref:user-manual:help.adoc[]
 +
 --

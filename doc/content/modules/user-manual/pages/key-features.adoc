@@ -61,7 +61,7 @@ a|✅
 a|✅
 
 |xref:user-manual:support.adoc[Edit Graphical Properties, Undo/Redo, Copy/Paste]
-a|❌
+a|✅ (Partial)
 
 2+h|Collaboration & Interoperability
 
