@@ -9,12 +9,12 @@ Following these steps configures your local environment with all required depend
 
 For development or local testing, the simplest approach is to start a PostgreSQL instance by using Docker.
 
-[source, bash]
+[source, bash, subs=attributes+]
 ----
-docker run -p 5433:5432 --name syson-postgres \
+docker run -p 5433:5432 --name {product-lower}-postgres \
                             -e POSTGRES_USER=dbuser \
                             -e POSTGRES_PASSWORD=dbpwd \
-                            -e POSTGRES_DB=syson-db \
+                            -e POSTGRES_DB={product-lower}-db \
                             -d postgres
 ----
 
@@ -22,9 +22,9 @@ docker run -p 5433:5432 --name syson-postgres \
 ====
 For Windows users, here is the same command on one line:
 
-[source, bash]
+[source, bash, subs=attributes+]
 ----
-docker run -p 5433:5432 --name syson-postgres -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=dbpwd -e POSTGRES_DB=syson-db -d postgres
+docker run -p 5433:5432 --name {product-lower}-postgres -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=dbpwd -e POSTGRES_DB={product-lower}-db -d postgres
 ----
 ====
 
@@ -53,10 +53,10 @@ Before you run the application, confirm you have following the xref:requirements
 
 Go to the folder containing the {product-jar} and run the command:
 
-[source, bash]
+[source, bash, subs=attributes+]
 ----
-java -jar path\to\your\syson-application-YEAR.MONTH.0.jar \
-          --spring.datasource.url=jdbc:postgresql://localhost:5433/syson-db \
+java -jar path/to/your/{app-name}-YEAR.MONTH.0.jar \
+          --spring.datasource.url=jdbc:postgresql://localhost:5433/{product-lower}-db \
           --spring.datasource.username=dbuser \
           --spring.datasource.password=dbpwd
 ----
@@ -68,7 +68,7 @@ Navigate to `http://localhost:8080` to experience {product}.
 
 [TIP]
 ====
-To end your local testing session, confirm you stop the running PostgreSQL Docker container by using the command `docker kill syson-postgres`.
+To end your local testing session, confirm you stop the running PostgreSQL Docker container by using the command `docker kill {product-lower}-postgres`.
 Note that this erases all the data you have generated during testing.
 ====
 
