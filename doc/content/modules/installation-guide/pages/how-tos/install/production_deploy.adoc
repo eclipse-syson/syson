@@ -79,9 +79,9 @@ To run the application, you'll need to use the Java Runtime Environment (JRE) to
 
 Go to the folder containing the {product-jar} and run the command:
 
-[source, bash]
+[source, bash, subs=attributes+]
 ----
-java -jar path/to/your/syson-application-YEAR.MONTH.0.jar \
+java -jar path/to/your/{app-name}-YEAR.MONTH.0.jar \
   \
   --spring.datasource.url=jdbc:postgresql://databaseHost:5433/databaseName \
   --spring.datasource.username=databaseUsername \

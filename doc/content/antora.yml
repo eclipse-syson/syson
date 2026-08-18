@@ -7,6 +7,7 @@ nav:
 asciidoc:
   attributes:
     afv: "Action Flow View"
+    app-name: "syson-application"
     bug-url: "https://github.com/eclipse-syson/syson/issues"
     changelog-url: "https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc"
     details: "Details"
@@ -23,6 +24,7 @@ asciidoc:
     mbse: "Model-Based Systems Engineering"
     packages-url: "https://github.com/eclipse-syson/syson/packages/2020337/versions"
     product: "SysON"
+    product-lower: "syson"
     product-jar: "org.eclipse.syson.syson-application-YYYY.M.X.jar"
     projects-list: "Projects List"
     projects-list-menu: "Project Options Menu"
