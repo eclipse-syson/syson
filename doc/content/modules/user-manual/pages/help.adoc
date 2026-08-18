@@ -1,5 +1,7 @@
-= Support and resources
+ifeval::["{page-component-version}" == "main"]
+include::master@sirius-web:user-manual:help.adoc[]
+endif::[]
 
-Discover how to engage with the community, contribute to product development, access best practices, and seek professional support.
-
-include::user-manual:partial$nav-help.adoc[]
+ifeval::["{page-component-version}" != "main"]
+include::{page-component-version}@sirius-web:user-manual:help.adoc[]
+endif::[]

@@ -21,6 +21,7 @@ asciidoc:
     iv: "Interconnection view"
     kerml: "KerML"
     mbse: "Model-Based Systems Engineering"
+    milestones: "{source-code-url}/milestones"
     packages-url: "https://github.com/eclipse-syson/syson/packages/2020337/versions"
     product: "SysON"
     product-jar: "org.eclipse.syson.syson-application-YYYY.M.X.jar"
