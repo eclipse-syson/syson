@@ -40,4 +40,7 @@ COPY --from=ui /usr/app/ui-bundle.zip .
 
 WORKDIR /usr/app
 
-CMD ["antora", "--clean", "--stacktrace", "--log-failure-level=warn", "--log-level=all", "/usr/app/doc/docs-site/antora-playbook.yml"]
+ARG ANTORA_PLAYBOOK=doc/docs-site/antora-playbook.yml
+ENV ANTORA_PLAYBOOK=${ANTORA_PLAYBOOK}
+
+CMD ["sh", "-c", "exec antora --clean --stacktrace --log-failure-level=warn --log-level=all \"/usr/app/${ANTORA_PLAYBOOK}\""]
