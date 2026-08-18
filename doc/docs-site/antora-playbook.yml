@@ -12,6 +12,11 @@ content:
       branches: ["main"]
       tags:
         ["v*.0", "!v2024.5.{0,1,2}", "!v2024.1.*", "!v2024.3.*", "!v2023.*.*"]
+    - url: https://github.com/eclipse-sirius/sirius-web.git
+      start_paths: doc/content
+      branches: ["master"]
+      tags:
+        ["v*.0", "!v2026.{1,3,5}.*", "!v2025.*.*", "!v2024.*.*", "!v2023.*.*", "!v2022.*.*", "!v2021.*.*", "!v0*"]
 
 ui:
   bundle:

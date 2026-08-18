@@ -1,3 +1,7 @@
-= Resources
+ifeval::["{page-component-version}" == "main"]
+include::master@sirius-web:user-manual:resources.adoc[]
+endif::[]
 
-Find videos, articles and presentations about {product} on its official website dedicated section: {resources-url}
+ifeval::["{page-component-version}" != "main"]
+include::{page-component-version}@sirius-web:user-manual:resources.adoc[]
+endif::[]

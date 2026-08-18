@@ -1,5 +1,7 @@
-= Professional support
+ifeval::["{page-component-version}" == "main"]
+include::master@sirius-web:user-manual:support.adoc[]
+endif::[]
 
-https://www.obeosoft.com/en/[Obeo], co-leader of {product}, provides training, expertise, custom development, enterprise add-ons, Saas access to {product} and support plans.
-
-https://www.obeosoft.com/en/contact[Contact Us!]
+ifeval::["{page-component-version}" != "main"]
+include::{page-component-version}@sirius-web:user-manual:support.adoc[]
+endif::[]
