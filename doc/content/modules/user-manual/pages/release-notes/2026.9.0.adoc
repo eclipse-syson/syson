@@ -2,38 +2,24 @@
 
 == Key highlights
 
+* `Requirement` derivations are now displayed as `«derive»` edges in _General View_ diagrams and can be created directly from a diagram.
+* Diagrams now display a broader range of inherited elements, including requirements, concerns, constraints, actors, subjects, items, and action parameters.
+* `PartUsage` and `PartDefinition` graphical nodes now include _requirements_ and _concerns_ compartments, with tools to create elements in them.
+* The _Requirements table_ view now displays nested requirements hierarchically and provides an action to create nested requirements.
+* {product} Docker images now run natively on both `linux/amd64` and `linux/arm64` platforms.
+
 == New features
 
 * In diagrams:
 
-** Add support for list item inheritance in _perform actions_ compartments.
-** Add support for framed concern inheritance in _frames_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
-** Add support for `ItemUsage` inheritance in _items_ compartments of `PortUsage` and `PortDefinition` graphical nodes.
-** Add support for assume constraint inheritance in _assume constraints_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
-** Add support for require constraints inheritance in _require constraints_ compartments of `RequirementUsage`, `RequirementDefinition` and subtypes graphical nodes.
-** Add support for stakeholder inheritance in _stakeholders_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
-** Add support for `SatisfyRequirementUsage` inheritance in _satisfy requirements_ compartment of `PartUsage` and `PartDefinition` graphical nodes.
-** Add support for objective requirement inheritance in _objective_ compartments of `CaseUsage` and `CaseDefinition` graphical nodes.
-** Add support for actor inheritance in _actors_ compartment of `CaseDefinition` and `CaseUsage` graphical nodes.
-The actor inheritance in _actors_ compartment is also visible in the following graphical nodes:
-
-*** `RequirementDefinition`
-*** `RequireUsage`
-*** `ConcernDefinition`
-*** `ConcernUsage`
-*** `SatisfyRequirementUsage`
-** Add support for subject inheritance in _subject_ compartment of `CaseDefinition` and `CaseUsage` graphical nodes.
-The subject inheritance in _subject_ compartment is also visible in the following graphical nodes:
-
-*** `RequirementDefinition`
-*** `RequireUsage`
-*** `ConcernDefinition`
-*** `ConcernUsage`
-*** `SatisfyRequirementUsage`
-** Add support for the inheritance of the parameter border nodes of `ActionDefinition` and `ActionUsage` graphical nodes.
+** Add support for framed `Concern` inheritance in the _frames_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
+** Add support for assume `Constraint` inheritance in the _assume constraints_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
+** Add support for require `Constraint` inheritance in the _require constraints_ compartments of `RequirementUsage`, `RequirementDefinition`, and their subtypes.
+** Add support for stakeholder inheritance in the _stakeholders_ compartments of `RequirementUsage` and `RequirementDefinition` graphical nodes.
+** Add support for `SatisfyRequirementUsage` inheritance in the _satisfy requirements_ compartments of `PartUsage` and `PartDefinition` graphical nodes.
 ** Add _requirements_ compartments to `PartUsage` and `PartDefinition` graphical nodes.
 +
-image::release-notes-requirements-compartment-parts.png[Requirements compartments in PartUsage and PartDefinition graphical nodes, width=60%,height=60%]
+image::release-notes-requirements-compartment-parts.png[Requirements compartments in PartUsage and PartDefinition graphical nodes, width=50%,height=50%]
 
 ** It is now possible to create new requirements using the _New Requirement_ tool from the `PartUsage` and `PartDefinition` graphical nodes.
 +
@@ -41,20 +27,20 @@ image::release-notes-new-requirement-parts.png[New Requirement tool on PartUsage
 
 ** Add _concerns_ compartments to `PartUsage` and `PartDefinition` graphical nodes.
 +
-image::release-notes-concerns-compartment-parts.png[Concerns compartments in PartUsage and PartDefinition graphical nodes, width=60%,height=60%]
+image::release-notes-concerns-compartment-parts.png[Concerns compartments in PartUsage and PartDefinition graphical nodes, width=50%,height=50%]
 
 ** It is now possible to create new concerns using the _New Concern_ tool from the `PartUsage` and `PartDefinition` graphical nodes.
 +
 image::release-notes-new-concern-parts.png[New Concern tool on PartUsage and PartDefinition graphical nodes, width=60%,height=60%]
 
-** Requirement derivations are now displayed as edges in _General View_ diagrams.
-A requirement derivation records that a requirement has been derived from another one, which is what allows a detailed requirement to be traced back to the requirement it comes from.
+** `Requirement` derivations are now displayed as edges in _General View_ diagrams.
+A `Requirement` derivation records that a `Requirement` has been derived from another `Requirement`, allowing a detailed `Requirement` to be traced back to its source.
 +
-The edge goes from the derived requirement to the original one, and is displayed as a dashed line labelled `«derive»`, so that it can be told apart from a `«satisfy»` edge.
+The edge goes from the derived `Requirement` to the original `Requirement` and is displayed as a dashed line labelled `«derive»`, distinguishing it from a `«satisfy»` edge.
 +
 image::release-notes-requirement-derivation-edge.png[Requirement derivation displayed as an edge in a General View diagram]
 +
-Requirement derivations are created from SysML v2 text, using the _Upload model_ action of the _Explorer_ or its _New objects from text_ action.
+`Requirement` derivations can be created from SysML v2 text by using either the _Upload model_ action or the _New objects from text_ action in the _Explorer_.
 The following text creates two requirements and a derivation between them:
 +
 [source,sysml]
@@ -68,70 +54,87 @@ requirement paymentDelayPrevention;
 }
 ----
 +
-Once both requirements are displayed in a _General View_ diagram, by dropping them from the _Explorer_ for example, the `«derive»` edge between them appears automatically.
-The direction of the edge is given by the `#original` and `#derive` metadata of its ends, so it does not depend on the order in which those ends are declared.
-** On `ActionUsage` and `ActionDefinition` graphical nodes with the _items_ compartment collapsed, when an `ItemUsage` without direction is created, represents the `ItemUsage` with a border node instead of an `ItemUsage` graphical node linked by composition.
- So now, on `ActionDefinition` and `ActionUsage` creating and displaying `ItemUsage` graphical nodes with and without direction behaves identically.
-** Add support for the inheritance of `ItemUsage` border nodes on `ActionDefinition` and `ActionUsage` graphical nodes.
+Once both requirements are displayed in a _General View_ diagram, for example by dropping them from the _Explorer_, the `«derive»` edge between them appears automatically.
+The `#original` and `#derive` metadata on the edge ends determine its direction, so the declaration order of the ends has no effect.
+** `Requirement` derivations can now be created in a _General View_ diagram with the _New Derived Requirement_ edge tool available on `RequirementUsage` graphical nodes.
 +
-image::release-notes-action-inherited-item-border-nodes.png[ItemUsage border node inheritance on ActionDefinition and ActionUsage]
-** Add support for the inheritance of `ItemUsage` border nodes on `PortDefinition` and `PortUsage` graphical nodes.
-+
-image::release-notes-port-inherited-item-border-nodes.png[ItemUsage border node inheritance on PortDefinition and PortUsage]
-
-** Requirement derivations can now be created from a _General View_ diagram, with the _New Derived Requirement_ edge tool of `RequirementUsage` graphical nodes.
-+
-The edge is drawn from the derived requirement to the original one, the direction the derivation is read in: _this requirement is derived from that one_.
+The edge is drawn from the derived `Requirement` to the original `Requirement`, which is the direction in which the derivation is read: _this requirement is derived from that one_.
 +
 image::release-notes-new-derived-requirement-tool.png[New Derived Requirement edge tool on RequirementUsage graphical nodes, width=60%,height=60%]
 +
-A derivation created this way is the same as one written in text, so both can be mixed in the same model, and exporting the model gives back the `#derivation` connection shown above.
-The `RequirementDerivation` library is imported automatically when the model does not import it yet.
+A derivation created with the edge tool is equivalent to one written in text, so both can be used in the same model.
+Exporting the model produces the `#derivation` connection shown above.
+The `RequirementDerivation` library is imported automatically when the model does not already import it.
+** Add support for objective `Requirement` inheritance in _objective_ compartments of `CaseUsage` and `CaseDefinition` graphical nodes.
+** Add support for actor inheritance in the _actors_ compartments of `CaseDefinition` and `CaseUsage` graphical nodes.
++
+Actor inheritance in the _actors_ compartment is also displayed on the following graphical nodes:
+
+*** `RequirementDefinition`
+*** `RequireUsage`
+*** `ConcernDefinition`
+*** `ConcernUsage`
+*** `SatisfyRequirementUsage`
+** Add support for subject inheritance in the _subject_ compartments of `CaseDefinition` and `CaseUsage` graphical nodes.
++
+Subject inheritance in the _subject_ compartment is also displayed on the following graphical nodes:
+
+*** `RequirementDefinition`
+*** `RequireUsage`
+*** `ConcernDefinition`
+*** `ConcernUsage`
+*** `SatisfyRequirementUsage`
+** Add support for list item inheritance in _perform actions_ compartments.
+** Add support for the inheritance of the parameter border nodes of `ActionDefinition` and `ActionUsage` graphical nodes.
+** On `ActionUsage` and `ActionDefinition` graphical nodes with the _items_ compartment collapsed, creating an `ItemUsage` without a direction now represents it as a border node rather than as an `ItemUsage` graphical node linked by a composition edge.
+As a result, creating and displaying `ItemUsage` graphical nodes with or without a direction now behaves identically on `ActionDefinition` and `ActionUsage` graphical nodes.
+** Add support for the inheritance of `ItemUsage` border nodes on `ActionDefinition` and `ActionUsage` graphical nodes.
++
+image::release-notes-action-inherited-item-border-nodes.png[ItemUsage border node inheritance on ActionDefinition and ActionUsage, width=80%,height=80%]
+** Add support for `ItemUsage` inheritance in _items_ compartments of `PortUsage` and `PortDefinition` graphical nodes.
+** Add support for the inheritance of `ItemUsage` border nodes on `PortDefinition` and `PortUsage` graphical nodes.
++
+image::release-notes-port-inherited-item-border-nodes.png[ItemUsage border node inheritance on PortDefinition and PortUsage, width=80%,height=80%]
 
 == Bug fixes
 
 * In diagrams:
 
-** Fix the missing graphical edge between `ConcernUsage` or `ConcernDefinition` graphical nodes and the Actors created from them.
-** Fix dropping a nested `AttributeUsage` from the _Explorer_ onto a _General View_ diagram so it is visible on the first drop.
-** Fix `Comment` graphical nodes so changing their background color no longer changes their border color.
+** Fix the missing graphical edge between `ConcernUsage` or `ConcernDefinition` graphical nodes and the actors created from them.
 ** Fix the nested composition edge tool label on `ConcernUsage` graphical nodes in _General View_ diagrams.
 It is now _Become nested Concern_ instead of _Become nested Requirement_.
-** Fix the support of `PortUsage` as end inheritance in _ends_ compartment of `InterfaceDefinition` graphical node.
-** Fix the ends of the connections whose ends are declared with the `end` keyword inside the body of the connection, which were not resolved.
-Those connections were missing their source and their target, and were therefore never displayed as edges.
-** Replace the name of the _New Perform action_ tool to _New Perform Action_ to be consistent with other tools.
+** Fix inherited `PortUsage` ends in the _ends_ compartment of `InterfaceDefinition` graphical nodes.
+** Fix unresolved connection ends declared with the `end` keyword inside a connection body.
+The affected connections were missing their source and target and were therefore never displayed as edges.
+** Fix an issue that prevented a nested `AttributeUsage` from becoming visible when it was first dropped from the _Explorer_ onto a _General View_ diagram.
+** Fix `Comment` graphical nodes so changing their background color no longer changes their border color.
+** Rename the _New Perform action_ tool to _New Perform Action_ for consistency with other tools.
 ** Remove the _New Subclassification_ edge tool from `EnumerationDefinition` graphical nodes, which cannot subclassify another `EnumerationDefinition`.
 
 * In all views:
 
 ** Fix expression creation and editing on `SuccessionAsUsage` elements.
-** Fix the _Typed by_ property in the _Details_ view so a `Usage` can only be typed by its corresponding `Definition` kind.
+** Fix the _Typed by_ property in the _Details_ view so that a `Usage` can only be typed by the corresponding kind of `Definition`.
 
 * In textual import/export:
 
-** Fix the export of the keywords carried by the ends of a connection, such as the `#original` and `#derive` of a requirement derivation, which were missing from the exported text when the connection had been created from a diagram.
+** Fix the export of the keywords carried by the ends of a connection, such as the `#original` and `#derive` of a `Requirement` derivation, which were missing from the exported text when the connection had been created from a diagram.
 Exporting such a connection and importing it back no longer loses which end is which.
 
 == Improvements
 
-* {product} Docker images are now multi-platform (`linux/amd64` and `linux/arm64`), so they run natively on arm64 machines such as Apple Silicon or AWS Graviton without emulation.
-Setting `DOCKER_DEFAULT_PLATFORM=linux/amd64` is no longer necessary on these machines.
+* {product} Docker images now support `linux/amd64` and `linux/arm64` and run natively on arm64 machines such as Apple Silicon or AWS Graviton.
+Setting `DOCKER_DEFAULT_PLATFORM=linux/amd64` is no longer necessary on arm64 machines.
 
-* In diagrams:
+* In the _Requirements table_ view:
 
-* In textual import/export:
-
-* In Requirements table view:
-
-** The _Requirements table_ view now displays nested `Requirements`.
-Nested `Requirements` are displayed in the table using a hierarchical way.
+** The _Requirements table_ view now displays nested requirements hierarchically.
 +
 image::release-notes-hierarchical-requirements-table-view.png[Hierarchical requirements table view, width=90%,height=90%]
 
-** On a `Requirement` row, its menu now includes a new action that allows users to create a nested `Requirement`
+** The menu for a `Requirement` row now includes an action that lets users create a nested `Requirement`.
 +
-image::release-notes-hierarchical-requirements-table-view-create-nested-requirement.png[New sub requirement in row action menu, width=90%,height=90%]
+image::release-notes-hierarchical-requirements-table-view-create-nested-requirement.png[New sub-requirement in row action menu, width=90%,height=90%]
 
 == Technical details
 
