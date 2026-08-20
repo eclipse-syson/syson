@@ -170,6 +170,12 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private static final String SPACE = " ";
 
+    /** The sequence closing a block comment, which cannot appear inside a comment body. */
+    private static final String COMMENT_TERMINATOR = "*/";
+
+    /** The form the block comment terminator is exported as, so it no longer closes the comment. */
+    private static final String ESCAPED_COMMENT_TERMINATOR = "* /";
+
     private final String lineSeparator;
 
     private final String indentation;
@@ -2530,8 +2536,36 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private String getCommentBody(String body) {
         Appender subBuilder = this.newAppender();
-        subBuilder.append("/* ").append(body).append(" */");
+        subBuilder.append("/* ").append(this.escapeCommentTerminator(body)).append(" */");
         return subBuilder.toString();
+    }
+
+    /**
+     * Replace the occurrences of the block comment terminator in a comment body.
+     * <p>
+     * The grammar defines a comment as {@code /*[\s\S]*?*}{@code /}, a non greedy match up to the first {@code *}
+     * {@code /}, with no escape sequence and no nesting, so that sequence cannot be represented inside a comment body.
+     * Left as it is, it closes the comment early and the rest of the body is exported as if it were SysML v2 code,
+     * giving a file which does not parse. It is separated by a space instead, which is reported since the exported text
+     * is then not exactly the one which was written.
+     * </p>
+     * <p>
+     * The reverse replacement is deliberately not done on import: a body may legitimately contain the separated form,
+     * and turning it back would corrupt it.
+     * </p>
+     *
+     * @param body
+     *            the body of a comment, a documentation or a textual representation
+     * @return the body, with any block comment terminator separated by a space
+     */
+    private String escapeCommentTerminator(String body) {
+        if (body == null || !body.contains(COMMENT_TERMINATOR)) {
+            return body;
+        }
+        this.reportConsumer.accept(Status.warning(
+                "A comment body contains \"{0}\", which closes a comment. It has been exported as \"{1}\" so the text remains valid.",
+                COMMENT_TERMINATOR, ESCAPED_COMMENT_TERMINATOR));
+        return body.replace(COMMENT_TERMINATOR, ESCAPED_COMMENT_TERMINATOR);
     }
 
     private void appendLocale(Appender builder, String local) {
