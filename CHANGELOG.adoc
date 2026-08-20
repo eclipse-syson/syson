@@ -19,6 +19,8 @@ Downstream code should now depend on the diagram services module for that bean.
 They are now distributed as ES modules and CommonJS bundles only.
 Downstream consumers relying on the previous `.umd.js` artifacts or on direct browser script-tag usage must migrate to a bundler-based integration or consume the new CommonJS entry points instead.
 - https://github.com/eclipse-syson/syson/issues/2418[#2418] [services] Remove the `unwrapFeature` service since it is not used anymore.
+- https://github.com/eclipse-syson/syson/issues/2452[#2352] [diagram] SysON now defines its own `DiagramDefaultToolsFactory` providing show/hide tools.
+SysON consumers should use this new service instead of the Sirius Web's DefaultToolsFactory.
 
 === Dependency update
 
@@ -68,6 +70,7 @@ Memberships, root namespaces, expose elements, and expression internals are hidd
 This removes Rollup warnings about missing global names for externalized peer dependencies while keeping React, MUI, Apollo and other shared dependencies outside the published bundles.
 - [releng] Reduce the log of the frontend tasks `format-lint` and `build-dev` by default to make tasks such as `build` or `start` less verbose.
 - [cleanup] Use only one border node description provider for all item border nodes.
+- https://github.com/eclipse-syson/syson/issues/2452[#2352] [diagram] Decouple SysON tools from Sirius Web's DefaultToolsFactory: SysON now defines its own `DiagramDefaultToolsFactory` providing show/hide tools.
 
 === New features
 

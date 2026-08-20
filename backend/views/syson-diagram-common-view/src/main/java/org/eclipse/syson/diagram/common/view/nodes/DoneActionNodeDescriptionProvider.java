@@ -70,7 +70,7 @@ public class DoneActionNodeDescriptionProvider extends AbstractNodeDescriptionPr
     private NodePalette createNodePalette() {
         return this.diagramBuilderHelper.newNodePalette()
                 .quickAccessTools(this.getDeleteFromDiagramTool())
-                .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
+                .toolSections(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .build();
     }
 }

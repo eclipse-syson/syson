@@ -129,7 +129,7 @@ public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractC
         this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new ExhibitStateNodeToolProvider(false).create(cache));
         this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new ExhibitStateNodeToolProvider(true).create(cache));
 
-        toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
+        toolSections.add(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection());
         this.toolDescriptionService.removeEmptyNodeToolSections(toolSections);
 
         return palette.toolSections(toolSections.toArray(NodeToolSection[]::new))

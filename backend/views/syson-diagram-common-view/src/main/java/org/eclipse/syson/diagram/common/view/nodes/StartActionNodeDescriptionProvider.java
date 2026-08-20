@@ -81,7 +81,7 @@ public class StartActionNodeDescriptionProvider extends AbstractNodeDescriptionP
         return this.diagramBuilderHelper.newNodePalette()
                 .edgeTools(edgeTools.toArray(EdgeTool[]::new))
                 .quickAccessTools(this.getDeleteFromDiagramTool())
-                .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
+                .toolSections(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .build();
     }
 

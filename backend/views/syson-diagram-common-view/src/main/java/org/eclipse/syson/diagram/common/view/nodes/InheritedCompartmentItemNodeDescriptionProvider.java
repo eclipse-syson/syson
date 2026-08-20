@@ -106,7 +106,7 @@ public class InheritedCompartmentItemNodeDescriptionProvider extends AbstractNod
 
     private NodePalette createInheritedCompartmentItemNodePalette() {
         return this.diagramBuilderHelper.newNodePalette()
-                .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
+                .toolSections(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .build();
     }
 }

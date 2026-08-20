@@ -120,7 +120,7 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
         this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new DoneActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
         this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new PerformActionNodeToolProvider().create(cache));
 
-        toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
+        toolSections.add(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection());
         toolSections.add(this.toolDescriptionService.relatedElementsNodeToolSection(false));
         this.toolDescriptionService.removeEmptyNodeToolSections(toolSections);
 

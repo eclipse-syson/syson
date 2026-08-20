@@ -139,7 +139,7 @@ public class ImportedPackageNodeDescriptionProvider extends AbstractNodeDescript
         var sections = new ArrayList<NodeToolSection>();
 
         sections.add(this.toolDescriptionService.relatedElementsNodeToolSection(true));
-        sections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
+        sections.add(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection());
 
         return sections.toArray(NodeToolSection[]::new);
     }

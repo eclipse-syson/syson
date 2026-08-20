@@ -31,7 +31,7 @@ import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
-import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
+import org.eclipse.syson.diagram.common.view.DiagramDefaultToolsFactory;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
@@ -54,7 +54,7 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
 
     protected final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
-    protected final DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
+    protected final DiagramDefaultToolsFactory diagramDefaultToolsFactory = new DiagramDefaultToolsFactory();
 
     protected final IColorProvider colorProvider;
 

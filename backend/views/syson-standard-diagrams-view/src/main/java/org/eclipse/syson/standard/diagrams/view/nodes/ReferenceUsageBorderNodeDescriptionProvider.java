@@ -108,7 +108,7 @@ public class ReferenceUsageBorderNodeDescriptionProvider extends AbstractReferen
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
-                .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
+                .toolSections(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .quickAccessTools(this.getDuplicateElementAndNodeTool())
                 .edgeTools(this.getEdgeTools(cache, nodeDescription).toArray(EdgeTool[]::new))
                 .build();

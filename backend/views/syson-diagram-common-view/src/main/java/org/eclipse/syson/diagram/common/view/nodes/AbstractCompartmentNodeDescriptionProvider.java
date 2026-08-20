@@ -216,7 +216,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
             this.toolDescriptionService.addNodeTool(toolSections, toolSectionName, nodeTool);
         }
 
-        toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
+        toolSections.add(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection());
         this.toolDescriptionService.removeEmptyNodeToolSections(toolSections);
 
         var toolsWithoutSection = new ArrayList<NodeTool>();
