@@ -31,7 +31,7 @@ import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
-import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
+import org.eclipse.syson.diagram.common.view.DiagramDefaultToolsFactory;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.util.ServiceMethod;
 
@@ -46,7 +46,7 @@ public abstract class AbstractEdgeDescriptionProvider implements IEdgeDescriptio
 
     protected final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
-    protected final DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
+    protected final DiagramDefaultToolsFactory diagramDefaultToolsFactory = new DiagramDefaultToolsFactory();
 
     protected IColorProvider colorProvider;
 
@@ -166,7 +166,7 @@ public abstract class AbstractEdgeDescriptionProvider implements IEdgeDescriptio
 
     protected List<EdgeToolSection> createEdgeToolSections(IViewDiagramElementFinder cache) {
         var edgeToolSections = new ArrayList<EdgeToolSection>();
-        edgeToolSections.add(this.defaultToolsFactory.createDefaultHideRevealEdgeToolSection());
+        edgeToolSections.add(this.diagramDefaultToolsFactory.createDefaultHideRevealEdgeToolSection());
         return edgeToolSections;
     }
 

@@ -201,7 +201,7 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS,
                 new SetAsViewToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.STV_QN), StandardDiagramsConstants.STV).create(cache));
 
-        sections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
+        sections.add(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection());
 
         return sections.toArray(NodeToolSection[]::new);
     }

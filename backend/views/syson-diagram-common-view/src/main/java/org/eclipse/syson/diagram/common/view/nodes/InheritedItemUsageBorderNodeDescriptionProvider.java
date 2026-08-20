@@ -71,7 +71,7 @@ public class InheritedItemUsageBorderNodeDescriptionProvider extends AbstractIte
     @Override
     protected NodePalette createNodePalette(IViewDiagramElementFinder cache, NodeDescription nodeDescription) {
         return this.diagramBuilderHelper.newNodePalette()
-                .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
+                .toolSections(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .edgeTools(this.getEdgeTools(cache, nodeDescription).toArray(EdgeTool[]::new))
                 .build();
     }

@@ -76,7 +76,7 @@ public class PerformActionsCompartmentNodeDescriptionProvider extends AbstractCo
         // in perform actions compartment only perform action tools are allowed
         this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new PerformActionNodeToolProvider().create(cache));
 
-        toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
+        toolSections.add(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection());
         this.toolDescriptionService.removeEmptyNodeToolSections(toolSections);
 
         return palette.toolSections(toolSections.toArray(NodeToolSection[]::new)).build();

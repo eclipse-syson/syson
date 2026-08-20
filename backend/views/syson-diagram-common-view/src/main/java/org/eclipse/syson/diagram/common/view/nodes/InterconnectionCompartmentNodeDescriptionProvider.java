@@ -102,7 +102,7 @@ public class InterconnectionCompartmentNodeDescriptionProvider extends AbstractC
                 .dropNodeTool(this.createCompartmentDropFromDiagramTool(cache));
 
         var toolSections = this.toolDescriptionService.createDefaultNodeToolSections();
-        toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
+        toolSections.add(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection());
         toolSections.add(this.toolDescriptionService.relatedElementsNodeToolSection(false));
 
         cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartUsage())).ifPresent(nodeDesc -> {

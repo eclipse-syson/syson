@@ -107,7 +107,7 @@ public class StatesCompartmentNodeDescriptionProvider extends AbstractCompartmen
             this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false).create(cache));
             this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR,  new StateTransitionCompartmentNodeToolProvider(true).create(cache));
         }
-        toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
+        toolSections.add(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection());
         this.toolDescriptionService.removeEmptyNodeToolSections(toolSections);
 
         return palette.toolSections(toolSections.toArray(NodeToolSection[]::new))

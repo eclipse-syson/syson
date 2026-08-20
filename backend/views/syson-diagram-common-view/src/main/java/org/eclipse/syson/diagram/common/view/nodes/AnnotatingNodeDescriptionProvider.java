@@ -165,7 +165,7 @@ public class AnnotatingNodeDescriptionProvider extends AbstractNodeDescriptionPr
                 .body(callEditService.build());
 
         var toolSections = new ArrayList<NodeToolSection>();
-        toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
+        toolSections.add(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection());
 
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
