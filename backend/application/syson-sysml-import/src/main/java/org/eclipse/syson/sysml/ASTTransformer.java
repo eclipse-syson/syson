@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.syson.services.DeleteService;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.eclipse.syson.sysml.parser.AstTreeParser;
@@ -62,6 +63,8 @@ public class ASTTransformer {
 
     private final MetamodelQueryElementService metamodelQueryElementService;
 
+    private final UtilService utilService;
+
     public ASTTransformer() {
         this.messageReporter = new MessageReporter();
         this.nonContainmentReferenceHandler = new NonContainmentReferenceHandler(this.messageReporter);
@@ -70,6 +73,7 @@ public class ASTTransformer {
         var astObjectParser = new EAttributeHandler(this.messageReporter);
         this.astTreeParser = new AstTreeParser(astContainmentReferenceParser, this.nonContainmentReferenceHandler, proxyResolver, astObjectParser, this.messageReporter);
         this.metamodelQueryElementService = new MetamodelQueryElementService();
+        this.utilService = new UtilService();
     }
 
     public Resource convertResource(final InputStream input, final ResourceSet resourceSet) {
@@ -221,9 +225,31 @@ public class ASTTransformer {
     private void postResolvingFixingPhase(List<? extends EObject> rootSysmlObjects) {
         for (EObject root : rootSysmlObjects) {
             this.fixTransitionUsageImplicitSource(root);
+            this.fixTransitionUsageWrongStartSource(root);
             this.fixOperatorExpressionUsedAsRanges(root);
             this.fixReferenceSubsettingWithNestedFeature(root);
             this.fixEndFeatureMembership(root);
+        }
+    }
+
+    /**
+     * When the parser parses the value _start_ in a TransitionUsage, it sets the source of the TransitionUsage to Action::start while it should always be State::start.
+     * According to the SysMLV2 specification 7.18.3 Transition Usages:
+     *   The source of a transition usage must be a state usage, ...
+     *
+     * @param root
+     *            the root of the imported object
+     */
+    private void fixTransitionUsageWrongStartSource(EObject root) {
+        if (root instanceof Element rootElement) {
+            var standardStartAction = this.utilService.retrieveStandardStartAction(rootElement);
+            var standardStateStart = this.utilService.retrieveStandardStartState(rootElement);
+            List<TransitionUsage> transitionUsages = EMFUtils.allContainedObjectOfType(rootElement, TransitionUsage.class).toList();
+            transitionUsages.stream()
+                    .filter(transitionUsage -> standardStartAction.equals(transitionUsage.getSource()))
+                    .flatMap(transitionUsage -> transitionUsage.getOwnedMembership().stream())
+                    .filter(membership -> standardStartAction.equals(membership.getMemberElement()))
+                    .forEach(membership -> membership.setMemberElement(standardStateStart));
         }
     }
 

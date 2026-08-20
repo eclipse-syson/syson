@@ -32,18 +32,18 @@ public class MutationInsertTextualSysMLv2DataRunner implements IMutationRunner<I
             mutation insertTextualSysMLv2($input: InsertTextualSysMLv2Input!) {
                     insertTextualSysMLv2(input: $input) {
                       __typename
-                          ... on SuccessPayload {
-                              messages {
-                                level
-                                body
-                              }
-                            }
-                        ... on ErrorPayload {
-                          messages {
-                            level
-                            body
+                      ... on SuccessPayload {
+                        messages {
+                          level
+                          body
                           }
                         }
+                      ... on ErrorPayload {
+                        messages {
+                          level
+                          body
+                        }
+                      }
                     }
                 }
             """;

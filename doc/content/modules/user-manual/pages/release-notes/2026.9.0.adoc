@@ -122,6 +122,7 @@ The affected connections were missing their source and target and were therefore
 
 ** Fix the export of the keywords carried by the ends of a connection, such as the `#original` and `#derive` of a `Requirement` derivation, which were missing from the exported text when the connection had been created from a diagram.
 Exporting such a connection and importing it back no longer loses which end is which.
+** Fix the import of `TransitionUsage` using _start_ which now set the source to the `StateUsage` _start_ from the standard library instead of `ActionUsage` _start_ from the standard library.
 
 == Improvements
 
