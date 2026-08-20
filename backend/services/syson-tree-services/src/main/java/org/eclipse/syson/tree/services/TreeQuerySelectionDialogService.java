@@ -34,6 +34,8 @@ import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterConstants;
+import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFragment;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerService;
 import org.springframework.stereotype.Service;
@@ -46,16 +48,34 @@ import org.springframework.stereotype.Service;
 @Service
 public class TreeQuerySelectionDialogService {
 
+    /**
+     * The filters applied to all selection dialog trees.
+     * <p>
+     * This list mirrors the SysON Explorer defaults that simplify the semantic tree without hiding library
+     * resources. It is deliberately independent from the filters currently selected in the Explorer view.
+     * </p>
+     */
+    private static final List<String> SELECTION_DIALOG_FILTER_IDS = List.of(
+            SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID,
+            SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID,
+            SysONTreeFilterConstants.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID,
+            SysONTreeFilterConstants.HIDE_EXPRESSION_INTERNALS_ID);
+
     private final ISysONExplorerService sysONExplorerService;
+
+    private final ISysONExplorerFilterService filterService;
 
     /**
      * Creates a new selection dialog query service.
      *
      * @param sysONExplorerService
      *            the explorer service used to retrieve root elements and fragment children
+     * @param filterService
+     *            the service used to apply Explorer filters to selection dialog children
      */
-    public TreeQuerySelectionDialogService(ISysONExplorerService sysONExplorerService) {
+    public TreeQuerySelectionDialogService(ISysONExplorerService sysONExplorerService, ISysONExplorerFilterService filterService) {
         this.sysONExplorerService = Objects.requireNonNull(sysONExplorerService);
+        this.filterService = Objects.requireNonNull(filterService);
     }
 
     /**
@@ -325,7 +345,7 @@ public class TreeQuerySelectionDialogService {
      */
     public List<Object> getSelectionDialogElements(IEditingContext editingContext, List<EClassifier> candidates) {
         var elementsContainingClassifiers = new ArrayList<>();
-        List<Object> elements = this.sysONExplorerService.getElements(editingContext, List.of());
+        List<Object> elements = this.sysONExplorerService.getElements(editingContext, SELECTION_DIALOG_FILTER_IDS);
         for (Object rootElement : elements) {
             if (rootElement instanceof Resource resource && this.containsDirectlyOrIndirectlyInstancesOf(resource, candidates)) {
                 elementsContainingClassifiers.add(resource);
@@ -357,18 +377,19 @@ public class TreeQuerySelectionDialogService {
         final List<? extends Object> result;
 
         if (selectionDialogTreeElement instanceof Resource resource) {
-            result = resource.getContents().stream()
+            result = this.filterService.applyFilters(editingContext, resource.getContents(), SELECTION_DIALOG_FILTER_IDS).stream()
                     .filter(content -> candidates.stream().anyMatch(eClassifier -> eClassifier.isInstance(content)) || this.containsDirectlyOrIndirectlyInstancesOf(content, candidates))
                     .toList();
         } else if (selectionDialogTreeElement instanceof Element sysmlElement) {
-            result = sysmlElement.getOwnedRelationship().stream()
+            List<Membership> memberships = sysmlElement.getOwnedRelationship().stream()
                     .filter(Membership.class::isInstance)
                     .map(Membership.class::cast)
-                    .map(Membership::getOwnedRelatedElement).flatMap(List::stream)
+                    .toList();
+            result = this.filterService.applyFilters(editingContext, memberships, SELECTION_DIALOG_FILTER_IDS).stream()
                     .filter(content -> candidates.stream().anyMatch(eClassifier -> eClassifier.isInstance(content)) || this.containsDirectlyOrIndirectlyInstancesOf(content, candidates))
                     .toList();
         } else if (selectionDialogTreeElement instanceof ISysONExplorerFragment fragment) {
-            result = fragment.getChildren(editingContext, List.of(), expandedIds, List.of()).stream().filter(child -> {
+            result = fragment.getChildren(editingContext, List.of(), expandedIds, SELECTION_DIALOG_FILTER_IDS).stream().filter(child -> {
                 if (child instanceof Resource childResource && !this.containsDirectlyOrIndirectlyInstancesOf(childResource, candidates)) {
                     return false;
                 }
@@ -379,6 +400,25 @@ public class TreeQuerySelectionDialogService {
         }
 
         return result;
+    }
+
+    /**
+     * Indicates whether the given object contains an instance of one of the given classifiers.
+     *
+     * @param object
+     *            the object to inspect
+     * @param eClassifiers
+     *            the candidate classifiers
+     * @return {@code true} if an instance is found below the object
+     */
+    private boolean containsDirectlyOrIndirectlyInstancesOf(Object object, List<EClassifier> eClassifiers) {
+        boolean containsInstances = false;
+        if (object instanceof Resource resource) {
+            containsInstances = this.containsDirectlyOrIndirectlyInstancesOf(resource, eClassifiers);
+        } else if (object instanceof EObject eObject) {
+            containsInstances = this.containsDirectlyOrIndirectlyInstancesOf(eObject, eClassifiers);
+        }
+        return containsInstances;
     }
 
     private boolean containsDirectlyOrIndirectlyInstancesOf(Resource resource, List<EClassifier> eClassifiers) {
