@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.data.NewObjectAsTextProjectData;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Element;
@@ -51,7 +52,9 @@ import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
+import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.datafetchers.MutationInsertTextualSysMLv2DataFetcher;
 import org.eclipse.syson.sysml.dto.InsertTextualSysMLv2Input;
@@ -85,6 +88,8 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
 
     @Autowired
     private IObjectSearchService objectSearchService;
+
+    private final UtilService utilService = new UtilService();
 
     @BeforeEach
     public void beforeEach() {
@@ -125,6 +130,31 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
                     return false;
                 });
 
+    }
+
+    @DisplayName("GIVEN a package, WHEN importing a StateDefinition with a TransitionUsage with start source, THEN the start source is State::start not Action::start")
+    @GivenSysONServer({ NewObjectAsTextProjectData.SCRIPT_PATH })
+    @Test
+    public void testCreateTransitionUsageFromText() {
+        this.insertTextExpectNoMessage(NewObjectAsTextProjectData.SemanticIds.ROOT_ID, """
+                state def TestDefinition{
+                        state a;
+                        transition first start then a;
+                }""");
+
+        this.checkElement(Package.class,
+                NewObjectAsTextProjectData.SemanticIds.ROOT_ID,
+                p -> {
+                    var standardStartState = this.utilService.retrieveStandardStartState(p);
+                    if (p.getOwnedMember().getLast() instanceof StateDefinition stateDefinition) {
+                        return stateDefinition.getOwnedFeatureMembership().stream()
+                                .map(FeatureMembership::getOwnedMemberFeature)
+                                .filter(TransitionUsage.class::isInstance)
+                                .map(TransitionUsage.class::cast)
+                                .anyMatch(transitionUsage -> transitionUsage.getSource().equals(standardStartState));
+                    }
+                    return false;
+                });
     }
 
     @DisplayName("GIVEN a package, WHEN importing a NamespaceImport, THEN NamespaceImport should be contained in the ownedRelationships of the Package")

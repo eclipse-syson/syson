@@ -53,6 +53,7 @@ This also fixes `relatedFeature`, `sourceFeature` and `targetFeature`, which wer
 The ends of a connector created from a diagram are owned through an `EndFeatureMembership` and are exported inline, so their metadata, such as the `#original` and `#derive` of a requirement derivation, were lost.
 - https://github.com/eclipse-syson/syson/issues/2340[#2340] [diagrams] Replace the name of the _New Perform action_ tool to _New Perform Action_ to be consistent with other tools.
 - https://github.com/eclipse-syson/syson/issues/2437[#2437] [metamodel] Fix elementId when creating a FlowDefinition
+- https://github.com/eclipse-syson/syson/issues/2384[#2384] [import] Fix the import of `TransitionUsage` using _start_ which now set the source to the `StateUsage` _start_ from the standard library instead of `ActionUsage` _start_ from the standard library.
 
 === Improvements
 
