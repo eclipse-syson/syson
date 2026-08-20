@@ -130,6 +130,11 @@ It is now exported as `* /`, and a warning reports it, since the exported text i
 
 == Improvements
 
+* In node-tool selection dialogs:
+
+** Selection dialog trees now apply the default _Explorer_ filters, hiding memberships, root namespaces, expose elements, and expression internals.
+Library elements remain available for selection.
+
 * {product} Docker images now support `linux/amd64` and `linux/arm64` and run natively on arm64 machines such as Apple Silicon or AWS Graviton.
 Setting `DOCKER_DEFAULT_PLATFORM=linux/amd64` is no longer necessary on arm64 machines.
 
