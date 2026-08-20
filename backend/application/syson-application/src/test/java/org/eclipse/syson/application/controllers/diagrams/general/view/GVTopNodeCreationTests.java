@@ -311,6 +311,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram);
             // the "Add your first element" empty diagram image node is not present anymore
             assertThat(newDiagram.getNodes()).hasSize(1);
+            assertThat(newDiagram.getStyle().getBackground()).isEqualTo("white");
 
             String newNodeDescriptionName = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport());
 

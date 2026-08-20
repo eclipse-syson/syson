@@ -147,7 +147,8 @@ public class DiagramQueryElementService {
 
             if (viewCreationRequests.isEmpty() && this.previousNodesOnlyContainsEmptyDiagramImageNode(editingContext, previousNodes)) {
                 emptyDiagram = true;
-            } else if (viewDeletionRequests.isEmpty() && this.previousNodesOnlyContainsMissingElements(editingContext, previousNodes)) {
+            } else if (viewCreationRequests.isEmpty() && viewDeletionRequests.isEmpty()
+                    && this.previousNodesOnlyContainsMissingElements(editingContext, previousNodes)) {
                 // Undo on a synchronized node
                 emptyDiagram = true;
             } else if (!viewDeletionRequests.isEmpty() && this.previousNodesOnlyViewDeletionRequests(previousNodes, viewDeletionRequests)) {

@@ -36,6 +36,7 @@ In any case, it is strongly recommended to back up your data before proceeding w
 
 === Bug fixes
 
+- https://github.com/eclipse-syson/syson/issues/2132[#2132] [diagrams] Fix the empty-diagram background remaining visible after creating a namespace import in a _General View_ diagram.
 - https://github.com/eclipse-syson/syson/issues/2393[#2393] [diagrams] Fix the missing graphical edge between `ConcernUsage` or `ConcernDefinition` graphical nodes and the Actors created from them.
 - https://github.com/eclipse-syson/syson/issues/2344[#2344] [diagrams] Fix dropping a nested `AttributeUsage` from the _Explorer_ onto a _General View_ diagram so it is visible on the first drop.
 - https://github.com/eclipse-syson/syson/issues/2359[#2359] [diagrams] Fix `Comment` graphical nodes so changing their background color no longer changes their border color.
