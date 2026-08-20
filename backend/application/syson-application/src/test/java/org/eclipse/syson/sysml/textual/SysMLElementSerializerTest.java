@@ -1980,6 +1980,21 @@ public class SysMLElementSerializerTest {
     }
 
     @Test
+    public void documentationContainingACommentTerminator() {
+        PartUsage partUsage = this.builder.createWithName(PartUsage.class, "PartUsage1");
+        this.builder.createIn(Documentation.class, partUsage).setBody("Closing a block comment looks like */ in the code");
+
+        // The terminator is separated so it no longer closes the comment, which would leave the rest of the body
+        // exported as if it were SysML v2 code.
+        this.assertTextualFormEquals("""
+                part PartUsage1 {
+                    doc /* Closing a block comment looks like * / in the code */
+                }""", partUsage);
+        assertTrue(this.status.stream()
+                .anyMatch(reported -> reported.severity() == Severity.WARNING && reported.message().contains("closes a comment")));
+    }
+
+    @Test
     public void documentation() {
 
         PartDefinition partDef = this.builder.createWithName(PartDefinition.class, "Part Def1");

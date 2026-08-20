@@ -124,6 +124,10 @@ The affected connections were missing their source and target and were therefore
 Exporting such a connection and importing it back no longer loses which end is which.
 ** Fix the import of `TransitionUsage` using _start_ which now set the source to the `StateUsage` _start_ from the standard library instead of `ActionUsage` _start_ from the standard library.
 
+** Fix the export of a documentation, a comment or a textual representation whose text contains `*/`.
+That sequence closes a comment in the SysML v2 textual notation, so the exported file could no longer be read.
+It is now exported as `* /`, and a warning reports it, since the exported text is then not exactly the one that was written.
+
 == Improvements
 
 * {product} Docker images now support `linux/amd64` and `linux/arm64` and run natively on arm64 machines such as Apple Silicon or AWS Graviton.
