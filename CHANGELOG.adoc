@@ -73,6 +73,7 @@ This removes Rollup warnings about missing global names for externalized peer de
 - [releng] Reduce the log of the frontend tasks `format-lint` and `build-dev` by default to make tasks such as `build` or `start` less verbose.
 - [cleanup] Use only one border node description provider for all item border nodes.
 - https://github.com/eclipse-syson/syson/issues/2452[#2352] [diagram] Decouple SysON tools from Sirius Web's DefaultToolsFactory: SysON now defines its own `DiagramDefaultToolsFactory` providing show/hide tools.
+- https://github.com/eclipse-syson/syson/issues/2453[#2453] [diagrams] Add the Show/Hide section and associated tools to the group palette.
 
 === New features
 

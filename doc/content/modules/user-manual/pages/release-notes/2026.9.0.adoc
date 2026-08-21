@@ -149,6 +149,11 @@ image::release-notes-hierarchical-requirements-table-view.png[Hierarchical requi
 +
 image::release-notes-hierarchical-requirements-table-view-create-nested-requirement.png[New sub-requirement in row action menu, width=90%,height=90%]
 
+** When selecting multiple graphical nodes, the group palette now displays the _Show/Hide_ section just like the single selection palette.
+The associated tools are the same ones: _Hide_; _Hide all content_; _Show all content_; _Reset content_; _Show valued content_.
++
+image::release-notes-show-hide-section-group-palette.png[New Show/Hide section in group palette, width=90%,height=90%]
+
 == Technical details
 
 * For technical details on this {product} release, including breaking changes, please refer to the https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
