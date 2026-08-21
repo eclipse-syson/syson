@@ -11,10 +11,12 @@ image::manage-group-element-toolbar.png[Group element toolbar]
 User can still used basic tools such as :
 
 * Hide elements,
+* Hide all their content,
+* Show their valued content,
 * Fade elements,
 * Pin elements.
 
-A new tool section appears in this toolbar.
+A layout tool section appears in this toolbar.
 Many tools acting on selected elements layout can be found in this tool section :
 
 * Align left,
