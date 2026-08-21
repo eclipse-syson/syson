@@ -30,6 +30,12 @@ public class EdgeConnectionUsageTestProjectData {
      */
     public static final class SemanticIds {
 
+        public static final String ACTION1_ID = "9cb98c59-a46b-4a7b-bdd7-091e5b44e2f7";
+
+        public static final String ACTION1_1_ID = "821671fe-3019-43bb-8459-72f8d228615b";
+
+        public static final String STANDARD_LIBRARY_DONE_ACTION_ID = "0cdc3cd3-b06c-5c32-beda-0cf4ba164a64";
+
         public static final String PACKAGE1_ID = "1805794b-c76f-48ef-9082-0e69002d8e12";
 
         public static final String PART1_ID = "849627b8-9eec-4c92-89d9-088e0675ef89";
@@ -80,9 +86,13 @@ public class EdgeConnectionUsageTestProjectData {
      *
      * @author Arthur Daussy
      */
-    public class GraphicalIds {
+    public static class GraphicalIds {
 
         public static final String DIAGRAM_ID = "52bfb640-1f65-423f-98ba-a392852c95b8";
+
+        public static final String ACTION1_1_ID = "6736e086-9b4c-3a25-bb53-666bd3855bc4";
+
+        public static final String STANDARD_LIBRARY_DONE_ACTION_ID = "bdedaf1e-4761-3405-a6d4-39df56d146b3";
 
         public static final String PART1_ID = "0d5d4336-476b-3f17-82f5-8bad1d3cb4f9";
 

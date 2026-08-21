@@ -128,6 +128,49 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
         this.directEditTester = new DirectEditTester(this.editLabelMutationRunner, EdgeConnectionUsageTestProjectData.EDITING_CONTEXT_ID);
     }
 
+    @DisplayName("GIVEN an ActionUsage and a done ActionUsage, WHEN creating a ConnectionUsage from the ActionUsage to the done ActionUsage, THEN a ConnectionUsage edge is created")
+    @GivenSysONServer({ EdgeConnectionUsageTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createConnectionUsageOnStandardLibraryElement() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(EdgeConnectionUsageTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        Runnable createEdgeRunnable = this.buildCreateEdgeRunnable(
+                diagramDescriptionIdProvider,
+                diagram,
+                this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()),
+                EdgeConnectionUsageTestProjectData.GraphicalIds.ACTION1_1_ID,
+                EdgeConnectionUsageTestProjectData.GraphicalIds.STANDARD_LIBRARY_DONE_ACTION_ID);
+
+        AtomicReference<String> newEdge = new AtomicReference<>();
+        Consumer<Object> newEdgeConsumer = this.assertNewEdgeThat(
+                EdgeConnectionUsageTestProjectData.GraphicalIds.ACTION1_1_ID,
+                EdgeConnectionUsageTestProjectData.GraphicalIds.STANDARD_LIBRARY_DONE_ACTION_ID,
+                "connection1",
+                diagram,
+                newEdge::set);
+
+        Runnable checker = this.createCheckerBuilder()
+                .setExpectedSourceSemanticId(EdgeConnectionUsageTestProjectData.SemanticIds.ACTION1_1_ID)
+                .setExpectedTargetSemanticId(EdgeConnectionUsageTestProjectData.SemanticIds.STANDARD_LIBRARY_DONE_ACTION_ID)
+                .setExpectedSemanticContainer(EdgeConnectionUsageTestProjectData.SemanticIds.ACTION1_ID)
+                .build(newEdge);
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createEdgeRunnable)
+                .consumeNextWith(newEdgeConsumer)
+                .then(checker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
     @DisplayName("GIVEN two PartUsages in a package, WHEN using an Edge tool to create a ConnectionUsage in between, THEN a ConnectionUsage edge is created")
     @GivenSysONServer({ EdgeConnectionUsageTestProjectData.SCRIPT_PATH })
     @Test
