@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.ToolSection;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
+import org.eclipse.syson.diagram.common.view.DiagramDefaultGroupToolsFactory;
 import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
 import org.eclipse.syson.diagram.common.view.edges.AnnotationEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
@@ -431,6 +432,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 .build();
         groupToolSections.add(viewAsToolSection);
         groupToolSections.add(this.toolDescriptionService.relatedElementsGroupToolSection());
+        groupToolSections.add(new DiagramDefaultGroupToolsFactory().createDefaultHideRevealNodeToolSection());
         return groupToolSections;
     }
 
