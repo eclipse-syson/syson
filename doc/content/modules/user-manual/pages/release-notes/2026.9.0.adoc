@@ -97,6 +97,7 @@ image::release-notes-action-inherited-item-border-nodes.png[ItemUsage border nod
 image::release-notes-port-inherited-item-border-nodes.png[ItemUsage border node inheritance on PortDefinition and PortUsage, width=80%,height=80%]
 
 ** Improve the edge tool creating a `FlowUsage`, by creating a `ReferenceUsage` used for the redefinition of the `FlowEnd` only when it is needed.
+** Fix the edge tool creating a `ConnectionUsage` between an `ActionUsage` graphical node and the _done_ `ActionUsage` graphical node.
 
 == Bug fixes
 

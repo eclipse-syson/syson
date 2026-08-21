@@ -30,6 +30,7 @@ import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
+import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 
 /**
  * Object in charge of computing a chain of feature to access a {@link Feature} from one {@link Element}.
@@ -77,36 +78,43 @@ public class FeatureChainComputer {
         encounteredFeature.add(end);
 
         if (end != null) {
-            if (end.getOwningType() == null) {
-                // The target is a feature directly available in the root namespace
+            if (ElementUtil.isFromStandardLibrary(end)) {
+                // The target is a feature directly available since it is in the standard library
                 List<Feature> features = new ArrayList<>();
                 features.add(end);
                 result.add(features);
-            }
-            final List<Feature> sourceFeatures;
-            if (source instanceof Type sourceAsType) {
-                sourceFeatures = sourceAsType.getFeature();
             } else {
-                sourceFeatures = new ArrayList<>();
-            }
-
-            for (Feature accessingFeature : this.computeAccessingFeature(end, encounteredFeature)) {
-                if (accessingFeature == source) {
+                if (end.getOwningType() == null) {
+                    // The target is a feature directly available in the root namespace
                     List<Feature> features = new ArrayList<>();
                     features.add(end);
                     result.add(features);
-                } else if (sourceFeatures.contains(accessingFeature)) {
-                    List<Feature> features = new ArrayList<>();
-                    features.add(accessingFeature);
-                    features.add(end);
-                    result.add(features);
+                }
+                final List<Feature> sourceFeatures;
+                if (source instanceof Type sourceAsType) {
+                    sourceFeatures = sourceAsType.getFeature();
                 } else {
-                    List<List<Feature>> subchains = this.computeChains(source, accessingFeature, encounteredFeature);
-                    for (List<Feature> subChainfeature : subchains) {
-                        if (!subChainfeature.isEmpty()) {
-                            List<Feature> features = new ArrayList<>(subChainfeature);
-                            features.add(end);
-                            result.add(features);
+                    sourceFeatures = new ArrayList<>();
+                }
+
+                for (Feature accessingFeature : this.computeAccessingFeature(end, encounteredFeature)) {
+                    if (accessingFeature == source) {
+                        List<Feature> features = new ArrayList<>();
+                        features.add(end);
+                        result.add(features);
+                    } else if (sourceFeatures.contains(accessingFeature)) {
+                        List<Feature> features = new ArrayList<>();
+                        features.add(accessingFeature);
+                        features.add(end);
+                        result.add(features);
+                    } else {
+                        List<List<Feature>> subchains = this.computeChains(source, accessingFeature, encounteredFeature);
+                        for (List<Feature> subChainfeature : subchains) {
+                            if (!subChainfeature.isEmpty()) {
+                                List<Feature> features = new ArrayList<>(subChainfeature);
+                                features.add(end);
+                                result.add(features);
+                            }
                         }
                     }
                 }
