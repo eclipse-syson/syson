@@ -1358,14 +1358,14 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
         this.createNewStakeholderSelectingExistingElementIn(SysmlPackage.eINSTANCE.getConcernUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CONCERN_USAGE_ID, "concern", GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID);
     }
 
-    @DisplayName("Given a RequirementDefinition, WHEN creating a new Stakeholder selecting a Part, THEN the Stakeholder subsetted by the Part is created in the RequirementDefinition")
+    @DisplayName("GIVEN a RequirementDefinition, WHEN creating a new Stakeholder selecting a Part, THEN the Stakeholder subsetted by the Part is created in the RequirementDefinition")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createNewStakeholderFromPartInRequirementDefinition() {
         this.createNewStakeholderSelectingExistingElementIn(SysmlPackage.eINSTANCE.getRequirementDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_DEFINITION_ID, "RequirementDefinition", GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID);
     }
 
-    @DisplayName("Given a Requirement, WHEN creating a new Stakeholder selecting a Part, THEN the Stakeholder subsetted by the Part is created in the Requirement")
+    @DisplayName("GIVEN a Requirement, WHEN creating a new Stakeholder selecting a Part, THEN the Stakeholder subsetted by the Part is created in the Requirement")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createNewStakeholderFromPartInRequirementUsage() {

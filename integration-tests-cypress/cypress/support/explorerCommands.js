@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ Cypress.Commands.add('createChildObject', (parent, objectType) => {
 
 Cypress.Commands.add('createRepresentationFromExplorer', (parent, representationType) => {
   cy.getByTestId(`${parent}-more`).click();
-  cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
+  cy.getByTestId('Palette').findByTestId('new-representation').click();
   cy.getByTestId('representationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
   cy.getByTestId('representationDescription').click();
   cy.getByTestId(representationType).should('exist').click();

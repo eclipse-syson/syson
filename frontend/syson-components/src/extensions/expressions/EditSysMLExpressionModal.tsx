@@ -178,12 +178,12 @@ export const EditSysMLExpressionModal = ({
 
   // Update validationResult when the operation is finished
   useEffect(() => {
-    if (state.operationInProgress === 'creating' && !creationInProgress) {
+    if (state.operationInProgress === 'creating' && !creationInProgress && postCreationMessages !== null) {
       setState((prevState) => ({ ...prevState, operationInProgress: null, validationResult: postCreationMessages }));
     }
   }, [state.operationInProgress, creationInProgress, postCreationMessages]);
   useEffect(() => {
-    if (state.operationInProgress === 'editing' && !editionInProgress) {
+    if (state.operationInProgress === 'editing' && !editionInProgress && postEditionMessages !== null) {
       setState((prevState) => ({ ...prevState, operationInProgress: null, validationResult: postEditionMessages }));
     }
   }, [state.operationInProgress, editionInProgress, postEditionMessages]);

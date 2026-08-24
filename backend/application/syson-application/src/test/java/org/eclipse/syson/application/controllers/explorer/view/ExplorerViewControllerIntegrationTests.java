@@ -48,9 +48,10 @@ import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.tests.graphql.InitialDirectEditTreeItemLabelQueryRunner;
 import org.eclipse.sirius.components.trees.tests.graphql.TreeFiltersQueryRunner;
+import org.eclipse.sirius.components.trees.tests.graphql.TreeItemPaletteExecutor;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerTreeItemContextMenuEntryProvider;
 import org.eclipse.sirius.web.tests.graphql.CreateChildMutationRunner;
-import org.eclipse.sirius.web.tests.graphql.TreeItemContextMenuQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
@@ -72,6 +73,7 @@ import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterConstants;
 import org.eclipse.syson.tree.explorer.fragments.LibrariesDirectory;
 import org.eclipse.syson.tree.explorer.fragments.UserLibrariesDirectory;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
+import org.eclipse.syson.tree.explorer.view.menu.context.SysONExplorerTreeItemContextMenuEntryProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -173,7 +175,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
     private CreateChildMutationRunner createChildMutationRunner;
 
     @Autowired
-    private TreeItemContextMenuQueryRunner treeItemContextMenuQueryRunner;
+    private TreeItemPaletteExecutor treeItemPaletteExecutor;
 
     @Autowired
     private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
@@ -304,16 +306,16 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
 
         var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.userLibraryPackageRW));
 
-        Runnable getContextualMenuRunnable = () -> {
-            Map<String, Object> variables = Map.of(
-                    "editingContextId", WithUserLibrariesTestProjectData.EDITING_CONTEXT_ID,
-                    "representationId", treeRepresentationId,
-                    "treeItemId", WithUserLibrariesTestProjectData.SemanticIds.RW_USER_LIBRARY_PACKAGE_ID);
-            var result = this.treeItemContextMenuQueryRunner.run(variables);
-
-            List<String> contextualMenuIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
-            assertThat(contextualMenuIds).contains("new-object", "expand-all");
-        };
+        Runnable getContextualMenuRunnable = () -> this.treeItemPaletteExecutor.execute(
+                WithUserLibrariesTestProjectData.EDITING_CONTEXT_ID,
+                treeRepresentationId,
+                WithUserLibrariesTestProjectData.SemanticIds.RW_USER_LIBRARY_PACKAGE_ID)
+                .hasPaletteEntries(entries -> assertThat(entries).hasSize(5)
+                        .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)
+                        .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT)
+                        .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION)
+                        .contains(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT)
+                        .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID));
 
         Runnable createChildRunnable = () -> {
             var input = new CreateChildInput(UUID.randomUUID(), WithUserLibrariesTestProjectData.EDITING_CONTEXT_ID, WithUserLibrariesTestProjectData.SemanticIds.RW_USER_LIBRARY_PACKAGE_ID, "SysMLv2EditService-AcceptActionUsage");
@@ -354,16 +356,12 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
 
         var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.userLibraryPackageRO));
 
-        Runnable getContextualMenuRunnable = () -> {
-            Map<String, Object> variables = Map.of(
-                    "editingContextId", WithUserLibrariesTestProjectData.EDITING_CONTEXT_ID,
-                    "representationId", treeRepresentationId,
-                    "treeItemId", WithUserLibrariesTestProjectData.SemanticIds.RO_USER_LIBRARY_PACKAGE_ID);
-            var result = this.treeItemContextMenuQueryRunner.run(variables);
-
-            List<String> contextualMenuIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
-            assertThat(contextualMenuIds).doesNotContain("new-object", "new-representation", "newObjectsFromText", "duplicate-object").contains("expand-all");
-        };
+        Runnable getContextualMenuRunnable = () -> this.treeItemPaletteExecutor.execute(
+                WithUserLibrariesTestProjectData.EDITING_CONTEXT_ID,
+                treeRepresentationId,
+                WithUserLibrariesTestProjectData.SemanticIds.RO_USER_LIBRARY_PACKAGE_ID)
+                .hasPaletteEntries(entries -> assertThat(entries).hasSize(1)
+                        .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL));
 
         StepVerifier.create(treeFlux)
                 .consumeNextWith(hasProjectContent)

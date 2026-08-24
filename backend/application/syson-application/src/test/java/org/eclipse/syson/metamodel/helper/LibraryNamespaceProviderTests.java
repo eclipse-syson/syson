@@ -69,7 +69,7 @@ public class LibraryNamespaceProviderTests {
     }
 
     @Test
-    @DisplayName("Given a ResourceSet where all library has been registered a immutable, WHEN accessing some Namespace from their qualified name, THEN the targeted element should be returned.")
+    @DisplayName("GIVEN a ResourceSet where all library has been registered a immutable, WHEN accessing some Namespace from their qualified name, THEN the targeted element should be returned.")
     public void checkWithRegisteredLibrary() {
         LibraryNamespaceProvider provider = new LibraryNamespaceProvider(this.resourceSet);
         // Set all resource to immutable
@@ -86,7 +86,7 @@ public class LibraryNamespaceProviderTests {
     }
 
     @Test
-    @DisplayName("Given a ResourceSet with no library registered as immutable, WHEN accessing some Namespace from their qualified name, THEN the targeted element should be returned.")
+    @DisplayName("GIVEN a ResourceSet with no library registered as immutable, WHEN accessing some Namespace from their qualified name, THEN the targeted element should be returned.")
     public void withNoLibraryAdded() {
         LibraryNamespaceProvider provider = new LibraryNamespaceProvider(this.resourceSet);
         // Test some use case

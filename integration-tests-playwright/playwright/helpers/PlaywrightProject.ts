@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,15 +15,18 @@ import { APIRequestContext, expect, type Page } from '@playwright/test';
 const createProjectQuery = `
 mutation createProject($input: CreateProjectInput!) {
   createProject(input: $input) {
-    __typename    
+    __typename
     ... on CreateProjectSuccessPayload {
       project {
-        id        
-      }      
-    }    
+        id
+      }
+    }
     ... on ErrorPayload {
-      message     
-    }  
+      messages {
+        body
+        level
+      }
+    }
   }
 }
 `;

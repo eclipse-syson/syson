@@ -37,7 +37,10 @@ const setShowDiagramsInheritedMembersFromStandardLibrariesMutation = gql`
         show
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }

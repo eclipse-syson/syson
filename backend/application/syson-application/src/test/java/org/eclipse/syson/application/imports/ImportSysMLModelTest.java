@@ -188,7 +188,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
         }).check(input);
     }
 
-    @DisplayName("Given LiteralString with escaped characters, WHEN importing the model, THEN the extra backlash is removed")
+    @DisplayName("GIVEN LiteralString with escaped characters, WHEN importing the model, THEN the extra backlash is removed")
     @Test
     public void removeExtraBacklash() throws IOException {
         var input = """
@@ -1288,7 +1288,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
         }).check(input);
     }
 
-    @DisplayName("Given an attribute valued with an unknown unit, WHEN importing the model, THEN then no unresolvable proxies are left")
+    @DisplayName("GIVEN an attribute valued with an unknown unit, WHEN importing the model, THEN then no unresolvable proxies are left")
     @Test
     public void referenceToUnknownUnit() throws IOException {
         var input = """

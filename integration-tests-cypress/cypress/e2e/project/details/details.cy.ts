@@ -156,7 +156,7 @@ describe('Details View Tests', () => {
 
       it('Then creating an expression leaves a single Expression value widget', () => {
         cy.getByTestId('Create-expression-button').click();
-        cy.getByTestId('edit-sysml-expression-modal-textarea').clear().type('true');
+        cy.getByTestId('edit-sysml-expression-modal-textarea').find('textarea:visible').should('have.length', 1).clear().type('true');
         cy.getByTestId('edit-expression-submit').click();
 
         cy.getByTestId('edit-sysml-expression-modal').should('not.exist');
@@ -164,10 +164,10 @@ describe('Details View Tests', () => {
         cy.getByTestId('Edit-expression-button').should('have.length', 1).and('be.enabled');
 
         explorer.getSelectedTreeItems().find('button').click();
-        cy.getByTestId('treeitem-contextmenu').findByTestId('edit-sysml-expression-menu').should('exist');
-        cy.getByTestId('treeitem-contextmenu').findByTestId('new-sysml-expression-menu').should('not.exist');
-        cy.getByTestId('treeitem-contextmenu').findByTestId('edit-sysml-expression-menu').click();
-        cy.getByTestId('edit-sysml-expression-modal-textarea').clear().type('false');
+        cy.getByTestId('Palette').findByTestId('edit-sysml-expression-menu').should('exist');
+        cy.getByTestId('Palette').findByTestId('new-sysml-expression-menu').should('not.exist');
+        cy.getByTestId('Palette').findByTestId('edit-sysml-expression-menu').click();
+        cy.getByTestId('edit-sysml-expression-modal-textarea').find('textarea:visible').should('have.length', 1).clear().type('false');
         cy.getByTestId('edit-expression-submit').click();
 
         cy.getByTestId('edit-sysml-expression-modal').should('not.exist');

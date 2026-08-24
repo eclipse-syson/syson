@@ -37,7 +37,6 @@ public class DropNodesWithMessageMutationRunner implements IMutationRunner<DropN
                   }
                 }
                 ... on ErrorPayload {
-                  message
                   messages {
                     body
                     level

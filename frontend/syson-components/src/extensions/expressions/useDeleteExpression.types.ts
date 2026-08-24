@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+
 export interface UseDeleteExpressionValue {
   deleteExpression: (editingContextId: string, elementId: string) => void;
 }
@@ -38,5 +40,5 @@ export interface GQLSuccessPayload extends GQLDeleteExpressionPayload {
 }
 
 export interface GQLErrorPayload extends GQLDeleteExpressionPayload {
-  message: string;
+  messages: GQLMessage[];
 }

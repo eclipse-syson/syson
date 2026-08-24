@@ -21,10 +21,12 @@ Downstream consumers relying on the previous `.umd.js` artifacts or on direct br
 - https://github.com/eclipse-syson/syson/issues/2418[#2418] [services] Remove the `unwrapFeature` service since it is not used anymore.
 - https://github.com/eclipse-syson/syson/issues/2452[#2352] [diagram] SysON now defines its own `DiagramDefaultToolsFactory` providing show/hide tools.
 SysON consumers should use this new service instead of the Sirius Web's DefaultToolsFactory.
+- [tests] `org.eclipse.syson.application.controller.explorer.testers.TreeItemContextMenuTester.java` has been removed since it was not used anymore.
+Please use `org.eclipse.sirius.components.trees.tests.graphql.TreeItemPaletteExecutor.java` from Sirius Web instead.
 
 === Dependency update
 
-- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.7.2].
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.7.3].
 - [releng] Update the version of `turbo` used for the frontend from 2.4.4 to 2.10.5.
 - [releng] Update `vite` from 8.0.14 to 8.1.5.
 - [releng] Update `playwright` from 1.57.0 to 1.62.0
