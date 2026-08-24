@@ -42,7 +42,6 @@ public class DropOnDiagramWithMessagesMutationRunner implements IMutationRunner<
                   }
                 }
                 ... on ErrorPayload {
-                  message
                   messages {
                     body
                     level

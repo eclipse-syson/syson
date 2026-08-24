@@ -35,7 +35,10 @@ const setShowDiagramsInheritedMembersMutation = gql`
         show
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -103,7 +106,10 @@ export const ShowHideDiagramsInheritedMembers = ({ editingContextId, diagramId }
         }
         if (isErrorPayload(showDiagramsInheritedMembers)) {
           setState((prevState) => {
-            return { ...prevState, message: showDiagramsInheritedMembers.message };
+            return {
+              ...prevState,
+              message: showDiagramsInheritedMembers.messages.map((message) => message.body).join(', '),
+            };
           });
         }
       }

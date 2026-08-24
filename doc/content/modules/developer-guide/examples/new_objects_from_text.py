@@ -52,7 +52,10 @@ mutation InsertTextualSysMLv2($input: InsertTextualSysMLv2Input!) {
       id
     }
     ... on ErrorPayload {
-      message
+        messages {
+            body
+            level
+        }
     }
   }
 }
@@ -116,7 +119,9 @@ def import_sysml_to_project(url, file_path, editing_context_id, object_id): # <3
         if result.get("__typename") == "SuccessPayload":
             return True
         elif result.get("__typename") == "ErrorPayload":
-            print(f"Error: {result.get('message')}")
+            messages = result.get("messages", [])
+            for msg in messages:
+                print(f"Error: {msg.get('body')}")
             return False
         else:
             print("Unexpected response:", data)

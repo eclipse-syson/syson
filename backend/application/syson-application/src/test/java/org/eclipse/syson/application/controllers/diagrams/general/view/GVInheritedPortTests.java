@@ -29,7 +29,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInpu
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload;
-import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorToolsQueryRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorPaletteQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnTwoDiagramElementsToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
@@ -71,7 +71,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
     private IGivenDiagramSubscription givenDiagramSubscription;
 
     @Autowired
-    private ConnectorToolsQueryRunner connectorToolsQueryRunner;
+    private ConnectorPaletteQueryRunner connectorPaletteQueryRunner;
 
     @Autowired
     private InvokeSingleClickOnTwoDiagramElementsToolMutationRunner invokeSingleClickOnTwoDiagramElementsToolMutationRunner;
@@ -188,8 +188,8 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
                     "sourceDiagramElementId", inheritedPortId.get(),
                     "targetDiagramElementId", port1Id.get()
             );
-            var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
-            List<String> ids = JsonPath.read(connectorToolsResult.data(), String.format("$.data.viewer.editingContext.representation.description.connectorTools[?(@.label=='%s')].id",
+            var connectorPaletteResult = this.connectorPaletteQueryRunner.run(variables);
+            List<String> ids = JsonPath.read(connectorPaletteResult.data(), String.format("$.data.viewer.editingContext.representation.description.connectorPalette.paletteEntries[?(@.label=='%s')].id",
                     parameterizedValue));
             String toolId = ids.get(0);
 
@@ -257,8 +257,8 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
                     "sourceDiagramElementId", port1Id.get(),
                     "targetDiagramElementId", inheritedPortId.get()
             );
-            var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
-            List<String> ids = JsonPath.read(connectorToolsResult.data(), String.format("$.data.viewer.editingContext.representation.description.connectorTools[?(@.label=='%s')].id",
+            var connectorPaletteResult = this.connectorPaletteQueryRunner.run(variables);
+            List<String> ids = JsonPath.read(connectorPaletteResult.data(), String.format("$.data.viewer.editingContext.representation.description.connectorPalette.paletteEntries[?(@.label=='%s')].id",
                     parameterizedValue));
             String toolId = ids.get(0);
 
@@ -326,9 +326,9 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
                     "sourceDiagramElementId", inheritedPortV1Id.get(),
                     "targetDiagramElementId", inheritedPortV2Id.get()
             );
-            var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
-            List<String> ids = JsonPath.read(connectorToolsResult.data(),
-                    String.format("$.data.viewer.editingContext.representation.description.connectorTools[?(@.label=='%s')].id",
+            var connectorPaletteResult = this.connectorPaletteQueryRunner.run(variables);
+            List<String> ids = JsonPath.read(connectorPaletteResult.data(),
+                    String.format("$.data.viewer.editingContext.representation.description.connectorPalette.paletteEntries[?(@.label=='%s')].id",
                     parameterizedValue));
             String toolId = ids.get(0);
 

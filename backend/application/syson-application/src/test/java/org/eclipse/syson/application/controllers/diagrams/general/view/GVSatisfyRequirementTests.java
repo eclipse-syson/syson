@@ -129,7 +129,7 @@ public class GVSatisfyRequirementTests extends AbstractIntegrationTests {
                 GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID);
     }
 
-    @DisplayName("Given a Part, WHEN applying the 'New Satisfy' tool selecting a requirement, THEN the created satisfy requirement is subsetted by reference by the selected requirement")
+    @DisplayName("GIVEN a Part, WHEN applying the 'New Satisfy' tool selecting a requirement, THEN the created satisfy requirement is subsetted by reference by the selected requirement")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void testCreateSatisfy() {
@@ -190,7 +190,7 @@ public class GVSatisfyRequirementTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("Given a Part, WHEN applying the 'New Satisfy Requirement' tool selecting a requirement, THEN the created satisfy requirement is subsetted by reference by the selected requirement")
+    @DisplayName("GIVEN a Part, WHEN applying the 'New Satisfy Requirement' tool selecting a requirement, THEN the created satisfy requirement is subsetted by reference by the selected requirement")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void testCreateSatisfyRequirementSelectingRequirementUsage() {
@@ -251,7 +251,7 @@ public class GVSatisfyRequirementTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("Given a Part, WHEN applying the 'New Satisfy Requirement' tool selecting a Definition, THEN the created satisfy requirement is typed by the selected Definition")
+    @DisplayName("GIVEN a Part, WHEN applying the 'New Satisfy Requirement' tool selecting a Definition, THEN the created satisfy requirement is typed by the selected Definition")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void testCreateSatisfyRequirementSelectingDefinition() {
@@ -313,7 +313,7 @@ public class GVSatisfyRequirementTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("Given a Part, WHEN applying the 'New Satisfy Requirement' tool without selection, THEN the standalone satisfy requirement is created")
+    @DisplayName("GIVEN a Part, WHEN applying the 'New Satisfy Requirement' tool without selection, THEN the standalone satisfy requirement is created")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void testCreateStandaloneSatisfyRequirement() {

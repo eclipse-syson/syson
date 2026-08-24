@@ -57,7 +57,7 @@ export class Explorer {
 
   public rename(treeItemLabel: string, newName: string): void {
     this.getTreeItemByLabel(treeItemLabel).find('button').click();
-    cy.getByTestId('treeitem-contextmenu').findByTestId('rename-tree-item').click();
+    cy.getByTestId('Palette').findByTestId('rename-tree-item').click();
     cy.getByTestId('name-edit');
     cy.getByTestId('name-edit').get('input').should('have.value', treeItemLabel);
     cy.getByTestId('name-edit').type(`${newName}{enter}`);
@@ -67,12 +67,12 @@ export class Explorer {
 
   public delete(treeItemLabel: string): void {
     this.getTreeItemByLabel(treeItemLabel).find('button').click();
-    cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
+    cy.getByTestId('Palette').findByTestId('delete').click();
   }
 
   public expandAll(treeItemLabel: string): void {
     this.getTreeItemByLabel(treeItemLabel).find('button').click();
-    cy.getByTestId('treeitem-contextmenu').findByTestId('expand-all').click();
+    cy.getByTestId('Palette').findByTestId('expand-all').click();
   }
 
   public dragTreeItem(treeItemLabel: string, dataTransfer: DataTransfer): void {
@@ -81,7 +81,7 @@ export class Explorer {
 
   public insertTextualSysMLv2(documentTreeItemLabel: string, textualContent: string) {
     this.getTreeItemByLabel(documentTreeItemLabel).should('exist').find('button').should('exist').click();
-    cy.getByTestId('treeitem-contextmenu').should('exist');
+    cy.getByTestId('Palette').should('exist');
     cy.get('@consoleDebug').should('be.calledWith', 'query getAllContextMenuEntries: response received');
 
     cy.getByTestId('insert-textual-sysmlv2-menu').should('exist').click();
@@ -101,7 +101,7 @@ export class Explorer {
 
   public createRootObject(documentTreeItemLabel: string, childCreationDescriptionLabel: string) {
     this.getTreeItemByLabel(documentTreeItemLabel).find('button').click();
-    cy.getByTestId('treeitem-contextmenu').should('exist');
+    cy.getByTestId('Palette').should('exist');
     cy.get('@consoleDebug').should('be.calledWith', 'query getAllContextMenuEntries: response received');
 
     cy.getByTestId('new-object').click();
@@ -122,7 +122,7 @@ export class Explorer {
 
   public createObject(objectTreeItemLabel: string, childCreationDescriptionLabel: string) {
     this.getTreeItemByLabel(objectTreeItemLabel).first().find('button').should('exist').click();
-    cy.getByTestId('treeitem-contextmenu').should('exist');
+    cy.getByTestId('Palette').should('exist');
     cy.get('@consoleDebug').should('be.calledWith', 'query getAllContextMenuEntries: response received');
 
     cy.getByTestId('new-object').should('exist').click();
@@ -147,7 +147,7 @@ export class Explorer {
     representationLabel: string
   ): void {
     this.getTreeItemByLabel(treeItemLabel).should('exist').find('button').should('exist').click();
-    cy.getByTestId('treeitem-contextmenu').should('exist');
+    cy.getByTestId('Palette').should('exist');
     cy.get('@consoleDebug').should('be.calledWith', 'query getAllContextMenuEntries: response received');
 
     cy.getByTestId('new-representation').should('exist').click();

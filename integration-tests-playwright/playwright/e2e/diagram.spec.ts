@@ -45,13 +45,22 @@ test.describe('diagram - interconnection view', () => {
 
     await page.getByTestId('zoom-out').click();
 
-    const compartmentSizeBefore = await interconnectionCompartment.getReactFlowSize();
+    const compartmentSizeBefore = await interconnectionCompartment.getDOMBoundingBox();
 
     await partNode.click();
     await partNode.resize({ height: 20, width: 20 });
 
-    const compartmentSizeAfter = await interconnectionCompartment.getReactFlowSize();
-    expect(compartmentSizeAfter.height).toBeGreaterThan(compartmentSizeBefore.height);
-    expect(compartmentSizeAfter.width).toBeGreaterThan(compartmentSizeBefore.width);
+    await expect
+      .poll(async () => {
+        const compartmentSizeAfter = await interconnectionCompartment.getDOMBoundingBox();
+        return Math.abs(compartmentSizeAfter.height - compartmentSizeBefore.height);
+      })
+      .toBeGreaterThan(1);
+    await expect
+      .poll(async () => {
+        const compartmentSizeAfter = await interconnectionCompartment.getDOMBoundingBox();
+        return Math.abs(compartmentSizeAfter.width - compartmentSizeBefore.width);
+      })
+      .toBeGreaterThan(1);
   });
 });

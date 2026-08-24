@@ -28,7 +28,10 @@ const deleteExpressionMutation = gql`
     deleteExpression(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -42,7 +45,7 @@ export const useDeleteExpression = (): UseDeleteExpressionValue => {
     deleteExpressionMutation
   );
 
-  const { addErrorMessage } = useMultiToast();
+  const { addErrorMessage, addMessages } = useMultiToast();
   useEffect(() => {
     if (error) {
       addErrorMessage('An error has occurred while executing this action, please contact the server administrator');
@@ -50,7 +53,7 @@ export const useDeleteExpression = (): UseDeleteExpressionValue => {
     if (data) {
       const { deleteExpression } = data;
       if (isErrorPayload(deleteExpression)) {
-        addErrorMessage(deleteExpression.message);
+        addMessages(deleteExpression.messages);
       }
     }
   }, [error, data]);

@@ -35,7 +35,10 @@ const setShowDiagramsIconsMutation = gql`
         show
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -114,7 +117,7 @@ export const ShowHideDiagramsIcons = ({ editingContextId, diagramId }: DiagramTo
         }
         if (isErrorPayload(showDiagramsIcons)) {
           setState((prevState) => {
-            return { ...prevState, message: showDiagramsIcons.message };
+            return { ...prevState, message: showDiagramsIcons.messages.map((message) => message.body).join(', ') };
           });
         }
       }

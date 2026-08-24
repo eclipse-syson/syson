@@ -45,7 +45,7 @@ export class PlaywrightExplorer {
     representationLabel: string
   ) {
     await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
-    const contextMenu = this.page.getByTestId('treeitem-contextmenu');
+    const contextMenu = this.page.getByTestId('Palette');
     await expect(contextMenu).toBeVisible();
     await contextMenu.getByTestId('new-representation').click();
 
@@ -70,6 +70,12 @@ export class PlaywrightExplorer {
 
   async expand(treeItemLabel: string) {
     await this.explorerLocator.locator(`[data-treeitemlabel="${treeItemLabel}"]`).dblclick();
+  }
+
+  async expandAll(treeItemLabel: string) {
+    await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
+    await this.page.getByTestId('expand-all').isVisible();
+    await this.page.getByTestId('expand-all').click();
   }
 
   async uploadDocument(fileName: string) {

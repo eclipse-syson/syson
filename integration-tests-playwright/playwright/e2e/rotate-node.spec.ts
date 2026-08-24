@@ -64,7 +64,7 @@ test.describe('diagram - general view', () => {
     await page.getByTestId('tool-New Fork').click();
     const playwrightForkNode = new PlaywrightNode(page, 'forkNode1');
     await expect(playwrightForkNode.nodeLocator).toBeAttached();
-    const {width, height} = await playwrightForkNode.getReactFlowSize();
+    const { width, height } = await playwrightForkNode.getDOMBoundingBox();
     const expectedRotatedWidth = height;
     const expectedRotatedHeight = width;
 
@@ -73,10 +73,12 @@ test.describe('diagram - general view', () => {
     await page.getByTestId('toolSection-Edit').click();
     await page.getByTestId('overridden_tool_node-rotate').click();
     await playwrightForkNode.closePalette();
-    const rotatedSize = await playwrightForkNode.getReactFlowSize();
 
-    expect(rotatedSize.width).toBeCloseTo(expectedRotatedWidth, 0);
-    expect(rotatedSize.height).toBeCloseTo(expectedRotatedHeight, 0);
+    await expect
+      .poll(async () => (await playwrightForkNode.getDOMBoundingBox()).width)
+      .toBeCloseTo(expectedRotatedWidth, 0);
+    await expect
+      .poll(async () => (await playwrightForkNode.getDOMBoundingBox()).height)
+      .toBeCloseTo(expectedRotatedHeight, 0);
   });
-
 });

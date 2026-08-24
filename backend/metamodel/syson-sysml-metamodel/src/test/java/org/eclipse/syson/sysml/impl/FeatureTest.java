@@ -59,7 +59,7 @@ public class FeatureTest {
         assertThat(featureChain.getFeature()).isEqualTo(List.of(t3f1));
     }
 
-    @DisplayName("Given some Features, WHEN computing their types, THEN the computation account subsetted feature")
+    @DisplayName("GIVEN some Features, WHEN computing their types, THEN the computation account subsetted feature")
     @Test
     public void checkType() {
         var model = new FeatureTypeTestModel();
@@ -85,7 +85,7 @@ public class FeatureTest {
                 .contains(model.subItemDef1, model.itemDef2);
     }
 
-    @DisplayName("Given some Features in a subsetting loop, WHEN computing their types, THEN the computation do not run into stackoverflow")
+    @DisplayName("GIVEN some Features in a subsetting loop, WHEN computing their types, THEN the computation do not run into stackoverflow")
     @Test
     public void checkTypeWithTypeLoop() {
         var model = new FeatureTypeTestModel();
@@ -103,7 +103,7 @@ public class FeatureTest {
                 .contains(model.subItemDef1, model.itemDef2);
     }
 
-    @DisplayName("Given some Features, WHEN computing their typingFeatures, THEN the computation account subsetted feature")
+    @DisplayName("GIVEN some Features, WHEN computing their typingFeatures, THEN the computation account subsetted feature")
     @Test
     public void checkTypingFeatures() {
         var model = new FeatureTypeTestModel();
@@ -115,7 +115,7 @@ public class FeatureTest {
                 .first().isEqualTo(model.item1);
     }
 
-    @DisplayName("Given some Features in a subsetting loop, WHEN computing their typingFeatures, THEN the computation do not run into stackoverflow")
+    @DisplayName("GIVEN some Features in a subsetting loop, WHEN computing their typingFeatures, THEN the computation do not run into stackoverflow")
     @Test
     public void checkFeaturingTypesLoop() {
         var model = new FeatureTypeTestModel();

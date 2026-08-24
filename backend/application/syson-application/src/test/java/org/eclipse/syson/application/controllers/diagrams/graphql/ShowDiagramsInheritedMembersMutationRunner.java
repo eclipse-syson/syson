@@ -36,7 +36,10 @@ public class ShowDiagramsInheritedMembersMutationRunner implements IMutationRunn
                     show
                   }
                   ... on ErrorPayload {
-                    message
+                    messages {
+                      body
+                      level
+                    }
                   }
                 }
               }
