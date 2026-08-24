@@ -121,6 +121,8 @@ The affected connections were missing their source and target and were therefore
 ** Fix the edge tool creating a `ConnectionUsage` between an `ActionUsage` graphical node and the _done_ `ActionUsage` graphical node.
 ** Inherited border nodes and inherited compartment items no longer offer the _New Expression_, _Edit Expression_, or _Delete Expression_ actions.
 ** Prevent the `Add existing elements` tools from removing the empty diagram background image when no elements are added.
+** Remove the _expand_ and _collapse_ tools from graphical nodes to fix a bug caused by their interaction with the _Manage Visibility menu_.
+This menu supersedes almost all the tools' behavior, with the minor exception that the _expand_ tool restored the visibility state of all child graphical nodes.
 
 * In all views:
 

@@ -240,6 +240,13 @@ public class SDVDiagramDescriptionTests {
     }
 
     @Test
+    @DisplayName("GIVEN all the node descriptions, WHEN checking their configuration, THEN none are collapsible")
+    public void allNodesAreNotCollapsible() {
+        var nodeDescriptions = EMFUtils.allContainedObjectOfType(this.diagramDescription, NodeDescription.class);
+        assertThat(nodeDescriptions).noneMatch(NodeDescription::isCollapsible);
+    }
+
+    @Test
     @DisplayName("Diagram has a semantic drag & drop tool")
     public void diagramHasSemanticDragAndDropTool() {
         new DiagramDescriptionHasDropToolChecker().check(this.diagramDescription);
