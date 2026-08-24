@@ -143,7 +143,6 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
         String domainType = SysMLMetamodelHelper.buildQualifiedName(this.eClass);
         NodeDefaultSizeExpression defaultSizeExpression = new NodeDefaultSizeExpressionSwitch().doSwitch(this.eClass);
         return this.diagramBuilderHelper.newNodeDescription()
-                .collapsible(true)
                 .defaultHeightExpression(defaultSizeExpression.defaultHeightExpression())
                 .defaultWidthExpression(defaultSizeExpression.defaultWidthExpression())
                 .domainType(domainType)

@@ -70,7 +70,6 @@ public class AnnotatingNodeDescriptionProvider extends AbstractNodeDescriptionPr
         String domainType = SysMLMetamodelHelper.buildQualifiedName(this.eClass);
 
         return this.diagramBuilderHelper.newNodeDescription()
-                .collapsible(true)
                 .defaultHeightExpression(ViewConstants.DEFAULT_NOTE_HEIGHT)
                 .defaultWidthExpression(ViewConstants.DEFAULT_NOTE_WIDTH)
                 .domainType(domainType)

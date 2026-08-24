@@ -89,7 +89,6 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getViewUsage());
         return this.diagramBuilderHelper.newNodeDescription()
-                .collapsible(true)
                 .defaultHeightExpression(ViewConstants.DEFAULT_VIEW_USAGE_NODE_HEIGHT)
                 .defaultWidthExpression(ViewConstants.DEFAULT_VIEW_USAGE_NODE_WIDTH)
                 .domainType(domainType)

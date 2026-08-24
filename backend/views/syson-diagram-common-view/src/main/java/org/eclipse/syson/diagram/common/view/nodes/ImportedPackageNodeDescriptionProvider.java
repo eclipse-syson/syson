@@ -67,7 +67,6 @@ public class ImportedPackageNodeDescriptionProvider extends AbstractNodeDescript
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getNamespaceImport());
         NodeDefaultSizeExpression defaultSizeExpression = new NodeDefaultSizeExpressionSwitch().doSwitch(SysmlPackage.eINSTANCE.getNamespaceImport());
         return this.diagramBuilderHelper.newNodeDescription()
-                .collapsible(true)
                 .defaultHeightExpression(defaultSizeExpression.defaultHeightExpression())
                 .defaultWidthExpression(defaultSizeExpression.defaultWidthExpression())
                 .domainType(domainType)

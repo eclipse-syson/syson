@@ -74,7 +74,6 @@ public class ActorNodeDescriptionProvider extends UsageNodeDescriptionProvider {
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(this.eClass);
         return this.diagramBuilderHelper.newNodeDescription()
-                .collapsible(true)
                 // Use the same ratio as the actor.svg image to make sure the keepAspectRatio property works as
                 // expected.
                 .defaultHeightExpression("92")
