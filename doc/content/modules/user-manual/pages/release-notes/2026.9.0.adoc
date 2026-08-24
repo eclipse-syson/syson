@@ -133,8 +133,23 @@ It is now exported as `* /`, and a warning reports it, since the exported text i
 
 * In node-tool selection dialogs:
 
-** Selection dialog trees now apply the default _Explorer_ filters, hiding memberships, root namespaces, expose elements, and expression internals.
-Library elements remain available for selection.
+** Selection dialog trees now apply the default _Explorer_ filters, hiding `Memberships`, root `Namespaces`, expose elements, and expression internals.
+It allows to focus on the elements that are relevant for the current model, while still allowing to select library elements.
+
+* In _Details_ view:
+
+** In reference widget model-browser dialogs, `Memberships` and root `Namespaces` are now hidden, making models and standard libraries easier to navigate.
+It allows to focus on the elements that are relevant for the current model, while still allowing to select library elements.
+It also makes it consistent with the _Explorer_ view, which already hides `Memberships` and root `Namespaces`.
++
+[cols="1,1"]
+|===
+|Without filters
+|With filters
+
+a|image::release-notes-reference-widget-without-filters.png[Reference Widget model-browser dialog without filters, width=45%,height=45%]
+a|image::release-notes-reference-widget-with-filters.png[Reference Widget model-browser dialog with filters, width=45%,height=45%]
+|===
 
 * {product} Docker images now support `linux/amd64` and `linux/arm64` and run natively on arm64 machines such as Apple Silicon or AWS Graviton.
 Setting `DOCKER_DEFAULT_PLATFORM=linux/amd64` is no longer necessary on arm64 machines.
