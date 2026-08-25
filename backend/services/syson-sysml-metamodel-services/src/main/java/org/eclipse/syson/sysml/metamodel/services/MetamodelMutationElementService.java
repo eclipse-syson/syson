@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.Connector;
@@ -48,6 +49,7 @@ import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.Usage;
 
 /**
  * Element-related services doing mutations. This class should not depend on sirius-web services or other spring
@@ -384,6 +386,38 @@ public class MetamodelMutationElementService {
             return documentation;
         }
         return null;
+    }
+
+    /**
+     * Creates an allocate edge between the given source and target.
+     *
+     * @param source
+     *            the source of the allocate edge
+     * @param target
+     *            the target of the allocate edge
+     * @return the created {@link AllocationUsage}
+     */
+    public AllocationUsage createAllocateEdge(Element source, Element target) {
+        var owner = source.getOwner();
+        var ownerMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+        owner.getOwnedRelationship().add(ownerMembership);
+        var allocation = SysmlFactory.eINSTANCE.createAllocationUsage();
+        ownerMembership.getOwnedRelatedElement().add(allocation);
+        this.addEndToAllocateEdge(allocation, source);
+        this.addEndToAllocateEdge(allocation, target);
+        return allocation;
+    }
+
+    private void addEndToAllocateEdge(AllocationUsage edge, Element end) {
+        if (end instanceof Usage usage) {
+            var featureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
+            edge.getOwnedRelationship().add(featureMembership);
+            var feature = SysmlFactory.eINSTANCE.createFeature();
+            featureMembership.getOwnedRelatedElement().add(feature);
+            var reference = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+            feature.getOwnedRelationship().add(reference);
+            reference.setReferencedFeature(usage);
+        }
     }
 
     private Feature addConnectorEnd(Connector connector, Feature end, Element endContainer, Element connectorContainer, FeatureDirectionKind defaultDirection) {
