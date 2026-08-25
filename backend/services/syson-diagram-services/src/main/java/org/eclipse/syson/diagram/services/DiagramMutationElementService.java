@@ -751,17 +751,12 @@ public class DiagramMutationElementService {
      *            the current editing context
      * @param diagramService
      *            the current diagram service
-     * @return the given source element
+     * @return the created {@link AllocationUsage}
      */
-    public Element createAllocateEdge(Element source, Element target, Node sourceNode, IEditingContext editingContext, IDiagramService diagramService) {
-        var owner = source.getOwner();
-        var ownerMembership = SysmlFactory.eINSTANCE.createOwningMembership();
-        owner.getOwnedRelationship().add(ownerMembership);
-        var allocation = SysmlFactory.eINSTANCE.createAllocationUsage();
-        ownerMembership.getOwnedRelatedElement().add(allocation);
-        this.addEndToAllocateEdge(allocation, source);
-        this.addEndToAllocateEdge(allocation, target);
-        return source;
+    public AllocationUsage createAllocateEdge(Element source, Element target, Node sourceNode, IEditingContext editingContext, IDiagramService diagramService) {
+        var allocateEdge = this.metamodelMutationElementService.createAllocateEdge(source, target);
+        this.metamodelMutationElementService.initialize(allocateEdge);
+        return allocateEdge;
     }
 
     /**
@@ -836,18 +831,6 @@ public class DiagramMutationElementService {
             }
         }
         return allocationUsage;
-    }
-
-    private void addEndToAllocateEdge(AllocationUsage edge, Element end) {
-        if (end instanceof Usage usage) {
-            var featureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
-            edge.getOwnedRelationship().add(featureMembership);
-            var feature = SysmlFactory.eINSTANCE.createFeature();
-            featureMembership.getOwnedRelatedElement().add(feature);
-            var reference = SysmlFactory.eINSTANCE.createReferenceSubsetting();
-            feature.getOwnedRelationship().add(reference);
-            reference.setReferencedFeature(usage);
-        }
     }
 
     /**

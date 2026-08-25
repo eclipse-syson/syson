@@ -18,6 +18,7 @@ import static org.assertj.core.api.InstanceOfAssertFactories.type;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
@@ -26,6 +27,7 @@ import org.eclipse.syson.sysml.MetadataDefinition;
 import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
@@ -186,6 +188,22 @@ public class MetamodelMutationElementServiceTest {
         });
         var targetFlow = this.queryService.getTargetFlowUsageEdge(createdFlow);
         assertThat(targetFlow).isEqualTo(target);
+    }
+
+    @Test
+    @DisplayName("GIVEN two PartUsage, WHEN creating an allocate edge, then an AllocationUsage is created with the correct ends")
+    public void createAllocateEdge() {
+        Package parentPackage = SysmlFactory.eINSTANCE.createPackage();
+        PartUsage partUsage1 = SysmlFactory.eINSTANCE.createPartUsage();
+        this.mutationService.addChildInParent(parentPackage, partUsage1);
+        PartUsage partUsage2 = SysmlFactory.eINSTANCE.createPartUsage();
+        this.mutationService.addChildInParent(parentPackage, partUsage2);
+        AllocationUsage allocationUsage = this.mutationService.createAllocateEdge(partUsage1, partUsage2);
+        assertThat(allocationUsage).isNotNull();
+        assertThat(allocationUsage.getFeature())
+                .hasSize(2)
+                .anySatisfy(feature -> assertThat(feature.getOwnedReferenceSubsetting().getReferencedFeature()).isEqualTo(partUsage1))
+                .anySatisfy(feature -> assertThat(feature.getOwnedReferenceSubsetting().getReferencedFeature()).isEqualTo(partUsage2));
     }
 
     private RequirementUsage createRequirement(String name) {

@@ -79,6 +79,7 @@ This removes Rollup warnings about missing global names for externalized peer de
 - https://github.com/eclipse-syson/syson/issues/2453[#2453] [diagrams] Add the Show/Hide section and associated tools to the group palette.
 - https://github.com/eclipse-syson/syson/issues/2463[#2463] [details] Export `ExpressionPropertySection`.
 This lets downstream applications with a custom extension registry display the _Expression value_ property section in the _Details_ view.
+- https://github.com/eclipse-syson/syson/issues/2441[#2441] [services] Refactor `DiagramMutationElementService#createAllocateEdge` to extract semantic creation from diagram service.
 
 === New features
 
