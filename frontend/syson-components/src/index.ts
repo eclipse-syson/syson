@@ -14,6 +14,7 @@ export { DeleteExpressionDiagramToolOverriddenContribution } from './extensions/
 export { DeleteExpressionExplorerToolOverriddenContribution } from './extensions/expressions/DeleteExpressionExplorerToolOverriddenContribution';
 export { EditExpressionDiagramToolOverriddenContribution } from './extensions/expressions/EditExpressionDiagramToolOverriddenContribution';
 export { EditExpressionExplorerToolOverriddenContribution } from './extensions/expressions/EditExpressionExplorerToolOverriddenContribution';
+export { ExpressionPropertySection } from './extensions/expressions/ExpressionPropertySection';
 export { NewExpressionDiagramToolOverriddenContribution } from './extensions/expressions/NewExpressionDiagramToolOverriddenContribution';
 export { NewExpressionExplorerToolOverriddenContribution } from './extensions/expressions/NewExpressionExplorerToolOverriddenContribution';
 export { InsertTextualSysMLv2ExplorerToolOverriddenContribution } from './extensions/InsertTextualSysMLv2ExplorerToolOverriddenContribution';
