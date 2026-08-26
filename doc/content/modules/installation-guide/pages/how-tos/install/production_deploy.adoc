@@ -18,7 +18,7 @@ For more details see xref:user-manual:cycle.adoc[].
 == Prepare ecosystem
 
 Pay attention to deploying enterprise-grade version of the prerequisites, including the database service.
-Before manually deploying the database, it's recommend to use a managed database instance, either provided by the organization's IT service or through cloud services.
+Before manually deploying the database, we recommend using a managed database instance provided by the organization's IT service or through cloud services.
 
 [NOTE]
 ====
@@ -75,7 +75,7 @@ This step provides the following configuration elements:
 [#start-app]
 == Start the application
 
-To run the application, you'll need to use the Java Runtime Environment (JRE) to run the pre-build JAR, {product-jar} xref:how-tos/install/production_deploy.adoc#download[downloaded] earlier.
+To run the application, use the Java Runtime Environment (JRE) to run the prebuilt JAR, {product-jar}, xref:how-tos/install/production_deploy.adoc#download[downloaded] earlier.
 
 Go to the folder containing the {product-jar} and run the command:
 

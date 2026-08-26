@@ -9,7 +9,7 @@ Take a moment to review and align your system with the recommended specification
 
 [NOTE]
 ====
-If a platform and version isn't listed on this page, it implies that this platform and version isn't tested, bugs fixed, or provided help for.
+If a platform and version are not listed on this page, they are not tested, supported with bug fixes, or eligible for assistance.
 ====
 
 include::installation-guide:architecture.adoc[leveloffset=+1]
@@ -73,7 +73,7 @@ Verify that Node.js has been added to the `PATH` environment variable.
 
 === Supported browsers
 
-Users can interact with the central server through following web browsers:
+Users can interact with the central server through the following web browsers:
 
 [%noheader]
 |===
@@ -95,7 +95,7 @@ WARNING: {product} doesn't support Internet Explorer.
 
 === Supported operating system
 
-The minimal operating system - `OS` requirements are:
+The minimum operating system (`OS`) requirements are:
 
 * Windows 10 or later
 * Apple macOS 13.x Ventura and later
@@ -121,12 +121,12 @@ You should aim to offer a network with the lowest possible latency between the c
 
 === Server and database latency
 
-To get optimal performance, it's strongly recommend hosting both the server and database on the same physical server to reduce latency between the two components.
+For optimal performance, we strongly recommend hosting both the server and database on the same physical server to reduce latency between the two components.
 
 === Network stability
 
-Virtual Private Network - `VPN` aren't recommended.
-It's a common latency factor such as other network elements that could drop connections that are more or less inactive.
+Virtual Private Networks (`VPNs`) are not recommended.
+They are a common source of latency, as are other network elements that can drop more-or-less inactive connections.
 As such wireless connection are also not recommended as any loss of connectivity might lead to instability in the product and loss of data.
 If a network element of this kind is mandatory, use an SSH tunnel as a workaround to avoid client/server disconnections.
 
@@ -137,6 +137,6 @@ If a network element of this kind is mandatory, use an SSH tunnel as a workaroun
 == Disclaimer
 
 {product} isn't warranted to run without any error or interruption.
-We don't make any warranty about the statements that are under the section <<Deployment recommendations>>, it's for information purposes.
+We make no warranty regarding the statements in the <<Deployment recommendations>> section; they are for informational purposes only.
 
 You acknowledge and accept the risks involved by using these products that could include without limitation, downtime, loss of connectivity or data, system crashes, bad performances or performance degradation.

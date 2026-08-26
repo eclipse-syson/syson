@@ -208,7 +208,7 @@ Click on the _Apply_ button.
 
 ===== Import sources
 
-In your Eclipse, go to the Git perspective, and the click on _Add an existing local Git repository_ button.
+In Eclipse, go to the Git perspective, then click the _Add an existing local Git repository_ button.
 
 image::SetupDev_SpringToolSuite_Import_Sources_01.png[Add Git repository, 90%]
 
@@ -222,12 +222,12 @@ Then select all projects and uncheck all _Maven_ folders or folders named _backe
 
 image::SetupDev_SpringToolSuite_Import_Sources_03.png[Import sources, 80%]
 
-Click on _Finish_. Your projects should now be in the _Package Explorer_ of your _Java_ perspective. On the bottom right corner of your Eclipse, you should see Eclipse building the projects imported.
+Click _Finish_. Your projects should now be in the _Package Explorer_ of your _Java_ perspective. In the bottom-right corner of Eclipse, you should see the imported projects being built.
 Wait for the end of this task (this could take a while).
 
 ===== Post-configuration
 
-You need tell checkstyle to use the {product} checkstyle configuration.
+Configure Checkstyle to use the {product} Checkstyle configuration.
 
 Go to _Window > Preferences_ menu (or _SpringToolSuite4 > Settings_ on macOS) and then _Checkstyle_.
 
@@ -478,7 +478,7 @@ Since version 2025.10.2, {product} services are organized into several modules t
 
 - Services that query/mutate the model in an atomic way are located in the module `syson-sysml-metamodel-services`.
 * this module will depend on `syson-sysml-metamodel`.
-* all services in this module won't depend on Spring, Sirius-Web or any diagram/table related code.
+* All services in this module must not depend on Spring, Sirius-Web, or diagram- or table-related code.
 - Services that query/mutate the model through Sirius-Web services are located in the module `syson-model-services`.
 * all services in this module are allowed to depend on Sirius-Web
 * for example, services that query the model through `IObjectSearchService`.
@@ -496,14 +496,14 @@ Since version 2025.10.2, {product} services are organized into several modules t
 * will contain services that can be used in all representations
 
 - Services will be grouped in classes by their purpose and usage:
-* a service that query the model will be in a class named `ModelQueryService`.
-* a service that mutate the model will be in a class named `ModelMutationService`.
-* a service that query the diagram will be in a class named `DiagramQueryService`.
-* a service that mutate the diagram will be in a class named `DiagramMutationService`.
-* a service querying label of diagram elements will be in a class named `DiagramQueryLabelService`.
-* a service modifying the label of diagram elements will be in a class named `DiagramMutationLabelService`.
-* same for tables, trees, forms, representations.
-* `XXXQueryService`, `XXXMutationService`, `XXXQueryYYYService`, `XXXMutationYYYService` classes can be split in smaller classes if they contain too many services.
+* A service that queries the model belongs in a class named `ModelQueryService`.
+* A service that mutates the model belongs in a class named `ModelMutationService`.
+* A service that queries the diagram belongs in a class named `DiagramQueryService`.
+* A service that mutates the diagram belongs in a class named `DiagramMutationService`.
+* A service that queries diagram-element labels belongs in a class named `DiagramQueryLabelService`.
+* A service that modifies diagram-element labels belongs in a class named `DiagramMutationLabelService`.
+* The same naming convention applies to tables, trees, forms, and representations.
+* `XXXQueryService`, `XXXMutationService`, `XXXQueryYYYService`, and `XXXMutationYYYService` classes can be split into smaller classes if they contain too many services.
 
 - In addition to services classes, each module contains two specific services classes which are the entry points for services that are intended to be called from AQL expressions:
 * these classes contain services that are intended to be called from AQL expressions.

@@ -17,7 +17,7 @@ At the top of the {explorer}, a toolbar provides quick access to essential actio
 
 * xref:hands-on/how-tos/model-management.adoc#create-model[Add a Model]: Enables the creation of a new model within the project.
 * xref:hands-on/how-tos/model-management.adoc#upload-model[Upload a Model]: Allows users to upload and integrate an external model into the project.
-* xref:hands-on/how-tos/explorer.adoc#select[Select] element in Explorer: Selects in the explorer view what is already in the editor.
+* xref:hands-on/how-tos/explorer.adoc#select[Select element in Explorer]: Selects in the Explorer view what is already selected in the editor.
 
 == Selection
 
@@ -36,13 +36,13 @@ This menu provides functionalities based on the selected item:
 ** xref:hands-on/how-tos/model-management.adoc#create-model[Create a new model].
 ** xref:hands-on/how-tos/model-management.adoc#create-element[Create a new child element].
 ** xref:hands-on/how-tos/model-management.adoc#download-model[Download the model].
-** xref:hands-on/how-tos/explorer.adoc#expand-all[Expand all the model].
+** xref:hands-on/how-tos/explorer.adoc#expand-all[Expand the entire model].
 ** xref:hands-on/how-tos/model-management.adoc#rename-model[Rename the model].
 ** xref:hands-on/how-tos/model-management.adoc#delete-model[Delete the model].
 * For Semantic Elements, users can:
 ** xref:hands-on/how-tos/model-management.adoc#create-element[Create a new child element].
 ** xref:hands-on/how-tos/representation-operations.adoc#create-representation[Create a new representation].
-** xref:hands-on/how-tos/explorer.adoc#expand-all[Expand all the children].
+** xref:hands-on/how-tos/explorer.adoc#expand-all[Expand all child elements].
 ** xref:hands-on/how-tos/model-management.adoc#rename-element[Rename the element].
 ** xref:hands-on/how-tos/model-management.adoc#delete-element[Delete the element].
 * For Representations, users can:

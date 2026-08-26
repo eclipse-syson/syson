@@ -5,7 +5,7 @@
 
 include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
-To create a new Blank project, user has to click on _Blank project_ card at the top of the homepage.
+To create a new blank project, click the _Blank project_ card at the top of the homepage.
 
 image::hands-on-new-project.png[Create New Project]
 
@@ -13,7 +13,7 @@ Then a pop-up appears to set the name of the new project.
 
 image::hands-on-new-project-conf.png[New Project Configuration]
 
-User is redirected to the newly created project, which is initially empty.
+You are redirected to the newly created project, which is initially empty.
 
 image::hands-on-new-project-result.png[New Project Result]
 

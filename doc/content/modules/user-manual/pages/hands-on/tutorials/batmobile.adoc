@@ -74,7 +74,7 @@ image::tutorial-referenced-library.png[Tutorial: Referenced library]
 . Right-click on the diagram background and click on the `Structure` -> `New Part` tool.
 . A new part usage is created.
 . Rename it to `bulletProofWheels[4] :>> wheels`.
-. A new `redefines` relationship appears between the `bulletProofWheels` part definition and the`wheels` part usage.
+. A new `redefines` relationship appears between the `bulletProofWheels` part definition and the `wheels` part usage.
 
 == Step 4: Create Relationship
 
@@ -93,12 +93,12 @@ image::tutorial-referenced-library.png[Tutorial: Referenced library]
 . Click on node `frontRightWheel :> wheels`.
 . Click on arrow border and hold down until `Batmobile :> Vehicle` node.
 . Select the `Become nested part` tool.
-. A new containment edge is created and element `frontRightWheel` is moved under `Batmobile` in model
+. A new containment edge is created, and the `frontRightWheel` element is moved under `Batmobile` in the model.
 . Redo same actions with `frontLeftWheel :> wheels`.
 . Click on node `bulletProofWheels[4] :>> wheels`.
 . Click on arrow border and hold down until `BatmobileNG :> Batmobile` node.
 . Select the `Become nested part` tool.
-. A new containment edge is created and element `bulletProofWheels` is moved under `BatmobileNG` in model
+. A new containment edge is created, and the `bulletProofWheels` element is moved under `BatmobileNG` in the model.
 
 [NOTE]
 ====

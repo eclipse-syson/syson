@@ -2,30 +2,30 @@
 
 == Creating and linking requirements
 
-By using {product}, requirements can be well integrated and defined  with the {gv}.
-Remember that a requirement is a kind of constraint representing the constraints given by stakeholders that a solution must satisfy.
-For example, the requirement of a maximum speed of a vehicle.
-From the {gv} diagram, user can create a new requirement **from the background** of the diagram from a click that displays toolbar.
+{product} supports integrating and defining requirements with the {gv}.
+A requirement is a type of constraint that represents a stakeholder constraint that a solution must satisfy.
+For example, a requirement can specify a vehicle's maximum speed.
+From the {gv} diagram, users can create a new requirement **from the diagram background** by clicking to display the toolbar.
 
 image::requirement-managment-fromBackground-creation.png[Requirement creation from Diagram Background]
 
-User can also create requirement **in other element** such as a requirement.
+Users can also create a requirement **inside another element**, such as another requirement.
 
 image::requirement-managment-fromRequirement-creation.png[Requirement creation from Requirement]
 
-A Requirement Definition is represented by rectangular node style whereas a Requirement Usage is represented by rectangular node style with rounded corner.
+A Requirement Definition is represented by a rectangular node style, whereas a Requirement Usage is represented by a rectangular node style with rounded corners.
 
 image::requirement-managment-node-representation.png[Requirement creation from Requirement]
 
-For now, {gv} diagram authorize only to create requirement Definition and Usage.
-_Satisfy_ relationship to define connection between requirements aren't available.
-Work around requirements are among the topics to be processed soon.
+Currently, {gv} diagrams allow only Requirement Definitions and Requirement Usages to be created.
+_Satisfy_ relationships that define connections between requirements are not yet available.
+Additional work on requirements is planned.
 
 Feel free to xref:ROOT:help.adoc[contact us] for more details.
 
 == Requirements view
 
-User can visualize and edit requirements existing inside of a _Package_ (or any other element) in a dedicated view: the Requirements View.
+Users can view and edit requirements in a _Package_ (or any other element) in the dedicated Requirements View.
 
 To create a Requirements View, right-click on a _Package_ (or any other element) in the Model Explorer and select `New Representation`, then in the opened popup, select the `Requirement Table View` and set a name.
 
@@ -33,22 +33,22 @@ A new Requirements View looks like this:
 
 image::requirements-table-view-empty.png[Requirement Table View, width=60%,height=60%]
 
-It is always empty at the creation.
+It is empty when created.
 
 To populate the Requirements View, use the `Import all existing requirements` button in the toolbar.
 
 image::requirements-table-view-import-action.png[Requirement Table View - Import action, width=60%,height=60%]
 
-After clicking on this button, all requirements existing in the selected element are imported and displayed in the Requirements View.
-The sub-requirements are not imported and displayed yet in the table, this will be part of a future development.
+After clicking this button, all requirements in the selected element are imported and displayed in the Requirements View.
+Sub-requirements are not yet imported or displayed in the table; this is planned for a future release.
 
 image::requirements-table-view-imported-reqs.png[Requirement Table View - Imported requirements, width=60%,height=60%]
 
-User can edit the properties of the requirements directly in the table cells.
+Users can edit requirement properties directly in the table cells.
 For example, the _declaredName_ property can be edited by clicking on the corresponding cell.
-Same for the _reqId_ property and the documentation.
+The same applies to the _reqId_ property and documentation.
 
-User can also create new requirements directly in the Requirements View by clicking on the `New Requirement` button in the toolbar.
+Users can also create new requirements directly in the Requirements View by clicking the `New Requirement` button in the toolbar.
 
 image::requirements-table-view-new-req-action.png[Requirement Table View - New requirement action, width=60%,height=60%]
 
@@ -56,7 +56,7 @@ After clicking on this button, a new requirement is created and added to the tab
 
 image::requirements-table-view-new-req.png[Requirement Table View - New requirement, width=60%,height=60%]
 
-User can delete a requirement by using the "..." button at the end of a requirement line.
+Users can delete a requirement by using the "..." button at the end of its row.
 Two options are available: `Delete from model` and `Delete from table`.
 `Delete from model` will delete the requirement from the model and from the table.
 `Delete from table` will only delete the requirement from the table, but it will remain in the model.

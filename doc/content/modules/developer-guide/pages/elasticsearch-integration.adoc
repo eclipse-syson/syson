@@ -7,7 +7,7 @@ When configured, this feature transparently indexes models created and modified 
 These indices can be queried through the xref:user-manual:features/cross-project-search.adoc[cross project search] to find an element regardless of its containing project.
 
 Let's consider that you are trying to debug an issue related to the indexing of models in Elasticsearch.
-Elasticsearch comes with Kibana, a browser-based analytics and search dashboard that lets you visualize and  manage your indices (among other features we won't cover here).
+Elasticsearch comes with Kibana, a browser-based analytics and search dashboard that lets you visualize and manage your indices, among other features not covered here.
 
 == Install Elasticsearch
 
@@ -118,7 +118,7 @@ Or add the following program arguments to your launch configuration:
 
 Note that the Elasticsearch integration in Spring performs a scan of all the repositories on startup to detect Elasticsearch-compatible repositories.
 This scan happens regardless of whether Elasticsearch is configured with the properties above.
-{product} doesn't define such repositories, so the scan won't have an impact on the application, but it generates messages that can pollute the backend logs.
+{product} does not define such repositories, so the scan does not affect the application, but it generates messages that can pollute the backend logs.
 You can disable this scan with the following property:
 
 [source, properties]
@@ -131,7 +131,7 @@ spring.data.elasticsearch.repositories.enabled=false
 Navigate to http://localhost:5601/ to open Kibana, open the left-side menu and select `Elasticsearch > Index Management`.
 
 The page displays the list of indexes currently managed by Elasticsearch.
-Each {product}'s editing context (i.e. projectfootnote:[In some cases projects can have multiple editing contexts, but we won't cover it here.]) has its own index, named `editing-context-<Editing Context ID>`.
+Each {product} editing context (that is, a projectfootnote:[In some cases, projects can have multiple editing contexts, but this documentation does not cover them.]) has its own index, named `editing-context-<Editing Context ID>`.
 
 Click on an index to get high-level information (like the size of the index, the number of documents, etc).
 Click on the _Discover index_ button to open the index and see the documents currently stored in it.
@@ -140,7 +140,7 @@ image::elasticsearch-discover-view.png[Discover view in Elasticsearch]
 
 [NOTE]
 ====
-The discover view can only display 500 documents, use the fields on the left panel to filter the results, or check the next section to run queries on an index.
+The Discover view can display only 500 documents. Use the fields in the left panel to filter the results, or see the next section to run queries on an index.
 ====
 
 == How to run queries on an index

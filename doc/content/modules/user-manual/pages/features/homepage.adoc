@@ -49,16 +49,16 @@ Within the platform, initiating a new project is a user-friendly process that ac
 * **Create a Blank Project**: Users can start their modeling journey with an empty project, building a project from the ground up.
 When you create a blank project, it contains no model or representation.
 * **Create a Project from Existing Templates**: For efficiency and consistency, users can select from predefined templates that streamline project initiation, aligning with common modeling scenarios.
-The 3 first possible templates are displayed unitary at the beginning of Project sections and they're also available in "Show all templates" section.
-For now, there exist three available templates :
-- _Batmobile_ template is a complete {sysml} project with several concepts of each {sysml} type (kind of _Definitions_ and _Usages_ with relationships).
-- _{sysmlv2}_ is an empty {sysml} project with only the root model, a _Package_ and a {gv} representation.
-- _{sysmlv2}-Library_ is an empty SysML project with only the root model, a _LibraryPackage_ and a {gv} representation.
+The first three templates are displayed individually at the beginning of the Projects section. They are also available in the "Show all templates" section.
+The following templates are available:
+- The _Batmobile_ template is a complete {sysml} project with several concepts of each {sysml} type, including _Definitions_, _Usages_, and relationships.
+- _{sysmlv2}_ is an empty {sysml} project with only the root model, a _Package_, and a {gv} representation.
+- _{sysmlv2}-Library_ is an empty {sysml} project with only the root model, a _LibraryPackage_, and a {gv} representation.
 * **Upload a Previously Exported Project**: Facilitating collaboration and workflow continuity, users can effortlessly upload a project previously exported, ensuring seamless transitions and flexibility in collaboration.
 
 [NOTE]
 ====
-Every project you create have its own xref:features/editor.adoc[Project Editor].
+Every project you create has its own xref:features/editor.adoc[Project Editor].
 ====
 
 Explore further by referring to the following how-tos for xref:hands-on/how-tos/project-management.adoc#create-blank-project[creating blank projects], generating xref:hands-on/how-tos/project-management.adoc#create-template-project[projects from templates], or xref:hands-on/how-tos/project-management.adoc#upload-project[uploading] existing ones.

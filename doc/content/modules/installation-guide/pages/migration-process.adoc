@@ -11,7 +11,7 @@ As a result, future versions of Liquibase cannot be used directly in SysON (down
 So, SysON 2026.9.0 has downgraded Liquibase from 5.0.3 to 4.33.0.
 From our tests, the downgrade to 4.33.0 does not break anything in SysON, and we will continue to monitor the situation for future versions of Liquibase.
 
-But in any case, please download all your models/projects and back up your database before upgrading to 2026.7.0.
+But in any case, please download all your models/projects and back up your database before upgrading to 2026.9.0.
 
 Also please remember only YEAR.MONTH.0 versions are stable and suitable for production deployments.
 Other versions, such as intermediate releases, are intended solely for testing purposes.
