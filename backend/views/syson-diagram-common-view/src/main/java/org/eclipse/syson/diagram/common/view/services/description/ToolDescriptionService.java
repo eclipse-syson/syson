@@ -42,8 +42,10 @@ import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
+import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -165,10 +167,13 @@ public class ToolDescriptionService {
      * @return The created {@link NodeToolSection}
      */
     public NodeToolSection relatedElementsNodeToolSection(boolean nested) {
-        return this.diagramBuilderHelper.newNodeToolSection()
-                .name("Related Elements")
-                .nodeTools(this.addExistingElementsTool(false, nested), this.addExistingElementsTool(true, nested))
-                .build();
+        var builder = this.diagramBuilderHelper.newNodeToolSection().name("Related Elements");
+        if (nested) {
+            builder.nodeTools(this.addExistingElementsTool(false, true), this.addExistingElementsTool(true, true), this.addExistingConnectedElementsTool());
+        } else {
+            builder.nodeTools(this.addExistingElementsTool(false, false), this.addExistingElementsTool(true, false));
+        }
+        return builder.build();
     }
 
     /**
@@ -221,6 +226,22 @@ public class ToolDescriptionService {
                 .name(title)
                 .iconURLsExpression(iconURL)
                 .body(changeContextViewUsageOwner.build())
+                .build();
+    }
+
+    private NodeTool addExistingConnectedElementsTool() {
+        return this.diagramBuilderHelper.newNodeTool()
+                .name("Add existing connected elements")
+                .iconURLsExpression("/icons/AddReferencedElements.svg")
+                .preconditionExpression(ServiceMethod.of4(DiagramQueryAQLService.class, DiagramQueryAQLService::isView, Element.class, String.class, Node.class,
+                        IEditingContext.class, DiagramContext.class)
+                        .aqlSelf(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), Node.SELECTED_NODE, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT))
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression(ServiceMethod.of3(DiagramMutationAQLService.class, DiagramMutationAQLService::addExistingConnectedElements, Element.class,
+                                IEditingContext.class, DiagramContext.class, java.util.Map.class)
+                                .aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT,
+                                        ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
+                        .build())
                 .build();
     }
 

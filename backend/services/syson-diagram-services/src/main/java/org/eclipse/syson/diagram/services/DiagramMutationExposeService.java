@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
@@ -30,6 +31,9 @@ import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.syson.model.services.ModelQueryElementService;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.NodeDescriptionService;
@@ -38,13 +42,22 @@ import org.eclipse.syson.services.api.SiriusWebCoreServices;
 import org.eclipse.syson.services.api.ViewDefinitionKind;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.AllocationUsage;
+import org.eclipse.syson.sysml.Annotation;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Comment;
+import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.ControlNode;
 import org.eclipse.syson.sysml.Definition;
+import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expose;
+import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.FlowUsage;
+import org.eclipse.syson.sysml.FramedConcernMembership;
+import org.eclipse.syson.sysml.IncludeUseCaseUsage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.Package;
@@ -52,13 +65,21 @@ import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
+import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.Relationship;
+import org.eclipse.syson.sysml.SatisfyRequirementUsage;
+import org.eclipse.syson.sysml.Subclassification;
+import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
+import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
+import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.NodeFinder;
 import org.springframework.stereotype.Service;
 
@@ -230,6 +251,133 @@ public class DiagramMutationExposeService {
         var selectedNode = this.findSelectedNode(element, selectedNodes);
         this.addToExposedElements(element, recursive, editingContext, diagramContext, selectedNode, convertedNodes);
         return element;
+    }
+
+    /** Adds every project element connected to the given element to the current view. */
+    public Element addExistingConnectedElements(Element element, IEditingContext editingContext, DiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        if (editingContext instanceof IEMFEditingContext emfEditingContext) {
+            var resourceSet = emfEditingContext.getDomain().getResourceSet();
+            for (Element connectedElement : this.getConnectedElements(element, resourceSet)) {
+                this.expose(connectedElement, editingContext, diagramContext, null, convertedNodes);
+            }
+        }
+        return element;
+    }
+
+    private Set<Element> getConnectedElements(Element element, ResourceSet resourceSet) {
+        var connectedElements = new LinkedHashSet<Element>();
+        // ponytail: project-wide scan is O(elements × relationships); add an endpoint index only if profiling requires it.
+        for (Element candidate : this.getProjectElements(resourceSet)) {
+            var endpoints = this.getGeneralViewEdgeEndpoints(candidate);
+            if (endpoints.sources().contains(element)) {
+                connectedElements.addAll(endpoints.targets());
+            }
+            if (endpoints.targets().contains(element)) {
+                connectedElements.addAll(endpoints.sources());
+            }
+            if (candidate instanceof Usage usage && (usage.getOwningUsage() != null || usage.getOwner() instanceof Definition)) {
+                if (Objects.equals(usage.getOwner(), element)) {
+                    connectedElements.add(usage);
+                }
+                if (Objects.equals(usage, element)) {
+                    connectedElements.add(usage.getOwner());
+                }
+            }
+        }
+        connectedElements.remove(element);
+        connectedElements.removeIf(candidate -> !this.isProjectElement(candidate, resourceSet));
+        return connectedElements;
+    }
+
+    private Set<Element> getProjectElements(ResourceSet resourceSet) {
+        var elements = new LinkedHashSet<Element>();
+        for (Resource resource : resourceSet.getResources()) {
+            if (this.isProjectResource(resource, resourceSet)) {
+                var contents = resource.getAllContents();
+                while (contents.hasNext()) {
+                    EObject content = contents.next();
+                    if (content instanceof Element projectElement) {
+                        elements.add(projectElement);
+                    }
+                }
+                resource.getContents().stream().filter(Element.class::isInstance).map(Element.class::cast).forEach(elements::add);
+            }
+        }
+        return elements;
+    }
+
+    private boolean isProjectElement(Element element, ResourceSet resourceSet) {
+        return !element.eIsProxy() && this.isProjectResource(element.eResource(), resourceSet) && this.modelQueryElementService.isExposable(element);
+    }
+
+    private boolean isProjectResource(Resource resource, ResourceSet resourceSet) {
+        return resource != null && resourceSet.getResources().contains(resource) && !ElementUtil.isStandardLibraryResource(resource);
+    }
+
+    private EdgeEndpoints getGeneralViewEdgeEndpoints(Element candidate) {
+        var sources = new LinkedHashSet<Element>();
+        var targets = new LinkedHashSet<Element>();
+        if (candidate instanceof AllocationUsage allocationUsage) {
+            sources.add(this.metamodelQueryElementService.getSourceAllocateEdge(allocationUsage));
+            targets.add(this.metamodelQueryElementService.getTargetAllocateEdge(allocationUsage));
+        } else if (candidate instanceof FlowUsage flowUsage) {
+            sources.add(flowUsage.getSourceOutputFeature());
+            targets.add(flowUsage.getTargetInputFeature());
+        } else if (candidate instanceof Connector connector) {
+            sources.add(this.metamodelQueryElementService.getConnectorSource(connector));
+            targets.addAll(this.metamodelQueryElementService.getConnectorTarget(connector));
+        } else if (candidate instanceof TransitionUsage transitionUsage) {
+            sources.add(transitionUsage.getSource());
+            targets.add(transitionUsage.getTarget());
+        } else if (candidate instanceof SatisfyRequirementUsage satisfy) {
+            if (satisfy.getSatisfyingFeature() != null) {
+                sources.add(satisfy.getSatisfyingFeature());
+            } else {
+                sources.add(satisfy.getOwner());
+            }
+            targets.add(satisfy.getSatisfiedRequirement());
+        } else if (candidate instanceof IncludeUseCaseUsage include) {
+            sources.add(include.getOwningUsage());
+            targets.add(include.getUseCaseIncluded());
+        } else if (candidate instanceof FeatureValue featureValue) {
+            sources.add(featureValue.getFeatureWithValue());
+            targets.add(this.metamodelQueryElementService.getFeatureValueTarget(featureValue));
+        } else if (candidate instanceof FramedConcernMembership framedConcern) {
+            sources.add(((Relationship) framedConcern).getOwningRelatedElement());
+            targets.add(this.metamodelQueryElementService.getFramedConcernTarget(framedConcern));
+        } else if (candidate instanceof RequirementConstraintMembership requirementConstraint) {
+            sources.add(requirementConstraint.getOwningRelatedElement());
+            targets.add(this.metamodelQueryElementService.getRequirementConstraintTarget(requirementConstraint));
+        } else if (candidate instanceof Annotation annotation) {
+            sources.add(annotation.getAnnotatingElement());
+            targets.add(annotation.getAnnotatedElement());
+        } else if (candidate instanceof Dependency dependency) {
+            sources.addAll(dependency.getClient());
+            targets.addAll(dependency.getSupplier());
+        } else if (candidate instanceof FeatureTyping featureTyping) {
+            sources.add(featureTyping.getTypedFeature());
+            targets.add(featureTyping.getType());
+        } else if (candidate instanceof Redefinition redefinition) {
+            sources.add(redefinition.getRedefiningFeature());
+            targets.add(redefinition.getRedefinedFeature());
+        } else if (candidate instanceof ReferenceSubsetting referenceSubsetting) {
+            sources.add(referenceSubsetting.getReferencingFeature());
+            targets.add(referenceSubsetting.getReferencedFeature());
+        } else if (candidate instanceof Subsetting subsetting) {
+            sources.add(subsetting.getSubsettingFeature());
+            targets.add(subsetting.getSubsettedFeature());
+        } else if (candidate instanceof Subclassification subclassification) {
+            sources.add(subclassification.getSubclassifier());
+            targets.add(subclassification.getSuperclassifier());
+        }
+        sources.remove(null);
+        targets.remove(null);
+        return new EdgeEndpoints(sources, targets);
+    }
+
+    /** Endpoints of a relationship rendered as an edge. */
+    private record EdgeEndpoints(Set<Element> sources, Set<Element> targets) {
     }
 
     private Node findSelectedNode(Element element, List<Node> selectedNodes) {

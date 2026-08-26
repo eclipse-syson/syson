@@ -115,6 +115,14 @@ public class DiagramMutationAQLService {
     }
 
     /**
+     * {@link DiagramMutationExposeService#addExistingConnectedElements(Element, IEditingContext, DiagramContext, Map)}.
+     */
+    public Element addExistingConnectedElements(Element element, IEditingContext editingContext, DiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        return this.diagramMutationExposeService.addExistingConnectedElements(element, editingContext, diagramContext, convertedNodes);
+    }
+
+    /**
      * {@link DiagramMutationExposeService#addToExposedElements(Element, boolean, IEditingContext, DiagramContext, List, Map)}.
      */
     public Element addToExposedElements(Element element, boolean recursive, IEditingContext editingContext, DiagramContext diagramContext, List<Node> selectedNodes,
