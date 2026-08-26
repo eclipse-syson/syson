@@ -8,5 +8,5 @@ image::details-right-sidebar-details.png[{details}]
 
 [WARNING]
 ====
-It's important to note that any changes made in the {details} view have a direct and immediate effect on the underlying model, making these modifications instantly available to everyone accessing the model.
+Changes made in the {details} view have a direct and immediate effect on the underlying model and are instantly available to everyone accessing it.
 ====

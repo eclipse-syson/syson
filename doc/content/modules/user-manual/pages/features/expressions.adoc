@@ -19,7 +19,7 @@ a|image::explorer-expression-internals-hidden.png[Internals hidden (default)]
 a|image::explorer-expression-internals-visible.png[Internals visible]
 |===
 
-When an `Expression` element or an `Element` which contains a single `Expression` element is selected (for example from the {explorer} view), the {details} view displays the textual representation of the expression, with a button to open the expression edition modal (see below) directly on it:
+When an `Expression` element or an `Element` that contains a single `Expression` element is selected (for example, from the {explorer} view), the {details} view displays the textual representation of the expression, with a button to open the expression editing modal directly from it (see below):
 +
 image::expression-details.png[Expression value displayed in the _Details_ view, width=80%]
 

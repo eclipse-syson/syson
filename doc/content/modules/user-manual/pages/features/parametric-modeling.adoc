@@ -1,9 +1,9 @@
 = Parametric modeling and constraints
 
-{sysmlv2} still use ports to define connection points on parts but Interconnection View diagrams to manage part input parameters in comparison to {sysmlv1}.
+Unlike {sysmlv1}, {sysmlv2} uses ports to define connection points on parts and Interconnection View diagrams to manage part input parameters.
 
-In the {iv} diagram, users can create ports with a defined direction or not thanks to the contextual palette of a part.
-To represent data flow between ports, user can create either `InterfaceUsage` or `BindingConnector as usage` when he's connecting two ports between them.
+In an {iv} diagram, users can create ports with or without a defined direction from a part's contextual palette.
+To represent data flow between ports, users can create either an `InterfaceUsage` or a `BindingConnector` usage when connecting two ports.
 These data flows visually represent how parameter values relate to each other, allowing their propagation through the model.
 
 image::parametric-modeling-connected-port.png[{Connected ports}]

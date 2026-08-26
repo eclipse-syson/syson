@@ -27,7 +27,7 @@ In essence, {product} stands as an open source enabler, promoting collaboration,
 {product} extends its utility by introducing the capability to import and export projects in JSON format.
 This feature enhances interoperability, allowing users to seamlessly exchange project data and collaborate with external tools or platforms.
 
-WARNING: {product} doesn't  support the {sysmlv2} Standard JSON format for import/export.
+WARNING: {product} does not support the {sysmlv2} Standard JSON format for import or export.
 
 For detailed instructions on xref:hands-on/how-tos/project-management.adoc#download-project[downloading projects], xref:hands-on/how-tos/model-management.adoc#download-model[downloading models], xref:hands-on/how-tos/project-management.adoc#upload-project[uploading projects], and xref:hands-on/how-tos/model-management.adoc#upload-model[uploading models], please refer to the respective sections in the documentation.
 These sections provide step-by-step guidance on how to perform these actions within the {product} environment.

@@ -3,7 +3,7 @@
 Even the most straightforward installation process can meet unforeseen issues.
 This section offers comprehensive troubleshooting tips and solutions to common problems encountered during installation.
 
-If you meet any troubleshooting, please xref:ROOT:help.adoc[contact us] to have solution and to share your troubleshooting to this page.
+If you encounter an issue not covered here, please xref:ROOT:help.adoc[contact us] for assistance and to help improve this page.
 
 == Connection refused
 If the server fails to start and displays a `Connection refused` error such as:
@@ -31,9 +31,9 @@ TIP: Check that you are consulting the documentation version that matches the JA
 Refer to the xref:installation-guide:how-tos/install/production_deploy.adoc#start-app[] section for detailed instructions according to your version.
 
 == Empty page in web browser
-If you encounter an empty page while accessing to {product} through your web browser, it might be because you have installed {product} on a local server or machine and want to access it from another one.
+If you encounter an empty page while accessing {product} through your web browser, you may have installed {product} on a local server or machine and be trying to access it from another machine.
 
-If you open the dev tools of your web browser, you may found the following message: `Uncaught TypeError: crypto.randomUUID is not a function`.
+If you open your web browser's developer tools, you may find the following message: `Uncaught TypeError: crypto.randomUUID is not a function`.
 
 In this case, please refer to xref:installation-guide:how-tos/https.adoc[].
 
@@ -46,7 +46,7 @@ export DOCKER_DEFAULT_PLATFORM=linux/amd64
 ----
 
 == Problems when not using a standard Docker environment
-If your container environment is not a standard Docker installation (podman for example) you may run into access problems.
+If your container environment is not a standard Docker installation (for example, Podman), you may encounter access problems.
 These can be solved by adding
 [source, bash]
 ----
@@ -55,5 +55,5 @@ These can be solved by adding
 to both containers (_database_ and _app_) in the `docker-compose.yml`.
 
 == NetworkError when downloading a document
-If you encounter a `NetworkError` when trying to download a document from {product}, don't worry this is a https://github.com/eclipse-sirius/sirius-web/issues/6319[known issue] that will be fixed in the next releases.
+If you encounter a `NetworkError` when trying to download a document from {product}, it is a https://github.com/eclipse-sirius/sirius-web/issues/6319[known issue] that will be fixed in a future release.
 It does not affect the download of the document.

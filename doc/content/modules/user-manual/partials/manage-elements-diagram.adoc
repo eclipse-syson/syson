@@ -2,9 +2,9 @@
 
 === Create element
 
-User can create element **from the background** of the diagram from a right-click that displays palette.
+Users can create elements **from the diagram background** by right-clicking to display the palette.
 In this palette, element creation tool are grouped by type in tool sections according to their type.
-User can click on the tool section and then click on the desired creation tool.
+Users can click a tool section and then select the desired creation tool.
 
 image::manage-elements-fromBackground-creation.png[Creation from Diagram Background]
 
@@ -16,30 +16,30 @@ The palette has a search field allowing to search in all tool sections.
 
 image::manage-elements-creation-search.png[Creation search, width=30%,height=30%]
 
-User can also create element **in other element**.
+Users can also create elements **inside other elements**.
 User just right-clicks on the element to display the palette and then click on the desired creation tool.
 
 image::manage-elements-fromElement-creation.png[Creation from Diagram Element, width=70%,height=70%]
 
-All created element are collapsed by default, it means that if a node with compartment is created, compartment are hidden.
+All created elements are collapsed by default. This means that when a node with compartments is created, its compartments are hidden.
 
-If node contains **compartment**, user can add element in the desired compartment by right-clicking in the compartment and display the palette.
+If a node contains **compartments**, users can add an element to the desired compartment by right-clicking the compartment to display the palette.
 
 image::manage-elements-fromCompartment-creation.png[Creation from Compartment, width=70%,height=70%]
 
-An other way is to right-click on the parent node header of the compartment.
-A palette will be display and the user can click on the desired creation tool (inside tool sections), new element will be created in the appropriate compartment.
+Another way is to right-click the parent node header of the compartment.
+The palette is displayed, and users can select the desired creation tool from a tool section. The new element is created in the appropriate compartment.
 
 image::manage-elements-fromParentCompartment-creation.png[Creation from Parent Compartment, width=70%,height=70%]
 
 === Delete element
 
-User can only delete a graphical element from the diagram without removing it from the model.
-User should just click on _Delete from diagram_ button in the palette.
+Users can delete a graphical element from the diagram without removing it from the model.
+Click the _Delete from diagram_ button in the palette.
 
 image::manage-elements-delete-from-diagram.png[Delete from diagram, width=70%,height=70%]
 
-User can also remove element from model (and so from diagram) by clicking on _Delete from model_ button in the palette.
+Users can also remove an element from the model (and therefore from the diagram) by clicking the _Delete from model_ button in the palette.
 
 image::manage-elements-delete-from-model.png[Delete from model, width=70%,height=70%]
 
@@ -56,6 +56,6 @@ You can reset it by deleting the {product} data in cache of your browser.
 
 === Duplicate Element
 
-User can duplicate an `Element` (and its representation node) by clicking on the _Duplicate Element_ button in the palette.
+Users can duplicate an `Element` and its representation node by clicking the _Duplicate Element_ button in the palette.
 
 image::manage-elements-duplicate-from-diagram.png[Duplicate element from Diagram]

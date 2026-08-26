@@ -1,6 +1,6 @@
 = Key concepts and terminology
 
-Read this to get a comprehensive exploration of the fundamental principles that shape the capability of {product} offering essential insights into its core foundations.
+Read this page for an overview of the fundamental concepts and capabilities of {product}.
 
 == Project
 
@@ -22,7 +22,7 @@ This design ensures simplicity and clarity in organizing and accessing your mode
 [IMPORTANT]
 ====
 In {product}, projects are _public_.
-Public projects are visible by everyone.
+Public projects are visible to everyone.
 ====
 
 == Model
@@ -48,7 +48,7 @@ xref:features/features.adoc[Explore features...]
 
 In {product}, a *Library* is a read-only snapshot of a project that may be referenced by other projects or libraries.
 
-Published libraries have a _namespace_, _version_ and _description_.
+Published libraries have a _namespace_, _version_, and _description_.
 Once a library has been published, it cannot be unpublished.
 It is also not possible to overwrite an existing library.
 Several libraries may have the same name (and version) provided they are from different namespaces.

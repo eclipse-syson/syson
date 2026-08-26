@@ -4,7 +4,7 @@ include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 == General
 
-To delete a given element, user can select the element and the press the `Del` key from representation editor.
+To delete an element, select it and press the `Del` key in the representation editor.
 
 == Navigation
 
@@ -17,7 +17,7 @@ In a diagram, users can left-click on an element to select it without displaying
 
 == Basic editing
 
-User can press `F2` key or start typing the new value directly to efficiently update an element name from representation editor.
+Users can press the `F2` key or start typing the new value directly to update an element name in the representation editor.
 
 Explore further by referring to the following how-tos for xref:user-manual:features/general-view.adoc#edit-label[Edit Label action].
 
@@ -27,16 +27,16 @@ Two ways to select several elements exist:
 
 === Ctrl key
 
-A user can select an element by clicking on it and then select another one by holding `Ctrl` key and clicking on the other element.
+Users can select an element by clicking it and then select another one by holding the `Ctrl` key while clicking the other element.
 This keyboard shortcut is available in the representation editor and in the {explorer} view.
 
 === Shift key
 
-To select several element in one action from representation editor, user can press `Shift` key and draw a rectangular area around elements that user wants to select.
-After releasing the click, all element in the area are selected.
+To select several elements at once in the representation editor, hold the `Shift` key and draw a rectangular area around the elements to select.
+After releasing the mouse button, all elements in the area are selected.
 
 == Search
 
-User can display the filter bar by holding `Ctrl+f` (Windows/Linux) or `Cmd+f` (MacOS) from the {explorer} view.
+Users can display the filter bar by pressing `Ctrl+f` (Windows/Linux) or `Cmd+f` (macOS) in the {explorer} view.
 
 Explore further by referring to the following how-tos for xref:hands-on/how-tos/explorer.adoc#explorer-filter[Filter elements].

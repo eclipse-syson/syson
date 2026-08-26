@@ -2,12 +2,12 @@
 
 From the diagram background or from a given node, it's possible to display all existing elements contained by the initial selection.
 
-User just need to display the palette and unfold _Existing elements_ section.
+Display the palette and expand the _Existing elements_ section.
 
 image::manage-existing-elements-add.png[Add existing elements, width=70%,height=70%]
 
-User can click on _Add existing elements_ to display elements directly contained by the selection.
-User can also click on _Add existing elements (recursive)_ to display elements directly contained by the selection and elements contained by these elements and so on.
+Click _Add existing elements_ to display elements directly contained by the selection.
+Click _Add existing elements (recursive)_ to display elements directly contained by the selection and their descendants.
 
 === Expose Package
 
@@ -20,12 +20,12 @@ It means that every element created inside the _Package_ will be automatically e
 
 image::gv-expose-part-in-package.png[An exposed Part inside a Package, width=60%,height=60%]
 
-If user wants to expose all elements contained by the _Package_, user can set the expose element corresponding to the _Package_ to recursive.
+To expose all elements contained by a _Package_, set the _Expose_ element corresponding to the _Package_ to recursive.
 In the _Details_ view of the expose element corresponding to the _Package_, just check the _is Recursive_ property.
 Then you will see a "::**" at the end of the expose element label in the _Explorer_ view.
 
 image::gv-expose-package-recursive.png[An exposed Package with is Recursive, width=60%,height=60%]
 
-When the _is Recursive_ property, all elements contained by the _Package_ are automatically visible inside the _Package_ graphical node in the diagram.
-No new expose element will be created in the _ViewUsage_ when a new element will be created inside the _Package_ graphical node. 
+When the _is Recursive_ property is set, all elements contained by the _Package_ are automatically visible inside the _Package_ graphical node in the diagram.
+No new _Expose_ element is created in the _ViewUsage_ when a new element is created inside the _Package_ graphical node.
 In this case, this also means that the _Delete from Diagram_ action will have no effect on those elements.

@@ -4,22 +4,22 @@ A view named _Query_ is available in {product}, allowing users to query the mode
 
 image::query-view-overview.png[Query View, width=85%,height=85%]
 
-This view allows to write AQL queries (see https://eclipse.dev/acceleo/documentation/[AQL documentation] for more details) and get the results of the queries written.
+This view lets you write AQL queries (see the https://eclipse.dev/acceleo/documentation/[AQL documentation] for details) and view their results.
 [WARNING]
 ====
-This view comes from https://eclipse.dev/sirius/sirius-web.html[{sw}], the software on which {product} is based upon.
-It will be improved release after release, with new variables and services, but it's experimental for now.
+This view comes from https://eclipse.dev/sirius/sirius-web.html[{sw}], the software on which {product} is based.
+It will be improved in future releases with new variables and services, but is currently experimental.
 ====
-Three variables are accessible for now, helping to write queries:
+Three variables are currently available to help write queries:
 - `self` which represents the selected element in the Explorer and/or any open diagram.
 It always returns one element.
 - `selection` which represents the selected elements in the Explorer and/or any open diagram.
 It always returns a collection of elements (one or several).
-- `editingContext` which represent the current project.
+- `editingContext`, which represents the current project.
 From this context, you can use the following services:
 
  - `Collection<Object> allContents()`: allows to retrieve all contents recursively (documents, and each element of all models) present in your editing context.
-Use this service very carefully as it can retrieve thousands elements very easily and can also lead to performance issues.
+Use this service carefully, as it can retrieve thousands of elements and cause performance issues.
  - `Collection<Object> contents()`: allows to retrieve all contents (documents) present in your editing context.
  - `Object getObjectById(String id)`: from its ID, allows to retrieve an object (a document or a {sysmlv2} model Element) present in your editing context.
 
