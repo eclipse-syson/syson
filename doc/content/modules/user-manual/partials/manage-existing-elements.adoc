@@ -2,12 +2,30 @@
 
 From the diagram background or from a given node, it's possible to display all existing elements contained by the initial selection.
 
-Display the palette and expand the _Existing elements_ section.
+Open the palette and expand the _Related Elements_ section.
 
 image::manage-existing-elements-add.png[Add existing elements, width=70%,height=70%]
 
 Click _Add existing elements_ to display elements directly contained by the selection.
 Click _Add existing elements (recursive)_ to display elements directly contained by the selection and their descendants.
+
+=== Add existing connected elements
+
+In the General View, select a node, open its palette, and choose _Add existing connected elements_ in the _Related Elements_ section.
+The tool displays existing project elements connected to the selection through incoming or outgoing relationships supported by the General View.
+Unlike _Add existing elements_, it follows connections rather than only containment.
+It does not create new semantic elements or import elements from standard libraries.
+
+You can also select several nodes and run the tool from their shared palette.
+The tool considers connections to all selected nodes.
+It is also available from a node's compartment, where it uses the enclosing element as the selection.
+
+Connected elements that can be displayed as ports or inside a compartment or container of any selected node are not added as separate nodes.
+This also applies when the compartment is hidden or has not yet been displayed; the tool does not reveal it.
+Existing representations are preserved.
+
+For example, when a selected part is connected to another independent part, the tool can display that other part.
+An attribute or port that can be displayed inside or on the selected part is not added as a separate node.
 
 === Expose Package
 

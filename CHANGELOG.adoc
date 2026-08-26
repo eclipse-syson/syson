@@ -8,6 +8,8 @@
 
 === Breaking changes
 
+- [services] The new `addExistingConnectedElements` service accepts a list of semantic elements and a list of selected graphical nodes so that filtering is applied to the whole selection before exposure.
+
 === Dependency update
 
 === Bug fixes
@@ -24,6 +26,11 @@
 
 - [releng] Add the `syson-starter` Maven module so downstream Spring Boot applications can use SysON with a single dependency.
 - https://github.com/eclipse-syson/syson/issues/2469[#2469] [diagrams] `New Reference` tools should have a selection dialog.
+- https://github.com/eclipse-syson/syson/issues/2467[#2467] [diagrams] Add the _Add existing connected elements_ action to _General View_ diagrams.
+The action adds existing project elements connected to the selected element through inbound or outbound relationships.
+Elements representable as border nodes or inside any selected node are excluded, including when the corresponding compartment is hidden.
+Use the existing content tools to display those elements; existing representations are preserved.
+
 
 == v2026.9.0
 
