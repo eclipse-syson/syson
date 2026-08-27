@@ -152,6 +152,9 @@ It removes all selected nodes from the diagram without deleting the correspondin
 ** Selection dialog trees now apply the default _Explorer_ filters, hiding `Memberships`, root `Namespaces`, expose elements, and expression internals.
 It allows to focus on the elements that are relevant for the current model, while still allowing to select library elements.
 
+** Direct edit no longer parses or modifies expressions.
+Use the dedicated expression tools to create or modify expressions, while direct edit remains focused on labels and feature syntax.
+
 * In _Details_ view:
 
 ** In reference widget model-browser dialogs, `Memberships` and root `Namespaces` are now hidden, making models and standard libraries easier to navigate.

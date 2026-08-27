@@ -43,14 +43,11 @@ import org.eclipse.syson.direct.edit.grammars.DirectEditParser.ConstantPrefixExp
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.ConstraintExpressionContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.DerivedPrefixExpressionContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.DirectionPrefixExpressionContext;
-import org.eclipse.syson.direct.edit.grammars.DirectEditParser.EffectExpressionContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.EndPrefixExpressionContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.FeatureChainExpressionContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.FeatureExpressionsContext;
-import org.eclipse.syson.direct.edit.grammars.DirectEditParser.FeatureValueExpressionContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.ListItemExpressionContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.LiteralExpressionContext;
-import org.eclipse.syson.direct.edit.grammars.DirectEditParser.MeasurementExpressionContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.MultiplicityExpressionContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.MultiplicityExpressionMemberContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.NodeExpressionContext;
@@ -61,16 +58,9 @@ import org.eclipse.syson.direct.edit.grammars.DirectEditParser.RedefinitionExpre
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.ReferenceExpressionContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.ShortNameContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.SubsettingExpressionContext;
-import org.eclipse.syson.direct.edit.grammars.DirectEditParser.TriggerExpressionContext;
-import org.eclipse.syson.direct.edit.grammars.DirectEditParser.TriggerExpressionNameContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.TypingExpressionContext;
-import org.eclipse.syson.direct.edit.grammars.DirectEditParser.ValueExpressionContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.VariationPrefixExpressionContext;
 import org.eclipse.syson.services.api.IDirectEditNamespaceProvider;
-import org.eclipse.syson.sysml.AcceptActionUsage;
-import org.eclipse.syson.sysml.ActionUsage;
-import org.eclipse.syson.sysml.AttributeDefinition;
-import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
@@ -104,16 +94,12 @@ import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionFeatureKind;
-import org.eclipse.syson.sysml.TransitionFeatureMembership;
-import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.metamodel.helper.DeresolvingNamespaceProvider;
 import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
 import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
 import org.eclipse.syson.util.NamedProxy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * The ANTLR Listener for the direct edit grammar for SysON diagrams.
@@ -126,8 +112,6 @@ import org.slf4j.LoggerFactory;
 public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     private static final int NB_RESOLUTION_TRY = 10;
-
-    private final Logger logger = LoggerFactory.getLogger(DiagramDirectEditListener.class);
 
     private final Element element;
 
@@ -192,7 +176,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         this.handleMissingSubsettingExpression(ctx);
         this.handleMissingRedefinitionExpression(ctx);
         this.handleMissingTypingExpression(ctx);
-        this.handleMissingValueExpression(ctx);
     }
 
     @Override
@@ -228,7 +211,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         this.handleMissingSubsettingExpression(ctx);
         this.handleMissingRedefinitionExpression(ctx);
         this.handleMissingTypingExpression(ctx);
-        this.handleMissingValueExpression(ctx);
     }
 
     @Override
@@ -530,127 +512,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         }
     }
 
-    @Override
-    public void exitFeatureValueExpression(FeatureValueExpressionContext ctx) {
-        if (this.options.contains(LabelService.VALUE_OFF)) {
-            return;
-        }
-        if (this.element instanceof Feature valueOwner) {
-            FeatureValue featureValue = null;
-            featureValue = this.element.getOwnedRelationship().stream()
-                    .filter(FeatureValue.class::isInstance)
-                    .map(FeatureValue.class::cast)
-                    .findFirst()
-                    .orElseGet(() -> {
-                        var result = SysmlFactory.eINSTANCE.createFeatureValue();
-                        valueOwner.getOwnedRelationship().add(result);
-                        return result;
-                    });
-
-            if (!this.expressionStack.isEmpty()) {
-                featureValue.getOwnedRelatedElement().clear();
-                featureValue.getOwnedRelatedElement().add(this.popExpression());
-            }
-            // Check for isDefault token;
-            int childCount = ctx.getChildCount();
-            if (childCount > 0) {
-                String token = ctx.getChild(0).getText();
-                if (token != null && LabelConstants.DEFAULT.equals(token.trim())) {
-                    featureValue.setIsDefault(true);
-                    if (childCount > 1) {
-                        token = ctx.getChild(1).getText();
-                    }
-                } else {
-                    featureValue.setIsDefault(false);
-                }
-
-                if (LabelConstants.COLON_EQUAL.equals(token)) {
-                    featureValue.setIsInitial(true);
-                } else if (LabelConstants.EQUAL.equals(token)) {
-                    featureValue.setIsInitial(false);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void exitValueExpression(ValueExpressionContext ctx) {
-        if (this.options.contains(LabelService.VALUE_OFF)) {
-            return;
-        }
-        if (this.element instanceof Usage valueOwner) {
-            FeatureValue featureValue = null;
-            featureValue = this.element.getOwnedRelationship().stream()
-                    .filter(FeatureValue.class::isInstance)
-                    .map(FeatureValue.class::cast)
-                    .findFirst()
-                    .orElseGet(() -> {
-                        var result = SysmlFactory.eINSTANCE.createFeatureValue();
-                        valueOwner.getOwnedRelationship().add(result);
-                        return result;
-                    });
-
-            LiteralExpression literalExpression = this.createLiteralExpression(ctx.literalExpression());
-            Optional<OperatorExpression> optMeasurementOperator = this.handleMeasurementExpression(ctx.measurementExpression(), valueOwner, literalExpression);
-            if (optMeasurementOperator.isPresent()) {
-                featureValue.getOwnedRelatedElement().clear();
-                featureValue.getOwnedRelatedElement().add(optMeasurementOperator.get());
-            } else {
-                // Add the literal expression as a fallback if there is no measurement or if the measurement reference
-                // cannot be found.
-                featureValue.getOwnedRelatedElement().clear();
-                featureValue.getOwnedRelatedElement().add(literalExpression);
-            }
-        }
-    }
-
-    @Override
-    public void enterTriggerExpression(TriggerExpressionContext ctx) {
-        if (this.options.contains(LabelService.TRANSITION_EXPRESSION_OFF)) {
-            return;
-        }
-        if (this.element instanceof TransitionUsage transition) {
-            this.utilService.removeTransitionFeaturesOfSpecificKind(transition, TransitionFeatureKind.TRIGGER);
-            this.getVisitedTransitionFeatures().put(TransitionFeatureKind.TRIGGER, true);
-        }
-        super.enterTriggerExpression(ctx);
-    }
-
-    @Override
-    public void exitTriggerExpression(TriggerExpressionContext ctx) {
-        if (this.options.contains(LabelService.TRANSITION_EXPRESSION_OFF)) {
-            return;
-        }
-        if (this.element instanceof TransitionUsage) {
-            this.getVisitedTransitionFeatures().put(TransitionFeatureKind.TRIGGER, true);
-        }
-        super.exitTriggerExpression(ctx);
-    }
-
-    @Override
-    public void exitTriggerExpressionName(TriggerExpressionNameContext ctx) {
-        if (this.options.contains(LabelService.TRANSITION_EXPRESSION_OFF)) {
-            return;
-        }
-        if (this.element instanceof TransitionUsage transition) {
-            this.handleTriggerExpressionName(transition, ctx);
-        }
-        super.exitTriggerExpressionName(ctx);
-    }
-
-    @Override
-    public void exitEffectExpression(EffectExpressionContext ctx) {
-        if (this.options.contains(LabelService.TRANSITION_EXPRESSION_OFF)) {
-            return;
-        }
-        if (this.element instanceof TransitionUsage transition) {
-            this.utilService.removeTransitionFeaturesOfSpecificKind(transition, TransitionFeatureKind.EFFECT);
-            this.getVisitedTransitionFeatures().put(TransitionFeatureKind.EFFECT, true);
-            this.handleEffectExpression(transition, ctx);
-        }
-        super.exitEffectExpression(ctx);
-    }
-
     /**
      * Resolve all the proxies created during parsing process.
      *
@@ -700,48 +561,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         Expression lastArg = this.popExpression();
         Expression firstArg = this.popExpression();
         this.pushExpression(this.createBinaryOperationExpression("x", firstArg, operator, "y", lastArg));
-    }
-
-    private Optional<OperatorExpression> handleMeasurementExpression(MeasurementExpressionContext measurementExpressionContext, Element context, Expression valueExpression) {
-        Optional<OperatorExpression> result = Optional.empty();
-        if (measurementExpressionContext != null && !measurementExpressionContext.getText().isBlank()) {
-            String measurementText = this.getFullText(measurementExpressionContext);
-            Optional<AttributeUsage> optMeasurementAttribute = this.getMeasurementAttribute(context, measurementText);
-            if (optMeasurementAttribute.isPresent()) {
-                this.importService.handleImport(this.element, optMeasurementAttribute.get());
-                OperatorExpression operatorExpression = this.createOperatorExpression(LabelConstants.OPEN_BRACKET);
-                result = Optional.of(operatorExpression);
-
-                ParameterMembership p1 = SysmlFactory.eINSTANCE.createParameterMembership();
-                operatorExpression.getOwnedRelationship().add(p1);
-                Feature x = SysmlFactory.eINSTANCE.createFeature();
-                p1.getOwnedRelatedElement().add(x);
-                x.setDeclaredName("x");
-                x.setDirection(FeatureDirectionKind.IN);
-                FeatureValue xValue = SysmlFactory.eINSTANCE.createFeatureValue();
-                x.getOwnedRelationship().add(xValue);
-                xValue.getOwnedRelatedElement().add(valueExpression);
-
-                ParameterMembership p2 = SysmlFactory.eINSTANCE.createParameterMembership();
-                operatorExpression.getOwnedRelationship().add(p2);
-                Feature y = SysmlFactory.eINSTANCE.createFeature();
-                p2.getOwnedRelatedElement().add(y);
-                y.setDeclaredName("y");
-                y.setDirection(FeatureDirectionKind.IN);
-                FeatureValue yValue = SysmlFactory.eINSTANCE.createFeatureValue();
-                y.getOwnedRelationship().add(yValue);
-                FeatureReferenceExpression yFeatureReference = SysmlFactory.eINSTANCE.createFeatureReferenceExpression();
-                yValue.getOwnedRelatedElement().add(yFeatureReference);
-                Membership yFeatureReferenceMembership = SysmlFactory.eINSTANCE.createMembership();
-                yFeatureReference.getOwnedRelationship().add(yFeatureReferenceMembership);
-                yFeatureReferenceMembership.setMemberElement(optMeasurementAttribute.get());
-            } else {
-                String errorMessage = "Cannot find measurement reference " + measurementText;
-                this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
-                this.logger.warn(errorMessage);
-            }
-        }
-        return result;
     }
 
     private void handleConjugatedPortTyping(Usage usage, ConjugatedPortDefinition type) {
@@ -869,157 +688,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             redefiningUsage.setDeclaredName(originalName);
         }
         return usage;
-    }
-
-    private void handleTriggerExpressionName(TransitionUsage transition, TriggerExpressionNameContext triggerExpressionName) {
-        String name = triggerExpressionName.name().getText();
-        TypingExpressionContext typingExpression = triggerExpressionName.typingExpression();
-        String type;
-        if (typingExpression != null) {
-            // Here the user have provided both a name and a type
-            type = typingExpression.qualifiedName().getText();
-        } else {
-            // Here only a type is provided, name is considered null
-            type = name;
-            name = null;
-        }
-        var typeValue = this.utilService.findByNameAndType(this.element, type, Type.class);
-        if (typeValue != null) {
-            this.addTransitionFeature(transition, TransitionFeatureKind.TRIGGER, name, typeValue);
-        }
-    }
-
-    private void handleEffectExpression(TransitionUsage transition, EffectExpressionContext effectExpression) {
-        effectExpression.qualifiedName().stream().forEach(identifier -> {
-            var name = identifier.getText();
-            var actionUsage = this.utilService.findByNameAndType(this.element, name, ActionUsage.class);
-            if (actionUsage != null) {
-                this.addTransitionFeature(transition, TransitionFeatureKind.EFFECT, null, actionUsage);
-            }
-        });
-    }
-
-    /**
-     * Returns the {@link AttributeUsage} representing the provided {@code measurementName} measurement.
-     * <p>
-     * A measurement attribute should by typed by the {@code MeasurementReferences::TensorMeasurementReference}
-     * definition (directly or indirectly).
-     * </p>
-     * <p>
-     * The provided {@code context} could be any element of a SysMLv2 model. It is used as an entry point to navigate
-     * the entire resource set to search for the attribute.
-     * </p>
-     *
-     * @param context
-     *            the element used to search the attribute
-     * @param measurementName
-     *            the name of the measurement to find
-     * @return the measurement attribute if it exists, {@link Optional#empty()} otherwise
-     */
-    private Optional<AttributeUsage> getMeasurementAttribute(Element context, String measurementName) {
-        AttributeDefinition tensorMeasurementReference = this.utilService.findByNameAndType(context, "MeasurementReferences::TensorMeasurementReference", AttributeDefinition.class);
-        List<EObject> attributes = this.utilService.getAllReachableType(context, SysmlPackage.eINSTANCE.getAttributeUsage());
-        Optional<AttributeUsage> optUnitAttribute = attributes.stream()
-                .map(AttributeUsage.class::cast)
-                // The short name or the regular name can be use to set units
-                .filter(attribute -> Objects.equals(attribute.getShortName(), measurementName) || Objects.equals(attribute.getName(), measurementName))
-                // The attribute needs to be a measurement (i.e. inherit from TensorMeasurementReference)
-                .filter(attribute -> attribute.allSupertypes().contains(tensorMeasurementReference))
-                .findFirst();
-        return optUnitAttribute;
-    }
-
-    /**
-     * Creates an {@link OperatorExpression} with the provided {@code operator}.
-     *
-     * @param operator
-     *            the operator of the expression
-     * @return the created {@link OperatorExpression}
-     */
-    private OperatorExpression createOperatorExpression(String operator) {
-        OperatorExpression operatorExpression = SysmlFactory.eINSTANCE.createOperatorExpression();
-        operatorExpression.setOperator(operator);
-        return operatorExpression;
-    }
-
-    /**
-     * Create and set a Transition Feature to be assigned on the {@link TransitionUsage}.
-     *
-     * @param transition
-     *            The transition onto which a Transition Feature is created.
-     * @param kind
-     *            The {@link TransitionFeatureKind} of the Transition Feature to create.
-     * @param name
-     *            The name of the payload. Should not be null if {@code kind} is TRIGGER.
-     * @param typeValue
-     *            The parameter value to assign to the Transition Feature.
-     */
-    private void addTransitionFeature(TransitionUsage transition, TransitionFeatureKind kind, String name, Type typeValue) {
-        TransitionFeatureMembership tfMembership = SysmlFactory.eINSTANCE.createTransitionFeatureMembership();
-        tfMembership.setKind(kind);
-        if (kind.equals(TransitionFeatureKind.TRIGGER)) {
-            // Add the root membership
-            transition.getOwnedRelationship().add(tfMembership);
-
-            AcceptActionUsage acceptActionUsage = SysmlFactory.eINSTANCE.createAcceptActionUsage();
-            tfMembership.getOwnedRelatedElement().add(acceptActionUsage);
-
-            // Set AcceptActionUsage payload as first Parameter. See paragraph 7.16.8
-            var payloadParam = SysmlFactory.eINSTANCE.createParameterMembership();
-            acceptActionUsage.getOwnedRelationship().add(payloadParam);
-
-            // create the reference usage to be contained in the parameter membership
-            var payloadRef = SysmlFactory.eINSTANCE.createReferenceUsage();
-            payloadRef.setDirection(FeatureDirectionKind.INOUT);
-            payloadParam.getOwnedRelatedElement().add(payloadRef);
-            if (name != null) {
-                payloadRef.setDeclaredName(name);
-            } else {
-                payloadRef.setDeclaredName("payload");
-            }
-
-            var ft = SysmlFactory.eINSTANCE.createFeatureTyping();
-            payloadRef.getOwnedRelationship().add(ft);
-            ft.setType(typeValue);
-
-            // Set AcceptActionUsage receiver as second Parameter
-            var receiverParam = SysmlFactory.eINSTANCE.createParameterMembership();
-            acceptActionUsage.getOwnedRelationship().add(receiverParam);
-
-            // create the reference usage to be contained in the parameter membership
-            var receiverRef = SysmlFactory.eINSTANCE.createReferenceUsage();
-            receiverRef.setDirection(FeatureDirectionKind.IN);
-            receiverParam.getOwnedRelatedElement().add(receiverRef);
-
-            // create the feature value relationship to be contained inside the reference usage
-            var receiverFeatureVal = SysmlFactory.eINSTANCE.createFeatureValue();
-            receiverRef.getOwnedRelationship().add(receiverFeatureVal);
-
-            // create the feature reference expression to be contained inside the feature value relationship
-            var receiverFeatureRefExpr = SysmlFactory.eINSTANCE.createFeatureReferenceExpression();
-            receiverFeatureVal.getOwnedRelatedElement().add(receiverFeatureRefExpr);
-
-            // find or create the membership relationship contained inside the feature reference expression
-            var receiverMembership = SysmlFactory.eINSTANCE.createMembership();
-            receiverFeatureRefExpr.getOwnedRelationship().add(receiverMembership);
-            Type containerPart = this.utilService.getReceiverContainerDefinitionOrUsage(acceptActionUsage);
-            receiverMembership.setMemberElement(containerPart);
-
-            // find or create the return parameter membership relationship contained inside the feature reference
-            // expression
-            var receiverReturn = SysmlFactory.eINSTANCE.createReturnParameterMembership();
-            receiverFeatureRefExpr.getOwnedRelationship().add(receiverReturn);
-
-            // find or create the feature contained inside the parameter membership relationship
-            var receiverFeature = SysmlFactory.eINSTANCE.createFeature();
-            receiverFeature.setDirection(FeatureDirectionKind.OUT);
-            receiverReturn.getOwnedRelatedElement().add(receiverFeature);
-        } else {
-            if (typeValue instanceof ActionUsage) {
-                transition.getOwnedRelationship().add(tfMembership);
-            }
-        }
-        this.importService.handleImport(this.element, typeValue);
     }
 
     private void handleMissingDirectionPrefixExpression(ListItemExpressionContext ctx) {
@@ -1173,28 +841,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                     .findFirst();
             if (featureTyping.isPresent()) {
                 EcoreUtil.remove(featureTyping.get());
-            }
-        }
-    }
-
-    private void handleMissingValueExpression(ParserRuleContext ctx) {
-        if (this.options.contains(LabelService.VALUE_OFF)) {
-            return;
-        }
-        FeatureExpressionsContext featureExpressions = null;
-        if (ctx instanceof ListItemExpressionContext listCtx) {
-            featureExpressions = listCtx.featureExpressions();
-        } else if (ctx instanceof NodeExpressionContext nodeCtx) {
-            featureExpressions = nodeCtx.featureExpressions();
-        }
-        if (this.element instanceof Usage && featureExpressions != null && (this.isDeleteFeatureExpression(featureExpressions, featureExpressions.featureValueExpression(), LabelConstants.EQUAL)
-                || this.isDeleteFeatureExpression(featureExpressions, featureExpressions.featureValueExpression(), LabelConstants.COLON_EQUAL))) {
-            var featureValue = this.element.getOwnedRelationship().stream()
-                    .filter(FeatureValue.class::isInstance)
-                    .map(FeatureValue.class::cast)
-                    .findFirst();
-            if (featureValue.isPresent()) {
-                EcoreUtil.remove(featureValue.get());
             }
         }
     }

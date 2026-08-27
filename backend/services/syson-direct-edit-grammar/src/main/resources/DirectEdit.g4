@@ -103,8 +103,8 @@ multiplicityExpressionMember :
 ;
 
 featureExpressions :
-	((redefinitionExpression|subsettingExpression) multiplicityExpression?)? (typingExpression multiplicityExpression?)? (featureValueExpression)?
-	| (typingExpression)? ((subsettingExpression|redefinitionExpression) multiplicityExpression?)? (featureValueExpression)? |
+	((redefinitionExpression|subsettingExpression) multiplicityExpression?)? (typingExpression multiplicityExpression?)?
+	| (typingExpression)? ((subsettingExpression|redefinitionExpression) multiplicityExpression?)? |
 	multiplicityExpression
 ;
 
@@ -118,14 +118,6 @@ redefinitionExpression :
 
 typingExpression :
 	COLON qualifiedName
-;
-
-valueExpression :
-	EQUALS literalExpression (LBRACKET measurementExpression RBRACKET)?
-;
-
-featureValueExpression :
-	(DEFAULT_SUFFIX)? (EQUALS|ASSIGN_OP) expression
 ;
 
 literalExpression : 
@@ -171,27 +163,6 @@ featureChainExpression:
 	refName (DOT featureChainExpression)?
 ;
 
-
-transitionExpression :
-	(triggerExpression)? (guardExpression)? (effectExpression)?
-;
-
-triggerExpression :
-	triggerExpressionName (PIPE triggerExpressionName)*
-;
-
-triggerExpressionName :
-	name (typingExpression)?
-;
-
-guardExpression :
-	LBRACKET valueExpression RBRACKET
-;
-
-effectExpression :
-	SLASH qualifiedName (COMMA qualifiedName)*
-;
-
 qualifiedName :
 	name (NAMESPACE_SEP name)*
 ;
@@ -212,7 +183,7 @@ name :
 	// We can't use ANY+ or .+ here because it conflicts with reserved keywords, which will be matched over ANY since 
 	// they are longer. Using .+ is also too greedy, and will match ':' ':>' etc, making the parser unable to properly 
 	// handle the input.
-	~(COLON | SUBSETS_OP | NAMESPACE_SEP | REDEFINES_OP | EQUALS | ASSIGN_OP | LBRACKET | DEFAULT_SUFFIX | ORDERED_SUFFIX | NONUNIQUE_SUFFIX )+
+	~(COLON | SUBSETS_OP | NAMESPACE_SEP | REDEFINES_OP | ASSIGN_OP | LBRACKET | DEFAULT_SUFFIX | ORDERED_SUFFIX | NONUNIQUE_SUFFIX )+
 ;
 
 // LEXER RULES
