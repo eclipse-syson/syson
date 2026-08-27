@@ -103,6 +103,9 @@ image::release-notes-port-inherited-item-border-nodes.png[ItemUsage border node 
 
 * In diagrams:
 
+** Fix nested-usage edge tools in _General View_ diagrams.
+The connector palette now provides one type-specific tool for a Usage target: _Add target as nested <type>_ from a Usage source, or _Add target as owned <type>_ from a Definition source.
+No such tool is proposed for non-Usage targets, and _Become nested <type>_ remains specific to the source usage kind.
 ** Fix the missing graphical edge between `ConcernUsage` or `ConcernDefinition` graphical nodes and the actors created from them.
 ** Fix the nested composition edge tool label on `ConcernUsage` graphical nodes in _General View_ diagrams.
 It is now _Become nested Concern_ instead of _Become nested Requirement_.
@@ -131,7 +134,15 @@ It is now exported as `* /`, and a warning reports it, since the exported text i
 
 == Improvements
 
-* In node-tool selection dialogs:
+* In diagrams:
+
+** When selecting multiple graphical nodes, the group palette now displays the _Show/Hide_ section just like the single selection palette.
+The associated tools are the same ones: _Hide_; _Hide all content_; _Show all content_; _Reset content_; _Show valued content_.
++
+image::release-notes-show-hide-section-group-palette.png[New Show/Hide section in group palette, width=90%,height=90%]
+
+** In standard diagrams, the group palette now provides _Delete from diagram_ when multiple graphical nodes are selected.
+It removes all selected nodes from the diagram without deleting the corresponding model elements.
 
 ** Selection dialog trees now apply the default _Explorer_ filters, hiding `Memberships`, root `Namespaces`, expose elements, and expression internals.
 It allows to focus on the elements that are relevant for the current model, while still allowing to select library elements.
@@ -163,14 +174,6 @@ image::release-notes-hierarchical-requirements-table-view.png[Hierarchical requi
 ** The menu for a `Requirement` row now includes an action that lets users create a nested `Requirement`.
 +
 image::release-notes-hierarchical-requirements-table-view-create-nested-requirement.png[New sub-requirement in row action menu, width=90%,height=90%]
-
-** When selecting multiple graphical nodes, the group palette now displays the _Show/Hide_ section just like the single selection palette.
-The associated tools are the same ones: _Hide_; _Hide all content_; _Show all content_; _Reset content_; _Show valued content_.
-+
-image::release-notes-show-hide-section-group-palette.png[New Show/Hide section in group palette, width=90%,height=90%]
-
-** In standard diagrams, the group palette now provides _Delete from diagram_ when multiple graphical nodes are selected.
-It removes all selected nodes from the diagram without deleting the corresponding model elements.
 
 == Technical details
 

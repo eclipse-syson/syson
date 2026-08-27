@@ -28,6 +28,8 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
+import org.eclipse.syson.diagram.common.view.services.DefinitionOwnedUsageDescriptionService;
+import org.eclipse.syson.diagram.common.view.services.UsageNestedUsageDescriptionService;
 import org.eclipse.syson.diagram.tests.checkers.AQLExpressionCallsExistingServicesChecker;
 import org.eclipse.syson.diagram.tests.checkers.DiagramDescriptionHasDropToolChecker;
 import org.eclipse.syson.diagram.tests.checkers.EdgeDescriptionHasDirectEditToolChecker;
@@ -78,6 +80,43 @@ public class SDVDiagramDescriptionTests {
     public void eachEdgeHasReconnectTools() {
         List<EdgeDescription> edgeDescriptionCandidates = this.diagramDescription.getEdgeDescriptions();
         new EdgeDescriptionHasReconnectToolChecker().withExpectedReconnectToolCount(2).checkAll(edgeDescriptionCandidates);
+    }
+
+    @Test
+    @DisplayName("Each supported nested Usage reference has a composition edge description")
+    public void eachSupportedNestedUsageReferenceHasACompositionEdgeDescription() {
+        var nameGenerator = new SDVDescriptionNameGenerator();
+
+        new UsageNestedUsageDescriptionService().getNestedUsageReferences().stream()
+                .filter(reference -> SDVDiagramDescriptionProvider.USAGES.contains(reference.getEReferenceType()))
+                .forEach(reference -> assertThat(this.diagramDescription.getEdgeDescriptions()).as("Usage nested reference %s", reference.getName())
+                        .filteredOn(edgeDescription -> nameGenerator.getEdgeName("Usage Nested " + reference.getEReferenceType().getName()).equals(edgeDescription.getName()))
+                        .anySatisfy(edgeDescription -> assertThat(edgeDescription.getTargetExpression()).endsWith("." + reference.getName())));
+    }
+
+    @Test
+    @DisplayName("Each supported Definition owned Usage reference has a composition edge description")
+    public void eachSupportedDefinitionOwnedUsageReferenceHasACompositionEdgeDescription() {
+        var nameGenerator = new SDVDescriptionNameGenerator();
+        var definitionOwnedUsageDescriptionService = new DefinitionOwnedUsageDescriptionService();
+
+        SDVDiagramDescriptionProvider.USAGES.forEach(usageType -> assertThat(definitionOwnedUsageDescriptionService.getOwnedUsageReference(usageType))
+                .hasValueSatisfying(reference -> assertThat(this.diagramDescription.getEdgeDescriptions())
+                        .filteredOn(edgeDescription -> nameGenerator.getEdgeName("Definition Owned " + usageType.getName()).equals(edgeDescription.getName()))
+                        .anySatisfy(edgeDescription -> assertThat(edgeDescription.getTargetExpression()).endsWith("." + reference.getName()))));
+    }
+
+    @Test
+    @DisplayName("A SatisfyRequirementUsage Definition owned edge uses the ownedRequirement reference")
+    public void satisfyRequirementUsageDefinitionOwnedEdgeUsesOwnedRequirement() {
+        var edgeName = new SDVDescriptionNameGenerator().getEdgeName("Definition Owned " + SysmlPackage.eINSTANCE.getSatisfyRequirementUsage().getName());
+
+        var satisfyRequirementUsageEdgeDescription = this.diagramDescription.getEdgeDescriptions().stream()
+                .filter(edgeDescription -> edgeName.equals(edgeDescription.getName()))
+                .findFirst();
+
+        assertThat(satisfyRequirementUsageEdgeDescription)
+                .hasValueSatisfying(edgeDescription -> assertThat(edgeDescription.getTargetExpression()).endsWith(".ownedRequirement"));
     }
 
     @Test

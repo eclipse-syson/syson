@@ -40,6 +40,8 @@ In any case, it is strongly recommended to back up your data before proceeding w
 
 === Bug fixes
 
+- https://github.com/eclipse-syson/syson/issues/2472[#2472] [diagrams] Fix nested-usage edge tools in _General View_ diagrams.
+The connector palette now provides exactly one type-specific tool for a Usage target and no such tool for non-Usage targets. Usage sources provide _Add target as nested <type>_ tools; Definition sources provide _Add target as owned <type>_ tools. _Become nested <type>_ tools remain specific to the source usage kind.
 - https://github.com/eclipse-syson/syson/issues/2132[#2132] [diagrams] Fix the empty-diagram background remaining visible after creating a namespace import in a _General View_ diagram.
 - https://github.com/eclipse-syson/syson/issues/2393[#2393] [diagrams] Fix the missing graphical edge between `ConcernUsage` or `ConcernDefinition` graphical nodes and the Actors created from them.
 - https://github.com/eclipse-syson/syson/issues/2344[#2344] [diagrams] Fix dropping a nested `AttributeUsage` from the _Explorer_ onto a _General View_ diagram so it is visible on the first drop.

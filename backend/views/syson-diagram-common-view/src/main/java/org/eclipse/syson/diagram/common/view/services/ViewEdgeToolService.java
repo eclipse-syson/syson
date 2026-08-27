@@ -535,17 +535,57 @@ public class ViewEdgeToolService {
                 .build();
     }
 
-    public EdgeTool createAddAsNestedEdgeTool(NodeDescription targetElementDescription) {
+    /**
+     * Creates an edge tool that adds a target Usage as a nested Usage of the source.
+     *
+     * @param targetType
+     *            the semantic type of the target Usage
+     * @param targetElementDescriptions
+     *            the graphical descriptions representing the target Usage type
+     * @return the configured edge tool
+     */
+    public EdgeTool createAddAsNestedEdgeTool(EClass targetType, List<NodeDescription> targetElementDescriptions) {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callService = this.viewBuilderHelper.newChangeContext()
                 .expression(ServiceMethod.of1(DiagramMutationAQLService::becomeNestedUsage).aql(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.SEMANTIC_EDGE_SOURCE));
 
+        var precondition = ServiceMethod.of2(DiagramQueryAQLService::isTargetNodeOfType)
+                .aqlSelf(IEditingContext.EDITING_CONTEXT, AQLUtils.aqlString(targetType.getName()));
+
         return builder
-                .name(this.nameGenerator.getCreationToolName("Add as nested ", SysMLMetamodelHelper.toEClass(targetElementDescription.getDomainType())))
+                .name(this.nameGenerator.getCreationToolName("Add target as nested ", targetType))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getMembership().getName() + SVG)
                 .body(callService.build())
-                .targetElementDescriptions(targetElementDescription)
+                .preconditionExpression(precondition)
+                .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
+                .build();
+    }
+
+    /**
+     * Creates an edge tool that adds a target Usage as an owned Usage of the source Definition.
+     *
+     * @param targetType
+     *            the semantic type of the target Usage
+     * @param targetElementDescriptions
+     *            the graphical descriptions representing the target Usage type
+     * @return the configured edge tool
+     */
+    public EdgeTool createAddAsOwnedEdgeTool(EClass targetType, List<NodeDescription> targetElementDescriptions) {
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+
+        var callService = this.viewBuilderHelper.newChangeContext()
+                .expression(ServiceMethod.of1(DiagramMutationAQLService::becomeNestedUsage).aql(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.SEMANTIC_EDGE_SOURCE));
+
+        var precondition = ServiceMethod.of2(DiagramQueryAQLService::isTargetNodeOfType)
+                .aqlSelf(IEditingContext.EDITING_CONTEXT, AQLUtils.aqlString(targetType.getName()));
+
+        return builder
+                .name(this.nameGenerator.getCreationToolName("Add target as owned ", targetType))
+                .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getMembership().getName() + SVG)
+                .body(callService.build())
+                .preconditionExpression(precondition)
+                .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();
     }
 

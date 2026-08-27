@@ -22,8 +22,7 @@ import com.jayway.jsonpath.JsonPath;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -39,8 +38,7 @@ import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Label;
-import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorPaletteQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnTwoDiagramElementsToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -120,15 +118,18 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
     @Autowired
     private InvokeSingleClickOnTwoDiagramElementsToolMutationRunner invokeSingleClickOnTwoDiagramElementsToolMutationRunner;
 
+    @Autowired
+    private ConnectorPaletteQueryRunner connectorPaletteQueryRunner;
+
     private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
     private static Stream<Arguments> addAttributeUsageAsNestedOfEdgeSourceParameters() {
         return Stream.of(
-                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ITEM_DEFINITION_ID, SysmlPackage.eINSTANCE.getItemDefinition(), "ItemDefinition", 1, ArrowStyle.FillDiamond),
-                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_ID, SysmlPackage.eINSTANCE.getPartDefinition(), "PartDefinition", 1, ArrowStyle.FillDiamond),
-                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID, SysmlPackage.eINSTANCE.getPartUsage(), PART_LABEL, 1, ArrowStyle.Diamond),
-                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID, SysmlPackage.eINSTANCE.getActionUsage(), ACTION_LABEL, 1, ArrowStyle.Diamond),
-                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.STATE_USAGE_ID, SysmlPackage.eINSTANCE.getStateUsage(), "state", 0, ArrowStyle.Diamond)
+                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ITEM_DEFINITION_ID, SysmlPackage.eINSTANCE.getItemDefinition(), "ItemDefinition", 1, ArrowStyle.FillDiamond, "Add target as owned Attribute"),
+                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_ID, SysmlPackage.eINSTANCE.getPartDefinition(), "PartDefinition", 1, ArrowStyle.FillDiamond, "Add target as owned Attribute"),
+                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID, SysmlPackage.eINSTANCE.getPartUsage(), PART_LABEL, 1, ArrowStyle.Diamond, "Add target as nested Attribute"),
+                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID, SysmlPackage.eINSTANCE.getActionUsage(), ACTION_LABEL, 1, ArrowStyle.Diamond, "Add target as nested Attribute"),
+                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.STATE_USAGE_ID, SysmlPackage.eINSTANCE.getStateUsage(), "state", 0, ArrowStyle.Diamond, "Add target as nested Attribute")
         );
     }
 
@@ -170,11 +171,69 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
                 .contains("Become nested Concern");
     }
 
-    @DisplayName("GIVEN a SysML Project, WHEN the edge tool 'Add as nested Attribute' is applied between a Definition/Usage graphical node and an AttributeUsage graphical node, THEN an edge is created between the Definition/Usage graphical node and an AttributeUsage graphical node")
+    @DisplayName("GIVEN a Usage source and a Usage target, WHEN retrieving the connector palette, THEN the nested tools name their target and source respectively")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void connectorPaletteProvidesTargetSpecificNestedUsageTools() {
+        var flux = this.givenSubscriptionToDiagram(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
+
+        StepVerifier.create(flux)
+                .consumeNextWith(assertRefreshedDiagramThat(diagram -> {
+                    var paletteEntries = this.getConnectorPaletteLabels(diagram.getId(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.ATTRIBUTE_USAGE_ID,
+                            GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID);
+                    assertThat(paletteEntries).contains("Add target as nested Part", "Become nested Attribute");
+                    assertThat(paletteEntries).filteredOn(label -> label.startsWith("Add target as nested ")).containsExactly("Add target as nested Part");
+
+                    var actionTargetPaletteEntries = this.getConnectorPaletteLabels(diagram.getId(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID,
+                            GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID);
+                    assertThat(actionTargetPaletteEntries).contains("Add target as nested Action", "Become nested Part");
+                    assertThat(actionTargetPaletteEntries).filteredOn(label -> label.startsWith("Add target as nested ")).containsExactly("Add target as nested Action");
+
+                    var allocationTargetPaletteEntries = this.getConnectorPaletteLabels(diagram.getId(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.ALLOCATION_DEFINITION_ID,
+                            GeneralViewWithTopNodesTestProjectData.GraphicalIds.ALLOCATION_USAGE_ID);
+                    assertThat(allocationTargetPaletteEntries).contains("Add target as owned Allocation");
+                    assertThat(allocationTargetPaletteEntries).filteredOn(label -> label.startsWith("Add target as owned ")).containsExactly("Add target as owned Allocation");
+
+                    var caseTargetPaletteEntries = this.getConnectorPaletteLabels(diagram.getId(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.ALLOCATION_DEFINITION_ID,
+                            GeneralViewWithTopNodesTestProjectData.GraphicalIds.CASE_USAGE_ID);
+                    assertThat(caseTargetPaletteEntries).contains("Add target as owned Case");
+                    assertThat(caseTargetPaletteEntries).filteredOn(label -> label.startsWith("Add target as owned ")).containsExactly("Add target as owned Case");
+
+                    var definitionTargetPaletteEntries = this.getConnectorPaletteLabels(diagram.getId(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.ATTRIBUTE_USAGE_ID,
+                            GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_ID);
+                    assertThat(definitionTargetPaletteEntries).noneMatch(label -> label.startsWith("Add target as nested "));
+                    assertThat(definitionTargetPaletteEntries).noneMatch(label -> label.startsWith("Add target as owned "));
+                }))
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    /**
+     * Retrieves the labels available in the connector palette for two graphical nodes.
+     *
+     * @param diagramId
+     *            the diagram identifier
+     * @param sourceDiagramElementId
+     *            the source graphical node identifier
+     * @param targetDiagramElementId
+     *            the target graphical node identifier
+     * @return the available connector-palette labels
+     */
+    private List<String> getConnectorPaletteLabels(String diagramId, String sourceDiagramElementId, String targetDiagramElementId) {
+        Map<String, Object> variables = Map.of(
+                "editingContextId", GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                "representationId", diagramId,
+                "sourceDiagramElementId", sourceDiagramElementId,
+                "targetDiagramElementId", targetDiagramElementId);
+        var connectorPaletteResult = this.connectorPaletteQueryRunner.run(variables);
+        return JsonPath.read(connectorPaletteResult.data(), "$.data.viewer.editingContext.representation.description.connectorPalette.paletteEntries[*].label");
+    }
+
+    @DisplayName("GIVEN a SysML Project, WHEN an Add target as nested edge tool is applied between a Definition/Usage graphical node and an AttributeUsage graphical node, THEN an edge is created between the Definition/Usage graphical node and an AttributeUsage graphical node")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("addAttributeUsageAsNestedOfEdgeSourceParameters")
-    public void addAttributeUsageAsNestedOfEdgeSource(String edgeSourceId, EClass parentClass, String parentLabel, int newNodeCount, ArrowStyle arrowStyle) {
+    public void addAttributeUsageAsNestedOfEdgeSource(String edgeSourceId, EClass parentClass, String parentLabel, int newNodeCount, ArrowStyle arrowStyle, String toolName) {
         SemanticCheckerService semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID);
         var flux = this.givenSubscriptionToDiagram(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
@@ -188,7 +247,7 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
 
         String edgeTargetId = GeneralViewWithTopNodesTestProjectData.GraphicalIds.ATTRIBUTE_USAGE_ID;
 
-        String creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(parentClass), "Add as nested Attribute");
+        String creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(parentClass), toolName);
         Runnable creationToolRunnable = () -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 diagram,
                 edgeSourceId,
@@ -272,74 +331,6 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
 
         ISemanticChecker semanticChecker = semanticCheckerService.getElementInParentSemanticChecker(parentLabel, SysmlPackage.eINSTANCE.getElement_OwnedElement(),
                 SysmlPackage.eINSTANCE.getAttributeUsage());
-
-        Runnable editingContextChecker = semanticCheckerService.checkEditingContext(semanticChecker);
-
-        StepVerifier.create(flux)
-                .consumeNextWith(initialDiagramContentConsumer)
-                .then(creationToolRunnable)
-                .consumeNextWith(diagramChecker)
-                .then(editingContextChecker)
-                .thenCancel()
-                .verify(Duration.ofSeconds(10));
-    }
-
-    @DisplayName("GIVEN a General View with a PartUsage and an ActionUsage, WHEN linking the PartUsage and the Action with Add as nested Action edge tool, THEN the ActionUsage is now a child of the PartUsage and there is a composition edge between them.")
-    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
-    @Test
-    public void createAddAsNestedEdge() {
-        SemanticCheckerService semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
-                GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID);
-        var flux = this.givenSubscriptionToDiagram(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
-
-        AtomicReference<Diagram> diagram = new AtomicReference<>();
-        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
-
-        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
-                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
-        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
-
-        String creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "Add as nested Action");
-        Runnable creationToolRunnable = () -> this.edgeCreationTester.createEdge(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
-                diagram,
-                PART_LABEL,
-                ACTION_LABEL,
-                creationToolId);
-
-        Consumer<Object> diagramChecker = assertRefreshedDiagramThat(newDiagram -> {
-            var initialDiagram = diagram.get();
-
-            new CheckDiagramElementCount(this.diagramComparator)
-                    // 1 new node has been created in the "actions" compartment of the part.
-                    // 1 new node has been created as nested tree node + 5 compartments
-                    .hasNewNodeCount(9)
-                    .hasNewEdgeCount(1)
-                    .check(initialDiagram, newDiagram);
-            DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
-            var sourceId = diagramNavigator.nodeWithId(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID).getNode().getId();
-            // Get the target with its description instead of its label: there are two new elements with the label
-            // "action" on the diagram (one on the diagram itself, and one in the "actions" compartment of the part
-            // element).
-            var nodeDescriptionId = diagramDescriptionIdProvider.getNodeDescriptionId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()));
-            Optional<String> optionalTargetId = diagramNavigator.findAllNodes().stream()
-                    .filter(node -> Objects.equals(node.getTargetObjectLabel(), ACTION_LABEL))
-                    .filter(node -> Objects.equals(node.getDescriptionId(), nodeDescriptionId))
-                    .filter(node -> Objects.equals(node.getState(), ViewModifier.Normal))
-                    .map(Node::getId)
-                    .findFirst();
-            assertThat(optionalTargetId).isPresent();
-            List<Edge> newEdges = this.diagramComparator.newEdges(initialDiagram, newDiagram);
-            assertThat(newEdges)
-                    .hasSize(1)
-                    .first(EDGE)
-                    .hasSourceId(sourceId)
-                    .hasTargetId(optionalTargetId.get())
-                    .extracting(Edge::getStyle, EDGE_STYLE)
-                    .hasSourceArrow(ArrowStyle.FillDiamond);
-        });
-
-        ISemanticChecker semanticChecker = semanticCheckerService.getElementInParentSemanticChecker(PART_LABEL, SysmlPackage.eINSTANCE.getNamespace_OwnedMember(),
-                SysmlPackage.eINSTANCE.getActionUsage());
 
         Runnable editingContextChecker = semanticCheckerService.checkEditingContext(semanticChecker);
 
