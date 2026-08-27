@@ -675,7 +675,7 @@ public class DiagramMutationAQLService {
     }
 
     /**
-     * {@link DiagramMutationExposeService#removeListFromExposedElements(List<Element>, List<Node>, IEditingContext, DiagramContext)}.
+     * {@link DiagramMutationExposeService#removeListFromExposedElements(List, List, IEditingContext, DiagramContext)}.
      */
     public boolean removeListFromExposedElements(List<Element> elements, List<Node> selectedNodes, IEditingContext editingContext, DiagramContext diagramContext) {
         return this.diagramMutationExposeService.removeListFromExposedElements(elements, selectedNodes, editingContext, diagramContext);

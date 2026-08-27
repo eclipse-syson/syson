@@ -283,6 +283,13 @@ public class DiagramQueryAQLService {
     }
 
     /**
+     * {@link DiagramQueryToolService#isTargetNodeOfType(Object, IEditingContext, String)}.
+     */
+    public boolean isTargetNodeOfType(Object self, IEditingContext editingContext, String expectedTypeName) {
+        return this.diagramQueryToolService.isTargetNodeOfType(self, editingContext, expectedTypeName);
+    }
+
+    /**
      * {@link DiagramQueryToolService#isControlNodeActionCreationToolInsideActionOnAFV(Element, IEditingContext, DiagramContext)}.
      */
     public boolean isControlNodeActionCreationToolInsideActionOnAFV(Element element, IEditingContext editingContext, DiagramContext diagramContext) {

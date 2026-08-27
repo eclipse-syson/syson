@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.Expression;
@@ -79,6 +80,25 @@ class DiagramQueryToolServiceTest {
 
         when(objectSearchService.getObject(editingContext, "selected-node")).thenReturn(Optional.empty());
         assertThat(service.isControlNodeActionCreationToolInAction(editingContext, selectedNode)).isFalse();
+    }
+
+    /**
+     * Verifies that connector palettes check their target node while ordinary node palettes keep edge tools available.
+     */
+    @DisplayName("GIVEN an edge-tool precondition, WHEN it is evaluated in connector and node palettes, THEN it checks only a connector target node")
+    @Test
+    void testIsTargetNodeOfType() {
+        IObjectSearchService objectSearchService = mock(IObjectSearchService.class);
+        IEditingContext editingContext = mock(IEditingContext.class);
+        Node targetNode = mock(Node.class);
+        when(targetNode.getTargetObjectId()).thenReturn("target-node");
+        DiagramQueryToolService service = this.createService(objectSearchService);
+
+        when(objectSearchService.getObject(editingContext, "target-node")).thenReturn(Optional.of(SysmlFactory.eINSTANCE.createPartUsage()));
+        assertThat(service.isTargetNodeOfType(targetNode, editingContext, "PartUsage")).isTrue();
+        assertThat(service.isTargetNodeOfType(targetNode, editingContext, "ActionUsage")).isFalse();
+        assertThat(service.isTargetNodeOfType(SysmlFactory.eINSTANCE.createPartUsage(), editingContext, "ActionUsage")).isTrue();
+        assertThat(service.isTargetNodeOfType(mock(Edge.class), editingContext, "PartUsage")).isFalse();
     }
 
     @DisplayName("GIVEN a requirement, WHEN checking its subject compartment, THEN its subject membership determines whether it is empty")

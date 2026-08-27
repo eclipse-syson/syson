@@ -13,7 +13,9 @@
 package org.eclipse.syson.diagram.common.view.services;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -65,10 +67,6 @@ import org.eclipse.syson.util.SysmlEClassSwitch;
  */
 public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
 
-    private static final String USAGE = "usage";
-
-    private static final String DEFINITION = "definition";
-
     private final NodeDescription nodeDescription;
 
     private final List<NodeDescription> allNodeDescriptions;
@@ -81,6 +79,10 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
 
     private final ViewEdgeToolService edgeToolService;
 
+    private final UsageNestedUsageDescriptionService nestedUsageDescriptionService;
+
+    private final DefinitionOwnedUsageDescriptionService definitionOwnedUsageDescriptionService;
+
     public ViewEdgeToolSwitch(NodeDescription nodeDescription, List<NodeDescription> allNodeDescriptions, IDescriptionNameGenerator nameGenerator) {
         this.nodeDescription = Objects.requireNonNull(nodeDescription);
         this.allNodeDescriptions = Objects.requireNonNull(allNodeDescriptions);
@@ -88,6 +90,8 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         this.viewBuilderHelper = new ViewBuilders();
         this.diagramBuilderHelper = new DiagramBuilders();
         this.edgeToolService = new ViewEdgeToolService(this.viewBuilderHelper, this.diagramBuilderHelper, allNodeDescriptions, nameGenerator);
+        this.nestedUsageDescriptionService = new UsageNestedUsageDescriptionService();
+        this.definitionOwnedUsageDescriptionService = new DefinitionOwnedUsageDescriptionService();
     }
 
     @Override
@@ -111,53 +115,22 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
 
     @Override
     public List<EdgeTool> caseAllocationUsage(AllocationUsage object) {
-        var edgeTools = new ArrayList<EdgeTool>();
-        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAllocationDefinition())).toList();
-        edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getAllocationUsage(), targetNodes));
-        targetNodes.forEach(targetNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(targetNode)));
-        edgeTools.addAll(this.caseUsage(object));
-        return edgeTools;
+        return this.caseUsage(object);
     }
 
     @Override
     public List<EdgeTool> caseAttributeUsage(AttributeUsage object) {
-        var edgeTools = new ArrayList<EdgeTool>();
-        var attributeBecomeNestedOf = this.allNodeDescriptions.stream()
-                .filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                    || nodeDesc.getName().toLowerCase().endsWith(DEFINITION)
-                )
-                .toList();
-        edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getAttributeUsage(), attributeBecomeNestedOf));
-
-        var addElementAsNestedOfAttribute = this.allNodeDescriptions.stream()
-                .filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                    || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getMetadataDefinition())
-                    || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getOccurrenceDefinition())
-                    || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAttributeDefinition()))
-                .filter(nodeDesc -> !this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPartUsage()))
-                .toList();
-        addElementAsNestedOfAttribute.forEach(nestedNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(nestedNode)));
-        edgeTools.addAll(this.caseUsage(object));
-        return edgeTools;
+        return this.caseUsage(object);
     }
 
     @Override
     public List<EdgeTool> caseConstraintUsage(ConstraintUsage object) {
-        var edgeTools = new ArrayList<EdgeTool>();
-        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getConstraintDefinition())).collect(Collectors.toList());
-        targetNodes.removeIf(nodeDesc -> this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
-        targetNodes.removeIf(nodeDesc -> this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
-        edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getConstraintUsage(), targetNodes));
-        targetNodes.forEach(targetNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(targetNode)));
-        edgeTools.addAll(this.caseUsage(object));
-        return edgeTools;
+        return this.caseUsage(object);
     }
 
     @Override
     public List<EdgeTool> caseConcernUsage(ConcernUsage object) {
-        return this.createRequirementUsageEdgeTools(SysmlPackage.eINSTANCE.getConcernUsage(), object);
+        return this.createRequirementUsageEdgeTools(object);
     }
 
     @Override
@@ -171,11 +144,11 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     @Override
     public List<EdgeTool> caseDefinition(Definition object) {
         var edgeTools = new ArrayList<EdgeTool>();
-        // Add an edge tool to the Definition to add the targeted AttributeUsage as a nested AttributeUsage.
-        var addAttributeAsNestedOfDefinition = this.allNodeDescriptions.stream()
-                .filter(nodeDesc -> this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAttributeUsage()))
+        var ownedUsageTargetNodes = this.allNodeDescriptions.stream()
+                .filter(this::isDefinitionOwnedUsageTargetNodeDescription)
                 .toList();
-        addAttributeAsNestedOfDefinition.forEach(nodeDesc -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(nodeDesc)));
+        this.getNodeDescriptionsBySemanticType(ownedUsageTargetNodes)
+                .forEach((targetType, targetNodes) -> edgeTools.add(this.edgeToolService.createAddAsOwnedEdgeTool(targetType, targetNodes)));
 
         edgeTools.add(this.edgeToolService.createDependencyEdgeTool(this.allNodeDescriptions));
         // SysML forbids an EnumerationDefinition from subclassifying another EnumerationDefinition.
@@ -194,29 +167,12 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
 
     @Override
     public List<EdgeTool> caseInterfaceUsage(InterfaceUsage object) {
-        var edgeTools = new ArrayList<EdgeTool>();
-        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getInterfaceDefinition())).collect(Collectors.toList());
-        targetNodes.removeIf(nodeDesc -> this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
-        targetNodes.removeIf(nodeDesc -> this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
-        edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getInterfaceUsage(), targetNodes));
-        targetNodes.forEach(targetNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(targetNode)));
-        edgeTools.addAll(this.caseUsage(object));
-        return edgeTools;
+        return this.caseUsage(object);
     }
 
     @Override
     public List<EdgeTool> caseItemUsage(ItemUsage object) {
-        var edgeTools = new ArrayList<EdgeTool>();
-        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getItemDefinition())
-                || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPartDefinition())).collect(Collectors.toList());
-        targetNodes.removeIf(nodeDesc -> this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
-        targetNodes.removeIf(nodeDesc -> this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
-        edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getItemUsage(), targetNodes));
-        targetNodes.forEach(targetNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(targetNode)));
-        edgeTools.addAll(this.caseUsage(object));
-        return edgeTools;
+        return this.caseUsage(object);
     }
 
     @Override
@@ -228,40 +184,17 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
 
     @Override
     public List<EdgeTool> casePartDefinition(PartDefinition object) {
-        var edgeTools = new ArrayList<EdgeTool>();
-        var targetNodes = this.allNodeDescriptions.stream()
-                .filter(nodeDesc -> this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPartUsage()))
-                .toList();
-        targetNodes.forEach(targetNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(targetNode)));
-        edgeTools.addAll(this.caseDefinition(object));
-        return edgeTools;
+        return this.caseDefinition(object);
     }
 
     @Override
     public List<EdgeTool> casePartUsage(PartUsage object) {
-        var edgeTools = new ArrayList<EdgeTool>();
-        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getOccurrenceDefinition())
-                || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPartDefinition())).collect(Collectors.toList());
-        targetNodes.removeIf(nodeDesc -> this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
-        targetNodes.removeIf(nodeDesc -> this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
-        edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getPartUsage(), targetNodes));
-        var addAsNestedTargetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE))
-                .toList();
-        addAsNestedTargetNodes.forEach(targetNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(targetNode)));
-        edgeTools.addAll(this.caseUsage(object));
-        return edgeTools;
+        return this.caseUsage(object);
     }
 
     @Override
     public List<EdgeTool> casePortUsage(PortUsage object) {
-        var edgeTools = new ArrayList<EdgeTool>();
-        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPortDefinition())).toList();
-        edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getPortUsage(), targetNodes));
-        targetNodes.forEach(targetNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(targetNode)));
-        edgeTools.addAll(this.caseUsage(object));
-        return edgeTools;
+        return this.caseUsage(object);
     }
 
     @Override
@@ -276,27 +209,18 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
 
     @Override
     public List<EdgeTool> caseRequirementUsage(RequirementUsage object) {
-        return this.createRequirementUsageEdgeTools(SysmlPackage.eINSTANCE.getRequirementUsage(), object);
+        return this.createRequirementUsageEdgeTools(object);
     }
 
     /**
      * Creates the edge tools shared by requirement-like usages.
      *
-     * @param eClass
-     *            the concrete class represented by the source node
      * @param requirementUsage
      *            the requirement-like usage from which inherited tools are created
      * @return the edge tools for the given requirement-like usage
      */
-    private List<EdgeTool> createRequirementUsageEdgeTools(EClass eClass, RequirementUsage requirementUsage) {
+    private List<EdgeTool> createRequirementUsageEdgeTools(RequirementUsage requirementUsage) {
         var edgeTools = new ArrayList<EdgeTool>();
-        edgeTools.add(this.edgeToolService.createRequirementDerivationEdgeTool());
-        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getRequirementDefinition())).collect(Collectors.toList());
-        targetNodes.removeIf(nodeDesc -> this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPortUsage()));
-        targetNodes.removeIf(nodeDesc -> this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAttributeUsage()));
-        edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(eClass, targetNodes));
-        targetNodes.forEach(targetNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(targetNode)));
         var objectiveTargets = this.allNodeDescriptions.stream()
                 .filter(n -> this.edgeToolService.isTheNodeDescriptionFor(n, SysmlPackage.eINSTANCE.getUseCaseUsage())
                         || this.edgeToolService.isTheNodeDescriptionFor(n, SysmlPackage.eINSTANCE.getUseCaseDefinition()))
@@ -305,6 +229,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         edgeTools.add(this.edgeToolService.createFramedConcernEdgeTool());
         edgeTools.add(this.edgeToolService.createAssumeConstraintEdgeTool());
         edgeTools.add(this.edgeToolService.createRequireConstraintEdgeTool());
+        edgeTools.add(this.edgeToolService.createRequirementDerivationEdgeTool());
         edgeTools.addAll(this.caseUsage(requirementUsage));
         return edgeTools;
     }
@@ -324,6 +249,14 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
                 .collect(Collectors.toList());
         edgeTools.add(this.edgeToolService.createTransitionUsageEdgeTool(SysmlPackage.eINSTANCE.getTransitionUsage(), targetNodes));
         edgeTools.addAll(this.caseUsage(object));
+        return edgeTools;
+    }
+
+    @Override
+    public List<EdgeTool> caseUseCaseUsage(UseCaseUsage object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        edgeTools.addAll(this.caseUsage(object));
+        edgeTools.add(this.edgeToolService.createIncludeUseCaseUsageTool(List.of(this.nodeDescription)));
         return edgeTools;
     }
 
@@ -347,11 +280,9 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         edgeTools.add(this.edgeToolService.createReferenceSubsettingEdgeTool(targetDescriptions.stream().filter(this::isFeatureNodeDescription).toList()));
         edgeTools.add(this.edgeToolService.createAllocateEdgeTool(targetDescriptions));
 
-        // Add an edge tool to the Usage to add the targeted AttributeUsage as a nested AttributeUsage.
-        var addAsNested = this.allNodeDescriptions.stream()
-                .filter(nodeDesc -> this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAttributeUsage()))
-                .toList();
-        addAsNested.forEach(nodeDesc -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(nodeDesc)));
+        this.getNestedUsageTargetNodeDescriptions()
+                .forEach((targetType, targetNodes) -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(targetType, targetNodes)));
+        edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(object.eClass(), this.getNestedUsageOwnerNodeDescriptions(object.eClass())));
 
         var definitionNodeDescription = this.edgeToolService.getNodeDescription(this.edgeToolService.getDefinitionFromUsage(object));
         if (definitionNodeDescription.isPresent()) {
@@ -361,12 +292,74 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         return edgeTools;
     }
 
-    @Override
-    public List<EdgeTool> caseUseCaseUsage(UseCaseUsage object) {
-        var edgeTools = new ArrayList<EdgeTool>();
-        edgeTools.addAll(this.caseUsage(object));
-        edgeTools.add(this.edgeToolService.createIncludeUseCaseUsageTool(List.of(this.nodeDescription)));
-        return edgeTools;
+    private Map<EClass, List<NodeDescription>> getNestedUsageTargetNodeDescriptions() {
+        var nestedUsageTargetNodes = this.allNodeDescriptions.stream()
+                .filter(targetNodeDescription -> {
+                    var eClass = SysMLMetamodelHelper.toEClass(targetNodeDescription.getDomainType());
+                    return eClass != null
+                            && SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(eClass)
+                            && this.nestedUsageDescriptionService.canBeNested(eClass);
+                })
+                .toList();
+        return this.getNodeDescriptionsBySemanticType(nestedUsageTargetNodes);
+    }
+
+    /**
+     * Indicates whether the given graphical node represents a Usage that can be owned by a Definition.
+     *
+     * @param targetNodeDescription
+     *            the graphical node description to inspect
+     * @return {@code true} if a Definition can own the represented Usage
+     */
+    private boolean isDefinitionOwnedUsageTargetNodeDescription(NodeDescription targetNodeDescription) {
+        var eClass = SysMLMetamodelHelper.toEClass(targetNodeDescription.getDomainType());
+        return eClass != null && this.definitionOwnedUsageDescriptionService.getOwnedUsageReference(eClass).isPresent();
+    }
+
+    /**
+     * Groups graphical node descriptions by their semantic type while preserving their declaration order.
+     *
+     * @param nodeDescriptions
+     *            the node descriptions to group
+     * @return the node descriptions grouped by semantic type
+     */
+    private Map<EClass, List<NodeDescription>> getNodeDescriptionsBySemanticType(List<NodeDescription> nodeDescriptions) {
+        return nodeDescriptions.stream()
+                .collect(Collectors.groupingBy(description -> SysMLMetamodelHelper.toEClass(description.getDomainType()), LinkedHashMap::new, Collectors.toList()));
+    }
+
+    /**
+     * Returns the graphical descriptions that may own a nested Usage of the given semantic type.
+     * <p>
+     * Every Usage can own a nested Usage. Attribute usages may additionally be owned by any Definition, while part
+     * usages may additionally be owned by a PartDefinition.
+     * </p>
+     *
+     * @param nestedUsageEClass
+     *            the semantic type of the Usage to nest
+     * @return the graphical descriptions that can own the given nested Usage type
+     */
+    private List<NodeDescription> getNestedUsageOwnerNodeDescriptions(EClass nestedUsageEClass) {
+        var usageOwners = this.allNodeDescriptions.stream()
+                .filter(nodesDesc -> {
+                    var eClass = SysMLMetamodelHelper.toEClass(nodesDesc.getDomainType());
+                    return eClass != null && SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(eClass);
+                })
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        if (SysmlPackage.eINSTANCE.getAttributeUsage().equals(nestedUsageEClass)) {
+            // Definitions are valid owners for AttributeUsage elements through their ownedAttribute membership.
+            this.allNodeDescriptions.stream()
+                    .filter(nodesDesc -> {
+                        var eClass = SysMLMetamodelHelper.toEClass(nodesDesc.getDomainType());
+                        return eClass != null && SysmlPackage.eINSTANCE.getDefinition().isSuperTypeOf(eClass);
+                    })
+                    .forEach(usageOwners::add);
+        } else if (SysmlPackage.eINSTANCE.getPartUsage().equals(nestedUsageEClass)) {
+            // PartDefinition is the only Definition subtype that can own PartUsage elements through ownedPart.
+            this.edgeToolService.getNodeDescription(SysmlPackage.eINSTANCE.getPartDefinition()).ifPresent(usageOwners::add);
+        }
+        return usageOwners;
     }
 
     private boolean isRegularNodeDescription(NodeDescription nodeDesc) {

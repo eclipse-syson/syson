@@ -18,9 +18,11 @@ import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.services.api.ViewDefinitionKind;
@@ -93,6 +95,38 @@ public class DiagramQueryToolService {
                 .map(object -> {
                     return object instanceof ActionUsage || object instanceof ActionDefinition;
                 }).orElse(false);
+    }
+
+    /**
+     * Indicates whether the connector-palette target node represents the expected semantic type.
+     * <p>
+     * Edge-tool preconditions are evaluated in two contexts. In a connector palette, {@code self} is the selected
+     * target {@link Node} and is checked against the expected type. In an ordinary node palette, {@code self} is the
+     * source semantic element and no target has been selected yet, so the tool remains available.
+     * </p>
+     *
+     * @param self
+     *            the target node in a connector palette, or the source semantic element in a node palette
+     * @param editingContext
+     *            the editing context containing the semantic target
+     * @param expectedTypeName
+     *            the expected SysML EClass name
+     * @return {@code true} when no target is selected or when the target node represents the expected type
+     */
+    public boolean isTargetNodeOfType(Object self, IEditingContext editingContext, String expectedTypeName) {
+        boolean isExpectedType = true;
+        if (self instanceof Node targetNode) {
+            isExpectedType = this.objectSearchService.getObject(editingContext, targetNode.getTargetObjectId())
+                    .filter(EObject.class::isInstance)
+                    .map(EObject.class::cast)
+                    .map(EObject::eClass)
+                    .map(EClass::getName)
+                    .filter(expectedTypeName::equals)
+                    .isPresent();
+        } else if (self instanceof Edge) {
+            isExpectedType = false;
+        }
+        return isExpectedType;
     }
 
     /**

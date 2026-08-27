@@ -1043,6 +1043,9 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(),
                         colorProvider, this.getDescriptionNameGenerator()));
         definitionOwnedUsageEdgeDescriptionProviders
+                .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getAssignmentActionUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(),
+                        colorProvider, this.getDescriptionNameGenerator()));
+        definitionOwnedUsageEdgeDescriptionProviders
                 .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getDecisionNode(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(),
                         colorProvider, this.getDescriptionNameGenerator()));
         definitionOwnedUsageEdgeDescriptionProviders
@@ -1061,6 +1064,9 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getAttributeUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(),
                         colorProvider, this.getDescriptionNameGenerator()));
         definitionOwnedUsageEdgeDescriptionProviders
+                .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedCase(), colorProvider,
+                        this.getDescriptionNameGenerator()));
+        definitionOwnedUsageEdgeDescriptionProviders
                 .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(),
                         colorProvider, this.getDescriptionNameGenerator()));
         definitionOwnedUsageEdgeDescriptionProviders
@@ -1074,6 +1080,9 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                         colorProvider, this.getDescriptionNameGenerator()));
         definitionOwnedUsageEdgeDescriptionProviders
                 .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem(), colorProvider,
+                        this.getDescriptionNameGenerator()));
+        definitionOwnedUsageEdgeDescriptionProviders
+                .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getOccurrenceUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedOccurrence(), colorProvider,
                         this.getDescriptionNameGenerator()));
         definitionOwnedUsageEdgeDescriptionProviders
                 .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), colorProvider,
@@ -1094,9 +1103,11 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedState(), colorProvider,
                         this.getDescriptionNameGenerator()));
         definitionOwnedUsageEdgeDescriptionProviders
-                .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getOccurrenceUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedOccurrence(), colorProvider,
+                .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedUseCase(), colorProvider,
                         this.getDescriptionNameGenerator()));
-
+        definitionOwnedUsageEdgeDescriptionProviders
+                .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getViewUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedView(), colorProvider,
+                        this.getDescriptionNameGenerator()));
         return definitionOwnedUsageEdgeDescriptionProviders;
     }
 
@@ -1118,41 +1129,39 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 colorProvider, this.getDescriptionNameGenerator()));
         usageCompositeEdgeDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getUsage_NestedConcern(),
                 colorProvider, this.getDescriptionNameGenerator()));
-        usageCompositeEdgeDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getUsage_NestedConstraint(),
-                colorProvider, this.getDescriptionNameGenerator()));
         usageCompositeEdgeDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getUsage_NestedRequirement(),
                 colorProvider, this.getDescriptionNameGenerator()));
         usageCompositeEdgeDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getUsage_NestedRequirement(),
                 colorProvider, this.getDescriptionNameGenerator()));
 
-        usageCompositeEdgeDescriptionProviders.add(new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter(),
-                colorProvider, this.getDescriptionNameGenerator()));
-        usageCompositeEdgeDescriptionProviders.add(new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter(),
-                colorProvider, this.getDescriptionNameGenerator()));
-        usageCompositeEdgeDescriptionProviders.add(new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(),
-                colorProvider, this.getDescriptionNameGenerator()));
-        usageCompositeEdgeDescriptionProviders.add(new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(),
-                colorProvider, this.getDescriptionNameGenerator()));
-        usageCompositeEdgeDescriptionProviders.add(new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(),
-                colorProvider, this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter(), colorProvider,
+                this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter(), colorProvider,
+                this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider,
+                this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider,
+                this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider,
+                this.getDescriptionNameGenerator()));
 
-        usageCompositeEdgeDescriptionProviders.add(new NestedStakeholderEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(),
-                colorProvider, this.getDescriptionNameGenerator()));
-        usageCompositeEdgeDescriptionProviders.add(new NestedStakeholderEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(),
-                colorProvider, this.getDescriptionNameGenerator()));
-        usageCompositeEdgeDescriptionProviders.add(new NestedStakeholderEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(),
-                colorProvider, this.getDescriptionNameGenerator()));
-        usageCompositeEdgeDescriptionProviders.add(new NestedStakeholderEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(),
-                colorProvider, this.getDescriptionNameGenerator()));
-        usageCompositeEdgeDescriptionProviders.add(new NestedStakeholderEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(),
-                colorProvider, this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new NestedStakeholderEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(), colorProvider,
+                this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new NestedStakeholderEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), colorProvider,
+                this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new NestedStakeholderEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(), colorProvider,
+                this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new NestedStakeholderEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), colorProvider,
+                this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new NestedStakeholderEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), colorProvider,
+                this.getDescriptionNameGenerator()));
 
-        usageCompositeEdgeDescriptionProviders.add(new NestedSubjectEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter(),
-                colorProvider, this.getDescriptionNameGenerator()));
-        usageCompositeEdgeDescriptionProviders.add(new NestedSubjectEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter(),
-                colorProvider, this.getDescriptionNameGenerator()));
-        usageCompositeEdgeDescriptionProviders.add(new NestedSubjectEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter(),
-                colorProvider, this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new NestedSubjectEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter(), colorProvider,
+                this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new NestedSubjectEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter(), colorProvider,
+                this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new NestedSubjectEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter(), colorProvider,
+                this.getDescriptionNameGenerator()));
 
         return usageCompositeEdgeDescriptionProviders;
     }
@@ -1161,6 +1170,8 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         var usageCompositeEdgeDescriptionProviders = new ArrayList<IDiagramElementDescriptionProvider<?>>();
 
         usageCompositeEdgeDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getAttributeUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getInterfaceUsage(), SysmlPackage.eINSTANCE.getUsage_NestedInterface(),
                 colorProvider, this.getDescriptionNameGenerator()));
         usageCompositeEdgeDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(),
                 colorProvider, this.getDescriptionNameGenerator()));
@@ -1203,6 +1214,13 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
 
     private List<IDiagramElementDescriptionProvider<?>> createAllUsageAnalysisCompositeEdgeDescriptionProviders(IColorProvider colorProvider) {
         var usageCompositeEdgeDescriptionProviders = new ArrayList<IDiagramElementDescriptionProvider<?>>();
+
+        usageCompositeEdgeDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getUsage_NestedCase(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getUsage_NestedUseCase(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getViewUsage(), SysmlPackage.eINSTANCE.getUsage_NestedView(),
+                colorProvider, this.getDescriptionNameGenerator()));
 
         usageCompositeEdgeDescriptionProviders.add(new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter(),
                 colorProvider, this.getDescriptionNameGenerator()));
