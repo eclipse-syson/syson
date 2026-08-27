@@ -13,6 +13,7 @@ Users can still use basic tools such as:
 * Hide elements,
 * Hide all their content,
 * Show their valued content,
+* Remove elements from the diagram without deleting them from the model with _Delete from diagram_,
 * Fade elements,
 * Pin elements.
 
@@ -41,4 +42,3 @@ In addition to toolbar actions, some actions can be execute with shortcuts.
 After selecting elements, users can press the `Del` key to remove them all.
 
 Users can also move all selected elements on the diagram without changing their graphical or semantic parents.
-

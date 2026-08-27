@@ -94,4 +94,18 @@ public class DiagramDefaultGroupToolsFactory {
         newNodeTool.setPreconditionExpression(HAS_HIDDEN_CHILDREN_EXPRESSION);
         return newNodeTool;
     }
+
+    public NodeTool createDeleteFromDiagramNodeTool() {
+        NodeTool newNodeTool = DiagramFactory.eINSTANCE.createNodeTool();
+        newNodeTool.setName("Delete from diagram");
+        ChangeContext deleteViews = ViewFactory.eINSTANCE.createChangeContext();
+        deleteViews.setExpression("aql:diagramServices.deleteViews(selectedNodes)");
+        newNodeTool.getBody().add(deleteViews);
+        ChangeContext removeFromExposedElement = ViewFactory.eINSTANCE.createChangeContext();
+        removeFromExposedElement.setExpression("aql:self->removeListFromExposedElements(selectedNodes, editingContext, diagramContext)");
+        newNodeTool.getBody().add(removeFromExposedElement);
+        newNodeTool.setPreconditionExpression("aql:selectedNodes->notEmpty() and selectedEdges->isEmpty()");
+        newNodeTool.setIconURLsExpression("aql:'/images/graphicalDelete.svg'");
+        return newNodeTool;
+    }
 }

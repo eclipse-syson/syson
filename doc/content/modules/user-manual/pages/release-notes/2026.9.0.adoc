@@ -169,6 +169,9 @@ The associated tools are the same ones: _Hide_; _Hide all content_; _Show all co
 +
 image::release-notes-show-hide-section-group-palette.png[New Show/Hide section in group palette, width=90%,height=90%]
 
+** In standard diagrams, the group palette now provides _Delete from diagram_ when multiple graphical nodes are selected.
+It removes all selected nodes from the diagram without deleting the corresponding model elements.
+
 == Technical details
 
 * For technical details on this {product} release, including breaking changes, please refer to the https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].

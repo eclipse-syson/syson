@@ -275,6 +275,29 @@ public class DiagramMutationExposeService {
         return true;
     }
 
+
+    /**
+     * Remove the given Elements from the exposedElements reference of the {@link ViewUsage} that is the target of the
+     * given {@link DiagramContext}. Also removes potential children that are sub-nodes of the given selectedNodes
+     * corresponding to the given Elements.
+     *
+     * @param elements
+     *            the current context of the service.
+     * @param selectedNodes
+     *            the selectedNodes corresponding to the given Elements
+     * @param editingContext
+     *            the given {@link IEditingContext} in which this service has been called.
+     * @param diagramContext
+     *            the given {@link DiagramContext}.
+     * @return always <code>true</code>.
+     */
+    public boolean removeListFromExposedElements(List<Element> elements, List<Node> selectedNodes, IEditingContext editingContext, DiagramContext diagramContext) {
+        for (Element element : elements) {
+            this.removeFromExposedElements(element, this.findSelectedNode(element, selectedNodes), editingContext, diagramContext);
+        }
+        return true;
+    }
+
     /**
      * Returns the elements contained by {@code parentElement} that should be rendered.
      * <p>
