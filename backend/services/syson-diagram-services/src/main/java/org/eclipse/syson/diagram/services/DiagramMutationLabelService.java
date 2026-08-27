@@ -142,14 +142,14 @@ public class DiagramMutationLabelService {
         if (element instanceof ConstraintUsage) {
             cleanNewLabel = newLabel.replaceAll("\\{.*$", "");
         }
-        return this.directEdit(element, cleanNewLabel, true, LabelService.VALUE_OFF);
+        return this.directEdit(element, cleanNewLabel, true);
     }
 
     public Element editMultiplicityRangeCenterLabel(Element element, String newLabel) {
-        return this.directEdit(element, newLabel, LabelService.NAME_OFF, LabelService.REDEFINITION_OFF, LabelService.SUBSETTING_OFF, LabelService.TYPING_OFF, LabelService.VALUE_OFF);
+        return this.directEdit(element, newLabel, LabelService.NAME_OFF, LabelService.REDEFINITION_OFF, LabelService.SUBSETTING_OFF, LabelService.TYPING_OFF);
     }
 
     public Element editEdgeCenterLabel(Element element, String newLabel) {
-        return this.directEdit(element, newLabel, LabelService.REDEFINITION_OFF, LabelService.SUBSETTING_OFF, LabelService.VALUE_OFF);
+        return this.directEdit(element, newLabel, LabelService.REDEFINITION_OFF, LabelService.SUBSETTING_OFF);
     }
 }

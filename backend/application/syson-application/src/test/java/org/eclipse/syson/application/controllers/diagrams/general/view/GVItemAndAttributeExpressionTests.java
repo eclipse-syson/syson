@@ -30,9 +30,7 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
-import org.eclipse.sirius.components.diagrams.OutsideLabel;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
-import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InitialDirectEditElementLabelQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
@@ -40,7 +38,6 @@ import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controllers.diagrams.testers.DeleteToolTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.DirectEditInitialLabelTester;
-import org.eclipse.syson.application.controllers.diagrams.testers.DirectEditTester;
 import org.eclipse.syson.application.controllers.expressions.graphql.CreateExpressionMutationRunner;
 import org.eclipse.syson.application.controllers.expressions.graphql.DeleteExpressionMutationRunner;
 import org.eclipse.syson.application.controllers.expressions.graphql.EditExpressionMutationRunner;
@@ -83,9 +80,6 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
     private InitialDirectEditElementLabelQueryRunner initialDirectEditElementLabelQueryRunner;
 
     @Autowired
-    private EditLabelMutationRunner editLabelMutationRunner;
-
-    @Autowired
     private DiagramComparator diagramComparator;
 
     @Autowired
@@ -102,8 +96,6 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
 
     private DirectEditInitialLabelTester directEditInitialLabelTester;
 
-    private DirectEditTester directEditTester;
-
     private DeleteToolTester deleteFromDiagramTester;
 
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
@@ -115,7 +107,6 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
     public void setUp() {
         this.givenInitialServerState.initialize();
         this.directEditInitialLabelTester = new DirectEditInitialLabelTester(this.initialDirectEditElementLabelQueryRunner, GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID);
-        this.directEditTester = new DirectEditTester(this.editLabelMutationRunner, GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID);
         this.deleteFromDiagramTester = new DeleteToolTester(this.deleteFromDiagramRunner, GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
                 GeneralViewItemAndAttributeProjectData.GraphicalIds.DIAGRAM_ID);
     }
@@ -225,26 +216,7 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
                 GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_BORDERED_NODE_ID,
                 "a2_1");
 
-        Runnable directEditOutsideLabelCheck1 = this.directEditTester.directEditOutsideLabel(diagram,
-                GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_BORDERED_NODE_ID,
-                "a2_1 = a1.a1_2");
-        Consumer<Object> directEditOutsideLabelDiagramCheck1 = assertRefreshedDiagramThat(newDiagram -> {
-            DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
-            OutsideLabel newLabel = diagramNavigator.nodeWithId(GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_BORDERED_NODE_ID).getNode().getOutsideLabels().get(0);
-            // Bordered node do not display the feature value in their label
-            assertThat(newLabel.text()).isEqualTo("a2_1");
-            // But the item in the compartment does
-            InsideLabel itemLabel = diagramNavigator.nodeWithId(GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_ICON_AND_LABEL_ID).getNode().getInsideLabel();
-            assertThat(itemLabel.getText()).isEqualTo("in a2_1 = a1.a1_2");
-        });
-
-        // Direct edit initial text does not include the "= ..." part
-        Runnable directEditInitialLabelCheck2 = this.directEditInitialLabelTester.checkDirectEditInitialLabelOnNode(diagram,
-                GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_ICON_AND_LABEL_ID,
-                "in a2_1");
-
-        // Simple test on the icon and label node representing a2_1
-        Runnable editExpression = this.editExpression(GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, () -> GeneralViewItemAndAttributeProjectData.SemanticIds.A2_1_ID,
+        Runnable createExpression = this.createExpression(GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, GeneralViewItemAndAttributeProjectData.SemanticIds.A2_1_ID,
                 "a1.a1_3.i2_1.i3_1");
         Consumer<Object> editExpressionDiagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
@@ -255,10 +227,7 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(directEditInitialLabelCheck1)
-                .then(directEditOutsideLabelCheck1)
-                .consumeNextWith(directEditOutsideLabelDiagramCheck1)
-                .then(directEditInitialLabelCheck2)
-                .then(editExpression)
+                .then(createExpression)
                 .consumeNextWith(editExpressionDiagramCheck)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));

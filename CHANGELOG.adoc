@@ -85,6 +85,8 @@ This removes Rollup warnings about missing global names for externalized peer de
 This lets downstream applications with a custom extension registry display the _Expression value_ property section in the _Details_ view.
 - https://github.com/eclipse-syson/syson/issues/2441[#2441] [services] Refactor `DiagramMutationElementService#createAllocateEdge` to extract semantic creation from diagram service.
 - https://github.com/eclipse-syson/syson/issues/2480[#2480] [diagrams] Add the _Delete from diagram_ action to the group palette in standard diagrams to support multi-selection.
+- https://github.com/eclipse-syson/syson/issues/2468[#2468] [diagrams] Remove expression syntax from the direct-edit grammar.
+Direct edit now only updates labels and feature syntax; use the dedicated expression tools to create or modify expressions.
 
 === New features
 

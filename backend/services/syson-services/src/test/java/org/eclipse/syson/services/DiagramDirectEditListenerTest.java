@@ -27,7 +27,6 @@ import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.syson.direct.edit.grammars.DirectEditLexer;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser;
 import org.eclipse.syson.services.api.IDirectEditNamespaceProvider;
-import org.eclipse.syson.services.data.ItemAndAttributesModelTest;
 import org.eclipse.syson.services.data.SmallFlashlightExample;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
@@ -36,11 +35,9 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChainExpression;
-import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
-import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.LiteralRational;
 import org.eclipse.syson.sysml.MultiplicityRange;
@@ -65,8 +62,6 @@ import org.junit.jupiter.api.Test;
  * @author gdaniel
  */
 public class DiagramDirectEditListenerTest {
-
-    private static final String A_FEATURE_NAME = "aFeatureName";
 
     private static final String GREATER_OR_EQUAL = ">=";
 
@@ -93,56 +88,6 @@ public class DiagramDirectEditListenerTest {
         assertThat(literalInteger2.getValue()).isEqualTo(2);
     }
 
-    @DisplayName("GIVEN a Feature with a FeatureValue, WHEN it is edited with ':=' symbol, THEN its FeatureValue should have its isInital property modified")
-    @Test
-    public void testDirectEditFeatureWithInitialValue() {
-        Feature feature = SysmlFactory.eINSTANCE.createFeature();
-        this.doDirectEditOnCompartmentListItem(feature, "aFeatureName := 2");
-        assertEquals(A_FEATURE_NAME, feature.getName());
-        this.checkHasInitialValue(feature, true);
-
-        FeatureValue featureValue = (FeatureValue) feature.getOwnedRelationship().get(0);
-
-        this.hasIntegerValue(featureValue, 2);
-
-        this.doDirectEditOnCompartmentListItem(feature, "aFeatureName = 2");
-
-        assertEquals(A_FEATURE_NAME, feature.getName());
-        this.checkHasInitialValue(feature, false);
-
-        featureValue = (FeatureValue) feature.getOwnedRelationship().get(0);
-
-        this.hasIntegerValue(featureValue, 2);
-
-        // Partial direct edit
-        this.doDirectEditOnCompartmentListItem(feature, ":= 3");
-        assertEquals(A_FEATURE_NAME, feature.getName());
-        this.checkHasInitialValue(feature, true);
-        this.hasIntegerValue(featureValue, 3);
-    }
-
-    @DisplayName("GIVEN a Feature with a FeatureValue, WHEN it is edited with 'default' symbol, THEN its FeatureValue should have its isDefault property modified")
-    @Test
-    public void testDirectEditFeatureWithDefaultValue() {
-        Feature feature = SysmlFactory.eINSTANCE.createFeature();
-        this.doDirectEditOnCompartmentListItem(feature, "aFeatureName default = 2");
-        assertEquals(A_FEATURE_NAME, feature.getName());
-        this.checkHasDefaultValue(feature, true);
-
-        FeatureValue featureValue = (FeatureValue) feature.getOwnedRelationship().get(0);
-
-        this.hasIntegerValue(featureValue, 2);
-
-        this.doDirectEditOnCompartmentListItem(feature, "aFeatureName = 2");
-
-        assertEquals(A_FEATURE_NAME, feature.getName());
-        this.checkHasDefaultValue(feature, false);
-
-        featureValue = (FeatureValue) feature.getOwnedRelationship().get(0);
-
-        this.hasIntegerValue(featureValue, 2);
-    }
-
     @DisplayName("GIVEN an Element, WHEN editing its name with the symbol 'default', THEN it should be allowed if not suffixed with a ' ' ")
     @Test
     public void testDirectEditElementWithNameAndDefaultSymbole() {
@@ -156,12 +101,6 @@ public class DiagramDirectEditListenerTest {
         // Prevent the use of ' default' keyword
         this.doDirectEditOnCompartmentListItem(feature, "Attr1 default");
         assertEquals("Attr1", feature.getName());
-
-        this.doDirectEditOnCompartmentListItem(feature, "Attr1 default := 3");
-        assertEquals("Attr1", feature.getName());
-        this.checkHasInitialValue(feature, true);
-        FeatureValue featureValue = (FeatureValue) feature.getOwnedRelationship().get(0);
-        this.hasIntegerValue(featureValue, 3);
     }
 
     @DisplayName("GIVEN a ConstraintUsage, WHEN it is edited with 'myAttribute >= 1', THEN its expression is set")
@@ -404,126 +343,6 @@ public class DiagramDirectEditListenerTest {
         this.doDirectEditOnNode(partUsage, "<>");
         assertThat(partUsage.getShortName()).isEmpty();
         assertThat(partUsage.getName()).isEqualTo(initialName);
-    }
-
-    @DisplayName("GIVEN an AttributeUsage, WHEN editing with a qualified name'x1 = RootPackage::p1::p11::x1', THEN the expression is correctly created")
-    @Test
-    public void testFeatureQualifiedNameInExpression() {
-        ItemAndAttributesModelTest model = new ItemAndAttributesModelTest();
-        assertThat(model.getX1().getName()).isEqualTo("x1");
-        this.doDirectEditOnNode(model.getX1(), "x1 = RootPackage::p1::p1_1::x1");
-        assertThat(this.utilService.getValuation(model.getX1()))
-                .isNotNull()
-                .extracting(FeatureValue::getValue)
-                .isInstanceOf(FeatureReferenceExpression.class)
-                .extracting(exp -> ((FeatureReferenceExpression) exp).getReferent())
-                .isEqualTo(model.getA2x1());
-
-    }
-
-    @DisplayName("GIVEN an ItemUsage, WHEN editing with a FeatureChain expression with 2 segments, THEN the expression is correctly created")
-    @Test
-    public void testFeature2SegmentsFeatureChainPartialEdit() {
-        ItemAndAttributesModelTest model = new ItemAndAttributesModelTest();
-        this.doDirectEditOnNode(model.getA21(), "= a1.a1_2");
-        assertThat(model.getA21().getDirection()).isEqualTo(FeatureDirectionKind.IN);
-        assertThat(model.getA21().getName()).isEqualTo("a2_1");
-        assertThat(this.utilService.getValuation(model.getA21()))
-                .isNotNull()
-                .extracting(FeatureValue::getValue)
-                .isInstanceOf(FeatureChainExpression.class)
-                .extracting(exp -> ((FeatureChainExpression) exp).getTargetFeature().getFeatureTarget())
-                .isEqualTo(model.getA12());
-
-    }
-
-    @DisplayName("GIVEN an ItemUsage, WHEN editing with a FeatureChain expression with 4 segments, THEN the expression is correctly created")
-    @Test
-    public void testFeature4SegmentsFeatureChainPatialEdit() {
-        ItemAndAttributesModelTest model = new ItemAndAttributesModelTest();
-        this.doDirectEditOnNode(model.getA21(), "= a1.a1_3.i2_1.i3_1");
-        assertThat(model.getA21().getDirection()).isEqualTo(FeatureDirectionKind.IN);
-        assertThat(model.getA21().getName()).isEqualTo("a2_1");
-        assertThat(this.utilService.getValuation(model.getA21()))
-                .isNotNull()
-                .extracting(FeatureValue::getValue)
-                .isInstanceOf(FeatureChainExpression.class)
-                .extracting(exp -> ((FeatureChainExpression) exp).getTargetFeature().getFeatureTarget())
-                .isEqualTo(model.getI31());
-
-    }
-
-    @DisplayName("GIVEN an AttributeUsage, WHEN editing with a qualified name'x1 = RootPackage::a1::a2::x1', THEN the expression is correctly created")
-    @Test
-    public void testFeatureQualifiedNameInExpressionPartialEdit() {
-        ItemAndAttributesModelTest model = new ItemAndAttributesModelTest();
-        this.doDirectEditOnNode(model.getX1(), "= RootPackage::p1::p1_1::x1");
-        assertThat(model.getX1().getName()).isEqualTo("x1");
-        assertThat(this.utilService.getValuation(model.getX1()))
-                .isNotNull()
-                .extracting(FeatureValue::getValue)
-                .isInstanceOf(FeatureReferenceExpression.class)
-                .extracting(exp -> ((FeatureReferenceExpression) exp).getReferent())
-                .isEqualTo(model.getA2x1());
-
-    }
-
-    @DisplayName("GIVEN an AttributeUsage, WHEN editing with a simple operator expression 'x1 = RootPackage::a1::a2::x1 + x2', THEN the expression is correctly created")
-    @Test
-    public void testFeatureSimpleOperatorExpression() {
-        ItemAndAttributesModelTest model = new ItemAndAttributesModelTest();
-        this.doDirectEditOnNode(model.getX1(), "= RootPackage::p1::p1_1::x1 + 1");
-        assertThat(model.getX1().getName()).isEqualTo("x1");
-        assertThat(this.utilService.getValuation(model.getX1()))
-                .isNotNull()
-                .extracting(FeatureValue::getValue)
-                .isInstanceOf(OperatorExpression.class)
-                .extracting(exp -> (OperatorExpression) exp)
-                .matches(epExp -> "+".equals(epExp.getOperator()));
-
-        assertThat(this.utilService.getValuation(model.getX1()).getValue().getParameter())
-                .hasSize(2)
-                .extracting(p -> this.utilService.getValuation(p).getValue())
-                .satisfies(params -> {
-                    assertThat(params.get(0)).matches(first -> first instanceof FeatureReferenceExpression featureRef && featureRef.getReferent() == model.getA2x1());
-                    assertThat(params.get(1)).matches(second -> second instanceof LiteralInteger intLit && intLit.getValue() == 1);
-                });
-
-    }
-
-    @DisplayName("GIVEN an AttributeUsage, WHEN editing with a simple operator expression 'x1 = x2 + x3 - 10.5', THEN the expression is correctly created")
-    @Test
-    public void testFeatureNestedOperatorExpression() {
-        ItemAndAttributesModelTest model = new ItemAndAttributesModelTest();
-        this.doDirectEditOnNode(model.getX1(), "= x2 + x3 - 10.5");
-        assertThat(model.getX1().getName()).isEqualTo("x1");
-        assertThat(this.utilService.getValuation(model.getX1()))
-                .isNotNull()
-                .extracting(FeatureValue::getValue)
-                .isInstanceOf(OperatorExpression.class)
-                .extracting(exp -> (OperatorExpression) exp)
-                .matches(epExp -> "-".equals(epExp.getOperator()));
-
-        assertThat(this.utilService.getValuation(model.getX1()).getValue().getParameter())
-                .hasSize(2)
-                .extracting(p -> this.utilService.getValuation(p).getValue())
-                .satisfies(params -> {
-                    // Check x2 + x3
-                    assertThat(params.get(0))
-                            .isInstanceOf(OperatorExpression.class)
-                            .extracting(exp -> (OperatorExpression) exp)
-                            .matches(epExp -> "+".equals(epExp.getOperator()));
-                    assertThat(params.get(0).getParameter())
-                            .hasSize(2)
-                            .extracting(p -> this.utilService.getValuation(p).getValue())
-                            .satisfies(param2 -> {
-                                assertThat(param2.get(0)).matches(first -> first instanceof FeatureReferenceExpression featureRef && featureRef.getReferent() == model.getX2());
-                                assertThat(param2.get(1)).matches(second -> second instanceof FeatureReferenceExpression featureRef && featureRef.getReferent() == model.getX3());
-                            });
-                    // Check 10.5
-                    assertThat(params.get(1)).matches(second -> second instanceof LiteralRational ratLit && ratLit.getValue() == 10.5);
-                });
-
     }
 
     @DisplayName("GIVEN a PartUsage with complex name (with spaces or reserved keywords), WHEN edited without the escaping char ('), THEN the name is correctly set")
@@ -850,23 +669,5 @@ public class DiagramDirectEditListenerTest {
         if (!unresolvedProxies.isEmpty()) {
             fail("Failing to resolve the follwing proxies : \n" + unresolvedProxies.stream().map(proxy -> proxy.nameToResolve() + " on " + proxy.context().getQualifiedName()).collect(joining("\n")));
         }
-    }
-
-    private void hasIntegerValue(FeatureValue featureValue, int value) {
-        assertThat(featureValue.getOwnedRelatedElement().stream().filter(Expression.class::isInstance)).as("The feature value should contain a LiteralInteger with value " + value)
-                .hasSize(1)
-                .allMatch(r -> r instanceof LiteralInteger litInt && litInt.getValue() == value);
-    }
-
-    private void checkHasInitialValue(Feature feature, boolean expected) {
-        assertThat(feature.getOwnedRelationship().stream().filter(FeatureValue.class::isInstance)).as("The feature should have a FeatureValue with isInitial feature set to " + expected)
-                .hasSize(1)
-                .allMatch(r -> ((FeatureValue) r).isIsInitial() == expected);
-    }
-
-    private void checkHasDefaultValue(Feature feature, boolean expected) {
-        assertThat(feature.getOwnedRelationship().stream().filter(FeatureValue.class::isInstance)).as("The feature should have a FeatureValue with isDefault feature set to " + expected)
-                .hasSize(1)
-                .allMatch(r -> ((FeatureValue) r).isIsDefault() == expected);
     }
 }

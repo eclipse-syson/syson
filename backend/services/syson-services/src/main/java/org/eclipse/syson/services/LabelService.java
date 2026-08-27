@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,8 +28,6 @@ public class LabelService {
     public static final String SUBSETTING_OFF = "SUBSETTING_OFF";
 
     public static final String TYPING_OFF = "TYPING_OFF";
-
-    public static final String VALUE_OFF = "VALUE_OFF";
 
     public static final String TRANSITION_EXPRESSION_OFF = "TRANSITION_EXPRESSION_OFF";
 
