@@ -57,13 +57,13 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
- * Tests the tools of the "Show/Hide" section of the group palette, in the General View diagram.
+ * Tests the group palette tools in the General View diagram.
  *
  * @author tgiraudet
  */
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class GVGroupPaletteShowHideToolsTests extends AbstractIntegrationTests {
+public class GVGroupPaletteTests extends AbstractIntegrationTests {
 
     private static final String PART_A_ID = GVSimpleNestedAndTreeElementsTestProjectData.GraphicalIds.PART_A_ID;
 
@@ -125,6 +125,31 @@ public class GVGroupPaletteShowHideToolsTests extends AbstractIntegrationTests {
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(getGroupPalette)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a GV diagram with several visible nodes, WHEN the group 'Delete from diagram' tool is applied on a multi-selection, THEN all the selected nodes are removed")
+    @GivenSysONServer({ GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH })
+    @Test
+    public void invokeDeleteFromDiagramToolOnMultiSelection() {
+        var flux = this.givenSubscriptionToDiagram();
+        var deleteFromDiagramToolId = this.getGroupToolId("Delete from diagram");
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> assertThat(diagram.getNodes())
+                .extracting(Node::getId)
+                .contains(PART_A_ID, PARTDEF_A_ID));
+
+        Runnable deleteFromDiagramTool = () -> this.invokeGroupTool(deleteFromDiagramToolId, List.of(PART_A_ID, PARTDEF_A_ID));
+
+        Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> assertThat(diagram.getNodes())
+                .extracting(Node::getId)
+                .doesNotContain(PART_A_ID, PARTDEF_A_ID));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(deleteFromDiagramTool)
+                .consumeNextWith(updatedDiagramContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

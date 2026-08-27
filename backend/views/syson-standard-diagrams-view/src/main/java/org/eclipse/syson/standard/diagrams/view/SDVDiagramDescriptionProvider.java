@@ -410,7 +410,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
 
     private GroupPalette createGroupPalette() {
         return this.diagramBuilderHelper.newGroupPalette()
-                .quickAccessTools(this.createDuplicateElementsGroupTool())
+                .quickAccessTools(this.createDuplicateElementsGroupTool(), new DiagramDefaultGroupToolsFactory().createDeleteFromDiagramNodeTool())
                 .toolSections(this.createGroupToolSections().toArray(ToolSection[]::new))
                 .build();
     }
