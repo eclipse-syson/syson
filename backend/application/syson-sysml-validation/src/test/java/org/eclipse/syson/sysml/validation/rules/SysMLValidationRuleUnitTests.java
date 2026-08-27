@@ -13,11 +13,14 @@
 package org.eclipse.syson.sysml.validation.rules;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -55,6 +58,18 @@ public class SysMLValidationRuleUnitTests {
     @DisplayName("For each rule, the expression starts with 'aql:'")
     public void testRuleExpressionStartsWithAql() {
         assertThat(allRules).allMatch(rule -> rule.expression().startsWith("aql:"));
+    }
+
+    @Test
+    @DisplayName("For each rule, the AQL expression can be parsed")
+    public void testRuleExpressionsCanBeParsed() {
+        final var environment = Query.newEnvironmentWithDefaultServices(null);
+        final var builder = new QueryBuilderEngine(environment);
+
+        allRules.forEach(rule -> assertThatCode(() -> builder.build(rule.expression()
+                .substring("aql:".length())))
+                        .as(rule.ruleName())
+                        .doesNotThrowAnyException());
     }
 
     @Test

@@ -664,7 +664,7 @@ public enum SysMLValidationRule implements IValidationRule {
     checkMetadataFeatureSemanticSpecialization(
             SysmlPackage.eINSTANCE.getMetadataFeature(),
             "checkMetadataFeatureSemanticSpecialization",
-            "aql:self.isSemantic() implies let annotatedTypes : Sequence(sysml::Type) = self.annotatedElement->selectAsKind(Type) in let baseTypes : Sequence(sysml::MetadataFeature) = self.evaluateFeature(resolveGlobal( 'Metaobjects::SemanticMetadata::baseType').memberElement.oclAsType(sysml::Feature))->selectAsKind(MetadataFeature) in annotatedTypes->notEmpty() and baseTypes()->notEmpty() and baseTypes()->first().isSyntactic() implies let annotatedType : sysml::Type = annotatedTypes->first() in let baseType : sysml::Element = baseTypes->first().syntaxElement() in if annotatedType.oclIsKindOf(sysml::Classifier) and baseType.oclIsKindOf(sysml::Feature) then baseType.oclAsType(sysml::Feature).type->forAll(t | annotatedType.specializes(t)) else if baseType.oclIsKindOf(sysml::Type) then annotatedType.specializes(baseType.oclAsType(sysml::Type)) else true endif",
+            "aql:self.isSemantic() implies let annotatedTypes : Sequence(sysml::Type) = self.annotatedElement->selectAsKind(Type), baseTypes : Sequence(sysml::MetadataFeature) = self.evaluateFeature(resolveGlobal( 'Metaobjects::SemanticMetadata::baseType').memberElement.oclAsType(sysml::Feature))->selectAsKind(MetadataFeature) in annotatedTypes->notEmpty() and baseTypes->notEmpty() and baseTypes->first().isSyntactic() implies let annotatedType : sysml::Type = annotatedTypes->first(), baseType : sysml::Element = baseTypes->first().syntaxElement() in if annotatedType.oclIsKindOf(sysml::Classifier) and baseType.oclIsKindOf(sysml::Feature) then baseType.oclAsType(sysml::Feature).type->forAll(t | annotatedType.specializes(t)) else if baseType.oclIsKindOf(sysml::Type) then annotatedType.specializes(baseType.oclAsType(sysml::Type)) else true endif endif",
             "If this MetadataFeature is an application of SemanticMetadata, then its annotatingElement must be a Type. The annotated Type must then directly or indirectly specialize the specified value of the baseType, unless the Type is a Classifier and the baseType represents a kind of Feature, in which case the Classifier must directly or indirectly specialize each of the types of the Feature."),
     checkMetadataFeatureSpecialization(
             SysmlPackage.eINSTANCE.getMetadataFeature(),
@@ -1529,7 +1529,7 @@ public enum SysMLValidationRule implements IValidationRule {
     validateInvocationExpressionOwnedFeatures(
             SysmlPackage.eINSTANCE.getInvocationExpression(),
             "validateInvocationExpressionOwnedFeatures",
-            "aql:self.ownedFeature->forAll(f | f <> self.result implies f.direction = sysml::FeatureDirectionKind::_'in')",
+            "aql:self.ownedFeature->forAll(f | f <> self.result implies f.direction = sysml::FeatureDirectionKind::_in)",
             "Other than its result, all the ownedFeatures of an InvocationExpression must have direction = in."),
     validateInvocationExpressionParameterRedefinition(
             SysmlPackage.eINSTANCE.getInvocationExpression(),
