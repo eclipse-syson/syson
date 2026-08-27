@@ -18,6 +18,7 @@ import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
@@ -277,6 +278,8 @@ public class DiagramQueryToolService {
             toolShouldBeAvailable = true;
         } else if (element instanceof Definition && !SysmlPackage.eINSTANCE.getDefinition().isSuperTypeOf(domainClass)) {
             toolShouldBeAvailable = true;
+        } else if (this.isRootNamespace(element)) {
+            toolShouldBeAvailable = true;
         }
         return toolShouldBeAvailable;
     }
@@ -294,6 +297,13 @@ public class DiagramQueryToolService {
             toolShouldBeAvailable = true;
         } else if (element instanceof Definition && !SysmlPackage.eINSTANCE.getDefinition().isSuperTypeOf(domainClass)) {
             toolShouldBeAvailable = true;
+        } else if (this.isRootNamespace(element)) {
+            toolShouldBeAvailable = true;
+            if (SysmlPackage.eINSTANCE.getAttributeUsage().isSuperTypeOf(domainClass)) {
+                toolShouldBeAvailable = false;
+            } else if (SysmlPackage.eINSTANCE.getPortUsage().isSuperTypeOf(domainClass)) {
+                toolShouldBeAvailable = false;
+            }
         }
         return toolShouldBeAvailable;
     }
@@ -363,5 +373,9 @@ public class DiagramQueryToolService {
                     }
                     return false;
                 }).orElse(false);
+    }
+
+    private boolean isRootNamespace(Element element) {
+        return element.eClass().equals(SysmlPackage.eINSTANCE.getNamespace()) && ((InternalEObject) element).eDirectResource() != null;
     }
 }

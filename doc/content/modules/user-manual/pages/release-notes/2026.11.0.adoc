@@ -6,6 +6,10 @@
 
 == Bug fixes
 
+* In diagrams:
+
+** Fix available diagram tools on standard diagrams created on a root namespace
+
 == Improvements
 
 == Technical details
