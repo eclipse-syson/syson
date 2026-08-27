@@ -12,6 +12,8 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-syson/syson/issues/1074[#1074] [diagrams] Fix available diagram tools on standard diagrams created on a root namespace
+
 === Improvements
 
 === New features
