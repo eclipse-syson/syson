@@ -13,6 +13,7 @@
 package org.eclipse.syson.application.controllers.diagrams.general.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.type;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramInstanceOfAssertFactories.EDGE;
 
@@ -21,7 +22,6 @@ import com.jayway.jsonpath.JsonPath;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -44,20 +44,22 @@ import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunction
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.application.controller.editingcontext.checkers.ISemanticChecker;
+import org.eclipse.syson.application.controller.editingcontext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.testers.DropFromExplorerTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeCreationTester;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
 import org.eclipse.syson.application.imports.MutationInsertTextualSysMLv2DataRunner;
+import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.ConnectionUsage;
-import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.MetadataUsage;
-import org.eclipse.syson.sysml.NamespaceImport;
-import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.dto.InsertTextualSysMLv2Input;
@@ -134,11 +136,18 @@ public class GVRequirementDerivationCreationTests extends AbstractIntegrationTes
     @Autowired
     private IIdentityService identityService;
 
+    @Autowired
+    private SemanticRunnableFactory semanticRunnableFactory;
+
     private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
+
+    private SemanticCheckerService semanticCheckerService;
 
     @BeforeEach
     public void setUp() {
         this.givenInitialServerState.initialize();
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID);
     }
 
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
@@ -196,12 +205,17 @@ public class GVRequirementDerivationCreationTests extends AbstractIntegrationTes
         Runnable creationToolRunnable = () -> this.edgeCreationTester.createEdgeUsingNodeId(
                 GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagram, derivedNodeId.get(), originalNodeId.get(), creationToolId);
 
+        AtomicReference<String> edgeSemanticId = new AtomicReference<>();
+
         Consumer<Object> afterCreationConsumer = assertRefreshedDiagramThat(newDiagram -> {
             var newVisibleEdges = this.visibleEdges(newDiagram);
             assertThat(newVisibleEdges).hasSize(1).first(EDGE)
                     .hasSourceId(derivedNodeId.get())
                     .hasTargetId(originalNodeId.get());
+            edgeSemanticId.set(newVisibleEdges.getFirst().getTargetObjectId());
         });
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.checkCreatedDerivation(edgeSemanticId));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -211,88 +225,67 @@ public class GVRequirementDerivationCreationTests extends AbstractIntegrationTes
                 .consumeNextWith(afterSecondDropConsumer)
                 .then(creationToolRunnable)
                 .consumeNextWith(afterCreationConsumer)
+                .then(semanticChecker)
                 .thenCancel()
-                .verify(Duration.ofSeconds(30));
-
-        this.checkCreatedDerivation();
+                .verify(Duration.ofSeconds(10));
     }
 
-    /**
-     * Checks the semantic model produced by the tool: a connection annotated with the derivation metadata, whose ends
-     * are annotated and reference the two requirements, and the import of the library the metadata come from.
-     */
-    private void checkCreatedDerivation() {
-        BiFunction<IEditingContext, IInput, IPayload> function = (editingContext, input) -> {
-            var report = new StringBuilder();
-            this.objectSearchService.getObject(editingContext, GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID)
-                    .filter(Package.class::isInstance)
-                    .map(Package.class::cast)
-                    .ifPresent(rootPackage -> {
-                        rootPackage.getOwnedElement().stream()
-                                .filter(ConnectionUsage.class::isInstance)
-                                .map(ConnectionUsage.class::cast)
-                                .forEach(connection -> {
-                                    report.append("connection=").append(this.appliedMetadataOf(connection));
-                                    connection.getConnectorEnd().forEach(end -> report.append(" end=").append(this.appliedMetadataOf(end))
-                                            .append("->").append(this.referencedNameOf(end)));
+    private ISemanticChecker checkCreatedDerivation(AtomicReference<String> edgeSemanticId) {
+        return editingContext -> {
+            var edgeSemanticObject = this.objectSearchService.getObject(editingContext, edgeSemanticId.get());
+            assertThat(edgeSemanticObject).isPresent()
+                    .get()
+                    .isInstanceOf(ConnectionUsage.class)
+                    .asInstanceOf(type(ConnectionUsage.class))
+                    .satisfies(connectionUsage -> {
+                        // There should be three owned relationships, one OwningMembership and two FeatureMembership.
+                        assertThat(connectionUsage.getOwnedRelationship()).size().isEqualTo(3);
+
+                        // The owning membership targets the MetadataUsage
+                        assertThat(connectionUsage.getOwnedRelationship())
+                                .filteredOn(relationship -> relationship.eClass().equals(SysmlPackage.eINSTANCE.getOwningMembership()))
+                                .flatMap(Relationship::getOwnedRelatedElement)
+                                .allSatisfy(element -> {
+                                    assertThat(element)
+                                            .isInstanceOf(MetadataUsage.class)
+                                            .asInstanceOf(type(MetadataUsage.class))
+                                            .satisfies(metadataUsage -> {
+                                                assertThat(metadataUsage.getMetadataDefinition().getQualifiedName()).isEqualTo(DERIVATION_METADATA);
+                                            });
                                 });
-                        report.append(" imports=");
-                        rootPackage.getOwnedImport().stream()
-                                .filter(NamespaceImport.class::isInstance)
-                                .map(NamespaceImport.class::cast)
-                                .map(NamespaceImport::getImportedNamespace)
-                                .filter(Objects::nonNull)
-                                .forEach(namespace -> report.append(namespace.getName()).append(","));
+
+                        assertThat(connectionUsage.getOwnedFeatureMembership()).size().isEqualTo(2);
+                        assertThat(connectionUsage.getOwnedFeatureMembership())
+                                .allMatch(featureMembership -> featureMembership.eClass().equals(SysmlPackage.eINSTANCE.getFeatureMembership()))
+                                .map(FeatureMembership::getOwnedMemberFeature)
+                                .allSatisfy(feature -> {
+                                    // Both feature membership related element are straight Usage
+                                    assertThat(feature.eClass()).isEqualTo(SysmlPackage.eINSTANCE.getUsage());
+                                    assertThat(feature.isIsEnd()).isTrue();
+                                })
+                                .anySatisfy(feature -> {
+                                    // One of the two feature membership related element targets the original requirement
+                                    assertThat(feature.getOwnedReferenceSubsetting().getReferencedFeature().getName()).isEqualTo(ORIGINAL_REQUIREMENT_NAME);
+                                    assertThat(feature.getOwnedMembership()).size().isEqualTo(1);
+                                    assertThat(feature.getOwnedMembership().getFirst().getMemberElement())
+                                            .isInstanceOf(MetadataUsage.class)
+                                            .asInstanceOf(type(MetadataUsage.class))
+                                            .satisfies(metadataUsage -> {
+                                                assertThat(metadataUsage.getMetadataDefinition().getQualifiedName()).isEqualTo(ORIGINAL_END_METADATA);
+                                            });
+                                })
+                                .anySatisfy(feature -> {
+                                    // One of the two feature membership related element targets the derived requirement
+                                    assertThat(feature.getOwnedReferenceSubsetting().getReferencedFeature().getName()).isEqualTo(DERIVED_REQUIREMENT_NAME);
+                                    assertThat(feature.getOwnedMembership().getFirst().getMemberElement())
+                                            .isInstanceOf(MetadataUsage.class)
+                                            .asInstanceOf(type(MetadataUsage.class))
+                                            .satisfies(metadataUsage -> {
+                                                assertThat(metadataUsage.getMetadataDefinition().getQualifiedName()).isEqualTo(DERIVED_END_METADATA);
+                                            });
+                                });
                     });
-            return new ExecuteEditingContextFunctionSuccessPayload(input.id(), report.toString());
         };
-
-        var mono = this.executeEditingContextFunctionRunner
-                .execute(new ExecuteEditingContextFunctionInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, function));
-        var report = Optional.ofNullable(mono.block(Duration.ofSeconds(20)))
-                .filter(ExecuteEditingContextFunctionSuccessPayload.class::isInstance)
-                .map(ExecuteEditingContextFunctionSuccessPayload.class::cast)
-                .map(ExecuteEditingContextFunctionSuccessPayload::result)
-                .map(String::valueOf)
-                .orElse("");
-
-        assertThat(report)
-                .as("The created connection should be a requirement derivation")
-                .contains("connection=[" + DERIVATION_METADATA + "]");
-        assertThat(report)
-                .as("The original end should be annotated and reference the original requirement")
-                .contains("end=[" + ORIGINAL_END_METADATA + "]->" + ORIGINAL_REQUIREMENT_NAME);
-        assertThat(report)
-                .as("The derived end should be annotated and reference the derived requirement")
-                .contains("end=[" + DERIVED_END_METADATA + "]->" + DERIVED_REQUIREMENT_NAME);
-        assertThat(report)
-                .as("The library owning the metadata should have been imported")
-                .contains("RequirementDerivation");
-    }
-
-    /**
-     * The name of the element referenced by a connection end.
-     */
-    private String referencedNameOf(org.eclipse.syson.sysml.Feature end) {
-        var referenceSubsetting = end.getOwnedReferenceSubsetting();
-        if (referenceSubsetting == null || referenceSubsetting.getSubsettedFeature() == null) {
-            return "null";
-        }
-        return referenceSubsetting.getSubsettedFeature().getName();
-    }
-
-    private String appliedMetadataOf(Element element) {
-        var names = new StringBuilder("[");
-        element.getOwnedRelationship().stream()
-                .filter(OwningMembership.class::isInstance)
-                .map(OwningMembership.class::cast)
-                .flatMap(membership -> membership.getOwnedRelatedElement().stream())
-                .filter(MetadataUsage.class::isInstance)
-                .map(MetadataUsage.class::cast)
-                .map(MetadataUsage::getMetadataDefinition)
-                .filter(Objects::nonNull)
-                .forEach(definition -> names.append(definition.getQualifiedName()));
-        return names.append("]").toString();
     }
 
     private List<org.eclipse.sirius.components.diagrams.Edge> visibleEdges(Diagram diagram) {
