@@ -151,10 +151,10 @@ public class DiagramMutationAQLService {
     }
 
     /**
-     * {@link DiagramMutationToolService#createAcceptActionReceiver(AcceptActionUsage)}.
+     * {@link DiagramMutationToolService#createAcceptActionReceiver(AcceptActionUsage, PortUsage)}.
      */
-    public Element createAcceptActionReceiver(AcceptActionUsage self) {
-        return this.diagramMutationToolService.createAcceptActionReceiver(self);
+    public Element createAcceptActionReceiver(AcceptActionUsage self, PortUsage selectedObject) {
+        return this.diagramMutationToolService.createAcceptActionReceiver(self, selectedObject);
     }
 
     /**

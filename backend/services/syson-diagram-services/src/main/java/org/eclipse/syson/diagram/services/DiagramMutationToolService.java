@@ -57,6 +57,7 @@ import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
+import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
@@ -657,23 +658,20 @@ public class DiagramMutationToolService {
      * Create or replace the receiver parameter of an accept action usage.
      *
      * @param self
-     *            the accept action usage
+     *         the accept action usage
+     * @param selectedObject
+     *         the existing port given by the selection dialog. Can be null.
      * @return the given accept action usage
      */
-    public Element createAcceptActionReceiver(AcceptActionUsage self) {
-        var newPort = SysmlFactory.eINSTANCE.createPortUsage();
-        newPort.setDeclaredName(self.getDeclaredName() + "'s receiver");
-        var owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
-        owningMembership.getOwnedRelatedElement().add(newPort);
-        var receiverParent = this.getClosestContainingPackageFrom(self);
-        receiverParent.getOwnedRelationship().add(owningMembership);
-
+    public Element createAcceptActionReceiver(AcceptActionUsage self, PortUsage selectedObject) {
+        var portReceiver = Optional.ofNullable(selectedObject)
+                .orElseGet(() -> this.createNewAcceptActionReceiver(self));
         var feature = SysmlFactory.eINSTANCE.createFeature();
         feature.setDirection(FeatureDirectionKind.OUT);
         var returnParameterMembership = SysmlFactory.eINSTANCE.createReturnParameterMembership();
         returnParameterMembership.getOwnedRelatedElement().add(feature);
         var membership = SysmlFactory.eINSTANCE.createMembership();
-        membership.setMemberElement(newPort);
+        membership.setMemberElement(portReceiver);
         var featureReferenceExpression = SysmlFactory.eINSTANCE.createFeatureReferenceExpression();
         featureReferenceExpression.getOwnedRelationship().add(membership);
         featureReferenceExpression.getOwnedRelationship().add(returnParameterMembership);
@@ -692,6 +690,23 @@ public class DiagramMutationToolService {
         parameterMembership.getOwnedRelatedElement().add(referenceUsage);
         self.getOwnedRelationship().add(parameterMembership);
         return self;
+    }
+
+    /**
+     * Creates a new receiver {@link PortUsage} to set in the given {@link AcceptActionUsage}.
+     *
+     * @param self
+     *         the accept action in which the new receiver should be set.
+     * @return the newly created receiver {@link PortUsage}.
+     */
+    private PortUsage createNewAcceptActionReceiver(AcceptActionUsage self) {
+        var newPort = SysmlFactory.eINSTANCE.createPortUsage();
+        newPort.setDeclaredName(self.getDeclaredName() + "Receiver");
+        var owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+        owningMembership.getOwnedRelatedElement().add(newPort);
+        var receiverParent = this.getClosestContainingPackageFrom(self);
+        receiverParent.getOwnedRelationship().add(owningMembership);
+        return newPort;
     }
 
     /**

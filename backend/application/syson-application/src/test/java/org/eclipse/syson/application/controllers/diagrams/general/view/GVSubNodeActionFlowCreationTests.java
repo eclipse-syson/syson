@@ -135,6 +135,13 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         );
     }
 
+    private static Stream<Arguments> acceptActionUsageReceiverParameters() {
+        return Stream.of(
+                Arguments.of(""),
+                Arguments.of(GeneralViewWithTopNodesTestProjectData.SemanticIds.PORT_USAGE_ID)
+                );
+    }
+
     private static Stream<Arguments> actionUsageSiblingNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 13))
@@ -297,9 +304,20 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
     }
 
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
-    @Test
-    public void createAcceptActionUsageReceiver() {
+    @MethodSource("acceptActionUsageReceiverParameters")
+    @ParameterizedTest
+    public void createAcceptActionUsageReceiver(String selectedObjectId) {
         var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<String> expectedReceiverName = new AtomicReference<>();
+        ISemanticChecker initialSemanticChecker = (editingContext) -> {
+            expectedReceiverName.set(this.objectSearchService.getObject(editingContext, selectedObjectId)
+                    .filter(Element.class::isInstance)
+                    .map(Element.class::cast)
+                    .map(Element::getDeclaredName)
+                    .orElse("acceptActionReceiver"));
+        };
+        Runnable initialSemanticCheck = this.semanticCheckerService.checkEditingContext(initialSemanticChecker);
 
         var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
@@ -312,8 +330,8 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId,
-                this.descriptionNameGenerator.getCreationToolName("New {0} as Receiver", eClass));
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithSingleSelection(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId,
+                this.descriptionNameGenerator.getCreationToolName("New {0} as Receiver", eClass), selectedObjectId);
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
@@ -327,7 +345,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
             assertThat(updatedNode.getInsideLabel()).as("The updated node label should exist").isNotNull();
             assertThat(updatedNode.getInsideLabel().getText())
                     .contains(LabelConstants.OPEN_QUOTE + "via" + LabelConstants.CLOSE_QUOTE)
-                    .contains("acceptAction's receiver");
+                    .contains(expectedReceiverName.get());
         });
 
         ISemanticChecker semanticChecker = (editingContext) -> {
@@ -345,13 +363,14 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
             assertThat(relationship).isInstanceOf(Membership.class);
             Membership membership = (Membership) relationship;
             assertThat(eClass.isInstance(membership.getMemberElement())).isTrue();
-            assertThat(membership.getMemberElement().getName()).isEqualTo("acceptAction's receiver");
+            assertThat(membership.getMemberElement().getName()).isEqualTo(expectedReceiverName.get());
         };
 
         Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(semanticChecker);
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
+                .then(initialSemanticCheck)
                 .then(createNodeRunnable)
                 .consumeNextWith(diagramCheck)
                 .then(semanticCheck)
