@@ -115,6 +115,7 @@ The edge goes from the derived requirement to the original one and is displayed 
 - https://github.com/eclipse-syson/syson/issues/2428[#2428] [diagrams] Add the _New Derived Requirement_ edge tool on `RequirementUsage` graphical nodes, creating a requirement derivation towards another `RequirementUsage`.
 The edge is drawn from the derived requirement to the original one, and the created derivation has the same shape as one written in text: a `ConnectionUsage` annotated with `#derivation`, whose ends are annotated with `#original` and `#derive`.
 The import of the `RequirementDerivation` library is added to the owning namespace when it is missing.
+- https://github.com/eclipse-syson/syson/issues/2470[#2470] [diagrams] Add the selection of an existing element in `New ItemDefinition as Payload` and `New PartDefinition as Payload` tools on `AcceptAction` graphical node.
 
 == v20
 == v2026.7.0

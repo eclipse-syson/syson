@@ -16,6 +16,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.ecore.EClass;
@@ -596,38 +597,60 @@ public class DiagramMutationToolService {
      * Create or replace the payload parameter of an accept action usage.
      *
      * @param self
-     *            the accept action usage
+     *         the accept action usage
      * @param payloadEClassName
-     *            the payload classifier name
+     *         the payload classifier name
+     * @param selectedObject
+     *         the payload classifier given by the selection dialog
      * @return the given accept action usage
      */
-    public Element createAcceptActionPayload(AcceptActionUsage self, String payloadEClassName) {
+    public Element createAcceptActionPayload(AcceptActionUsage self, String payloadEClassName, Element selectedObject) {
+        var payloadType = Optional.ofNullable(selectedObject)
+                .filter(Type.class::isInstance)
+                .map(Type.class::cast)
+                .orElseGet(() -> this.createNewAcceptActionPayload(payloadEClassName, self));
+        if (payloadType != null) {
+            var featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
+            featureTyping.setType(payloadType);
+            var referenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+            referenceUsage.setDeclaredName("payload");
+            referenceUsage.setDirection(FeatureDirectionKind.INOUT);
+            referenceUsage.getOwnedRelationship().add(featureTyping);
+            var parameterMembership = this.getPayloadParameterMembership(self);
+            var oldParameterContent = parameterMembership.getOwnedMemberParameter();
+            if (oldParameterContent != null) {
+                this.deleteService.deleteFromModel(oldParameterContent);
+            }
+            parameterMembership = this.getPayloadParameterMembership(self);
+            parameterMembership.getOwnedRelatedElement().add(referenceUsage);
+            self.getOwnedRelationship().add(parameterMembership);
+        }
+        return self;
+    }
+
+    /**
+     * Creates a new payload element of the given EClass name to set in the given {@link AcceptActionUsage}.
+     *
+     * @param payloadEClassName
+     *         the name of the EClass of the payload. It could be {@link ItemDefinition} or {@link PartDefinition}.
+     * @param acceptActionName
+     *         the accept action in which the new payload should be set.
+     * @return the newly created payload element or <code>null</code> if the given EClass name is not a correct Classifier name.
+     */
+    private Type createNewAcceptActionPayload(String payloadEClassName, AcceptActionUsage acceptActionName) {
         var classifier = SysmlPackage.eINSTANCE.getEClassifier(payloadEClassName);
         if (classifier instanceof EClass eClass) {
             var payload = SysmlFactory.eINSTANCE.create(eClass);
             if (payload instanceof Type payloadType) {
-                payloadType.setDeclaredName(self.getDeclaredName() + "PayloadType");
+                payloadType.setDeclaredName(acceptActionName.getDeclaredName() + "PayloadType");
                 var membership = SysmlFactory.eINSTANCE.createOwningMembership();
                 membership.getOwnedRelatedElement().add(payloadType);
-                var payloadParent = this.getClosestContainingPackageFrom(self);
+                var payloadParent = this.getClosestContainingPackageFrom(acceptActionName);
                 payloadParent.getOwnedRelationship().add(membership);
-                var featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
-                featureTyping.setType(payloadType);
-                var referenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
-                referenceUsage.setDeclaredName("payload");
-                referenceUsage.setDirection(FeatureDirectionKind.INOUT);
-                referenceUsage.getOwnedRelationship().add(featureTyping);
-                var parameterMembership = this.getPayloadParameterMembership(self);
-                var oldParameterContent = parameterMembership.getOwnedMemberParameter();
-                if (oldParameterContent != null) {
-                    this.deleteService.deleteFromModel(oldParameterContent);
-                }
-                parameterMembership = this.getPayloadParameterMembership(self);
-                parameterMembership.getOwnedRelatedElement().add(referenceUsage);
-                self.getOwnedRelationship().add(parameterMembership);
+                return payloadType;
             }
         }
-        return self;
+        return null;
     }
 
     /**
