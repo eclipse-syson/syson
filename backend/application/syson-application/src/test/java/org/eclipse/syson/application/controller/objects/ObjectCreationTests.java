@@ -65,7 +65,7 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
     @GivenSysONServer({GeneralViewEmptyTestProjectData.SCRIPT_PATH})
     @Test
     public void createGeneralViewDiagramAtTheSameTimeAsViewUsage() {
-        Optional<UUID> optionalSemanticData = new UUIDParser().parse(GeneralViewEmptyTestProjectData.EDITING_CONTEXT);
+        Optional<UUID> optionalSemanticData = new UUIDParser().parse(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID);
         assertThat(optionalSemanticData).isPresent();
         var representationMetadatas = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(AggregateReference.to(optionalSemanticData.get()));
         assertThat(representationMetadatas).hasSize(1);
@@ -73,7 +73,7 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
 
         var input = new CreateChildInput(
                 UUID.randomUUID(),
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID,
                 SysMLv2EditService.ID_PREFIX + "ViewUsage");
         var result = this.createChildMutationRunner.run(input);

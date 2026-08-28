@@ -130,7 +130,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Test
     public void getAvailableExplorersForSysMLv2Project() {
         Map<String, Object> explorerVariables = Map.of(
-                "editingContextId", GeneralViewEmptyTestProjectData.EDITING_CONTEXT);
+                "editingContextId", GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID);
         var explorerResult = this.explorerDescriptionsQueryRunner.run(explorerVariables);
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -159,9 +159,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Test
     public void getExplorerContentWithDefaultFilters() {
 
-        List<String> defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, this.sysONExplorerTreeDescriptionId);
+        List<String> defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, this.sysONExplorerTreeDescriptionId);
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, List.of(), defaultFilters);
-        var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input).flux();
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -193,14 +193,14 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialExplorerContentConsumer)
-                .then(() -> expandedTreeItemIds.addAll(this.expandAllTreeItemTester.expandTreeItem(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(), sysmlModelTreeItemId.get())))
+                .then(() -> expandedTreeItemIds.addAll(this.expandAllTreeItemTester.expandTreeItem(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, treeId.get(), sysmlModelTreeItemId.get())))
                 .then(() -> expandedTreeItemIds
-                        .addAll(this.expandAllTreeItemTester.expandTreeItem(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(), librariesDirectoryTreeItemId.get())))
+                        .addAll(this.expandAllTreeItemTester.expandTreeItem(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, treeId.get(), librariesDirectoryTreeItemId.get())))
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
 
         var updatedExplorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, expandedTreeItemIds, defaultFilters);
-        var updatedInput = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, updatedExplorerRepresentationId);
+        var updatedInput = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, updatedExplorerRepresentationId);
         var updatedFlux = this.explorerEventSubscriptionRunner.run(updatedInput).flux();
 
         var updatedExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
@@ -241,13 +241,13 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Test
     public void getExplorerContentWithKerMLAndSysMLExpanded() {
 
-        List<String> defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, this.sysONExplorerTreeDescriptionId);
+        List<String> defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, this.sysONExplorerTreeDescriptionId);
         String librariesTreeItemId = UUID.nameUUIDFromBytes("SysON_Libraries_Directory".getBytes()).toString();
         String sysmlLibrariesTreeItemId = UUID.nameUUIDFromBytes("SysON_SysML_Directory".getBytes()).toString();
         String kermlLibrariesTreeItemId = UUID.nameUUIDFromBytes("SysON_KerML_Directory".getBytes()).toString();
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(librariesTreeItemId, sysmlLibrariesTreeItemId, kermlLibrariesTreeItemId), defaultFilters);
-        var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input).flux();
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -295,7 +295,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     public void getRootContentWithHideMembershipsAndHideKerMLStandardLibraries() {
         List<String> filters = List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterConstants.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID);
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, List.of(GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID), filters);
-        var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input).flux();
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -326,12 +326,12 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Test
     public void getContextMenuOfModelAndLibraryDirectories() {
 
-        List<String> defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, this.sysONExplorerTreeDescriptionId);
+        List<String> defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, this.sysONExplorerTreeDescriptionId);
         // Expand the Libraries directory when building the explorer, we want to check the context menu of elements
         // under it.
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(UUID.nameUUIDFromBytes("SysON_Libraries_Directory".getBytes()).toString()), defaultFilters);
-        var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input).flux();
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -364,25 +364,25 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         });
 
         Runnable sysmlModelContextMenu = () -> this.treeItemPaletteExecutor.execute(
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 explorerRepresentationId,
                 sysmlModelTreeItemId.get())
                 .hasPaletteEntries(entries -> assertThat(entries).hasSize(3).anyMatch(entry -> Objects.equals(entry, ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)));
 
         Runnable librariesDirectoryContextMenu = () -> this.treeItemPaletteExecutor.execute(
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 explorerRepresentationId,
                 librariesDirectoryTreeItemId.get())
                 .hasPaletteEntries(entries -> assertThat(entries).isEmpty());
 
         Runnable kermlDirectoryContextMenu = () -> this.treeItemPaletteExecutor.execute(
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 explorerRepresentationId,
                 kermlDirectoryTreeItemId.get())
                 .hasPaletteEntries(entries -> assertThat(entries).isEmpty());
 
         Runnable sysmlDirectoryContextMenu = () -> this.treeItemPaletteExecutor.execute(
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 explorerRepresentationId,
                 sysmlDirectoryTreeItemId.get())
                 .hasPaletteEntries(entries -> assertThat(entries).isEmpty());
@@ -405,7 +405,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         List<String> filters = List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID);
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID, GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID), filters);
-        var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input).flux();
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -434,7 +434,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
 
         // the list of tree item Ids to expand when a GetTreePath query is called on Package 1 with "Hide Memberships"
         // and "Hide Root Namespaces" filters active.
-        List<String> treeItemIdsToExpand = this.treePathTester.getTreeItemIdsToExpand(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(), List.of(package1TreeItemId.get()));
+        List<String> treeItemIdsToExpand = this.treePathTester.getTreeItemIdsToExpand(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, treeId.get(), List.of(package1TreeItemId.get()));
         assertThat(treeItemIdsToExpand).hasSize(1);
         assertThat(treeItemIdsToExpand).contains(sysmlv2DocumentTreeItemId.get());
     }
@@ -454,7 +454,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         List<String> filters = List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID);
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID, GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID), filters);
 
-        var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input).flux();
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -486,7 +486,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         AtomicReference<String> owningMembershipId = new AtomicReference<>();
 
         Runnable getNamespaceAndMembershipIds = () -> {
-            var getNamespaceAndMembershipIdsInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+            var getNamespaceAndMembershipIdsInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                     (editingContext, executeEditingContextFunctionInput) -> {
                         Optional<Object> optionalPackage1 = this.objectSearchService.getObject(editingContext, package1TreeItemId.get());
                         assertThat(optionalPackage1).isPresent().get().isInstanceOf(Package.class);
@@ -512,7 +512,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         // The list of tree item Ids to expand when a GetTreePath query is called on Package 1 (since filters are
         // ignored by Sirius Web this list contains all the ancestors of Package 1, including the ones filtered out by
         // the explorer).
-        List<String> treeItemIdsToExpand = this.treePathTester.getTreeItemIdsToExpand(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(), List.of(package1TreeItemId.get()));
+        List<String> treeItemIdsToExpand = this.treePathTester.getTreeItemIdsToExpand(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, treeId.get(), List.of(package1TreeItemId.get()));
         assertThat(treeItemIdsToExpand).hasSize(3);
         assertThat(treeItemIdsToExpand).containsExactly(owningMembershipId.get(), rootNamespaceId.get(), sysmlv2DocumentTreeItemId.get());
     }
@@ -748,7 +748,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
 
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, expandedItemIds, filters);
 
-        var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input).flux();
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -776,7 +776,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         });
 
         Runnable getDocumentContextMenuActions = () -> this.treeItemPaletteExecutor.execute(
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 treeId.get(),
                 GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID)
                 .hasPaletteEntries(entries -> assertThat(entries).hasSize(3)
@@ -785,7 +785,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                         .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL));
 
         Runnable getRootNSContextMenuActions = () -> this.treeItemPaletteExecutor.execute(
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 treeId.get(),
                 GeneralViewEmptyTestProjectData.SemanticIds.ROOT_NS_ID)
                 .hasPaletteEntries(entries -> assertThat(entries).hasSize(5)
@@ -796,7 +796,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                         .contains(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT));
 
         Runnable getPackageElementContextMenuActions = () -> this.treeItemPaletteExecutor.execute(
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 treeId.get(),
                 GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID)
                 .hasPaletteEntries(entries -> assertThat(entries).hasSize(5)
@@ -807,7 +807,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                         .contains(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT));
 
         Runnable getViewUsageElementContextMenuActions = () -> this.treeItemPaletteExecutor.execute(
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 treeId.get(),
                 GeneralViewEmptyTestProjectData.SemanticIds.VIEW_USAGE_ID)
                 // no NewRepresentation on a ViewUsage which already contains a standard diagram or requirements-table
@@ -820,7 +820,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                         .contains(SysONExplorerTreeItemContextMenuEntryProvider.CREATE_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID));
 
         Runnable getDiagramContextMenuActions = () -> this.treeItemPaletteExecutor.execute(
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 treeId.get(),
                 GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID)
                 // no duplicate representation on standard diagram or requirements-table

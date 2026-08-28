@@ -139,7 +139,7 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
 
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToEmptyDiagram() {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID);
         return this.givenDiagramSubscription.subscribe(diagramEventInput);
     }
@@ -463,7 +463,7 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
     public void dropLibraryPackageFromExplorerOnDiagram() {
         var input = new CreateChildInput(
                 UUID.randomUUID(),
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID,
                 SysMLv2EditService.ID_PREFIX + "LibraryPackage");
         var result = this.createChildMutationRunner.run(input);
@@ -482,12 +482,12 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         Runnable dropFromExplorerRunnable = () -> {
-            this.dropFromExplorerTester.dropFromExplorerOnDiagram(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagram, objectId);
+            this.dropFromExplorerTester.dropFromExplorerOnDiagram(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, diagram, objectId);
         };
 
         Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {

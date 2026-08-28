@@ -120,7 +120,7 @@ public class CreateRedundantEdgesTests extends AbstractIntegrationTests {
 
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID);
         return this.givenDiagramSubscription.subscribe(diagramEventInput);
     }
@@ -130,7 +130,7 @@ public class CreateRedundantEdgesTests extends AbstractIntegrationTests {
     @ParameterizedTest
     @MethodSource("redundantEdgesArguments")
     public void testAttemptToCreateRedundantFeatureTyping(EClass sourceNodeClass, String sourceNodeLabel, EClass targetNodeClass, String targetNodeLabel, EClass edgeType, String expectedInfoMessage) {
-        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
         var nameGenerator = new SDVDescriptionNameGenerator();
@@ -153,7 +153,7 @@ public class CreateRedundantEdgesTests extends AbstractIntegrationTests {
             assertThat(diagram.getEdges()).isEmpty();
         });
 
-        Runnable createSourceNode = () -> this.toolTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagramId.get(), diagramId.get(), newSourceNodeToolId, List.of());
+        Runnable createSourceNode = () -> this.toolTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), diagramId.get(), newSourceNodeToolId, List.of());
 
         Consumer<Object> updateAfterSourceNodeCreated = assertRefreshedDiagramThat(diagram -> {
             var node = this.findItem(diagram, sourceNodeLabel);
@@ -162,7 +162,7 @@ public class CreateRedundantEdgesTests extends AbstractIntegrationTests {
             assertThat(diagram.getEdges()).isEmpty();
         });
 
-        Runnable createTargetNode = () -> this.toolTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagramId.get(), diagramId.get(), newTargetNodeToolId, List.of());
+        Runnable createTargetNode = () -> this.toolTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), diagramId.get(), newTargetNodeToolId, List.of());
 
         Consumer<Object> updateAfterSecondNodeCreated = assertRefreshedDiagramThat(diagram -> {
             var node = this.findItem(diagram, targetNodeLabel);
@@ -218,7 +218,7 @@ public class CreateRedundantEdgesTests extends AbstractIntegrationTests {
     private GraphQLResult createEdge(String diagramId, String sourceNodeId, String targetNodeId, String toolId) {
         var input = new InvokeSingleClickOnTwoDiagramElementsToolInput(
                 UUID.randomUUID(),
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 diagramId,
                 sourceNodeId,
                 targetNodeId,

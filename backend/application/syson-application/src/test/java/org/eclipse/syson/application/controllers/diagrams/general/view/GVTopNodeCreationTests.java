@@ -190,7 +190,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
     }
 
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
-        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID);
+        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID);
         return this.givenDiagramSubscription.subscribe(diagramEventInput);
     }
 
@@ -210,7 +210,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
@@ -222,7 +222,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
             if (withSelectionDialog) {
                 variables = List.of(new ToolVariable("selectedObject", "", ToolVariableType.OBJECT_ID));
             }
-            this.nodeCreationTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagram, null, creationToolId, variables);
+            this.nodeCreationTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, diagram, null, creationToolId, variables);
         };
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
@@ -247,7 +247,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
             assertThat(parentNode.getDefaultWidth()).isEqualTo(expectedDefaultWidth);
         });
 
-        Runnable semanticCheck = this.semanticRunnableFactory.createRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+        Runnable semanticCheck = this.semanticRunnableFactory.createRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     Object semanticRootObject = this.objectSearchService.getObject(editingContext, GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID).orElse(null);
                     assertThat(semanticRootObject).isInstanceOf(Element.class);
@@ -277,7 +277,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
@@ -291,12 +291,12 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
         };
 
         Runnable initiate = () -> {
-            var checkEditingContextInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, initiateContextFunction);
+            var checkEditingContextInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, initiateContextFunction);
             var payload = this.executeEditingContextFunctionRunner.execute(checkEditingContextInput).block();
             assertThat(payload).isInstanceOf(SuccessPayload.class);
         };
 
-        Runnable invokeTool = () -> this.nodeCreationTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+        Runnable invokeTool = () -> this.nodeCreationTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 diagram,
                 null,
                 creationToolId,
@@ -345,7 +345,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
 
         AtomicReference<Optional<String>> selectionDialogDescriptionId = new AtomicReference<>(Optional.empty());
 
-        Runnable getSelectionDialogId = this.semanticRunnableFactory.createRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+        Runnable getSelectionDialogId = this.semanticRunnableFactory.createRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     selectionDialogDescriptionId.set(this.getSelectionDialogDescriptionId(editingContext, diagram.get()));
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
@@ -360,9 +360,9 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
         assertThat(selectionDialogDescriptionId.get()).isNotEmpty();
 
         if (selectionDialogDescriptionId.get().isPresent()) {
-            var representationId = this.representationIdBuilder.buildSelectionRepresentationId(selectionDialogDescriptionId.get().get(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+            var representationId = this.representationIdBuilder.buildSelectionRepresentationId(selectionDialogDescriptionId.get().get(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                     List.of());
-            var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, representationId);
+            var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, representationId);
             var treeFlux = this.selectionDialogTreeEventSubscriptionRunner.run(input).flux();
 
             var hasSelectionDialogRootContent = this.getTreeSubscriptionConsumer(tree -> {
@@ -384,9 +384,9 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                 });
             });
 
-            var expandedRepresentationId = this.representationIdBuilder.buildSelectionRepresentationId(selectionDialogDescriptionId.get().get(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+            var expandedRepresentationId = this.representationIdBuilder.buildSelectionRepresentationId(selectionDialogDescriptionId.get().get(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                     List.of(LibrariesDirectory.LIBRARIES_DIRECTORY_ID));
-            var expandedInput = new SelectionDialogTreeEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, expandedRepresentationId);
+            var expandedInput = new SelectionDialogTreeEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, expandedRepresentationId);
             var expandedTreeFlux = this.selectionDialogTreeEventSubscriptionRunner.run(expandedInput).flux();
 
             var hasExpandedLibrariesContent = this.getTreeSubscriptionConsumer(tree -> {

@@ -190,7 +190,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
     @Test
     public void canCreateInterconnectionViewOnPackage() {
         Map<String, Object> variables = Map.of(
-                "editingContextId", GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                "editingContextId", GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 "objectId", GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID);
 
         var result = this.representationDescriptionsQueryRunner.run(variables);

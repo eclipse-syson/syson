@@ -83,7 +83,7 @@ public class GVStateDoActionWithReferencedActionTests extends AbstractIntegratio
 
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID);
         return this.givenDiagramSubscription.subscribe(diagramEventInput);
     }
@@ -98,7 +98,7 @@ public class GVStateDoActionWithReferencedActionTests extends AbstractIntegratio
     public void checkPerformActionRevealInState() {
         var flux = this.givenSubscriptionToDiagram();
 
-        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
 
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
@@ -118,7 +118,7 @@ public class GVStateDoActionWithReferencedActionTests extends AbstractIntegratio
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagramReference::set, () -> fail("Missing diagram"));
 
-        Runnable createState = () -> this.toolTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagramReference, newStateToolId);
+        Runnable createState = () -> this.toolTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, diagramReference, newStateToolId);
 
         Consumer<DiagramRefreshedEventPayload> diagramWithStateConsumer = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)
@@ -130,7 +130,7 @@ public class GVStateDoActionWithReferencedActionTests extends AbstractIntegratio
                             .ifPresentOrElse(node -> stateNodeId.set(node.getId()), () -> fail("Node state not found"));
                 }, () -> fail("Missing diagram"));
 
-        Runnable createAction = () -> this.toolTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagramReference, newActionToolId);
+        Runnable createAction = () -> this.toolTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, diagramReference, newActionToolId);
 
         Consumer<DiagramRefreshedEventPayload> diagramWithStateAndActionConsumer = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)
@@ -143,7 +143,7 @@ public class GVStateDoActionWithReferencedActionTests extends AbstractIntegratio
                 }, () -> fail("Missing diagram"));
 
         Runnable createDoActionWithReference = () -> {
-            this.toolTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagramReference.get().getId(), stateNodeId.get(), newDoActionToolId,
+            this.toolTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, diagramReference.get().getId(), stateNodeId.get(), newDoActionToolId,
                     List.of(new ToolVariable("selectedObject", actionId.get(), ToolVariableType.OBJECT_ID)));
         };
 
