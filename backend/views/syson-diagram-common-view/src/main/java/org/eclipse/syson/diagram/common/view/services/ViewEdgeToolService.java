@@ -132,7 +132,7 @@ public class ViewEdgeToolService {
                 .build();
     }
 
-    public EdgeTool createSubclassificationEdgeTool(List<NodeDescription> targetElementDescriptions) {
+    public EdgeTool createSubclassificationEdgeTool(String targetTypeName, List<NodeDescription> targetElementDescriptions) {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
@@ -187,11 +187,15 @@ public class ViewEdgeToolService {
                 .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE)
                 .children(letExistingSubsetting.build());
 
+        var precondition = ServiceMethod.of2(DiagramQueryAQLService::isTargetNodeOfType)
+                .aqlSelf(IEditingContext.EDITING_CONTEXT, AQLUtils.aqlString(targetTypeName));
+
         return builder
                 .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSubclassification()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getSubclassification().getName() + SVG)
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
+                .preconditionExpression(precondition)
                 .build();
     }
 

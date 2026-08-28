@@ -82,6 +82,8 @@ public class GeneralViewWithTopNodesTestProjectData {
 
         public static final String CASE_USAGE_ID = "0e713cc2-1872-31ec-ad87-c9d85b692458";
 
+        public static final String ENUMERATION_DEFINITION_ID = "4d9c2b9f-e071-3814-8d2c-49dc5253a91f";
+
     }
 
     /**
