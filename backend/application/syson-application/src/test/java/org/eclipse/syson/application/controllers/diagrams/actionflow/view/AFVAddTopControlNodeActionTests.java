@@ -22,9 +22,16 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
+import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -32,16 +39,22 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramE
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckNodeOnDiagram;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.ActionFlowViewInsideActionUsageEmptyTestProjectData;
+import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
+import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.tests.api.GivenSysONServer;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
+import org.eclipse.syson.util.ViewConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -50,6 +63,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 /**
@@ -78,6 +92,18 @@ public class AFVAddTopControlNodeActionTests extends AbstractIntegrationTests {
 
     @Autowired
     private DiagramComparator diagramComparator;
+
+    @Autowired
+    private SemanticRunnableFactory semanticRunnableFactory;
+
+    @Autowired
+    private IObjectSearchService objectSearchService;
+
+    /**
+     * @technical-debt The use of this attribute should be replaced in favor of the {@link SemanticRunnableFactory} when it will be possible to provide a change description with `ChangeKind.SEMANTIC_CHANGE`.
+     */
+    @Autowired
+    private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
 
     private final SDVDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
@@ -144,5 +170,82 @@ public class AFVAddTopControlNodeActionTests extends AbstractIntegrationTests {
                 .consumeNextWith(diagramCheck)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN an empty Action Flow View on an ActionUsage containing a PartUsage, WHEN Add existing elements is invoked on the diagram background, THEN the PartUsage is not exposed")
+    @GivenSysONServer({ ActionFlowViewInsideActionUsageEmptyTestProjectData.SCRIPT_PATH })
+    @Test
+    public void addExistingElementsShouldNotExposeUnsupportedElements() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(ActionFlowViewInsideActionUsageEmptyTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+        var creationToolId = diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements");
+
+        var diagram = new AtomicReference<Diagram>();
+        var initialBackground = new AtomicReference<String>();
+        Consumer<Object> initialDiagramConsumer = assertRefreshedDiagramThat(initialDiagram -> {
+            diagram.set(initialDiagram);
+            assertThat(initialDiagram.getNodes()).isEmpty();
+            initialBackground.set(initialDiagram.getStyle().getBackground());
+            assertThat(initialBackground.get()).isNotEqualTo(ViewConstants.DEFAULT_BACKGROUND_COLOR);
+        });
+
+        Runnable createPartInActionRunnable = this.createPartUsageInAction();
+
+        Consumer<Object> diagramRefreshAfterSemanticCreation = assertRefreshedDiagramThat(newDiagram -> {
+            assertThat(newDiagram.getNodes()).isEmpty();
+            assertThat(newDiagram.getStyle().getBackground()).isNotEqualTo(ViewConstants.DEFAULT_BACKGROUND_COLOR);
+            diagram.set(newDiagram);
+        });
+
+        Runnable addExistingElements = () -> this.toolTester.invokeTool(ActionFlowViewInsideActionUsageEmptyTestProjectData.EDITING_CONTEXT_ID, diagram, null, creationToolId);
+        Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(updatedDiagram -> {
+            assertThat(updatedDiagram.getNodes()).isEmpty();
+            assertThat(updatedDiagram.getStyle().getBackground()).isEqualTo(initialBackground.get());
+        });
+        Runnable exposedElementsChecker = this.semanticRunnableFactory.createRunnable(ActionFlowViewInsideActionUsageEmptyTestProjectData.EDITING_CONTEXT_ID,
+                (editingContext, input) -> {
+                    var viewUsage = this.objectSearchService.getObject(editingContext, ActionFlowViewInsideActionUsageEmptyTestProjectData.SemanticIds.AFV_IN_ACTION_VIE_ID)
+                            .filter(ViewUsage.class::isInstance)
+                            .map(ViewUsage.class::cast)
+                            .orElseThrow();
+                    assertThat(viewUsage.getExposedElement()).isEmpty();
+                    return new ExecuteEditingContextFunctionSuccessPayload(input.id(), true);
+                });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramConsumer)
+                .then(createPartInActionRunnable)
+                .consumeNextWith(diagramRefreshAfterSemanticCreation)
+                .then(addExistingElements)
+                .consumeNextWith(updatedDiagramConsumer)
+                .then(exposedElementsChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    private Runnable createPartUsageInAction() {
+        return () -> {
+            var inputId = UUID.randomUUID();
+            var executeEditingContextFunctionInput = new ExecuteEditingContextFunctionInput(inputId, ActionFlowViewInsideActionUsageEmptyTestProjectData.EDITING_CONTEXT_ID, (editingContext, input) -> {
+                ActionUsage actionUsage = this.objectSearchService.getObject(editingContext, ActionFlowViewInsideActionUsageEmptyTestProjectData.SemanticIds.ACTION_ACT_ID)
+                        .filter(ActionUsage.class::isInstance)
+                        .map(ActionUsage.class::cast)
+                        .orElseThrow();
+                var membership = SysmlFactory.eINSTANCE.createFeatureMembership();
+                var partUsage = SysmlFactory.eINSTANCE.createPartUsage();
+                partUsage.setDeclaredName("part");
+                actionUsage.getOwnedRelationship().add(membership);
+                membership.getOwnedRelatedElement().add(partUsage);
+                assertThat(actionUsage.getNestedUsage()).contains(partUsage);
+                return new ExecuteEditingContextFunctionSuccessPayload(input.id(), true);
+            },
+                    new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, ActionFlowViewInsideActionUsageEmptyTestProjectData.EDITING_CONTEXT_ID, () -> inputId));
+            Mono<IPayload> result = this.executeEditingContextFunctionRunner.execute(executeEditingContextFunctionInput);
+            var payload = result.block();
+            assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
+        };
     }
 }

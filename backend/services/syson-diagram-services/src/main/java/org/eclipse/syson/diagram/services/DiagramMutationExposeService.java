@@ -30,7 +30,6 @@ import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
-import org.eclipse.syson.model.services.ModelQueryElementService;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.UtilService;
@@ -76,7 +75,7 @@ public class DiagramMutationExposeService {
 
     private final DiagramQueryElementService diagramQueryElementService;
 
-    private final ModelQueryElementService modelQueryElementService;
+    private final DiagramQueryExposeService diagramQueryExposeService;
 
     private final MetamodelQueryElementService metamodelQueryElementService;
 
@@ -87,11 +86,11 @@ public class DiagramMutationExposeService {
     private final NodeDescriptionService nodeDescriptionService;
 
     public DiagramMutationExposeService(SiriusWebCoreServices siriusWebCoreServices, DiagramMutationElementService diagramMutationElementService, DiagramQueryElementService diagramQueryElementService,
-            ModelQueryElementService modelQueryElementService) {
+            DiagramQueryExposeService diagramQueryExposeService) {
         this.siriusWebCoreServices = Objects.requireNonNull(siriusWebCoreServices);
         this.diagramMutationElementService = Objects.requireNonNull(diagramMutationElementService);
         this.diagramQueryElementService = Objects.requireNonNull(diagramQueryElementService);
-        this.modelQueryElementService = Objects.requireNonNull(modelQueryElementService);
+        this.diagramQueryExposeService = Objects.requireNonNull(diagramQueryExposeService);
         this.metamodelQueryElementService = new MetamodelQueryElementService();
         this.deleteService = new DeleteService();
         this.utilService = new UtilService();
@@ -185,8 +184,7 @@ public class DiagramMutationExposeService {
             for (Element childElement : childElements) {
                 if (this.utilService.isUnsynchronized(childElement)) {
                     this.handleUnsynchronizedElement(childElement, element, editingContext, diagramContext, selectedNode, convertedNodes);
-                } else if (this.modelQueryElementService.isExposable(element) && !Objects.equals(viewUsage, childElement) && !(childElement instanceof ViewUsage)
-                        && !viewUsage.getExposedElement().contains(childElement)) {
+                } else if (this.diagramQueryExposeService.canBeExposed(childElement, element, viewUsage, editingContext)) {
                     var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
                     membershipExpose.setImportedMembership(childElement.getOwningMembership());
                     viewUsage.getOwnedRelationship().add(membershipExpose);
@@ -194,7 +192,7 @@ public class DiagramMutationExposeService {
                     if (recursive) {
                         membershipExpose.setIsRecursive(true);
                     }
-                    // if it is the General View, ActionFlow View or StateTrabnsition View, we want to hide tree
+                    // if it is the General View, ActionFlow View or StateTransition View, we want to hide tree
                     // elements if a compartment containing the same
                     // element is displayed or it is displayed as border node
                     if (selectedNode != null && !ViewDefinitionKind.isInterconnectionView(this.utilService.getViewDefinitionKind(childElement, List.of(), editingContext))) {
