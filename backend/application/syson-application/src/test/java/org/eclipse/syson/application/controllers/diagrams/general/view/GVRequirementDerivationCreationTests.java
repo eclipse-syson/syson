@@ -146,12 +146,12 @@ public class GVRequirementDerivationCreationTests extends AbstractIntegrationTes
     @BeforeEach
     public void setUp() {
         this.givenInitialServerState.initialize();
-        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID);
     }
 
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
-        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID);
         return this.givenDiagramSubscription.subscribe(diagramEventInput);
     }
@@ -164,7 +164,7 @@ public class GVRequirementDerivationCreationTests extends AbstractIntegrationTes
         var originalRequirementId = this.getRequirementId(ORIGINAL_REQUIREMENT_NAME);
         var derivedRequirementId = this.getRequirementId(DERIVED_REQUIREMENT_NAME);
 
-        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
         var creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(
@@ -178,7 +178,7 @@ public class GVRequirementDerivationCreationTests extends AbstractIntegrationTes
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
         Runnable dropOriginalRequirement = () -> this.dropFromExplorerTester.dropFromExplorerOnDiagram(
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagram, originalRequirementId);
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, diagram, originalRequirementId);
 
         Consumer<Object> afterFirstDropConsumer = assertRefreshedDiagramThat(newDiagram -> {
             originalNodeId.set(newDiagram.getNodes().get(0).getId());
@@ -186,7 +186,7 @@ public class GVRequirementDerivationCreationTests extends AbstractIntegrationTes
         });
 
         Runnable dropDerivedRequirement = () -> this.dropFromExplorerTester.dropFromExplorerOnDiagram(
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagram, derivedRequirementId);
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, diagram, derivedRequirementId);
 
         AtomicReference<String> derivedNodeId = new AtomicReference<>();
         Consumer<Object> afterSecondDropConsumer = assertRefreshedDiagramThat(newDiagram -> {
@@ -203,7 +203,7 @@ public class GVRequirementDerivationCreationTests extends AbstractIntegrationTes
 
         // The edge is drawn from the derived requirement to the original one, the direction it is displayed in.
         Runnable creationToolRunnable = () -> this.edgeCreationTester.createEdgeUsingNodeId(
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagram, derivedNodeId.get(), originalNodeId.get(), creationToolId);
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, diagram, derivedNodeId.get(), originalNodeId.get(), creationToolId);
 
         AtomicReference<String> edgeSemanticId = new AtomicReference<>();
 
@@ -295,7 +295,7 @@ public class GVRequirementDerivationCreationTests extends AbstractIntegrationTes
     }
 
     private void insertText(String parentElementId, String content) {
-        var input = new InsertTextualSysMLv2Input(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, parentElementId, content);
+        var input = new InsertTextualSysMLv2Input(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, parentElementId, content);
         var result = this.insertTextRunner.run(input);
 
         Map<String, Object> parsed = JsonPath.read(result.data(), "$.data.insertTextualSysMLv2");
@@ -319,7 +319,7 @@ public class GVRequirementDerivationCreationTests extends AbstractIntegrationTes
         };
 
         var mono = this.executeEditingContextFunctionRunner
-                .execute(new ExecuteEditingContextFunctionInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, function));
+                .execute(new ExecuteEditingContextFunctionInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, function));
 
         var identifier = Optional.ofNullable(mono.block(Duration.ofSeconds(10)))
                 .filter(ExecuteEditingContextFunctionSuccessPayload.class::isInstance)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ public class GeneralViewEmptyTestProjectData {
 
     public static final String SCRIPT_PATH = "/scripts/database-content/GeneralView-Empty.sql";
 
-    public static final String EDITING_CONTEXT = "38b7db6d-736d-45c3-ad08-d461774c83d9";
+    public static final String EDITING_CONTEXT_ID = "38b7db6d-736d-45c3-ad08-d461774c83d9";
 
     /**
      * Ids of graphical elements.

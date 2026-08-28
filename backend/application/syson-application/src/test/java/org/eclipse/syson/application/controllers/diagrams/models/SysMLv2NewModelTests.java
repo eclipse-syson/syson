@@ -74,7 +74,7 @@ public class SysMLv2NewModelTests extends AbstractIntegrationTests {
     public void createDocument(String stereotypeId, String documentName) {
         var input = new CreateDocumentInput(
                 UUID.randomUUID(),
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 SysMLv2StereotypeProvider.EMPTY_SYSML_ID,
                 documentName);
         var result = this.createDocumentMutationRunner.run(input);

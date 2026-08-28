@@ -88,7 +88,7 @@ public class GVUndoTests extends AbstractIntegrationTests {
 
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToEmptyDiagram() {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID);
         return this.givenDiagramSubscription.subscribe(diagramEventInput);
     }
@@ -104,7 +104,7 @@ public class GVUndoTests extends AbstractIntegrationTests {
     public void testUndoAfterDelete() {
         var flux = this.givenSubscriptionToEmptyDiagram();
 
-        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
@@ -119,7 +119,7 @@ public class GVUndoTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagram = assertRefreshedDiagramThat(diagram::set);
 
-        Runnable newPartUsageTool = () -> this.toolTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagram, newPartToolId);
+        Runnable newPartUsageTool = () -> this.toolTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, diagram, newPartToolId);
 
         Consumer<Object> updatedDiagramAfterNewPart = assertRefreshedDiagramThat(diag -> {
             var partNode = new DiagramNavigator(diag).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "part1").getNode();
@@ -129,7 +129,7 @@ public class GVUndoTests extends AbstractIntegrationTests {
         var deletePartInputId = UUID.randomUUID();
 
         Runnable invokeDeletePartUsageTool = () -> {
-            var input = new InvokeSingleClickOnDiagramElementToolInput(deletePartInputId, GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagram.get().getId(), List.of(partNodeId.get()),
+            var input = new InvokeSingleClickOnDiagramElementToolInput(deletePartInputId, GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, diagram.get().getId(), List.of(partNodeId.get()),
                     DeleteOneDiagramElementToolHandler.DELETE_ELEMENT_TOOL_ID,
                     0,
                     0,
@@ -145,7 +145,7 @@ public class GVUndoTests extends AbstractIntegrationTests {
         });
 
         Runnable invokeUndoDeletePartUsage = () -> {
-            var input = new UndoInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, deletePartInputId);
+            var input = new UndoInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, deletePartInputId);
             var result = this.undoMutationRunner.run(input);
             String typename = JsonPath.read(result.data(), "$.data.undo.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
