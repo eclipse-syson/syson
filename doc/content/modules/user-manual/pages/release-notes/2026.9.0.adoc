@@ -95,9 +95,10 @@ image::release-notes-action-inherited-item-border-nodes.png[ItemUsage border nod
 ** Add support for the inheritance of `ItemUsage` border nodes on `PortDefinition` and `PortUsage` graphical nodes.
 +
 image::release-notes-port-inherited-item-border-nodes.png[ItemUsage border node inheritance on PortDefinition and PortUsage, width=80%,height=80%]
-** Add the capability of selecting an existing `ItemDefinition` in _New ItemDefinition as Payload_ and _New PartDefinition as Payload_ tools on `AcceptAction` graphical nodes.
-The creation of a new `ItemDefinition` remains available.
-
+** Add the capability of selecting an existing `Element` in _New ItemDefinition as Payload_ and _New PartDefinition as Payload_ tools on `AcceptAction` graphical nodes.
+The creation of a new `Element` remains available.
+** Add the capability of selecting an existing `PortUsage` in _New Port as Receiver_ tool on `AcceptAction` graphical nodes.
+The creation of a new `PortUsage` remains available.
 == Bug fixes
 
 * In diagrams:
