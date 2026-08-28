@@ -144,10 +144,10 @@ public class DiagramMutationAQLService {
     }
 
     /**
-     * {@link DiagramMutationToolService#createAcceptActionPayload(AcceptActionUsage, String)}.
+     * {@link DiagramMutationToolService#createAcceptActionPayload(AcceptActionUsage, String, Element)}.
      */
-    public Element createAcceptActionPayload(AcceptActionUsage self, String payloadEClassName) {
-        return this.diagramMutationToolService.createAcceptActionPayload(self, payloadEClassName);
+    public Element createAcceptActionPayload(AcceptActionUsage self, String payloadEClassName, Element selectedObject) {
+        return this.diagramMutationToolService.createAcceptActionPayload(self, payloadEClassName, selectedObject);
     }
 
     /**

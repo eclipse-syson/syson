@@ -128,9 +128,11 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> acceptActionUsagePayloadParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition()),
-                Arguments.of(SysmlPackage.eINSTANCE.getItemDefinition()))
-                .map(TestNameGenerator::namedArguments);
+                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), ""),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_DEFINITION_ID),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemDefinition(), ""),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.ITEM_DEFINITION_ID)
+        );
     }
 
     private static Stream<Arguments> actionUsageSiblingNodeParameters() {
@@ -223,8 +225,18 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("acceptActionUsagePayloadParameters")
-    public void createAcceptActionUsagePayload(EClass eClass) {
+    public void createAcceptActionUsagePayload(EClass eClass, String selectedNodeId) {
         var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<String> expectedPayloadTypeName = new AtomicReference<>();
+        ISemanticChecker initialSemanticChecker = (editingContext) -> {
+            expectedPayloadTypeName.set(this.objectSearchService.getObject(editingContext, selectedNodeId)
+                    .filter(Element.class::isInstance)
+                    .map(Element.class::cast)
+                    .map(Element::getDeclaredName)
+                    .orElse("acceptActionPayloadType"));
+        };
+        Runnable initialSemanticCheck = this.semanticCheckerService.checkEditingContext(initialSemanticChecker);
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
@@ -236,8 +248,8 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         EClass parentEClass = SysmlPackage.eINSTANCE.getAcceptActionUsage();
         String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.ACCEPT_ACTION_USAGE_ID;
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId,
-                this.descriptionNameGenerator.getCreationToolName("New {0} as Payload", eClass));
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithSingleSelection(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId,
+                this.descriptionNameGenerator.getCreationToolName("New {0} as Payload", eClass), selectedNodeId);
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
@@ -251,7 +263,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
             assertThat(updatedNode.getInsideLabel()).as("The updated node label should exist").isNotNull();
             assertThat(updatedNode.getInsideLabel().getText())
                     .contains(LabelConstants.OPEN_QUOTE + "accept" + LabelConstants.CLOSE_QUOTE)
-                    .contains("payload: acceptActionPayloadType");
+                    .contains("payload: " + expectedPayloadTypeName.get());
         });
 
         ISemanticChecker semanticChecker = (editingContext) -> {
@@ -269,13 +281,14 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
             assertThat(relationship).isInstanceOf(FeatureTyping.class);
             FeatureTyping featureTyping = (FeatureTyping) relationship;
             assertThat(eClass.isInstance(featureTyping.getType()));
-            assertThat(featureTyping.getType().getName()).isEqualTo("acceptActionPayloadType");
+            assertThat(featureTyping.getType().getName()).isEqualTo(expectedPayloadTypeName.get());
         };
 
         Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(semanticChecker);
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
+                .then(initialSemanticCheck)
                 .then(createNodeRunnable)
                 .consumeNextWith(diagramCheck)
                 .then(semanticCheck)
