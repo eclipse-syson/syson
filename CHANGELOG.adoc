@@ -70,6 +70,7 @@ Prevent the feature chain computer from traversing the whole standard library to
 - https://github.com/eclipse-syson/syson/issues/2466[#2466] [diagrams] Fix subclassification edge tool in _General View_ diagrams.
 - https://github.com/eclipse-syson/syson/issues/2485[#2485] [diagrams] Fix the _New Derived Requirement_ edge tool creating a derivation between two `RequirementUsage`.
 - https://github.com/eclipse-syson/syson/issues/2474[#2474] [diagrams] Do not offer expression tools on inherited border nodes or inherited compartment items.
+- https://github.com/eclipse-syson/syson/issues/2464[#2464] [diagrams] Prevent the `Add existing elements` tools from removing the empty diagram background image when no elements are added.
 
 === Improvements
 

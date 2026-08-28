@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.syson.diagram.services.utils.ViewFilterSwitch;
+import org.eclipse.syson.model.services.ModelQueryElementService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expose;
@@ -46,10 +47,13 @@ public class DiagramQueryExposeService {
 
     private final MetamodelQueryElementService metamodelQueryElementService;
 
+    private final ModelQueryElementService modelQueryElementService;
+
     private final UtilService utilService;
 
-    public DiagramQueryExposeService() {
+    public DiagramQueryExposeService(ModelQueryElementService modelQueryElementService) {
         this.metamodelQueryElementService = new MetamodelQueryElementService();
+        this.modelQueryElementService = Objects.requireNonNull(modelQueryElementService);
         this.utilService = new UtilService();
     }
 
@@ -93,6 +97,31 @@ public class DiagramQueryExposeService {
             }
         }
         return elementsToExpose;
+    }
+
+    /**
+     * Check whether {@code element} can be added to the exposed elements of {@code viewUsage}.
+     *
+     * @param element
+     *              The element we want to expose
+     * @param parentElement
+     *              The element parent of {@code element}
+     * @param viewUsage
+     *              The view usage in which the {@code element} could be exposed
+     * @param editingContext
+     *              The editing context
+     * @return {@code true} whether the {@code element} can be exposed or not, {@code false} otherwise
+     */
+    public boolean canBeExposed(Element element, Element parentElement, ViewUsage viewUsage, IEditingContext editingContext) {
+        boolean canBeExposed = this.modelQueryElementService.isExposable(parentElement) && !Objects.equals(viewUsage, element);
+        if (canBeExposed) {
+            canBeExposed = !(element instanceof ViewUsage) && !viewUsage.getExposedElement().contains(element);
+        }
+        if (canBeExposed) {
+            var viewDefKind = this.utilService.getViewDefinitionKind(viewUsage, List.of(), editingContext);
+            canBeExposed = new ViewFilterSwitch(viewDefKind, viewUsage.getExposedElement(), parentElement, this.metamodelQueryElementService).doSwitch(element);
+        }
+        return canBeExposed;
     }
 
     /**
