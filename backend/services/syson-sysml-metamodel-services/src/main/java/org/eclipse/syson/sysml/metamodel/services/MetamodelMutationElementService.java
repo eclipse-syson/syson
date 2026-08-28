@@ -210,20 +210,71 @@ public class MetamodelMutationElementService {
      */
     public ConnectionUsage createRequirementDerivation(RequirementUsage derived, RequirementUsage original, Namespace newConnectionContainer, Metaclass derivationMetadata,
             Metaclass originalEndMetadata, Metaclass derivedEndMetadata) {
-        // The original requirement is the first end, so that a derivation whose ends are not annotated, which is what
-        // the end order fallback of the display expects, is still oriented the same way.
-        ConnectionUsage derivation = this.createConnectionUsage(original, derived, original.getOwner(), derived.getOwner(), newConnectionContainer);
+        var derivation = SysmlFactory.eINSTANCE.createConnectionUsage();
+        this.addChildInParent(newConnectionContainer, derivation);
+        this.elementInitializerSwitch.doSwitch(derivation);
         // A derivation is not referenced by its name, so the generated one is dropped, the way the generated name of a
         // connector end is. It keeps the derivation anonymous, as it is when written in text.
         derivation.setDeclaredName(null);
+
+        // The original requirement is the first end, so that a derivation whose ends are not annotated, which is what
+        // the end order fallback of the display expects, is still oriented the same way.
+        this.addDerivedConnectionEnd(derivation, original, original.getOwner(), newConnectionContainer, originalEndMetadata);
+        this.addDerivedConnectionEnd(derivation, derived, derived.getOwner(), newConnectionContainer, derivedEndMetadata);
+
+        // Add Metadata after the connection ends
         this.applyPrefixMetadata(derivation, derivationMetadata);
 
-        List<Feature> ends = derivation.getConnectorEnd();
-        if (ends.size() == 2) {
-            this.applyPrefixMetadata(ends.get(0), originalEndMetadata);
-            this.applyPrefixMetadata(ends.get(1), derivedEndMetadata);
-        }
         return derivation;
+    }
+
+    /**
+     * Creates a connection end with {@code endMetadata} as {@code user-defined keyword}, then add the connection end to the derived {@link ConnectionUsage}.
+     *
+     * @param connectionUsage
+     *          The derived {@link ConnectionUsage}
+     * @param end
+     *          One of the end of the {@link ConnectionUsage}
+     * @param endContainer
+     *          The container of the end
+     * @param newConnectionContainer
+     *          The container of the {@link ConnectionUsage}
+     * @param endMetadata
+     *          The {@link Metaclass} used to represent the {@code user-defined keyword}
+     *
+     */
+    private void addDerivedConnectionEnd(ConnectionUsage connectionUsage, RequirementUsage end, Element endContainer, Namespace newConnectionContainer, Metaclass endMetadata) {
+        FeatureChainComputer cmp = new FeatureChainComputer();
+        List<Feature> sourceFeaturePath = cmp.computeShortestPath(newConnectionContainer, end, endContainer).orElse(List.of());
+
+        var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        connectionUsage.getOwnedRelationship().add(featureMembership);
+        var usage = SysmlFactory.eINSTANCE.createUsage();
+        usage.setIsEnd(true);
+
+        featureMembership.getOwnedRelatedElement().add(usage);
+        this.elementInitializerSwitch.doSwitch(usage);
+        usage.setDeclaredName(null);
+        ReferenceSubsetting sourceReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        usage.getOwnedRelationship().add(sourceReferenceSubsetting);
+        this.elementInitializerSwitch.doSwitch(sourceReferenceSubsetting);
+        if (sourceFeaturePath.isEmpty() || sourceFeaturePath.size() == 1) {
+            // If no path found create a direct reference. The model may not be valid but keep track of the desire
+            // target
+            sourceReferenceSubsetting.setReferencedFeature(end);
+        } else {
+            // We need to create a feature chain here
+            Feature sourceFeatureChain = SysmlFactory.eINSTANCE.createFeature();
+            for (Feature chainedFeature : sourceFeaturePath) {
+                FeatureChaining featureChaining = SysmlFactory.eINSTANCE.createFeatureChaining();
+                sourceFeatureChain.getOwnedRelationship().add(featureChaining);
+                featureChaining.setChainingFeature(chainedFeature);
+            }
+            sourceReferenceSubsetting.setReferencedFeature(sourceFeatureChain);
+            sourceReferenceSubsetting.getOwnedRelatedElement().add(sourceFeatureChain);
+        }
+
+        this.applyPrefixMetadata(usage, endMetadata);
     }
 
     /**

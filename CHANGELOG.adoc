@@ -63,11 +63,12 @@ The grammar defines a comment as a non greedy match up to the first `*/`, with n
 - https://github.com/eclipse-syson/syson/issues/2340[#2340] [diagrams] Replace the name of the _New Perform action_ tool to _New Perform Action_ to be consistent with other tools.
 - https://github.com/eclipse-syson/syson/issues/2437[#2437] [metamodel] Fix elementId when creating a FlowDefinition
 - https://github.com/eclipse-syson/syson/issues/2384[#2384] [import] Fix the import of `TransitionUsage` using _start_ which now set the source to the `StateUsage` _start_ from the standard library instead of `ActionUsage` _start_ from the standard library.
-- https://github.com/eclipse-syson/syson/issues/2208[#2208] [diagram] Fix the edge tool creating a `ConnectionUsage` between an `ActionUsage` graphical node and the _done_ `ActionUsage` graphical node.
+- https://github.com/eclipse-syson/syson/issues/2208[#2208] [diagrams] Fix the edge tool creating a `ConnectionUsage` between an `ActionUsage` graphical node and the _done_ `ActionUsage` graphical node.
 Prevent the feature chain computer from traversing the whole standard library to compute the shortest path to the _done_ `ActionUsage`.
 - https://github.com/eclipse-syson/syson/issues/2483[#2483] [validation] Prevent AQL parser failures when loading the built-in SysML validation rules.
 - https://github.com/eclipse-syson/syson/issues/2486[#2486] [import/export] Resolve cross-document references for nested SysML files.
 - https://github.com/eclipse-syson/syson/issues/2466[#2466] [diagrams] Fix subclassification edge tool in _General View_ diagrams.
+- https://github.com/eclipse-syson/syson/issues/2485[#2485] [diagrams] Fix the _New Derived Requirement_ edge tool creating a derivation between two `RequirementUsage`.
 
 === Improvements
 
