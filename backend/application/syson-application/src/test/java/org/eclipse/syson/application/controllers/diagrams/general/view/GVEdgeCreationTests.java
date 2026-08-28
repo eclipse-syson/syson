@@ -91,6 +91,8 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
 
     private static final String PART_LABEL = "part";
 
+    private static final String NEW_SUBCLASSIFICATION_TOOL_LABEL = "New Subclassification";
+
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
@@ -543,6 +545,30 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
                 .then(creationToolRunnable)
                 .consumeNextWith(diagramChecker)
                 .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN an Element source and an Element target, WHEN retrieving the connector palette, THEN the New Subclassification tool appears accordingly")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void connectorPaletteProvidesSubclassificationTool() {
+        var flux = this.givenSubscriptionToDiagram(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
+        StepVerifier.create(flux)
+                .consumeNextWith(assertRefreshedDiagramThat(diagram -> {
+                    var actionDefinitionToActionUsagePaletteEntries = this.getConnectorPaletteLabels(diagram.getId(),
+                            GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_DEFINITION_ID,
+                            GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID);
+                    assertThat(actionDefinitionToActionUsagePaletteEntries).noneMatch(label -> label.startsWith(NEW_SUBCLASSIFICATION_TOOL_LABEL));
+                    var actionDefinitionToActionDefinitionPaletteEntries = this.getConnectorPaletteLabels(diagram.getId(),
+                            GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_DEFINITION_ID,
+                            GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_DEFINITION_ID);
+                    assertThat(actionDefinitionToActionDefinitionPaletteEntries).contains(NEW_SUBCLASSIFICATION_TOOL_LABEL);
+                    var enumerationDefinitionToEnumerationDefinitionPaletteEntries =  this.getConnectorPaletteLabels(diagram.getId(),
+                            GeneralViewWithTopNodesTestProjectData.GraphicalIds.ENUMERATION_DEFINITION_ID,
+                            GeneralViewWithTopNodesTestProjectData.GraphicalIds.ENUMERATION_DEFINITION_ID);
+                    assertThat(enumerationDefinitionToEnumerationDefinitionPaletteEntries).noneMatch(label -> label.startsWith(NEW_SUBCLASSIFICATION_TOOL_LABEL));
+                }))
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

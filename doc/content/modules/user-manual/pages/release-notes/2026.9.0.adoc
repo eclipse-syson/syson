@@ -115,7 +115,8 @@ The affected connections were missing their source and target and were therefore
 ** Fix an issue that prevented a nested `AttributeUsage` from becoming visible when it was first dropped from the _Explorer_ onto a _General View_ diagram.
 ** Fix `Comment` graphical nodes so changing their background color no longer changes their border color.
 ** Rename the _New Perform action_ tool to _New Perform Action_ for consistency with other tools.
-** Remove the _New Subclassification_ edge tool from `EnumerationDefinition` graphical nodes, which cannot subclassify another `EnumerationDefinition`.
+** Do not propose the the _New Subclassification_ edge tool from `EnumerationDefinition` graphical nodes' palette, which cannot subclassify another `EnumerationDefinition`.
+** Do not propose the _New Subclassification_ edge tool in the palette when targeting a `Usage` graphical node from a `Definition` graphical node.
 
 * In all views:
 

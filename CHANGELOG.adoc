@@ -67,6 +67,7 @@ The grammar defines a comment as a non greedy match up to the first `*/`, with n
 Prevent the feature chain computer from traversing the whole standard library to compute the shortest path to the _done_ `ActionUsage`.
 - https://github.com/eclipse-syson/syson/issues/2483[#2483] [validation] Prevent AQL parser failures when loading the built-in SysML validation rules.
 - https://github.com/eclipse-syson/syson/issues/2486[#2486] [import/export] Resolve cross-document references for nested SysML files.
+- https://github.com/eclipse-syson/syson/issues/2466[#2466] [diagrams] Fix subclassification edge tool in _General View_ diagrams.
 
 === Improvements
 
