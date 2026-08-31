@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.ViewDefinition;
@@ -59,7 +60,7 @@ public class DiagramQueryViewService {
      * @return {@code true} if the diagram can be created on the provided {@code element}
      */
     public boolean canCreateDiagram(Element element) {
-        return true;
+        return element instanceof Namespace;
     }
 
     /**
@@ -72,7 +73,7 @@ public class DiagramQueryViewService {
             var types = viewUsage.getType();
             if ((types == null || types.isEmpty()) && Objects.equals(StandardDiagramsConstants.GV_QN, viewDefinition)) {
                 isView = true;
-            } else {
+            } else if (types != null) {
                 var expectedViewDefinition = this.elementUtil.findByNameAndType(viewUsage, viewDefinition, ViewDefinition.class);
                 Type type = types.get(0);
                 isView = Objects.equals(type, expectedViewDefinition);
@@ -96,7 +97,7 @@ public class DiagramQueryViewService {
             var types = viewUsage.getType();
             if ((types == null || types.isEmpty()) && Objects.equals(StandardDiagramsConstants.GV_QN, viewDefinition)) {
                 isView = true;
-            } else {
+            } else if (types != null) {
                 var expectedViewDefinition = this.elementUtil.findByNameAndType(viewUsage, viewDefinition, ViewDefinition.class);
                 Type type = types.get(0);
                 isView = Objects.equals(type, expectedViewDefinition);
