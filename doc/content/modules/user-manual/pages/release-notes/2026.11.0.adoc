@@ -2,7 +2,14 @@
 
 == Key highlights
 
+* _General View_ diagrams now provide an action to add existing connected elements in both directions.
+
 == New features
+
+* In diagrams:
+
+** Add the _Add existing connected elements_ action in the _Related Elements_ context menu section.
+The action adds existing project elements connected to the selected element through inbound or outbound relationships and displays the corresponding edges when possible.
 
 == Bug fixes
 

@@ -16,6 +16,9 @@
 
 === New features
 
+- https://github.com/eclipse-syson/syson/issues/2467[#2467] [diagrams] Add the _Add existing connected elements_ action to _General View_ diagrams.
+The action adds existing project elements connected to the selected element through inbound or outbound relationships.
+
 
 == v2026.9.0
 
