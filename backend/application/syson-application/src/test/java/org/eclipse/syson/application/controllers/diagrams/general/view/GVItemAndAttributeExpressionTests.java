@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InitialDirectEditElementLabelQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
@@ -360,6 +361,36 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(deleteTool)
                 .consumeNextWith(diagramCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a diagram with an attribute, WHEN we set its value to an expression using an unimported namespace, THEN the attribute is correctly set")
+    @GivenSysONServer({ GeneralViewItemAndAttributeProjectData.SCRIPT_PATH })
+    @Test
+    public void setExpressionUsingUnimportedNamespaceName() {
+        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
+                GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
+                GeneralViewItemAndAttributeProjectData.GraphicalIds.DIAGRAM_ID);
+
+        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            var node = new DiagramNavigator(diagram).nodeWithId(GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_1_X1_ID).getNode();
+            DiagramAssertions.assertThat(node.getInsideLabel()).hasText("x1");
+        });
+
+        Runnable createExpression = this.createExpression(GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, GeneralViewItemAndAttributeProjectData.SemanticIds.P1_1_X1_ID, "1 [g]");
+
+        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
+            var node = new DiagramNavigator(diagram).nodeWithId(GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_1_X1_ID).getNode();
+            DiagramAssertions.assertThat(node.getInsideLabel()).hasText("x1 = 1 [g]");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createExpression)
+                .consumeNextWith(updatedDiagramContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

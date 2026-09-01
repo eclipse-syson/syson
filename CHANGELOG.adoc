@@ -71,6 +71,8 @@ Prevent the feature chain computer from traversing the whole standard library to
 - https://github.com/eclipse-syson/syson/issues/2485[#2485] [diagrams] Fix the _New Derived Requirement_ edge tool creating a derivation between two `RequirementUsage`.
 - https://github.com/eclipse-syson/syson/issues/2474[#2474] [diagrams] Do not offer expression tools on inherited border nodes or inherited compartment items.
 - https://github.com/eclipse-syson/syson/issues/2464[#2464] [diagrams] Prevent the `Add existing elements` tools from removing the empty diagram background image when no elements are added.
+- https://github.com/eclipse-syson/syson/issues/2473[#2473] [services] Fix the expression dialog by automatically import the SI package via `NamespaceImport` when un-prefixed standard units are used in an expression.
+The `NamespaceImport` is created under the closest ancestor `Package` from the element holding the expression, or in the root `Namespace` if no ancestor `Package` is found.
 
 === Improvements
 

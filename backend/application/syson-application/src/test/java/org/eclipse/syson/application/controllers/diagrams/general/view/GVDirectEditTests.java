@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
@@ -43,8 +42,6 @@ import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortionKind;
-import org.eclipse.syson.sysml.dto.CreateExpressionInput;
-import org.eclipse.syson.sysml.dto.CreateExpressionSuccessPayload;
 import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
 import org.eclipse.syson.tests.api.GivenSysONServer;
 import org.junit.jupiter.api.BeforeEach;
@@ -402,44 +399,6 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("GIVEN a diagram with an attribute, WHEN we set its value to an expression using an unimported namespace, THEN the attribute is correctly set")
-    @GivenSysONServer({ GeneralViewItemAndAttributeProjectData.SCRIPT_PATH })
-    @Test
-    public void directEditOperationUsingUnImportedNameSpaceName() {
-        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
-                GeneralViewItemAndAttributeProjectData.GraphicalIds.DIAGRAM_ID);
-
-        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
-
-        var diagramId = new AtomicReference<String>();
-        var partNodeId = new AtomicReference<String>();
-        var partNodeTargetId = new AtomicReference<String>();
-        var partNodeLabelId = new AtomicReference<String>();
-
-        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
-            diagramId.set(diagram.getId());
-            var partNode = new DiagramNavigator(diagram).nodeWithLabel("x1").getNode();
-            partNodeId.set(partNode.getId());
-            partNodeLabelId.set(partNode.getInsideLabel().getId());
-            partNodeTargetId.set(partNode.getTargetObjectId());
-        });
-
-        Runnable createExpression = this.createExpression(GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, partNodeTargetId::get, "1 [g]");
-
-        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
-            var node = new DiagramNavigator(diagram).nodeWithId(partNodeId.get()).getNode();
-            DiagramAssertions.assertThat(node.getInsideLabel()).hasText("x1 = 1 [g]");
-        });
-
-        StepVerifier.create(flux)
-                .consumeNextWith(initialDiagramContentConsumer)
-                .then(createExpression)
-                .consumeNextWith(updatedDiagramContentMatcher)
-                .thenCancel()
-                .verify(Duration.ofSeconds(10));
-    }
-
     @DisplayName("GIVEN a diagram with a part, WHEN we direct edit with multiplicity and subsetting, THEN the part is correctly set")
     @GivenSysONServer({ GeneralViewItemAndAttributeProjectData.SCRIPT_PATH })
     @Test
@@ -731,14 +690,5 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
                 .then(redefinedElementsChecker)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
-    }
-
-    private Runnable createExpression(String editingContextId, Supplier<String> parentElementId, String expressionContent) {
-        return () -> {
-            var input = new CreateExpressionInput(UUID.randomUUID(), editingContextId, parentElementId.get(), expressionContent);
-            var result = this.createExpressionMutationRunner.run(input);
-            String typename = JsonPath.read(result.data(), "$.data.createExpression.__typename");
-            assertThat(typename).isEqualTo(CreateExpressionSuccessPayload.class.getSimpleName());
-        };
     }
 }
