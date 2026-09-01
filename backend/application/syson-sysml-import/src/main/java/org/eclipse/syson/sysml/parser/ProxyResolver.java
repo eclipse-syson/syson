@@ -25,9 +25,12 @@ import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PortDefinition;
+import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.metamodel.helper.DeresolvingNamespaceProvider;
+import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
 import org.eclipse.syson.sysml.utils.LogNameProvider;
 import org.eclipse.syson.sysml.utils.MessageReporter;
 import org.slf4j.Logger;
@@ -41,6 +44,8 @@ import org.slf4j.LoggerFactory;
 public class ProxyResolver {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProxyResolver.class);
+
+    private static final String INTERNATIONAL_SYSTEM_PACKAGE_PREFIX = "SI::";
 
     private final LogNameProvider logNameProvider = new LogNameProvider();
 
@@ -104,6 +109,8 @@ public class ProxyResolver {
                         // Manage specific case of conjugated port
                         target = ((PortDefinition) membership.getMemberElement()).getConjugatedPortDefinition();
                     }
+                } else {
+                    target = this.resolveProxyQualifiedNameAgainstSI(deresolvingNamespace, owner, qualifiedName);
                 }
                 // Return the first matching element
                 if (target != null) {
@@ -113,6 +120,41 @@ public class ProxyResolver {
         }
 
         return target;
+    }
+
+    /**
+     * Return the element representing the given proxy qualified name that has been resolved against the International System library package, {@code null} otherwise.
+     *
+     * <p>
+     *     If the proxy qualified name is successfully resolved, then a {@link org.eclipse.syson.sysml.NamespaceImport} is created into the closest {@link Package} proxy owner ancestor.
+     *     If the proxy owner has not package ancestors, the {@link org.eclipse.syson.sysml.NamespaceImport} is created under the root {@link Namespace}.
+     * </p>
+     *
+     * @param deresolvingNamespace
+     *          The namespace used to resolve the proxy qualified name
+     * @param proxyOwner
+     *          The proxy owner used to find its {@link Package} ancestors.
+     * @param proxyQualifiedName
+     *          The proxy qualified name to resolve
+     * @return the element representing the given proxy qualified name that has been resolved against the International System library package, {@code null} otherwise
+     */
+    private EObject resolveProxyQualifiedNameAgainstSI(Namespace deresolvingNamespace, EObject proxyOwner, String proxyQualifiedName) {
+        var resolvedNamespace = deresolvingNamespace.resolve(INTERNATIONAL_SYSTEM_PACKAGE_PREFIX + proxyQualifiedName);
+        if (resolvedNamespace != null) {
+            var namespaceImport = SysmlFactory.eINSTANCE.createNamespaceImport();
+            namespaceImport.setImportedNamespace(resolvedNamespace.libraryNamespace());
+            var sysmlPackages = EMFUtils.getAncestors(Package.class, proxyOwner, null);
+            if (!sysmlPackages.isEmpty()) {
+                sysmlPackages.getFirst().getOwnedRelationship().add(namespaceImport);
+            } else {
+                var namespaces = EMFUtils.getAncestors(Namespace.class, proxyOwner, null);
+                if (!namespaces.isEmpty()) {
+                    namespaces.getLast().getOwnedRelationship().add(namespaceImport);
+                }
+            }
+            return resolvedNamespace.getMemberElement();
+        }
+        return null;
     }
 
     private boolean isConjugatedPortReference(final EObject owner, final Element target) {
