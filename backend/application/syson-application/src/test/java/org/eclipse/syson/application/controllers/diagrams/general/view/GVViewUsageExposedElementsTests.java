@@ -142,7 +142,7 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
 
         Runnable invokeToolCheck = () -> this.toolTester.invokeTool(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID, diagram, creationToolId);
 
-        Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
+        Runnable semanticChecker = this.semanticRunnableFactory.createQueryRunnable(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     Object viewUsageObject = this.objectSearchService.getObject(editingContext, ViewUsageExposedElementsTestProjectData.SemanticIds.VIEW_USAGE_GV_ELEMENT_ID).orElse(null);
                     assertThat(viewUsageObject).isInstanceOf(ViewUsage.class);
@@ -181,7 +181,7 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
         assertThat(creationToolId).as("The tool 'Add existing elements' should exist on the diagram").isNotNull();
         Runnable invokeToolCheck = () -> this.toolTester.invokeTool(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID, diagram, creationToolId);
 
-        Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
+        Runnable semanticChecker = this.semanticRunnableFactory.createQueryRunnable(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     Object viewUsageObject = this.objectSearchService.getObject(editingContext, ViewUsageExposedElementsTestProjectData.SemanticIds.VIEW_USAGE_GV_ELEMENT_ID).orElse(null);
                     assertThat(viewUsageObject).isInstanceOf(ViewUsage.class);
@@ -220,7 +220,7 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
         assertThat(creationToolId).as("The tool 'Add existing elements (recursive)' should exist on the diagram").isNotNull();
         Runnable invokeToolCheck = () -> this.toolTester.invokeTool(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID, diagram, creationToolId);
 
-        Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
+        Runnable semanticChecker = this.semanticRunnableFactory.createQueryRunnable(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     Object viewUsageObject = this.objectSearchService.getObject(editingContext, ViewUsageExposedElementsTestProjectData.SemanticIds.VIEW_USAGE_GV_ELEMENT_ID).orElse(null);
                     assertThat(viewUsageObject).isInstanceOf(ViewUsage.class);

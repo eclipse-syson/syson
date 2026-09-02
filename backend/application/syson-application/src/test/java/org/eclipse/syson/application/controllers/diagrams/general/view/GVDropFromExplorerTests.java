@@ -156,7 +156,7 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<String> semanticElementId = new AtomicReference<>();
-        Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
+        Runnable semanticChecker = this.semanticRunnableFactory.createQueryRunnable(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     String partUsageId = this.getSemanticElementWithTargetObjectLabel(editingContext, "part1");
                     semanticElementId.set(partUsageId);
@@ -193,7 +193,7 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
             assertThat(background).isEqualTo("white");
         });
 
-        Runnable exposedElementsChecker = this.semanticRunnableFactory.createRunnable(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
+        Runnable exposedElementsChecker = this.semanticRunnableFactory.createQueryRunnable(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     ViewUsage generalViewViewUsage = this.objectSearchService.getObject(editingContext, GeneralViewAddExistingElementsTestProjectData.SemanticIds.GENERAL_VIEW_VIEW_USAGE_ID)
                             .filter(ViewUsage.class::isInstance)
@@ -246,7 +246,7 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
                     .check(diagram.get(), newDiagram);
         });
 
-        Runnable exposedElementsChecker = this.semanticRunnableFactory.createRunnable(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
+        Runnable exposedElementsChecker = this.semanticRunnableFactory.createQueryRunnable(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     ViewUsage generalViewViewUsage = this.objectSearchService.getObject(editingContext, GeneralViewAddExistingElementsTestProjectData.SemanticIds.GENERAL_VIEW_VIEW_USAGE_ID)
                             .filter(ViewUsage.class::isInstance)
@@ -273,14 +273,14 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<String> semanticElementId = new AtomicReference<>();
-        Runnable initialState = this.semanticRunnableFactory.createRunnable(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
+        Runnable initialState = this.semanticRunnableFactory.createQueryRunnable(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     String partUsageId = this.getSemanticElementWithTargetObjectLabel(editingContext, "part1");
                     semanticElementId.set(partUsageId);
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
                 });
 
-        Runnable hasBeenExposed = this.semanticRunnableFactory.createRunnable(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
+        Runnable hasBeenExposed = this.semanticRunnableFactory.createQueryRunnable(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     var generalViewViewUsage = this.objectSearchService.getObject(editingContext, GeneralViewAddExistingElementsTestProjectData.SemanticIds.GENERAL_VIEW_VIEW_USAGE_ID).orElse(null);
                     assertThat(generalViewViewUsage).isInstanceOf(ViewUsage.class);
@@ -291,7 +291,7 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
                 });
 
-        Runnable hasNotBeenExposedAgain = this.semanticRunnableFactory.createRunnable(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
+        Runnable hasNotBeenExposedAgain = this.semanticRunnableFactory.createQueryRunnable(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     var generalViewViewUsage = this.objectSearchService.getObject(editingContext, GeneralViewAddExistingElementsTestProjectData.SemanticIds.GENERAL_VIEW_VIEW_USAGE_ID).orElse(null);
                     assertThat(generalViewViewUsage).isInstanceOf(ViewUsage.class);

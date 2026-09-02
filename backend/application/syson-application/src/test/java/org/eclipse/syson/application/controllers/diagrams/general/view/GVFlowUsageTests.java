@@ -468,7 +468,7 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
 
         Consumer<Object> validateLabelEditResult = assertRefreshedDiagramThat(diagram -> this.assertEdgeLabelText(connectionEdgeId.get(), diagram, "cable : HDMICable"));
 
-        Runnable validateSemanticEffectOfLabelEdit = this.semanticRunnableFactory.createRunnable(GeneralViewFlowUsageProjectData.EDITING_CONTEXT_ID,
+        Runnable validateSemanticEffectOfLabelEdit = this.semanticRunnableFactory.createQueryRunnable(GeneralViewFlowUsageProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     this.assertConnectionType(editingContext, GeneralViewFlowUsageProjectData.SemanticIds.CONNECT_ID, GeneralViewFlowUsageProjectData.SemanticIds.HDMI_CABLE_ID);
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
@@ -481,7 +481,7 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
 
         Consumer<Object> validateEffectOnLabel = assertRefreshedDiagramThat(diagram -> this.assertEdgeLabelText(connectionEdgeId.get(), diagram, "cable : HDMICable \u25b6 Flow"));
 
-        Runnable validateSemanticEffectOfFlowCreation = this.semanticRunnableFactory.createRunnable(GeneralViewFlowUsageProjectData.EDITING_CONTEXT_ID,
+        Runnable validateSemanticEffectOfFlowCreation = this.semanticRunnableFactory.createQueryRunnable(GeneralViewFlowUsageProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     var optionalConnection = this.objectSearchService.getObject(editingContext, GeneralViewFlowUsageProjectData.SemanticIds.CONNECT_ID);
                     assertThat(optionalConnection).containsInstanceOf(ConnectionUsage.class);
@@ -551,7 +551,7 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
 
         Consumer<Object> validateLabelEditResult = assertRefreshedDiagramThat(diagram -> this.assertEdgeLabelText(connectionEdgeId.get(), diagram, "cable : HDMICable"));
 
-        Runnable validateSemanticEffectOfLabelEdit = this.semanticRunnableFactory.createRunnable(GeneralViewFlowUsageProjectData.EDITING_CONTEXT_ID,
+        Runnable validateSemanticEffectOfLabelEdit = this.semanticRunnableFactory.createQueryRunnable(GeneralViewFlowUsageProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     this.assertConnectionType(editingContext, GeneralViewFlowUsageProjectData.SemanticIds.CONNECT_ID, GeneralViewFlowUsageProjectData.SemanticIds.HDMI_CABLE_ID);
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
@@ -564,7 +564,7 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
 
         Consumer<Object> validateEffectOnLabel = assertRefreshedDiagramThat(diagram -> this.assertEdgeLabelText(connectionEdgeId.get(), diagram, "cable : HDMICable \u25b6 Flow"));
 
-        Runnable validateSemanticEffectOfFlowCreation = this.semanticRunnableFactory.createRunnable(GeneralViewFlowUsageProjectData.EDITING_CONTEXT_ID,
+        Runnable validateSemanticEffectOfFlowCreation = this.semanticRunnableFactory.createQueryRunnable(GeneralViewFlowUsageProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     var optionalConnection = this.objectSearchService.getObject(editingContext, GeneralViewFlowUsageProjectData.SemanticIds.CONNECT_ID);
                     assertThat(optionalConnection).containsInstanceOf(ConnectionUsage.class);
