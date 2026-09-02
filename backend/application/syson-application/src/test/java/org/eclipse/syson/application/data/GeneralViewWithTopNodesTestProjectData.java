@@ -89,6 +89,8 @@ public class GeneralViewWithTopNodesTestProjectData {
      */
     public static final class SemanticIds {
 
+        public static final String ROOT_NAMESPACE_ID = "3f567c74-4024-4c23-8131-18fde65ba402";
+
         public static final String PACKAGE_ID = "973cb7ba-35ac-4ab4-abf5-7d9d7ae1243c";
 
         public static final String PACKAGE_1_ID = "8bd049dc-6f98-44fc-9be6-b2acb871c8c3";
