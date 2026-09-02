@@ -147,7 +147,7 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
                 targetObjectId,
                 toolId);
 
-        Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+        Runnable semanticChecker = this.semanticRunnableFactory.createQueryRunnable(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     Object semanticRootObject = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID).orElse(null);
                     assertThat(semanticRootObject).isInstanceOf(Element.class);
