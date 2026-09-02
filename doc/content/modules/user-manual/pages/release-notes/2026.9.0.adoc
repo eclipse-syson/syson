@@ -99,6 +99,9 @@ image::release-notes-port-inherited-item-border-nodes.png[ItemUsage border node 
 The creation of a new `Element` remains available.
 ** Add the capability of selecting an existing `PortUsage` in _New Port as Receiver_ tool on `AcceptAction` graphical nodes.
 The creation of a new `PortUsage` remains available.
+** `New Reference` tools have a selection dialog.
+This allows to select a `Usage` that the new `ReferenceUsage` references.
+The tools are also able to create an empty `ReferenceUsage`.
 
 == Bug fixes
 

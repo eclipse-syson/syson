@@ -65,6 +65,7 @@ import org.eclipse.syson.diagram.common.view.nodes.InterconnectionCompartmentNod
 import org.eclipse.syson.diagram.common.view.nodes.ItemUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.ReferenceUsageCompartmentNodeDescriptorProvider;
 import org.eclipse.syson.diagram.common.view.nodes.RequireConstraintCompartmentItemNodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.RequireConstraintCompartmentNodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.SatisfyRequirementCompartmentItemNodeDescription;
@@ -84,6 +85,7 @@ import org.eclipse.syson.diagram.common.view.tools.ForkActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.JoinActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.MergeActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.ReferenceUsageNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsViewToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StartActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
@@ -151,6 +153,7 @@ import org.eclipse.syson.standard.diagrams.view.nodes.RequirementUsageSubjectCom
 import org.eclipse.syson.standard.diagrams.view.nodes.SDVNodeDescriptionProviderSwitch;
 import org.eclipse.syson.standard.diagrams.view.nodes.StakeholderNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.SubjectNodeDescriptionProvider;
+import org.eclipse.syson.standard.diagrams.view.nodes.UsageNodeDescriptionProvider;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
@@ -280,8 +283,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
             SysmlPackage.eINSTANCE.getPartUsage(),
             SysmlPackage.eINSTANCE.getPartDefinition(),
             SysmlPackage.eINSTANCE.getPortUsage(),
-            SysmlPackage.eINSTANCE.getPortDefinition(),
-            SysmlPackage.eINSTANCE.getReferenceUsage()
+            SysmlPackage.eINSTANCE.getPortDefinition()
             ));
 
     public static final ToolSectionDescription BEHAVIOR_TOOL_SECTION = new ToolSectionDescription(ToolConstants.BEHAVIOR, List.of(
@@ -503,6 +505,8 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
 
         diagramElementDescriptionProviders.add(new ReferenceUsageBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new InheritedReferenceUsageBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        // add ReferenceUsage node provider because it has been removed from TOOL_SECTIONS
+        diagramElementDescriptionProviders.add(new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getReferenceUsage(), colorProvider));
 
         diagramElementDescriptionProviders.addAll(this.createAllDefinitionOwnedUsageEdgeDescriptionProviders(colorProvider));
         diagramElementDescriptionProviders.addAll(this.createAllUsageCompositeEdgeDescriptionProviders(colorProvider));
@@ -674,13 +678,15 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                     compartmentNodeDescriptionProviders.add(new PerformActionsInheritedCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                     compartmentNodeDescriptionProviders.add(new PerformActionsCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                     compartmentNodeDescriptionProviders.add(new PerformActionsCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
-                } else if (SysmlPackage.eINSTANCE.getPortDefinition().equals(eClass) && SysmlPackage.eINSTANCE.getDefinition_OwnedItem().equals(eReference)) {
-                    compartmentNodeDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
-                    compartmentNodeDescriptionProviders.add(new PortDefinitionOwnedItemCompartmentItemNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+                } else if (SysmlPackage.eINSTANCE.getPortDefinition().equals(eClass) || SysmlPackage.eINSTANCE.getPortUsage().equals(eClass)) {
+                    compartmentNodeDescriptionProviders.addAll(this.createPortCompartmentProviders(eClass, eReference, colorProvider));
+                } else if ((SysmlPackage.eINSTANCE.getAttributeUsage().equals(eClass) || SysmlPackage.eINSTANCE.getItemUsage().equals(eClass)) && SysmlPackage.eINSTANCE.getUsage_NestedReference().equals(eReference)) {
+                    compartmentNodeDescriptionProviders.add(new ReferenceUsageCompartmentNodeDescriptorProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                    compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                     compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
-                }  else if (SysmlPackage.eINSTANCE.getPortUsage().equals(eClass) && SysmlPackage.eINSTANCE.getUsage_NestedItem().equals(eReference)) {
-                    compartmentNodeDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
-                    compartmentNodeDescriptionProviders.add(new PortUsageNestedItemCompartmentItemNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+                } else if (SysmlPackage.eINSTANCE.getMetadataDefinition().equals(eClass) && SysmlPackage.eINSTANCE.getDefinition_OwnedReference().equals(eReference)) {
+                    compartmentNodeDescriptionProviders.add(new ReferenceUsageCompartmentNodeDescriptorProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                    compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                     compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                 } else {
                     compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
@@ -690,6 +696,25 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
             });
         });
 
+        return compartmentNodeDescriptionProviders;
+    }
+
+    private List<IDiagramElementDescriptionProvider<?>> createPortCompartmentProviders(EClass eClass, EReference eReference, IColorProvider colorProvider) {
+        final List<IDiagramElementDescriptionProvider<?>> compartmentNodeDescriptionProviders = new ArrayList<>();
+        if (SysmlPackage.eINSTANCE.getDefinition_OwnedItem().equals(eReference)) {
+            compartmentNodeDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
+            compartmentNodeDescriptionProviders.add(new PortDefinitionOwnedItemCompartmentItemNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        } else if (SysmlPackage.eINSTANCE.getUsage_NestedItem().equals(eReference)) {
+            compartmentNodeDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
+            compartmentNodeDescriptionProviders.add(new PortUsageNestedItemCompartmentItemNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        } else if (SysmlPackage.eINSTANCE.getUsage_NestedReference().equals(eReference) || SysmlPackage.eINSTANCE.getDefinition_OwnedReference().equals(eReference)) {
+            compartmentNodeDescriptionProviders.add(new ReferenceUsageCompartmentNodeDescriptorProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+            compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+        } else {
+            compartmentNodeDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
+            compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+        }
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
         return compartmentNodeDescriptionProviders;
     }
 
@@ -1672,6 +1697,10 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport()))
                 .ifPresent(acceptedNodeTypes::add);
 
+        // this is necessary since ReferenceUsage has been removed from TOOL_SECTIONS
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getReferenceUsage()))
+                .ifPresent(acceptedNodeTypes::add);
+
         return this.diagramBuilderHelper.newDropNodeTool()
                 .name("Drop from Diagram")
                 .acceptedNodeTypes(acceptedNodeTypes.toArray(NodeDescription[]::new))
@@ -1742,6 +1771,8 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         } else if (STRUCTURE_TOOL_SECTION.name().equals(sectionName)) {
             NodeDescription nodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).orElse(null);
             nodeTools.add(new NamespaceImportNodeToolProvider(nodeDescription, this.getDescriptionNameGenerator()).create(cache));
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getReferenceUsage()))
+                    .ifPresent(nd -> nodeTools.add(new ReferenceUsageNodeToolProvider(nd, this.getDescriptionNameGenerator()).create(cache)));
         } else if (VIEW_AS_TOOL_SECTION.name().equals(sectionName)) {
             nodeTools.add(new SetAsViewToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), StandardDiagramsConstants.GV).create(cache));
             nodeTools.add(new SetAsViewToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.IV_QN), StandardDiagramsConstants.IV).create(cache));

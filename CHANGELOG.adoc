@@ -121,6 +121,7 @@ The edge is drawn from the derived requirement to the original one, and the crea
 The import of the `RequirementDerivation` library is added to the owning namespace when it is missing.
 - https://github.com/eclipse-syson/syson/issues/2470[#2470] [diagrams] Add the selection of an existing `Element` in _New ItemDefinition as Payload_ and _New PartDefinition as Payload_ tools on `AcceptAction` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/2471[#2471] [diagrams] Add the selection of an existing `PortUsage` in `New Port as Receiver` tool on `AcceptAction` graphical node.
+- https://github.com/eclipse-syson/syson/issues/2469[#2469] [diagrams] `New Reference` tools should have a selection dialog.
 
 
 == v2026.7.0
