@@ -140,7 +140,7 @@ public class SemanticCheckerService {
      */
     @Deprecated
     public void checkEditingContext(ISemanticChecker semanticChecker, Step<?> verifier) {
-        Runnable runnableChecker = this.semanticRunnableFactory.createRunnable(this.editingContextId,
+        Runnable runnableChecker = this.semanticRunnableFactory.createQueryRunnable(this.editingContextId,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     semanticChecker.check(editingContext);
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
@@ -156,7 +156,7 @@ public class SemanticCheckerService {
      *            the checker containing the semantic assertions to run
      */
     public Runnable checkEditingContext(ISemanticChecker semanticChecker) {
-        return this.semanticRunnableFactory.createRunnable(this.editingContextId,
+        return this.semanticRunnableFactory.createQueryRunnable(this.editingContextId,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     semanticChecker.check(editingContext);
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);

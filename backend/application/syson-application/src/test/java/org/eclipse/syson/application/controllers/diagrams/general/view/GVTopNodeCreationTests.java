@@ -247,7 +247,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
             assertThat(parentNode.getDefaultWidth()).isEqualTo(expectedDefaultWidth);
         });
 
-        Runnable semanticCheck = this.semanticRunnableFactory.createRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+        Runnable semanticCheck = this.semanticRunnableFactory.createQueryRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     Object semanticRootObject = this.objectSearchService.getObject(editingContext, GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID).orElse(null);
                     assertThat(semanticRootObject).isInstanceOf(Element.class);
@@ -345,7 +345,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
 
         AtomicReference<Optional<String>> selectionDialogDescriptionId = new AtomicReference<>(Optional.empty());
 
-        Runnable getSelectionDialogId = this.semanticRunnableFactory.createRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+        Runnable getSelectionDialogId = this.semanticRunnableFactory.createQueryRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     selectionDialogDescriptionId.set(this.getSelectionDialogDescriptionId(editingContext, diagram.get()));
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
