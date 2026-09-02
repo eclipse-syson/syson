@@ -124,7 +124,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
             DiagramAssertions.assertThat(node.getInsideLabel()).hasText(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\npart1 : PartDefinition1");
         });
 
-        Runnable exposedElementsChecker = this.semanticRunnableFactory.createRunnable(GeneralViewDirectEditTestProjectData.EDITING_CONTEXT_ID,
+        Runnable exposedElementsChecker = this.semanticRunnableFactory.createQueryRunnable(GeneralViewDirectEditTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     PartUsage part = this.objectSearchService.getObject(editingContext, GeneralViewDirectEditTestProjectData.SemanticIds.PART_USAGE_ID)
                             .filter(PartUsage.class::isInstance)
@@ -175,7 +175,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
             DiagramAssertions.assertThat(node.getInsideLabel()).hasText(LabelConstants.OPEN_QUOTE + "timeslice" + LabelConstants.CLOSE_QUOTE + "\n" + LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\npart1");
         });
 
-        Runnable exposedElementsChecker = this.semanticRunnableFactory.createRunnable(GeneralViewDirectEditTestProjectData.EDITING_CONTEXT_ID,
+        Runnable exposedElementsChecker = this.semanticRunnableFactory.createQueryRunnable(GeneralViewDirectEditTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     PartUsage part = this.objectSearchService.getObject(editingContext, GeneralViewDirectEditTestProjectData.SemanticIds.PART_USAGE_ID)
                             .filter(PartUsage.class::isInstance)
@@ -225,7 +225,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
             DiagramAssertions.assertThat(node.getInsideLabel()).hasText(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\npart1 : PartDefinition2");
         });
 
-        Runnable exposedElementsChecker = this.semanticRunnableFactory.createRunnable(GeneralViewDirectEditTestProjectData.EDITING_CONTEXT_ID,
+        Runnable exposedElementsChecker = this.semanticRunnableFactory.createQueryRunnable(GeneralViewDirectEditTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     PartUsage part = this.objectSearchService.getObject(editingContext, GeneralViewDirectEditTestProjectData.SemanticIds.PART_USAGE_ID)
                             .filter(PartUsage.class::isInstance)
@@ -276,7 +276,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
             DiagramAssertions.assertThat(node.getInsideLabel()).hasText(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\npart1 : PartDefinition1");
         });
 
-        Runnable exposedElementsChecker = this.semanticRunnableFactory.createRunnable(GeneralViewDirectEditTestProjectData.EDITING_CONTEXT_ID,
+        Runnable exposedElementsChecker = this.semanticRunnableFactory.createQueryRunnable(GeneralViewDirectEditTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     PartUsage part = this.objectSearchService.getObject(editingContext, GeneralViewDirectEditTestProjectData.SemanticIds.PART_USAGE_ID)
                             .filter(PartUsage.class::isInstance)
@@ -327,7 +327,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
             DiagramAssertions.assertThat(node.getInsideLabel()).hasText(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\npart1 : PartDefinition2");
         });
 
-        Runnable exposedElementsChecker = this.semanticRunnableFactory.createRunnable(GeneralViewDirectEditTestProjectData.EDITING_CONTEXT_ID,
+        Runnable exposedElementsChecker = this.semanticRunnableFactory.createQueryRunnable(GeneralViewDirectEditTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     PartUsage part = this.objectSearchService.getObject(editingContext, GeneralViewDirectEditTestProjectData.SemanticIds.PART_USAGE_ID)
                             .filter(PartUsage.class::isInstance)
@@ -378,7 +378,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
             DiagramAssertions.assertThat(node.getInsideLabel()).hasText(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\npart2 : PartDefinition2");
         });
 
-        Runnable exposedElementsChecker = this.semanticRunnableFactory.createRunnable(GeneralViewDirectEditTestProjectData.EDITING_CONTEXT_ID,
+        Runnable exposedElementsChecker = this.semanticRunnableFactory.createQueryRunnable(GeneralViewDirectEditTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     PartUsage part = this.objectSearchService.getObject(editingContext, GeneralViewDirectEditTestProjectData.SemanticIds.PART_USAGE_ID)
                             .filter(PartUsage.class::isInstance)
@@ -662,7 +662,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
             DiagramAssertions.assertThat(node.getInsideLabel()).hasText(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\nx :>> x");
         });
 
-        Runnable redefinedElementsChecker = this.semanticRunnableFactory.createRunnable(GeneralViewPartUsageRedefinitionProjectData.EDITING_CONTEXT_ID,
+        Runnable redefinedElementsChecker = this.semanticRunnableFactory.createQueryRunnable(GeneralViewPartUsageRedefinitionProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     PartUsage yx = this.objectSearchService.getObject(editingContext, GeneralViewPartUsageRedefinitionProjectData.SemanticIds.Y_X_ID)
                             .filter(PartUsage.class::isInstance)
