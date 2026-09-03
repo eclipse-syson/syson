@@ -73,6 +73,7 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
+import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationElementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -945,6 +946,25 @@ public class DiagramMutationToolService {
             }
         }
         return usage;
+    }
+
+    public Element createReferenceUsage(Element owner, Usage referencedUsage) {
+        var newReferenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+        final Membership membership;
+        if (owner instanceof Package) {
+            membership = SysmlFactory.eINSTANCE.createOwningMembership();
+        } else {
+            membership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        }
+        membership.getOwnedRelatedElement().add(newReferenceUsage);
+        owner.getOwnedRelationship().add(membership);
+        new ElementInitializerSwitch().doSwitch(newReferenceUsage);
+        if (referencedUsage != null) {
+            var refSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+            refSubsetting.setReferencedFeature(referencedUsage);
+            newReferenceUsage.getOwnedRelationship().add(refSubsetting);
+        }
+        return newReferenceUsage;
     }
 
     private Membership createAppropriateMembership(EStructuralFeature feature) {
