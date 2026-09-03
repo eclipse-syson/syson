@@ -310,7 +310,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
                 WithUserLibrariesTestProjectData.EDITING_CONTEXT_ID,
                 treeRepresentationId,
                 WithUserLibrariesTestProjectData.SemanticIds.RW_USER_LIBRARY_PACKAGE_ID)
-                .hasPaletteEntries(entries -> assertThat(entries).hasSize(5)
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(5)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION)
@@ -360,7 +360,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
                 WithUserLibrariesTestProjectData.EDITING_CONTEXT_ID,
                 treeRepresentationId,
                 WithUserLibrariesTestProjectData.SemanticIds.RO_USER_LIBRARY_PACKAGE_ID)
-                .hasPaletteEntries(entries -> assertThat(entries).hasSize(1)
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(1)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL));
 
         StepVerifier.create(treeFlux)
