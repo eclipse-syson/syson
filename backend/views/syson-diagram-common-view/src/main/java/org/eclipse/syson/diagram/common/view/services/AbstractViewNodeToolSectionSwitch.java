@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -67,9 +67,29 @@ public abstract class AbstractViewNodeToolSectionSwitch extends SysmlEClassSwitc
     protected abstract List<NodeDescription> getAllNodeDescriptions();
 
     protected void createToolsForCompartmentItems(Element element, List<NodeToolSection> sections, IViewDiagramElementFinder cache) {
+        this.createToolsForCompartmentItemsWithExclusions(element, List.of(), sections, cache);
+    }
+
+    /**
+     * Creates all compartment item creation tools for all references retrieved by {@link AbstractViewNodeToolSectionSwitch::getElementCompartmentReferences}
+     * that are not part of the given exclusion list.
+     * This is useful when some compartment element creation tools are custom.
+     *
+     * @param element
+     *         the element in which the compartment belongs
+     * @param exclusions
+     *         the list of references that should not create default tool for them.
+     * @param sections
+     *         the palette sections
+     * @param cache
+     *         the node descriptions cache
+     */
+    protected void createToolsForCompartmentItemsWithExclusions(Element element, List<EReference> exclusions, List<NodeToolSection> sections, IViewDiagramElementFinder cache) {
         var elementCompartmentReferences = this.getElementCompartmentReferences(element);
         for (EReference eReference : elementCompartmentReferences) {
-            this.createToolsForCompartmentItem(eReference, sections, cache);
+            if (!exclusions.contains(eReference)) {
+                this.createToolsForCompartmentItem(eReference, sections, cache);
+            }
         }
     }
 

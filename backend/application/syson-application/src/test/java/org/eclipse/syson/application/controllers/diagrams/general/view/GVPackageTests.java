@@ -23,6 +23,8 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
@@ -459,8 +461,8 @@ public class GVPackageTests extends AbstractIntegrationTests {
             assertThat(new DiagramNavigator(diag).findDiagramEdgeCount()).isEqualTo(3);
         });
 
-        Runnable newReferenceTool = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), packageNodeId.get(), newReferenceToolId,
-                List.of());
+        List<ToolVariable> variables = List.of(new ToolVariable("selectedObject", "", ToolVariableType.OBJECT_ID));
+        Runnable newReferenceTool = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), packageNodeId.get(), newReferenceToolId, variables);
 
         Consumer<Object> updatedDiagramContentConsumerAfterNewPart = assertRefreshedDiagramThat(diag -> {
             var packageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).getNode();

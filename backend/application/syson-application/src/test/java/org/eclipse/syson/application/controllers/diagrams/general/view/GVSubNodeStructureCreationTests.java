@@ -133,9 +133,9 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> attributeUsageChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAttribute()),
-                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), "references", SysmlPackage.eINSTANCE.getUsage_NestedReference()),
-                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), false),
+                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), "references", SysmlPackage.eINSTANCE.getUsage_NestedReference(), true),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation(), false))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -194,9 +194,9 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> itemUsageChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAttribute()),
-                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), "references", SysmlPackage.eINSTANCE.getUsage_NestedReference()),
-                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), false),
+                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), "references", SysmlPackage.eINSTANCE.getUsage_NestedReference(), true),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation(), false))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -349,7 +349,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("attributeUsageChildNodeParameters")
-    public void createAttributeUsageSubNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+    public void createAttributeUsageSubNodes(EClass childEClass, String compartmentName, EReference containmentReference, boolean withSelectionDialog) {
         var flux = this.givenSubscriptionToDiagram();
 
         var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
@@ -362,7 +362,11 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
         EClass parentEClass = SysmlPackage.eINSTANCE.getAttributeUsage();
         String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.ATTRIBUTE_USAGE_ID;
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass);
+        List<ToolVariable> variables = List.of();
+        if (withSelectionDialog) {
+            variables = List.of(new ToolVariable("selectedObject", "", ToolVariableType.OBJECT_ID));
+        }
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass, variables);
 
         Consumer<Object> diagramChecker = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, targetObjectId, parentEClass, containmentReference,
                 compartmentName, true);
@@ -635,7 +639,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("itemUsageChildNodeParameters")
-    public void createItemUsageChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+    public void createItemUsageChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, boolean withSelectionDialog) {
         var flux = this.givenSubscriptionToDiagram();
 
         var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
@@ -648,7 +652,11 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
         EClass parentEClass = SysmlPackage.eINSTANCE.getItemUsage();
         String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.ITEM_USAGE_ID;
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass);
+        List<ToolVariable> variables = List.of();
+        if (withSelectionDialog) {
+            variables = List.of(new ToolVariable("selectedObject", "", ToolVariableType.OBJECT_ID));
+        }
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass, variables);
 
         Consumer<Object> diagramChecker = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, targetObjectId, parentEClass, containmentReference,
                 compartmentName, true);

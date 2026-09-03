@@ -16,6 +16,7 @@
 
 === New features
 
+- https://github.com/eclipse-syson/syson/issues/2469[#2469] [diagrams] `New Reference` tools should have a selection dialog.
 
 == v2026.9.0
 

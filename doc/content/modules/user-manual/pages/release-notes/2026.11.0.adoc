@@ -4,6 +4,10 @@
 
 == New features
 
+** `New Reference` tools have a selection dialog.
+This allows to select a `Usage` that the new `ReferenceUsage` references.
+The tools are also able to create an empty `ReferenceUsage`.
+
 == Bug fixes
 
 == Improvements
