@@ -223,7 +223,7 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID);
         var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput).flux();
 
-        var initializeEditingContext = this.semanticRunnableFactory.createRunnable(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, (editingContext, executeEditingContextFunctionInput) -> {
+        var initializeEditingContext = this.semanticRunnableFactory.createMutationRunnable(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, (editingContext, executeEditingContextFunctionInput) -> {
             var optionalOccurrenceUsage = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesTestProjectData.SemanticIds.OCCURRENCE_USAGE_ID)
                     .filter(OccurrenceUsage.class::isInstance)
                     .map(OccurrenceUsage.class::cast);
@@ -261,7 +261,7 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID);
         var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput).flux();
 
-        var initializeEditingContext = this.semanticRunnableFactory.createRunnable(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, (editingContext, executeEditingContextFunctionInput) -> {
+        var initializeEditingContext = this.semanticRunnableFactory.createMutationRunnable(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, (editingContext, executeEditingContextFunctionInput) -> {
             var optionalOccurrenceUsage = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesTestProjectData.SemanticIds.OCCURRENCE_USAGE_ID)
                     .filter(OccurrenceUsage.class::isInstance)
                     .map(OccurrenceUsage.class::cast);

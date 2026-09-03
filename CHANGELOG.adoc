@@ -14,6 +14,9 @@
 
 === Improvements
 
+- https://github.com/eclipse-syson/syson/issues/2494[#2494] [test] Improve `SemanticRunnableFactory` by adding an API that emits the appropriate change description for editing context updates in integration tests.
+- [cleanup] Use `SemanticRunnableFactory` more widely in integration tests, replacing the `IExecuteEditingContextFunctionRunner` by the `SemanticRunnableFactory`.
+
 === New features
 
 
