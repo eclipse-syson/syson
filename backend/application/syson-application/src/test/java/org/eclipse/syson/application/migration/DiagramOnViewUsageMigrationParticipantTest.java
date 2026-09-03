@@ -29,26 +29,24 @@ import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.graphql.tests.EditingContextEventSubscriptionRunner;
-import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
-import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.data.DiagramOnViewUsageMigrationParticipantTestProjectData;
+import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
+import org.eclipse.syson.tests.api.GivenSysONServer;
 import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,7 +66,7 @@ public class DiagramOnViewUsageMigrationParticipantTest extends AbstractIntegrat
     private EditingContextEventSubscriptionRunner editingContextEventSubscriptionRunner;
 
     @Autowired
-    private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
+    private SemanticRunnableFactory semanticRunnableFactory;
 
     @Autowired
     private IObjectSearchService objectSearchService;
@@ -83,26 +81,19 @@ public class DiagramOnViewUsageMigrationParticipantTest extends AbstractIntegrat
 
     @Test
     @DisplayName("GIVEN a project with a diagram associated to a Package, WHEN the model is loaded, THEN a ViewUsage is created under the Package and the diagram is now associated to this new ViewUsage")
-    @Sql(scripts = { DiagramOnViewUsageMigrationParticipantTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void migrationParticpantTest() {
-        var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), DiagramOnViewUsageMigrationParticipantTestProjectData.EDITING_CONTEXT_ID.toString());
+    @GivenSysONServer({ DiagramOnViewUsageMigrationParticipantTestProjectData.SCRIPT_PATH })
+    public void migrationParticipantTest() {
+        var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), DiagramOnViewUsageMigrationParticipantTestProjectData.EDITING_CONTEXT_ID);
         var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput).flux();
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
         BiFunction<IEditingContext, IInput, IPayload> checkFunction = (editingContext, executeEditingContextFunctionInput) -> {
             assertThat(this.testIsMigrationSuccessful(editingContext));
-            return new SuccessPayload(executeEditingContextFunctionInput.id());
+            return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
         };
 
-        Runnable checkMigration = () -> {
-            var checkInitialEditingContextInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), DiagramOnViewUsageMigrationParticipantTestProjectData.EDITING_CONTEXT_ID.toString(),
-                    checkFunction);
-            var payload = this.executeEditingContextFunctionRunner.execute(checkInitialEditingContextInput).block();
-            assertThat(payload).isInstanceOf(SuccessPayload.class);
-        };
+        Runnable checkMigration = this.semanticRunnableFactory.createQueryRunnable(DiagramOnViewUsageMigrationParticipantTestProjectData.EDITING_CONTEXT_ID, checkFunction);
 
         StepVerifier.create(flux)
                 .then(checkMigration)

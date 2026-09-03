@@ -26,13 +26,12 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshed
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
-import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
-import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controllers.diagrams.testers.DropFromExplorerTester;
 import org.eclipse.syson.application.data.GVViewUsageCircularExposeTestProjectData;
+import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.tests.api.GivenSysONServer;
@@ -65,7 +64,7 @@ public class GVViewUsageCircularExposeTests extends AbstractIntegrationTests {
     private DropFromExplorerTester dropFromExplorerTester;
 
     @Autowired
-    private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
+    private SemanticRunnableFactory semanticRunnableFactory;
 
     @Autowired
     private IObjectSearchService objectSearchService;
@@ -105,19 +104,14 @@ public class GVViewUsageCircularExposeTests extends AbstractIntegrationTests {
             assertThat(new DiagramNavigator(diag).findDiagramNodeCount()).isEqualTo(2);
         });
 
-        Runnable checkSemanticData = () -> {
-            var input = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), GVViewUsageCircularExposeTestProjectData.EDITING_CONTEXT_ID,
-                    (editingContext, executeEditingContextFunctionInput) -> {
-                        Optional<Object> optViewUsage1 = this.objectSearchService.getObject(editingContext, GVViewUsageCircularExposeTestProjectData.SemanticIds.VIEW_USAGE_VIEW1_ID);
-                        assertThat(optViewUsage1).isPresent().get().isInstanceOf(ViewUsage.class);
-                        ViewUsage viewUsage1 = (ViewUsage) optViewUsage1.get();
-                        assertThat(viewUsage1.getExposedElement()).hasSize(1);
-                        assertThat(viewUsage1.getExposedElement()).doesNotContain(viewUsage1);
-                        return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
-                    });
-            var payload = this.executeEditingContextFunctionRunner.execute(input).block();
-            assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
-        };
+        Runnable checkSemanticData = this.semanticRunnableFactory.createQueryRunnable(GVViewUsageCircularExposeTestProjectData.EDITING_CONTEXT_ID, (editingContext, executeEditingContextFunctionInput) -> {
+            Optional<Object> optViewUsage1 = this.objectSearchService.getObject(editingContext, GVViewUsageCircularExposeTestProjectData.SemanticIds.VIEW_USAGE_VIEW1_ID);
+            assertThat(optViewUsage1).isPresent().get().isInstanceOf(ViewUsage.class);
+            ViewUsage viewUsage1 = (ViewUsage) optViewUsage1.get();
+            assertThat(viewUsage1.getExposedElement()).hasSize(1);
+            assertThat(viewUsage1.getExposedElement()).doesNotContain(viewUsage1);
+            return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -159,19 +153,14 @@ public class GVViewUsageCircularExposeTests extends AbstractIntegrationTests {
             assertThat(new DiagramNavigator(diag).findDiagramNodeCount()).isEqualTo(2);
         });
 
-        Runnable checkSemanticData = () -> {
-            var input = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), GVViewUsageCircularExposeTestProjectData.EDITING_CONTEXT_ID,
-                    (editingContext, executeEditingContextFunctionInput) -> {
-                        Optional<Object> optViewUsage1 = this.objectSearchService.getObject(editingContext, GVViewUsageCircularExposeTestProjectData.SemanticIds.VIEW_USAGE_VIEW1_ID);
-                        assertThat(optViewUsage1).isPresent().get().isInstanceOf(ViewUsage.class);
-                        ViewUsage viewUsage1 = (ViewUsage) optViewUsage1.get();
-                        assertThat(viewUsage1.getExposedElement()).hasSize(1);
-                        assertThat(viewUsage1.getExposedElement()).doesNotContain(viewUsage1);
-                        return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
-                    });
-            var payload = this.executeEditingContextFunctionRunner.execute(input).block();
-            assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
-        };
+        Runnable checkSemanticData = this.semanticRunnableFactory.createQueryRunnable(GVViewUsageCircularExposeTestProjectData.EDITING_CONTEXT_ID, (editingContext, executeEditingContextFunctionInput) -> {
+            Optional<Object> optViewUsage1 = this.objectSearchService.getObject(editingContext, GVViewUsageCircularExposeTestProjectData.SemanticIds.VIEW_USAGE_VIEW1_ID);
+            assertThat(optViewUsage1).isPresent().get().isInstanceOf(ViewUsage.class);
+            ViewUsage viewUsage1 = (ViewUsage) optViewUsage1.get();
+            assertThat(viewUsage1.getExposedElement()).hasSize(1);
+            assertThat(viewUsage1.getExposedElement()).doesNotContain(viewUsage1);
+            return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)

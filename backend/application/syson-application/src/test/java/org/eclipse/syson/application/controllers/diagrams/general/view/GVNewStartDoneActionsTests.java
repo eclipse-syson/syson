@@ -26,9 +26,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInpu
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
-import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -36,6 +34,7 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramE
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
 import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
+import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
@@ -88,7 +87,7 @@ public class GVNewStartDoneActionsTests extends AbstractIntegrationTests {
     private DiagramComparator diagramComparator;
 
     @Autowired
-    private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
+    private SemanticRunnableFactory semanticRunnableFactory;
 
     @Autowired
     private IObjectSearchService objectSearchService;
@@ -124,18 +123,15 @@ public class GVNewStartDoneActionsTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        Runnable renamePackageAction = () -> {
-            var input = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
-                    (editingContext, executeEditingContextFunctionInput) -> {
-                        Optional<Object> optPackage = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID);
-                        assertThat(optPackage).isPresent().get().isInstanceOf(Package.class);
-                        var parentPacakge = (Package) optPackage.get();
-                        parentPacakge.setDeclaredName("Actions");
-                        return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
-                    });
-            var payload = this.executeEditingContextFunctionRunner.execute(input).block();
-            assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
-        };
+        Runnable renamePackageAction = this.semanticRunnableFactory.createMutationRunnable(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, (editingContext, executeEditingContextFunctionInput) -> {
+            Optional<Object> optPackage = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID);
+            assertThat(optPackage).isPresent().get().isInstanceOf(Package.class);
+            var parentPackage = (Package) optPackage.get();
+            parentPackage.setDeclaredName("Actions");
+            return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
+        });
+
+        Consumer<Object> diagramRefreshedAfterPackageRenameConsumer = assertRefreshedDiagramThat(diagram::set);
 
         Runnable invokeCreationTool = () -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_DEFINITION_ID, creationToolId);
 
@@ -148,6 +144,7 @@ public class GVNewStartDoneActionsTests extends AbstractIntegrationTests {
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(renamePackageAction)
+                .consumeNextWith(diagramRefreshedAfterPackageRenameConsumer)
                 .then(invokeCreationTool)
                 .consumeNextWith(diagramCheck)
                 .thenCancel()
