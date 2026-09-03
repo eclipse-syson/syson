@@ -84,6 +84,7 @@ public class GeneralViewWithTopNodesTestProjectData {
 
         public static final String ENUMERATION_DEFINITION_ID = "4d9c2b9f-e071-3814-8d2c-49dc5253a91f";
 
+        public static final String METADATA_DEFINITION_ID = "97fec257-ce8e-3169-adde-db4797a6baad";
     }
 
     /**

@@ -23,6 +23,7 @@
 === New features
 
 - [releng] Add the `syson-starter` Maven module so downstream Spring Boot applications can use SysON with a single dependency.
+- https://github.com/eclipse-syson/syson/issues/2469[#2469] [diagrams] `New Reference` tools should have a selection dialog.
 
 == v2026.9.0
 

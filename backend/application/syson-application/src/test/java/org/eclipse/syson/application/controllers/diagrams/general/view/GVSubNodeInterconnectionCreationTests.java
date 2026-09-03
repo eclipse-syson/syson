@@ -15,6 +15,7 @@ package org.eclipse.syson.application.controllers.diagrams.general.view;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -24,6 +25,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
@@ -187,9 +190,9 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
 
     private static Stream<Arguments> portUsageChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAttribute()),
-                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), "references", SysmlPackage.eINSTANCE.getUsage_NestedReference()),
-                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), false),
+                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), "references", SysmlPackage.eINSTANCE.getUsage_NestedReference(), true),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation(), false))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -208,9 +211,9 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
 
     private static Stream<Arguments> portDefinitionChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute()),
-                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), "references", SysmlPackage.eINSTANCE.getDefinition_OwnedReference()),
-                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), false),
+                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), "references", SysmlPackage.eINSTANCE.getDefinition_OwnedReference(), true),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation(), false))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -701,7 +704,7 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("portUsageChildNodeParameters")
-    public void createPortUsageChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+    public void createPortUsageChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, boolean withSelectionDialog) {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
@@ -713,7 +716,11 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getPortUsage();
         String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.PORT_USAGE_ID;
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass);
+        List<ToolVariable> variables = List.of();
+        if (withSelectionDialog) {
+            variables = List.of(new ToolVariable("selectedObject", "", ToolVariableType.OBJECT_ID));
+        }
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass, variables);
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
@@ -817,7 +824,7 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("portDefinitionChildNodeParameters")
-    public void createPortDefinitionChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+    public void createPortDefinitionChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, boolean withSelectionDialog) {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
@@ -829,7 +836,11 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getPortDefinition();
         String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.PORT_DEFINITION_ID;
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass);
+        List<ToolVariable> variables = List.of();
+        if (withSelectionDialog) {
+            variables = List.of(new ToolVariable("selectedObject", "", ToolVariableType.OBJECT_ID));
+        }
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass, variables);
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)

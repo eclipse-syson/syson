@@ -4,6 +4,14 @@
 
 == New features
 
+* In diagrams:
+
+** `New Reference` tools have a selection dialog.
+This allows to select an `Element` that the new `ReferenceUsage` uses.
+If the selected element is a `Classifier` (e.g `PartDefinition`), it is used to type the new `ReferenceUsage`.
+It it is a `Feature` then the new `ReferenceUsage` references this given feature.
+The tools are also able to create an empty `ReferenceUsage`.
+
 == Bug fixes
 
 * In diagrams:
