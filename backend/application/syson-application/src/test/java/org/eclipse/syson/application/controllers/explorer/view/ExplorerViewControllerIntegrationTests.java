@@ -36,7 +36,6 @@ import org.eclipse.sirius.components.collaborative.dto.CreateChildSuccessPayload
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
-import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
@@ -60,6 +59,7 @@ import org.eclipse.syson.application.data.ExplorerViewDirectEditTestProjectData;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
 import org.eclipse.syson.application.data.ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData;
 import org.eclipse.syson.application.data.WithUserLibrariesTestProjectData;
+import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Element;
@@ -82,7 +82,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 /**
@@ -179,6 +178,9 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
 
     @Autowired
     private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
+
+    @Autowired
+    private SemanticRunnableFactory semanticRunnableFactory;
 
     @BeforeEach
     public void beforeEach() {
@@ -469,18 +471,13 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
             newConstraintId.set(objectId);
         };
 
-        Runnable checkConstraintOwnership = () -> {
-            var editingContextFunctionInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, (editingContext, input) -> {
-                var optionalConstraint = this.objectSearchService.getObject(editingContext, newConstraintId.get());
-                assertThat(optionalConstraint).containsInstanceOf(ConstraintUsage.class);
-                var constraint = (ConstraintUsage) optionalConstraint.get();
-                assertThat(constraint.getOwningRelationship()).isInstanceOf(RequirementConstraintMembership.class);
-                return new ExecuteEditingContextFunctionSuccessPayload(input.id(), optionalConstraint.get());
-            });
-            Mono<IPayload> result = this.executeEditingContextFunctionRunner.execute(editingContextFunctionInput);
-            var payload = result.block();
-            assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
-        };
+        Runnable checkConstraintOwnership = this.semanticRunnableFactory.createQueryRunnable(ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, (editingContext, input) -> {
+            var optionalConstraint = this.objectSearchService.getObject(editingContext, newConstraintId.get());
+            assertThat(optionalConstraint).containsInstanceOf(ConstraintUsage.class);
+            var constraint = (ConstraintUsage) optionalConstraint.get();
+            assertThat(constraint.getOwningRelationship()).isInstanceOf(RequirementConstraintMembership.class);
+            return new ExecuteEditingContextFunctionSuccessPayload(input.id(), optionalConstraint.get());
+        });
 
         StepVerifier.create(treeFlux)
                 .consumeNextWith(ignorePayload)
@@ -518,18 +515,13 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
             newConcernId.set(objectId);
         };
 
-        Runnable checkConcernOwnership = () -> {
-            var editingContextFunctionInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, (editingContext, input) -> {
-                var optionalConcern = this.objectSearchService.getObject(editingContext, newConcernId.get());
-                assertThat(optionalConcern).containsInstanceOf(ConstraintUsage.class);
-                var concern = (ConcernUsage) optionalConcern.get();
-                assertThat(concern.getOwningRelationship()).isInstanceOf(FramedConcernMembership.class);
-                return new ExecuteEditingContextFunctionSuccessPayload(input.id(), optionalConcern.get());
-            });
-            Mono<IPayload> result = this.executeEditingContextFunctionRunner.execute(editingContextFunctionInput);
-            var payload = result.block();
-            assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
-        };
+        Runnable checkConcernOwnership = this.semanticRunnableFactory.createQueryRunnable(ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, (editingContext, input) -> {
+            var optionalConcern = this.objectSearchService.getObject(editingContext, newConcernId.get());
+            assertThat(optionalConcern).containsInstanceOf(ConstraintUsage.class);
+            var concern = (ConcernUsage) optionalConcern.get();
+            assertThat(concern.getOwningRelationship()).isInstanceOf(FramedConcernMembership.class);
+            return new ExecuteEditingContextFunctionSuccessPayload(input.id(), optionalConcern.get());
+        });
 
         StepVerifier.create(treeFlux)
                 .consumeNextWith(ignorePayload)

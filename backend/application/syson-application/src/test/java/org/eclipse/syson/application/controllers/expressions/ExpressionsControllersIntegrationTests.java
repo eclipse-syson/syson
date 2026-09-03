@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -32,19 +31,14 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
-import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
-import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
-import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InitialDirectEditElementLabelQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
-import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
-import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -60,6 +54,7 @@ import org.eclipse.syson.application.controllers.expressions.graphql.EditExpress
 import org.eclipse.syson.application.controllers.expressions.graphql.ExpressionTextualRepresentationQueryRunner;
 import org.eclipse.syson.application.data.ExpressionSamplesProjectData;
 import org.eclipse.syson.application.expressions.dto.DeleteExpressionInput;
+import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.explorer.api.IExplorerDefaultFiltersSearchService;
 import org.eclipse.syson.sysml.AttributeUsage;
@@ -125,7 +120,7 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
     private IIdentityService identityService;
 
     @Autowired
-    private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
+    private SemanticRunnableFactory semanticRunnableFactory;
 
     @Autowired
     private ExpressionTextualRepresentationQueryRunner expressionTextualRepresentationQueryRunner;
@@ -693,7 +688,7 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
 
         var existingExpressionId = new AtomicReference<String>();
 
-        Runnable checkMaxVolumeAttributeHasExistingValueExpression = this.semanticCheck(editingContextId, (editingContext, input) -> {
+        Runnable checkMaxVolumeAttributeHasExistingValueExpression = this.semanticRunnableFactory.createQueryRunnable(editingContextId, (editingContext, input) -> {
             var optionalMaxVolumeAttribute = this.objectSearchService.getObject(editingContext, ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_ID);
             assertThat(optionalMaxVolumeAttribute).containsInstanceOf(AttributeUsage.class);
             var maxVolumeAttribute = (AttributeUsage) optionalMaxVolumeAttribute.get();
@@ -716,7 +711,7 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
             assertThat(messageBody).contains("Unable to resolve name 'minVolumeTypo' for reference 'memberElement' on element '[Membership] Expressions::Tank::maxVolume");
         };
 
-        Runnable checkMaxVolumeAttributeHasInitialValueExpression = this.semanticCheck(editingContextId, (editingContext, input) -> {
+        Runnable checkMaxVolumeAttributeHasInitialValueExpression = this.semanticRunnableFactory.createQueryRunnable(editingContextId, (editingContext, input) -> {
             var optionalMaxVolumeAttribute = this.objectSearchService.getObject(editingContext, ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_ID);
             assertThat(optionalMaxVolumeAttribute).containsInstanceOf(AttributeUsage.class);
             var maxVolumeAttribute = (AttributeUsage) optionalMaxVolumeAttribute.get();
@@ -790,7 +785,7 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
         var initialExpressionId = new AtomicReference<String>();
         var initialExpressionOwningRelationshipId = new AtomicReference<String>();
 
-        Runnable checkParentElementExistsAndHasExpression = this.semanticCheck(editingContextId, (editingContext, input) -> {
+        Runnable checkParentElementExistsAndHasExpression = this.semanticRunnableFactory.createQueryRunnable(editingContextId, (editingContext, input) -> {
             var optionalParentElement = this.objectSearchService.getObject(editingContext, parentElementId);
             assertThat(optionalParentElement).containsInstanceOf(Element.class);
             var parentElement = (Element) optionalParentElement.get();
@@ -813,7 +808,7 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
             assertThat(tree.getId()).isEqualTo(treeId.get());
         });
 
-        Runnable checkParentElementHasNoExpression = this.semanticCheck(editingContextId, (editingContext, input) -> {
+        Runnable checkParentElementHasNoExpression = this.semanticRunnableFactory.createQueryRunnable(editingContextId, (editingContext, input) -> {
             var optionalParentElement = this.objectSearchService.getObject(editingContext, parentElementId);
             assertThat(optionalParentElement).containsInstanceOf(Element.class);
             var parentElement = (Element) optionalParentElement.get();
@@ -1119,18 +1114,6 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
         return String.join(LabelConstants.CR, lines);
     }
 
-    /**
-     * Executes a function in the editing context with the specified id (which is assumed to be loaded). The function
-     * can perform JUnit assertions to verify the state of the semantic model in the editing context.
-     */
-    private Runnable semanticCheck(String editingContextId, BiFunction<IEditingContext, IInput, IPayload> checker) {
-        return () -> {
-            var input = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), editingContextId, checker);
-            var payload = this.executeEditingContextFunctionRunner.execute(input).block();
-            assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
-        };
-    }
-
     private Runnable createExpression(String editingContextId, String parentElementId, String expressionContent) {
         return this.createExpression(editingContextId, parentElementId, expressionContent, null);
     }
@@ -1177,7 +1160,7 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
     }
 
     private <T extends Element> Runnable checkElementHasNoExpression(String editingContextId, String elementId, Class<T> expectedElementType) {
-        return this.semanticCheck(editingContextId, (editingContext, input) -> {
+        return this.semanticRunnableFactory.createQueryRunnable(editingContextId, (editingContext, input) -> {
             var optionalElement = this.objectSearchService.getObject(editingContext, elementId);
             assertThat(optionalElement).containsInstanceOf(expectedElementType);
             T element = expectedElementType.cast(optionalElement.get());
@@ -1189,7 +1172,7 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
 
     private <T extends Element> Runnable checkElementHasExpression(String editingContextId, String elementId, Class<T> expectedElementType, AtomicReference<String> expressionId,
             String expectedExpressionTextualRepresentation) {
-        return this.semanticCheck(editingContextId, (editingContext, input) -> {
+        return this.semanticRunnableFactory.createQueryRunnable(editingContextId, (editingContext, input) -> {
             var optionalElement = this.objectSearchService.getObject(editingContext, elementId);
             assertThat(optionalElement).containsInstanceOf(expectedElementType);
             T element = expectedElementType.cast(optionalElement.get());
@@ -1203,7 +1186,7 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
 
     private Runnable checkAttributeFeatureValue(String editingContextId, String attributeId, String expectedExpressionTextualRepresentation, boolean expectedIsDefault,
             boolean expectedIsInitial) {
-        return this.semanticCheck(editingContextId, (editingContext, input) -> {
+        return this.semanticRunnableFactory.createQueryRunnable(editingContextId, (editingContext, input) -> {
             var optionalElement = this.objectSearchService.getObject(editingContext, attributeId);
             assertThat(optionalElement).containsInstanceOf(AttributeUsage.class);
             AttributeUsage attributeUsage = (AttributeUsage) optionalElement.get();
