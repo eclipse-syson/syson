@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2025 Obeo.
+* Copyright (c) 2023, 2026 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -62,15 +62,12 @@ public class ConcernUsageImpl extends RequirementUsageImpl implements ConcernUsa
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc --> Returns the requirement definition when it is a {@link ConcernDefinition}. <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public ConcernDefinition basicGetConcernDefinition() {
-        // TODO: implement this method to return the 'Concern Definition' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return super.basicGetRequirementDefinition() instanceof ConcernDefinition concernDefinition ? concernDefinition : null;
     }
 
     /**

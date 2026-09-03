@@ -24,14 +24,26 @@ import org.eclipse.sirius.components.core.services.ComposedReadOnlyObjectPredica
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.web.application.object.services.DefaultReadOnlyObjectPredicate;
+import org.eclipse.syson.sysml.AnalysisCaseDefinition;
+import org.eclipse.syson.sysml.AnalysisCaseUsage;
+import org.eclipse.syson.sysml.CalculationDefinition;
+import org.eclipse.syson.sysml.CalculationUsage;
+import org.eclipse.syson.sysml.ConcernDefinition;
+import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.RenderingDefinition;
+import org.eclipse.syson.sysml.RenderingUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.VerificationCaseDefinition;
+import org.eclipse.syson.sysml.VerificationCaseUsage;
+import org.eclipse.syson.sysml.ViewpointDefinition;
+import org.eclipse.syson.sysml.ViewpointUsage;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -84,6 +96,90 @@ public class DetailsViewServiceTest {
         this.detailsViewService.handleFeatureTypingNewValue(partUsage, partDefinition);
 
         assertThat(partUsage.getPartDefinition()).containsExactly(partDefinition);
+    }
+
+    /**
+     * Verifies that an AnalysisCaseUsage derives the selected AnalysisCaseDefinition.
+     */
+    @Test
+    public void setAnalysisCaseUsageTypedByAnalysisCaseDefinition() {
+        AnalysisCaseUsage analysisCaseUsage = SysmlFactory.eINSTANCE.createAnalysisCaseUsage();
+        AnalysisCaseDefinition analysisCaseDefinition = SysmlFactory.eINSTANCE.createAnalysisCaseDefinition();
+
+        this.detailsViewService.handleFeatureTypingNewValue(analysisCaseUsage, analysisCaseDefinition);
+
+        assertThat(analysisCaseUsage.getAnalysisCaseDefinition()).isSameAs(analysisCaseDefinition);
+        assertThat(analysisCaseUsage.eIsSet(SysmlPackage.eINSTANCE.getAnalysisCaseUsage_AnalysisCaseDefinition())).isTrue();
+    }
+
+    /**
+     * Verifies that a CalculationUsage derives the selected CalculationDefinition.
+     */
+    @Test
+    public void setCalculationUsageTypedByCalculationDefinition() {
+        CalculationUsage calculationUsage = SysmlFactory.eINSTANCE.createCalculationUsage();
+        CalculationDefinition calculationDefinition = SysmlFactory.eINSTANCE.createCalculationDefinition();
+
+        this.detailsViewService.handleFeatureTypingNewValue(calculationUsage, calculationDefinition);
+
+        assertThat(calculationUsage.getCalculationDefinition()).isSameAs(calculationDefinition);
+        assertThat(calculationUsage.eIsSet(SysmlPackage.eINSTANCE.getCalculationUsage_CalculationDefinition())).isTrue();
+    }
+
+    /**
+     * Verifies that a ConcernUsage derives the selected ConcernDefinition.
+     */
+    @Test
+    public void setConcernUsageTypedByConcernDefinition() {
+        ConcernUsage concernUsage = SysmlFactory.eINSTANCE.createConcernUsage();
+        ConcernDefinition concernDefinition = SysmlFactory.eINSTANCE.createConcernDefinition();
+
+        this.detailsViewService.handleFeatureTypingNewValue(concernUsage, concernDefinition);
+
+        assertThat(concernUsage.getConcernDefinition()).isSameAs(concernDefinition);
+        assertThat(concernUsage.eIsSet(SysmlPackage.eINSTANCE.getConcernUsage_ConcernDefinition())).isTrue();
+    }
+
+    /**
+     * Verifies that a RenderingUsage derives the selected RenderingDefinition.
+     */
+    @Test
+    public void setRenderingUsageTypedByRenderingDefinition() {
+        RenderingUsage renderingUsage = SysmlFactory.eINSTANCE.createRenderingUsage();
+        RenderingDefinition renderingDefinition = SysmlFactory.eINSTANCE.createRenderingDefinition();
+
+        this.detailsViewService.handleFeatureTypingNewValue(renderingUsage, renderingDefinition);
+
+        assertThat(renderingUsage.getRenderingDefinition()).isSameAs(renderingDefinition);
+        assertThat(renderingUsage.eIsSet(SysmlPackage.eINSTANCE.getRenderingUsage_RenderingDefinition())).isTrue();
+    }
+
+    /**
+     * Verifies that a VerificationCaseUsage derives the selected VerificationCaseDefinition.
+     */
+    @Test
+    public void setVerificationCaseUsageTypedByVerificationCaseDefinition() {
+        VerificationCaseUsage verificationCaseUsage = SysmlFactory.eINSTANCE.createVerificationCaseUsage();
+        VerificationCaseDefinition verificationCaseDefinition = SysmlFactory.eINSTANCE.createVerificationCaseDefinition();
+
+        this.detailsViewService.handleFeatureTypingNewValue(verificationCaseUsage, verificationCaseDefinition);
+
+        assertThat(verificationCaseUsage.getVerificationCaseDefinition()).isSameAs(verificationCaseDefinition);
+        assertThat(verificationCaseUsage.eIsSet(SysmlPackage.eINSTANCE.getVerificationCaseUsage_VerificationCaseDefinition())).isTrue();
+    }
+
+    /**
+     * Verifies that a ViewpointUsage derives the selected ViewpointDefinition.
+     */
+    @Test
+    public void setViewpointUsageTypedByViewpointDefinition() {
+        ViewpointUsage viewpointUsage = SysmlFactory.eINSTANCE.createViewpointUsage();
+        ViewpointDefinition viewpointDefinition = SysmlFactory.eINSTANCE.createViewpointDefinition();
+
+        this.detailsViewService.handleFeatureTypingNewValue(viewpointUsage, viewpointDefinition);
+
+        assertThat(viewpointUsage.getViewpointDefinition()).isSameAs(viewpointDefinition);
+        assertThat(viewpointUsage.eIsSet(SysmlPackage.eINSTANCE.getViewpointUsage_ViewpointDefinition())).isTrue();
     }
 
     /**

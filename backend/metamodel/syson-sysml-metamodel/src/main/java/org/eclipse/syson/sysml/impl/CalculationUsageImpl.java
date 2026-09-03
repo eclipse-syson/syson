@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2025 Obeo.
+* Copyright (c) 2023, 2026 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.syson.sysml.CalculationUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Function;
 import org.eclipse.syson.sysml.SysmlPackage;
 
@@ -139,15 +140,17 @@ public class CalculationUsageImpl extends ActionUsageImpl implements Calculation
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc --> Returns the {@link Function} targeted by this calculation usage's owned feature typing. <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Function basicGetCalculationDefinition() {
-        // TODO: implement this method to return the 'Calculation Definition' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedTyping().stream()
+                .map(FeatureTyping::getType)
+                .filter(Function.class::isInstance)
+                .map(Function.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
