@@ -367,25 +367,25 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 explorerRepresentationId,
                 sysmlModelTreeItemId.get())
-                .hasPaletteEntries(entries -> assertThat(entries).hasSize(3).anyMatch(entry -> Objects.equals(entry, ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)));
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(3).anyMatch(entry -> Objects.equals(entry, ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)));
 
         Runnable librariesDirectoryContextMenu = () -> this.treeItemPaletteExecutor.execute(
                 GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 explorerRepresentationId,
                 librariesDirectoryTreeItemId.get())
-                .hasPaletteEntries(entries -> assertThat(entries).isEmpty());
+                .hasPaletteEntriesIds(entries -> assertThat(entries).isEmpty());
 
         Runnable kermlDirectoryContextMenu = () -> this.treeItemPaletteExecutor.execute(
                 GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 explorerRepresentationId,
                 kermlDirectoryTreeItemId.get())
-                .hasPaletteEntries(entries -> assertThat(entries).isEmpty());
+                .hasPaletteEntriesIds(entries -> assertThat(entries).isEmpty());
 
         Runnable sysmlDirectoryContextMenu = () -> this.treeItemPaletteExecutor.execute(
                 GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 explorerRepresentationId,
                 sysmlDirectoryTreeItemId.get())
-                .hasPaletteEntries(entries -> assertThat(entries).isEmpty());
+                .hasPaletteEntriesIds(entries -> assertThat(entries).isEmpty());
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialExplorerContentConsumer)
@@ -613,7 +613,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.EDITING_CONTEXT,
                 treeId.get(),
                 userLibId.get())
-                .hasPaletteEntries(entries -> assertThat(entries).hasSize(4)
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(4)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY)
@@ -667,7 +667,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 ProjectWithLibraryDependencyContainingCommentAndLibraryPackageTestProjectData.EDITING_CONTEXT,
                 treeId.get(),
                 userLibId.get())
-                .hasPaletteEntries(entries -> assertThat(entries).hasSize(4)
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(4)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY)
@@ -779,7 +779,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 treeId.get(),
                 GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID)
-                .hasPaletteEntries(entries -> assertThat(entries).hasSize(3)
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(3)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_ROOT_OBJECT)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL));
@@ -788,7 +788,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 treeId.get(),
                 GeneralViewEmptyTestProjectData.SemanticIds.ROOT_NS_ID)
-                .hasPaletteEntries(entries -> assertThat(entries).hasSize(5)
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(5)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION)
                         .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID)
@@ -799,7 +799,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 treeId.get(),
                 GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID)
-                .hasPaletteEntries(entries -> assertThat(entries).hasSize(5)
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(5)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION)
                         .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID)
@@ -812,7 +812,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 GeneralViewEmptyTestProjectData.SemanticIds.VIEW_USAGE_ID)
                 // no NewRepresentation on a ViewUsage which already contains a standard diagram or requirements-table
                 // but New Expression is available
-                .hasPaletteEntries(entries -> assertThat(entries).hasSize(5)
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(5)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT)
                         .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)
@@ -824,7 +824,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 treeId.get(),
                 GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID)
                 // no duplicate representation on standard diagram or requirements-table
-                .hasPaletteEntries(entries -> assertThat(entries).hasSize(0));
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(0));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTreeContentConsumer)
