@@ -30,9 +30,7 @@ import java.util.function.Consumer;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
-import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
-import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.tests.graphql.TreeItemPaletteExecutor;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
@@ -53,6 +51,7 @@ import org.eclipse.syson.application.data.ProjectWithLibraryDependencyContaining
 import org.eclipse.syson.application.data.ProjectWithLibraryDependencyContainingPackageAndLibraryPackageTestProjectData;
 import org.eclipse.syson.application.data.ProjectWithUsedBatmobileLibraryDependencyTestProjectData;
 import org.eclipse.syson.application.data.SysonStudioTestProjectData;
+import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.explorer.api.IExplorerDefaultFiltersSearchService;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
@@ -91,7 +90,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     private ExplorerDescriptionsQueryRunner explorerDescriptionsQueryRunner;
 
     @Autowired
-    private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
+    private SemanticRunnableFactory semanticRunnableFactory;
 
     @Autowired
     private RepresentationIdBuilder representationIdBuilder;
@@ -485,23 +484,18 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         AtomicReference<String> rootNamespaceId = new AtomicReference<>();
         AtomicReference<String> owningMembershipId = new AtomicReference<>();
 
-        Runnable getNamespaceAndMembershipIds = () -> {
-            var getNamespaceAndMembershipIdsInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
-                    (editingContext, executeEditingContextFunctionInput) -> {
-                        Optional<Object> optionalPackage1 = this.objectSearchService.getObject(editingContext, package1TreeItemId.get());
-                        assertThat(optionalPackage1).isPresent().get().isInstanceOf(Package.class);
-                        Package package1 = (Package) optionalPackage1.get();
-                        EObject owningMembership = package1.eContainer();
-                        assertThat(owningMembership).isInstanceOf(OwningMembership.class);
-                        owningMembershipId.set(this.identityService.getId(owningMembership));
-                        EObject rootNamespace = owningMembership.eContainer();
-                        assertThat(rootNamespace).isInstanceOf(Namespace.class);
-                        rootNamespaceId.set(this.identityService.getId(rootNamespace));
-                        return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
-                    });
-            var payload = this.executeEditingContextFunctionRunner.execute(getNamespaceAndMembershipIdsInput).block();
-            assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
-        };
+        Runnable getNamespaceAndMembershipIds = this.semanticRunnableFactory.createQueryRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, (editingContext, executeEditingContextFunctionInput) -> {
+            Optional<Object> optionalPackage1 = this.objectSearchService.getObject(editingContext, package1TreeItemId.get());
+            assertThat(optionalPackage1).isPresent().get().isInstanceOf(Package.class);
+            Package package1 = (Package) optionalPackage1.get();
+            EObject owningMembership = package1.eContainer();
+            assertThat(owningMembership).isInstanceOf(OwningMembership.class);
+            owningMembershipId.set(this.identityService.getId(owningMembership));
+            EObject rootNamespace = owningMembership.eContainer();
+            assertThat(rootNamespace).isInstanceOf(Namespace.class);
+            rootNamespaceId.set(this.identityService.getId(rootNamespace));
+            return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialExplorerContentConsumer)
