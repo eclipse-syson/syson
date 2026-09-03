@@ -82,6 +82,7 @@ public class GeneralViewWithTopNodesTestProjectData {
 
         public static final String CASE_USAGE_ID = "0e713cc2-1872-31ec-ad87-c9d85b692458";
 
+        public static final String METADATA_DEFINITION_ID = "97fec257-ce8e-3169-adde-db4797a6baad";
     }
 
     /**

@@ -36,6 +36,7 @@ import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.CaseDefinition;
 import org.eclipse.syson.sysml.CaseUsage;
+import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConnectionDefinition;
 import org.eclipse.syson.sysml.Definition;
@@ -73,6 +74,7 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
+import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationElementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -945,6 +947,32 @@ public class DiagramMutationToolService {
             }
         }
         return usage;
+    }
+
+    public Element createReferenceUsage(Element owner, Element selectedElement) {
+        var newReferenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+        final Membership membership;
+        if (owner instanceof Package) {
+            membership = SysmlFactory.eINSTANCE.createOwningMembership();
+        } else {
+            membership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        }
+        membership.getOwnedRelatedElement().add(newReferenceUsage);
+        owner.getOwnedRelationship().add(membership);
+        new ElementInitializerSwitch().doSwitch(newReferenceUsage);
+        if (selectedElement != null) {
+            if (selectedElement instanceof Feature feature) {
+                var refSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+                refSubsetting.setReferencedFeature(feature);
+                newReferenceUsage.getOwnedRelationship().add(refSubsetting);
+            } else if (selectedElement instanceof Classifier classifier) {
+                // this is a Classifier, no reference just type the ReferenceUsage
+                var featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
+                featureTyping.setType(classifier);
+                newReferenceUsage.getOwnedRelationship().add(featureTyping);
+            }
+        }
+        return newReferenceUsage;
     }
 
     private Membership createAppropriateMembership(EStructuralFeature feature) {

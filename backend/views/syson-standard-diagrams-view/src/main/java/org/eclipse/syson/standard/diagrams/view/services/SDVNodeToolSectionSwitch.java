@@ -52,6 +52,7 @@ import org.eclipse.syson.diagram.common.view.tools.PartUsageFlowConnectionNodeTo
 import org.eclipse.syson.diagram.common.view.tools.PartUsageInterfaceNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.PartUsageSubsettingNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.PerformActionNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.ReferenceUsageCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.RequireConstraintNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SatisfyNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SatisfyRequirementNodeToolProvider;
@@ -72,6 +73,7 @@ import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AssignmentActionUsage;
+import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.CaseDefinition;
 import org.eclipse.syson.sysml.CaseUsage;
 import org.eclipse.syson.sysml.ConcernDefinition;
@@ -84,6 +86,7 @@ import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.ItemUsage;
+import org.eclipse.syson.sysml.MetadataDefinition;
 import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.PartDefinition;
@@ -231,6 +234,19 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
         sections.add(this.toolDescriptionService.relatedElementsNodeToolSection(true));
         this.toolDescriptionService.removeEmptyNodeToolSections(sections);
 
+        return sections;
+    }
+
+    @Override
+    public List<NodeToolSection> caseAttributeUsage(AttributeUsage object) {
+        var sections = this.toolDescriptionService.createDefaultNodeToolSections();
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new ReferenceUsageCompartmentNodeToolProvider().create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsCompositeToolProvider().create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsRefToolProvider().create(this.cache));
+
+        this.createToolsForCompartmentItemsWithExclusions(object, List.of(SysmlPackage.eINSTANCE.getUsage_NestedReference()), sections, this.cache);
+        sections.add(this.toolDescriptionService.relatedElementsNodeToolSection(true));
+        this.toolDescriptionService.removeEmptyNodeToolSections(sections);
         return sections;
     }
 
@@ -451,13 +467,40 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
                 this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPartUsage()), SysmlPackage.eINSTANCE.getPartUsage()));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsCompositeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsRefToolProvider().create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new ReferenceUsageCompartmentNodeToolProvider().create(this.cache));
 
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS,
                 new ViewNodeAsToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), StandardDiagramsConstants.GV).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS,
                 new ViewNodeAsToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.IV_QN), StandardDiagramsConstants.IV).create(this.cache));
 
-        this.createToolsForCompartmentItems(object, sections, this.cache);
+        this.createToolsForCompartmentItemsWithExclusions(object, List.of(SysmlPackage.eINSTANCE.getUsage_NestedReference()), sections, this.cache);
+        sections.add(this.toolDescriptionService.relatedElementsNodeToolSection(true));
+        this.toolDescriptionService.removeEmptyNodeToolSections(sections);
+        return sections;
+    }
+
+    @Override
+    public List<NodeToolSection> caseMetadataDefinition(MetadataDefinition object) {
+        var sections = this.toolDescriptionService.createDefaultNodeToolSections();
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new OccurrenceUsageTimesliceNodeToolProvider().create(cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new OccurrenceUsageSnapshotNodeToolProvider().create(cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE,
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage()));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.toolDescriptionService
+                .createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(), null, FeatureDirectionKind.IN));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.toolDescriptionService
+                .createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(), null, FeatureDirectionKind.INOUT));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.toolDescriptionService
+                .createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(), null, FeatureDirectionKind.OUT));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new ReferenceUsageCompartmentNodeToolProvider().create(this.cache));
+
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS,
+                new ViewNodeAsToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), StandardDiagramsConstants.GV).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS,
+                new ViewNodeAsToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.IV_QN), StandardDiagramsConstants.IV).create(this.cache));
+
+        this.createToolsForCompartmentItemsWithExclusions(object, List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedReference()), sections, this.cache);
         sections.add(this.toolDescriptionService.relatedElementsNodeToolSection(true));
         this.toolDescriptionService.removeEmptyNodeToolSections(sections);
         return sections;
@@ -680,7 +723,8 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
         var sections = this.toolDescriptionService.createDefaultNodeToolSections();
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE,
                 this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPartUsage()), SysmlPackage.eINSTANCE.getPartUsage()));
-        this.createToolsForCompartmentItems(object, sections, this.cache);
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new ReferenceUsageCompartmentNodeToolProvider().create(this.cache));
+        this.createToolsForCompartmentItemsWithExclusions(object, List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedReference()), sections, this.cache);
         sections.add(this.toolDescriptionService.relatedElementsNodeToolSection(true));
         this.toolDescriptionService.removeEmptyNodeToolSections(sections);
         return sections;
@@ -693,8 +737,9 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
                 this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPartUsage()), SysmlPackage.eINSTANCE.getPartUsage()));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsCompositeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsRefToolProvider().create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new ReferenceUsageCompartmentNodeToolProvider().create(this.cache));
 
-        this.createToolsForCompartmentItems(object, sections, this.cache);
+        this.createToolsForCompartmentItemsWithExclusions(object, List.of(SysmlPackage.eINSTANCE.getUsage_NestedReference()), sections, this.cache);
         sections.add(this.toolDescriptionService.relatedElementsNodeToolSection(true));
         this.toolDescriptionService.removeEmptyNodeToolSections(sections);
         return sections;
