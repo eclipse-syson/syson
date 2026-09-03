@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2025 Obeo.
+* Copyright (c) 2023, 2026 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -66,15 +66,16 @@ public class RenderingUsageImpl extends PartUsageImpl implements RenderingUsage 
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc --> Returns the part definition when it is a {@link RenderingDefinition}. <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public RenderingDefinition basicGetRenderingDefinition() {
-        // TODO: implement this method to return the 'Rendering Definition' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return super.getPartDefinition().stream()
+                .filter(RenderingDefinition.class::isInstance)
+                .map(RenderingDefinition.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
