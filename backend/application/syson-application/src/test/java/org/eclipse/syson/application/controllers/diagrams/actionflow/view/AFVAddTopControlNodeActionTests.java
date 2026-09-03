@@ -100,7 +100,8 @@ public class AFVAddTopControlNodeActionTests extends AbstractIntegrationTests {
     private IObjectSearchService objectSearchService;
 
     /**
-     * @technical-debt The use of this attribute should be replaced in favor of the {@link SemanticRunnableFactory} when it will be possible to provide a change description with `ChangeKind.SEMANTIC_CHANGE`.
+     * @technical-debt The use of this attribute should be replaced in favor of the {@link SemanticRunnableFactory} when
+     *                 it will be possible to provide a change description with ChangeKind.SEMANTIC_CHANGE.
      */
     @Autowired
     private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
@@ -205,7 +206,7 @@ public class AFVAddTopControlNodeActionTests extends AbstractIntegrationTests {
             assertThat(updatedDiagram.getNodes()).isEmpty();
             assertThat(updatedDiagram.getStyle().getBackground()).isEqualTo(initialBackground.get());
         });
-        Runnable exposedElementsChecker = this.semanticRunnableFactory.createRunnable(ActionFlowViewInsideActionUsageEmptyTestProjectData.EDITING_CONTEXT_ID,
+        Runnable exposedElementsChecker = this.semanticRunnableFactory.createQueryRunnable(ActionFlowViewInsideActionUsageEmptyTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, input) -> {
                     var viewUsage = this.objectSearchService.getObject(editingContext, ActionFlowViewInsideActionUsageEmptyTestProjectData.SemanticIds.AFV_IN_ACTION_VIE_ID)
                             .filter(ViewUsage.class::isInstance)

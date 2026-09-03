@@ -484,18 +484,19 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         AtomicReference<String> rootNamespaceId = new AtomicReference<>();
         AtomicReference<String> owningMembershipId = new AtomicReference<>();
 
-        Runnable getNamespaceAndMembershipIds = this.semanticRunnableFactory.createQueryRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, (editingContext, executeEditingContextFunctionInput) -> {
-            Optional<Object> optionalPackage1 = this.objectSearchService.getObject(editingContext, package1TreeItemId.get());
-            assertThat(optionalPackage1).isPresent().get().isInstanceOf(Package.class);
-            Package package1 = (Package) optionalPackage1.get();
-            EObject owningMembership = package1.eContainer();
-            assertThat(owningMembership).isInstanceOf(OwningMembership.class);
-            owningMembershipId.set(this.identityService.getId(owningMembership));
-            EObject rootNamespace = owningMembership.eContainer();
-            assertThat(rootNamespace).isInstanceOf(Namespace.class);
-            rootNamespaceId.set(this.identityService.getId(rootNamespace));
-            return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
-        });
+        Runnable getNamespaceAndMembershipIds = this.semanticRunnableFactory.createQueryRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
+                (editingContext, executeEditingContextFunctionInput) -> {
+                    Optional<Object> optionalPackage1 = this.objectSearchService.getObject(editingContext, package1TreeItemId.get());
+                    assertThat(optionalPackage1).isPresent().get().isInstanceOf(Package.class);
+                    Package package1 = (Package) optionalPackage1.get();
+                    EObject owningMembership = package1.eContainer();
+                    assertThat(owningMembership).isInstanceOf(OwningMembership.class);
+                    owningMembershipId.set(this.identityService.getId(owningMembership));
+                    EObject rootNamespace = owningMembership.eContainer();
+                    assertThat(rootNamespace).isInstanceOf(Namespace.class);
+                    rootNamespaceId.set(this.identityService.getId(rootNamespace));
+                    return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
+                });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialExplorerContentConsumer)
