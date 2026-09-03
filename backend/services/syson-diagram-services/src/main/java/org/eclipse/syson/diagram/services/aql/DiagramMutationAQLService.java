@@ -703,4 +703,10 @@ public class DiagramMutationAQLService {
         return this.diagramMutationElementService.viewNodeAs(elements, newViewDefinition, editingContext, diagramContext, selectedNodes);
     }
 
+    /**
+     * {@link DiagramMutationToolService#createReferenceUsage(Element, Element)}.
+     */
+    public Element createReferenceUsage(Element owner, Element usage) {
+        return this.diagramMutationToolService.createReferenceUsage(owner, usage);
+    }
 }

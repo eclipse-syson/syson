@@ -176,7 +176,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), 13, 0, 0, 0, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH, false),
                 Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), 5, 0, 0, 0, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH, false),
                 Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), 5, 0, 0, 0, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH, false),
-                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), 0, 0, 0, 0, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), 0, 0, 0, 0, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH, true),
                 Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), 9, 0, 0, 0, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH, false),
                 Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), 9, 0, 0, 0, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH, false),
                 Arguments.of(SysmlPackage.eINSTANCE.getUseCaseDefinition(), 5, 0, 0, 0, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH, false),
