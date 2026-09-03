@@ -22,9 +22,7 @@ import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
-import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -81,12 +79,6 @@ public class GVNewStartDoneStatesTests extends AbstractIntegrationTests {
 
     @Autowired
     private DiagramComparator diagramComparator;
-
-    @Autowired
-    private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
-
-    @Autowired
-    private IObjectSearchService objectSearchService;
 
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
