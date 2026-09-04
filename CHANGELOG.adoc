@@ -1,8 +1,10 @@
 = Changelog
 
-== v2026.11.0 (work in progress)
+== v2026.11.0
 
-=== Shapes
+=== Pitches
+
+- Display inherited elements in diagrams' free form compartments like _action flow_, _state transition_ and _interconnection_.
 
 === Architectural decision records
 
