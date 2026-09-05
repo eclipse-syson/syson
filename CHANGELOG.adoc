@@ -56,6 +56,10 @@ It is now _Become nested Concern_ instead of _Become nested Requirement_.
 Following KerML, where `endFeature` is defined as the owned features having `isEnd = true`, the ends owned through a plain `FeatureMembership` are now collected as well, and not only those owned through an `EndFeatureMembership`.
 This also fixes `relatedFeature`, `sourceFeature` and `targetFeature`, which were all empty for such connections.
 - https://github.com/eclipse-syson/syson/issues/2226[#2226] [import] Fix textual import of annotations on relationships so their `annotatedElement` is set and they are returned by `Element#getOwnedAnnotation()`.
+- https://github.com/eclipse-syson/syson/issues/2510[#2510] [import] Fix the silent truncation of a SysML file containing a syntax error during a textual import.
+The parser used to produce the AST reports neither a non-zero exit code nor anything on its standard error in that case, and prints an AST covering only the part of the file located before the error.
+The import used to succeed with an empty report while everything located after the error was missing from the resulting model.
+Such a file is now reported as invalid, with the line and the message of each syntax error, and is no longer imported.
 - https://github.com/eclipse-syson/syson/issues/2419[#2419] [export] Fix the export of the prefix metadata carried by the ends of a connector, which were dropped when those ends are declared inline.
 The ends of a connector created from a diagram are owned through an `EndFeatureMembership` and are exported inline, so their metadata, such as the `#original` and `#derive` of a requirement derivation, were lost.
 - https://github.com/eclipse-syson/syson/issues/2447[#2447] [export] Fix the export of a comment body containing `*/`, which closed the block comment early and produced a file that could not be parsed.
