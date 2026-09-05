@@ -47,6 +47,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class SysmlToAst {
 
+    /**
+     * Diagnostic emitted by the parser when it stopped before the end of the file, which is the only case where the AST
+     * printed by the "dump" command is incomplete.
+     */
+    private static final String INCOMPLETE_PARSE_DIAGNOSTIC = "Expecting end of file";
+
+    /**
+     * Prefixes of the parser diagnostics reported to the user when the document could not be parsed entirely.
+     */
+    private static final List<String> SYNTAX_ERROR_DIAGNOSTICS = List.of(INCOMPLETE_PARSE_DIAGNOSTIC, "Expecting token of type", "Expecting: one of these possible Token sequences");
+
+    private static final int VALIDATION_TIMEOUT_IN_SECONDS = 60;
+
     private final Logger logger = LoggerFactory.getLogger(SysmlToAst.class);
 
     private final String cliPath;
@@ -90,7 +103,17 @@ public class SysmlToAst {
                 String stdout = stdoutFuture.join();
                 int exitCode = sysIdeProcess.exitValue();
                 if (exitCode == 0) {
-                    astInputStream = Optional.of(new ByteArrayInputStream(stdout.getBytes()));
+                    final List<String> syntaxErrors = this.findSyntaxErrors(sysIdeInputPath, sysmlInputPath);
+                    if (syntaxErrors.isEmpty()) {
+                        astInputStream = Optional.of(new ByteArrayInputStream(stdout.getBytes()));
+                    } else {
+                        // The parser stopped before the end of the file: the AST it produced on its standard output only
+                        // covers the beginning of the document. Importing it would silently drop everything located after
+                        // the first syntax error, so the import is reported as failed instead.
+                        reports.add(new Status(Severity.ERROR,
+                                "The SysML file contains syntax errors and cannot be imported. Only the part of the file located before the first error could be parsed."));
+                        syntaxErrors.forEach(syntaxError -> reports.add(new Status(Severity.ERROR, syntaxError)));
+                    }
                 } else {
                     this.logger.error("The process that parse the SysML file ended with an error core : {}", exitCode);
                 }
@@ -112,6 +135,65 @@ public class SysmlToAst {
         return new AstParsingResult(astInputStream, reports);
 
 
+    }
+
+    /**
+     * Detects the syntax errors that made the parser stop before the end of the file.
+     *
+     * <p>
+     * The {@code dump} command used to produce the AST always exits with the code 0 and prints nothing on its standard
+     * error, even when the file it parsed is invalid: in that case it silently prints a partial AST covering only the
+     * beginning of the file. The syntax errors are only reported by the {@code --validate} option, which cannot be used
+     * for the main call since it makes the CLI print no AST at all as soon as it finds any validation error.
+     * </p>
+     *
+     * <p>
+     * The validation pass is thus run separately, and only the diagnostics reporting that the parser did not reach the
+     * end of the file are taken into account. The other diagnostics are ignored on purpose:
+     * </p>
+     * <ul>
+     * <li>the standard library resolution errors ("Could not find implicit specialization...") are expected here, since
+     * the CLI is called standalone and SysON resolves the standard libraries itself on the Java side;</li>
+     * <li>the semantic checks ("A Feature must be typed by at least one type"...) are reported for many valid documents
+     * and do not cause any loss of information during the import.</li>
+     * </ul>
+     *
+     * @param sysIdeInputPath the path of the CLI
+     * @param sysmlInputPath the path of the file to parse
+     * @return the syntax errors that truncated the parsed document, or an empty list if the whole file was parsed
+     */
+    private List<String> findSyntaxErrors(final Path sysIdeInputPath, final Path sysmlInputPath) {
+        final List<String> syntaxErrors = new ArrayList<>();
+        try {
+            final String[] args = { "node", sysIdeInputPath.toString(), "dump", "--validate", "--stdlib", "none", sysmlInputPath.toString() };
+            final Process validationProcess = new ProcessBuilder(args).start();
+            final CompletableFuture<String> validationStdErr = CompletableFuture.supplyAsync(() -> {
+                try {
+                    return this.readStream(validationProcess.getErrorStream());
+                } catch (IOException e) {
+                    this.logger.error("Error while reading the validation report : " + e.getMessage(), e);
+                    return "";
+                }
+            });
+            final String stderr = validationStdErr.join();
+            if (!validationProcess.waitFor(VALIDATION_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)) {
+                validationProcess.destroyForcibly();
+            } else if (stderr.contains(INCOMPLETE_PARSE_DIAGNOSTIC)) {
+                stderr.lines()
+                        .map(String::trim)
+                        .filter(line -> line.startsWith("line "))
+                        .filter(line -> SYNTAX_ERROR_DIAGNOSTICS.stream().anyMatch(line::contains))
+                        .forEach(syntaxErrors::add);
+            }
+        } catch (final IOException e) {
+            // The document has already been parsed successfully at this point: a failure of the validation pass must not
+            // prevent the import, it only means that no syntax error can be reported.
+            this.logger.error("Error while looking for syntax errors : " + e.getMessage(), e);
+        } catch (final InterruptedException e) {
+            this.logger.error("Error while looking for syntax errors : " + e.getMessage(), e);
+            Thread.currentThread().interrupt();
+        }
+        return syntaxErrors;
     }
 
     private CompletableFuture<String> readStdErr(Process sysIdeProcess, List<Status> messages) {

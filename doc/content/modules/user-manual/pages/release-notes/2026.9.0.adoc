@@ -139,6 +139,9 @@ Exporting such a connection and importing it back no longer loses which end is w
 That sequence closes a comment in the SysML v2 textual notation, so the exported file could no longer be read.
 It is now exported as `* /`, and a warning reports it, since the exported text is then not exactly the one that was written.
 ** Preserve cross-document references when a SysML document is uploaded with a directory in its filename.
+** Fix the silent truncation of a SysML file containing a syntax error.
+Uploading such a file used to succeed without any error message, while every element located after the first syntax error was missing from the imported model.
+The import now fails and reports the line and the message of each syntax error, so the file can be fixed and uploaded again.
 
 * In validation:
 
