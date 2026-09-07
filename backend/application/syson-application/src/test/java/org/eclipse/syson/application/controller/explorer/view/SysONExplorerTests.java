@@ -809,7 +809,8 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                         .contains(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT)
                         .contains(SysONExplorerTreeItemContextMenuEntryProvider.CREATE_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID))
                 .hasPaletteEntriesLabels(entries -> assertThat(entries).hasSize(5)
-                        .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_LABEL));
+                        .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_LABEL)
+                        .contains(SysONExplorerTreeItemContextMenuEntryProvider.CREATE_EXPRESSION_MENU_ENTRY_LABEL));
 
         Runnable getDiagramContextMenuActions = () -> this.treeItemPaletteExecutor.execute(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, treeId.get(), GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID)
                 // no duplicate representation on standard diagram or requirements-table
@@ -872,11 +873,19 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
             var expr2Item = s2Item.getChildren().get(0);
             assertThat(expr2Item.getKind()).isEqualTo("siriusComponents://semantic?domain=sysml&entity=OperatorExpression");
             assertThat(expr2Item.getLabel().toString()).isEqualTo("attr1 < 0");
-
         });
+
+        Runnable getDocumentContextMenuActions = () -> this.treeItemPaletteExecutor.execute(ActionTransitionUsagesProjectData.EDITING_CONTEXT_ID, treeId.get(), ActionTransitionUsagesProjectData.SemanticIds.S1_ID)
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(7)
+                        .contains(SysONExplorerTreeItemContextMenuEntryProvider.EDIT_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID)
+                        .contains(SysONExplorerTreeItemContextMenuEntryProvider.DELETE_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID))
+                .hasPaletteEntriesLabels(entries -> assertThat(entries)
+                        .contains(SysONExplorerTreeItemContextMenuEntryProvider.EDIT_EXPRESSION_MENU_ENTRY_LABEL)
+                        .contains(SysONExplorerTreeItemContextMenuEntryProvider.DELETE_EXPRESSION_MENU_ENTRY_LABEL));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTreeContentConsumer)
+                .then(getDocumentContextMenuActions)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

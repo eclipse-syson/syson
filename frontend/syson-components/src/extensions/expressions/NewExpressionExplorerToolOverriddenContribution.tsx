@@ -19,11 +19,9 @@ import MenuItem from '@mui/material/MenuItem';
 import { forwardRef, Fragment, useContext, useState } from 'react';
 import { EditSysMLExpressionModal } from './EditSysMLExpressionModal';
 
-const label = 'New expression';
-
 export const NewExpressionExplorerToolOverriddenContribution = forwardRef(
   (
-    { onInvoked, searchedValue }: PaletteToolOverriddenContributionComponentProps,
+    { onInvoked, searchedValue, tool }: PaletteToolOverriddenContributionComponentProps,
     ref: React.ForwardedRef<HTMLLIElement>
   ) => {
     const { editingContextId, item, treeId, readOnly, onClose } =
@@ -40,7 +38,7 @@ export const NewExpressionExplorerToolOverriddenContribution = forwardRef(
       onClose();
     };
 
-    const matchResult = searchedValue ? fuzzyMatch(label, searchedValue) : null;
+    const matchResult = searchedValue ? fuzzyMatch(tool.label, searchedValue) : null;
     if (!!searchedValue && !matchResult?.matches) {
       return null;
     }
@@ -71,7 +69,7 @@ export const NewExpressionExplorerToolOverriddenContribution = forwardRef(
           <ListItemIcon>
             <AddIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary={label} />
+          <ListItemText primary={tool.label} />
         </MenuItem>
         {modalElement}
       </Fragment>

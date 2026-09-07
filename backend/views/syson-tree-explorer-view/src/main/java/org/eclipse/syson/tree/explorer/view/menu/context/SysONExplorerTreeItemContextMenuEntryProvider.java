@@ -67,9 +67,15 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemP
 
     public static final String CREATE_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID = "createExpression";
 
+    public static final String CREATE_EXPRESSION_MENU_ENTRY_LABEL = "Create Expression";
+
     public static final String EDIT_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID = "editExpression";
 
+    public static final String EDIT_EXPRESSION_MENU_ENTRY_LABEL = "Edit Expression";
+
     public static final String DELETE_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID = "deleteExpression";
+
+    public static final String DELETE_EXPRESSION_MENU_ENTRY_LABEL = "Delete Expression";
 
     private final IObjectSearchService objectSearchService;
 
@@ -161,7 +167,7 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemP
                 }
                 entries.add(new SingleClickTreeItemTool(NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID, NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_LABEL, List.of(), false, List.of()));
                 if (this.canHaveNewExpression(editingContext, object)) {
-                    entries.add(new SingleClickTreeItemTool(CREATE_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID, "", List.of(), false, List.of()));
+                    entries.add(new SingleClickTreeItemTool(CREATE_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID, CREATE_EXPRESSION_MENU_ENTRY_LABEL, List.of(), false, List.of()));
                 }
 
                 if (object instanceof Element && !(object instanceof Relationship)) {
@@ -197,20 +203,16 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemP
     }
 
     private void addExpressionEditionEntries(List<IPaletteEntry> entries, Element element) {
-        var expressionEntries = new ArrayList<String>();
-
         // "Edit expression" on the root Expression element itself; the normal "Delete" operation works on it so no need
         // to also add "Delete expression"
         if (this.metamodelQueryElementService.isTopLevelExpression(element)) {
-            expressionEntries.add(EDIT_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID);
+            entries.add(new SingleClickTreeItemTool(EDIT_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID, EDIT_EXPRESSION_MENU_ENTRY_LABEL, List.of(), false, List.of()));
         } else if (this.metamodelQueryElementService.hasSingleExpressionDefinition(element)
                 && !this.metamodelQueryElementService.hasSingleExpressionDefinition(element.getOwner())) {
             // "Edit expression" and "Delete expression" on the owner of a root Expression element
-            expressionEntries.add(EDIT_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID);
-            expressionEntries.add(DELETE_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID);
+            entries.add(new SingleClickTreeItemTool(EDIT_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID, EDIT_EXPRESSION_MENU_ENTRY_LABEL, List.of(), false, List.of()));
+            entries.add(new SingleClickTreeItemTool(DELETE_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID, DELETE_EXPRESSION_MENU_ENTRY_LABEL, List.of(), false, List.of()));
         }
-
-        expressionEntries.forEach(id -> entries.add(new SingleClickTreeItemTool(id, "", List.of(), false, List.of())));
     }
 
 

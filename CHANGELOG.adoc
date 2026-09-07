@@ -96,6 +96,7 @@ This lets downstream applications with a custom extension registry display the _
 - https://github.com/eclipse-syson/syson/issues/2480[#2480] [diagrams] Add the _Delete from diagram_ action to the group palette in standard diagrams to support multi-selection.
 - https://github.com/eclipse-syson/syson/issues/2468[#2468] [diagrams] Remove expression syntax from the direct-edit grammar.
 Direct edit now only updates labels and feature syntax; use the dedicated expression tools to create or modify expressions.
+- [cleanup] Retrieve the label of _Create Expression_, _Edit Expression_ and _Delete Expression_ tree palette tools from the backend instead of using a frontend hard-coded value.
 
 === New features
 
