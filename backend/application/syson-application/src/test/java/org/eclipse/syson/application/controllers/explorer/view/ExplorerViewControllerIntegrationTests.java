@@ -315,7 +315,9 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT)
-                        .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID));
+                        .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID))
+                .hasPaletteEntriesLabels(entries -> assertThat(entries).hasSize(5)
+                        .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_LABEL));
 
         Runnable createChildRunnable = () -> {
             var input = new CreateChildInput(UUID.randomUUID(), WithUserLibrariesTestProjectData.EDITING_CONTEXT_ID, WithUserLibrariesTestProjectData.SemanticIds.RW_USER_LIBRARY_PACKAGE_ID, "SysMLv2EditService-AcceptActionUsage");

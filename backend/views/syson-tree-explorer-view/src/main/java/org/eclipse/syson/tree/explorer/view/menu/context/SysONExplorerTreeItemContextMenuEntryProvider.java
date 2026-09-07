@@ -63,6 +63,8 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemP
 
     public static final String NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID = "newObjectsFromText";
 
+    public static final String NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_LABEL = "New objects from text";
+
     public static final String CREATE_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID = "createExpression";
 
     public static final String EDIT_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID = "editExpression";
@@ -157,7 +159,7 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemP
                     entries.add(new SingleClickTreeItemTool(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION, this.messageService.treeToolNewRepresentation(), List.of(), false,
                             List.of()));
                 }
-                entries.add(new SingleClickTreeItemTool(NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID, "", List.of(), false, List.of()));
+                entries.add(new SingleClickTreeItemTool(NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID, NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_LABEL, List.of(), false, List.of()));
                 if (this.canHaveNewExpression(editingContext, object)) {
                     entries.add(new SingleClickTreeItemTool(CREATE_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID, "", List.of(), false, List.of()));
                 }

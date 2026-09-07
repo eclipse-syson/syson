@@ -64,7 +64,7 @@ export const InsertTextualSysMLv2ExplorerToolOverriddenContribution = forwardRef
           <ListItemIcon>
             <AddIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="New objects from text" />
+          <ListItemText primary={tool.label} />
         </MenuItem>
         {modalElement}
       </Fragment>

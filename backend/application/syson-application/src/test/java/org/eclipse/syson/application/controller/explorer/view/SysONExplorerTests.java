@@ -745,9 +745,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 GeneralViewEmptyTestProjectData.SemanticIds.VIEW_USAGE_ID);
 
         List<String> filters = List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
-
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, expandedItemIds, filters);
-
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input).flux();
         TestTransaction.flagForCommit();
@@ -775,41 +773,33 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
             assertThat(diagram.isDeletable()).isFalse();
         });
 
-        Runnable getDocumentContextMenuActions = () -> this.treeItemPaletteExecutor.execute(
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
-                treeId.get(),
-                GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID)
+        Runnable getDocumentContextMenuActions = () -> this.treeItemPaletteExecutor.execute(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, treeId.get(), GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID)
                 .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(3)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_ROOT_OBJECT)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL));
 
-        Runnable getRootNSContextMenuActions = () -> this.treeItemPaletteExecutor.execute(
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
-                treeId.get(),
-                GeneralViewEmptyTestProjectData.SemanticIds.ROOT_NS_ID)
+        Runnable getRootNSContextMenuActions = () -> this.treeItemPaletteExecutor.execute(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, treeId.get(), GeneralViewEmptyTestProjectData.SemanticIds.ROOT_NS_ID)
                 .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(5)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION)
                         .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)
-                        .contains(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT));
+                        .contains(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT))
+                .hasPaletteEntriesLabels(entries -> assertThat(entries).hasSize(5)
+                        .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_LABEL));
 
-        Runnable getPackageElementContextMenuActions = () -> this.treeItemPaletteExecutor.execute(
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
-                treeId.get(),
-                GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID)
+        Runnable getPackageElementContextMenuActions = () -> this.treeItemPaletteExecutor.execute(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, treeId.get(), GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID)
                 .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(5)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION)
                         .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)
-                        .contains(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT));
+                        .contains(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT))
+                .hasPaletteEntriesLabels(entries -> assertThat(entries).hasSize(5)
+                        .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_LABEL));
 
-        Runnable getViewUsageElementContextMenuActions = () -> this.treeItemPaletteExecutor.execute(
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
-                treeId.get(),
-                GeneralViewEmptyTestProjectData.SemanticIds.VIEW_USAGE_ID)
+        Runnable getViewUsageElementContextMenuActions = () -> this.treeItemPaletteExecutor.execute(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, treeId.get(), GeneralViewEmptyTestProjectData.SemanticIds.VIEW_USAGE_ID)
                 // no NewRepresentation on a ViewUsage which already contains a standard diagram or requirements-table
                 // but New Expression is available
                 .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(5)
@@ -817,12 +807,11 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                         .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT)
-                        .contains(SysONExplorerTreeItemContextMenuEntryProvider.CREATE_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID));
+                        .contains(SysONExplorerTreeItemContextMenuEntryProvider.CREATE_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID))
+                .hasPaletteEntriesLabels(entries -> assertThat(entries).hasSize(5)
+                        .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_LABEL));
 
-        Runnable getDiagramContextMenuActions = () -> this.treeItemPaletteExecutor.execute(
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
-                treeId.get(),
-                GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID)
+        Runnable getDiagramContextMenuActions = () -> this.treeItemPaletteExecutor.execute(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, treeId.get(), GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID)
                 // no duplicate representation on standard diagram or requirements-table
                 .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(0));
 
@@ -835,7 +824,6 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 .then(getDiagramContextMenuActions)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
-
     }
 
     @DisplayName("GIVEN the SysON Explorer, WHEN displaying an Expression item, THEN the item's label shows the textual representation of the expression")
