@@ -75,6 +75,7 @@ Prevent the feature chain computer from traversing the whole standard library to
 The `NamespaceImport` is created under the closest ancestor `Package` from the element holding the expression, or in the root `Namespace` if no ancestor `Package` is found.
 - https://github.com/eclipse-syson/syson/issues/2200[#2200] [diagrams] Remove the _expand/collapse_ tools from graphical nodes to fix a bug caused by their interaction with the _Manage Visibility menu_.
 This menu supersedes almost all the tools' behavior, with the minor exception that the _expand_ tool restored the visibility state of all child graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/2507[#2507] [explorer] Fix the missing _New objects from text_ tree palette tool when filtered by the tree palette search.
 
 === Improvements
 
