@@ -129,7 +129,8 @@ This menu supersedes almost all the tools' behavior, with the minor exception th
 ** Fix expression creation and editing on `SuccessionAsUsage` elements.
 ** Fix the _Typed by_ property in the _Details_ view so that a `Usage` can only be typed by the corresponding kind of `Definition`.
 ** Fix the expression dialog by automatically import the SI package via `NamespaceImport` when un-prefixed standard units are used in an expression.
-** Fix the missing _New objects from text_ tree palette tool when filtered by the tree palette search.
+** Fix the missing _New objects from text_ _Explorer_ palette tool when filtered by the palette search.
+** Highlight _Create Expression_, _Edit Expression_, _Delete Expression_, and _New objects from text_ _Explorer_ view and diagram palette tools when they are filtered by the palette search.
 
 * In textual import/export:
 
