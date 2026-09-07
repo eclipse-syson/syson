@@ -11,11 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { fuzzyMatch, PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import {
+  fuzzyMatch,
+  PaletteToolOverriddenContributionComponentProps,
+  ToolListItemText,
+} from '@eclipse-sirius/sirius-components-palette';
 import { TreePaletteContext, TreePaletteContextValue } from '@eclipse-sirius/sirius-components-trees';
 import EditIcon from '@mui/icons-material/Edit';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import React, { forwardRef, Fragment, useContext, useState } from 'react';
 import { EditSysMLExpressionModal } from './EditSysMLExpressionModal';
@@ -69,7 +72,7 @@ export const EditExpressionExplorerToolOverriddenContribution = forwardRef(
           <ListItemIcon>
             <EditIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary={tool.label} />
+          <ToolListItemText label={tool.label} searchedValue={searchedValue} />
         </MenuItem>
         {modalElement}
       </Fragment>

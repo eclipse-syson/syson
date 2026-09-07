@@ -10,11 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { fuzzyMatch, PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import {
+  fuzzyMatch,
+  PaletteToolOverriddenContributionComponentProps,
+  ToolListItemText,
+} from '@eclipse-sirius/sirius-components-palette';
 import { TreePaletteContext, TreePaletteContextValue } from '@eclipse-sirius/sirius-components-trees';
 import AddIcon from '@mui/icons-material/Add';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { forwardRef, Fragment, useContext, useState } from 'react';
 import { InsertTextualSysMLv2Modal } from './InsertTextualSysMLv2Modal';
@@ -64,7 +67,7 @@ export const InsertTextualSysMLv2ExplorerToolOverriddenContribution = forwardRef
           <ListItemIcon>
             <AddIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary={tool.label} />
+          <ToolListItemText label={tool.label} searchedValue={searchedValue} />
         </MenuItem>
         {modalElement}
       </Fragment>

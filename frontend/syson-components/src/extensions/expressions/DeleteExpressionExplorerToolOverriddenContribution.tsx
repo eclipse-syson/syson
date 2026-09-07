@@ -12,11 +12,14 @@
  *******************************************************************************/
 
 import { useDeletionConfirmationDialog } from '@eclipse-sirius/sirius-components-core';
-import { fuzzyMatch, PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import {
+  fuzzyMatch,
+  PaletteToolOverriddenContributionComponentProps,
+  ToolListItemText,
+} from '@eclipse-sirius/sirius-components-palette';
 import { TreePaletteContext, TreePaletteContextValue } from '@eclipse-sirius/sirius-components-trees';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import React, { forwardRef, Fragment, useContext } from 'react';
 import { useDeleteExpression } from './useDeleteExpression';
@@ -59,7 +62,7 @@ export const DeleteExpressionExplorerToolOverriddenContribution = forwardRef(
           <ListItemIcon>
             <DeleteIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary={tool.label} />
+          <ToolListItemText label={tool.label} searchedValue={searchedValue} />
         </MenuItem>
       </Fragment>
     );
