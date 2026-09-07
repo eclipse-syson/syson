@@ -21,11 +21,9 @@ import MenuItem from '@mui/material/MenuItem';
 import React, { forwardRef, Fragment, useContext } from 'react';
 import { useDeleteExpression } from './useDeleteExpression';
 
-const toolLabel = 'Delete expression';
-
 export const DeleteExpressionExplorerToolOverriddenContribution = forwardRef(
   (
-    { onInvoked, searchedValue }: PaletteToolOverriddenContributionComponentProps,
+    { onInvoked, searchedValue, tool }: PaletteToolOverriddenContributionComponentProps,
     ref: React.ForwardedRef<HTMLLIElement>
   ) => {
     const { editingContextId, item, treeId, readOnly, onClose } =
@@ -37,7 +35,7 @@ export const DeleteExpressionExplorerToolOverriddenContribution = forwardRef(
       return null;
     }
 
-    const matchResult = searchedValue ? fuzzyMatch(toolLabel, searchedValue) : null;
+    const matchResult = searchedValue ? fuzzyMatch(tool.label, searchedValue) : null;
     if (!!searchedValue && !matchResult?.matches) {
       return null;
     }
@@ -61,7 +59,7 @@ export const DeleteExpressionExplorerToolOverriddenContribution = forwardRef(
           <ListItemIcon>
             <DeleteIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary={toolLabel} />
+          <ListItemText primary={tool.label} />
         </MenuItem>
       </Fragment>
     );
