@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,27 +13,27 @@
 package org.eclipse.syson;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 /**
  * Main class of the server, used as the entry point which will start the whole server properly initialized with a
  * Spring ApplicationContext (see {@link org.springframework.context.ApplicationContext}).
  * <p>
- * Thanks to the annotation {@link SpringBootApplication}, this class will act as a configuration which allows us to
+ * Thanks to the annotations {@link SpringBootConfiguration} and {@link EnableAutoConfiguration}, this class will act as a configuration which allows us to
  * declare beans and configure other features but we will not use this capacity in order to properly separate our code.
  * As such our configurations will be contained in dedicated classes elsewhere.
  * </p>
  * <p>
- * Starting this class will also trigger the scan of the classpath. In order to build our ApplicationContext Spring will
- * only scan the current package and its subpackages by default. Beans outside of those packages will not be discovered
- * automatically unless specified by additional information in our annotations.
+ * We do not use {@code SpringBootApplication} because it would also scan the {@code org.eclipse.syson} package. The
+ * {@code syson-starter} dependency performs that scan, so downstream applications and this executable application use
+ * the same SysON component configuration.
  * </p>
  *
  * @author arichard
  */
-@SpringBootApplication
-@ComponentScan(basePackages = { "org.eclipse.syson", "org.eclipse.sirius.web", "org.eclipse.sirius.components" })
+@SpringBootConfiguration
+@EnableAutoConfiguration
 public class SysONApplication {
 
     /**

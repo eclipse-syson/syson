@@ -105,6 +105,25 @@ Be sure to replace `$GITHUB_USERNAME` with your GitHub user id, and `$GITHUB_ACC
 +
 IMPORTANT: The `id` used in your `settings.xml` *must* be `github-sirius-emfjson`, `github-sirius-web` and `github-syson` to match what is used in the POMs.
 
+==== Use SysON in a downstream application
+
+Add `org.eclipse.syson:syson-starter` to a Spring Boot application's dependencies to use SysON. The starter provides the SysON runtime modules and automatically configures its Spring components.
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.syson</groupId>
+  <artifactId>syson-starter</artifactId>
+  <version>YYYY.M.0</version>
+</dependency>
+----
+
+Replace `YYYY.M.0` with a released SysON version.
+The downstream application remains responsible for its entry point and operational dependencies, such as Spring Boot Actuator.
+
+The starter's `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` file registers `SysONStarterConfiguration`.
+Spring Boot loads that configuration when auto-configuration is enabled, including through `@SpringBootApplication`, so downstream applications do not need to import it explicitly.
+
 [#docker]
 ==== Docker
 
