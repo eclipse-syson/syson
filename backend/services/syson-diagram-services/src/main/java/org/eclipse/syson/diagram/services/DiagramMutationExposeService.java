@@ -83,6 +83,8 @@ public class DiagramMutationExposeService {
 
     private final DiagramQueryExposeService diagramQueryExposeService;
 
+    private final ModelQueryElementService modelQueryElementService = new ModelQueryElementService();
+
     private final MetamodelQueryElementService metamodelQueryElementService;
 
     private final DeleteService deleteService;
@@ -237,60 +239,66 @@ public class DiagramMutationExposeService {
     }
 
     /**
-     * Add project elements connected to the selected element to the current view.
+     * Add connected project elements that cannot be rendered inside any selected node.
      *
-     * @param element
-     *            the selected semantic element
+     * @param elements
+     *            the selected semantic elements
      * @param editingContext
      *            the editing context containing project resources
      * @param diagramContext
      *            the diagram to update
      * @param convertedNodes
      *            the converted node descriptions
-     * @return the selected element
+     * @param selectedNodes
+     *            the selected graphical nodes
+     * @return the selected elements
      */
-    public Element addExistingConnectedElements(Element element, IEditingContext editingContext, DiagramContext diagramContext,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+    public List<Element> addExistingConnectedElements(List<Element> elements, IEditingContext editingContext, DiagramContext diagramContext,
+            List<Node> selectedNodes, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             var resourceSet = emfEditingContext.getDomain().getResourceSet();
-            for (Element connectedElement : this.getConnectedElements(element, resourceSet)) {
+            var candidates = this.getConnectedElements(new LinkedHashSet<>(elements), resourceSet);
+            var filter = new ConnectedElementRepresentationFilter(this.siriusWebCoreServices.objectSearchService(), editingContext, diagramContext, convertedNodes);
+            var referenceNodes = selectedNodes.stream().map(filter::getReferenceNode).distinct().toList();
+            candidates.removeIf(candidate -> referenceNodes.stream().anyMatch(node -> filter.canRenderInside(candidate, node)));
+            for (Element connectedElement : candidates) {
                 this.expose(connectedElement, editingContext, diagramContext, null, convertedNodes);
             }
         }
-        return element;
+        return elements;
     }
 
     /**
      * Find exposable project elements connected in either direction, excluding the selected element.
      *
-     * @param element
-     *            the selected element
+     * @param elements
+     *            the selected elements
      * @param resourceSet
      *            the project resources
      * @return the distinct connected elements
      */
-    private Set<Element> getConnectedElements(Element element, ResourceSet resourceSet) {
+    private Set<Element> getConnectedElements(Set<Element> elements, ResourceSet resourceSet) {
         var connectedElements = new LinkedHashSet<Element>();
         var edgeEndpointsSwitch = new GeneralViewEdgeEndpointsSwitch();
-        // ponytail: project-wide scan is O(elements × relationships); add an endpoint index only if profiling requires it.
+        // ponytail: scan the project for each invocation; add an endpoint index only if profiling requires it.
         for (Element candidate : this.getProjectElements(resourceSet)) {
             var endpoints = edgeEndpointsSwitch.doSwitch(candidate);
-            if (endpoints.sources().contains(element)) {
+            if (endpoints.sources().stream().anyMatch(elements::contains)) {
                 connectedElements.addAll(endpoints.targets());
             }
-            if (endpoints.targets().contains(element)) {
+            if (endpoints.targets().stream().anyMatch(elements::contains)) {
                 connectedElements.addAll(endpoints.sources());
             }
             if (candidate instanceof Usage usage && (usage.getOwningUsage() != null || usage.getOwner() instanceof Definition)) {
-                if (Objects.equals(usage.getOwner(), element)) {
+                if (elements.contains(usage.getOwner())) {
                     connectedElements.add(usage);
                 }
-                if (Objects.equals(usage, element)) {
+                if (elements.contains(usage)) {
                     connectedElements.add(usage.getOwner());
                 }
             }
         }
-        connectedElements.remove(element);
+        connectedElements.removeAll(elements);
         connectedElements.removeIf(candidate -> !this.isProjectElement(candidate, resourceSet));
         return connectedElements;
     }
@@ -329,7 +337,7 @@ public class DiagramMutationExposeService {
      * @return whether the element can be exposed
      */
     private boolean isProjectElement(Element element, ResourceSet resourceSet) {
-        return !element.eIsProxy() && this.isProjectResource(element.eResource(), resourceSet) && new ModelQueryElementService().isExposable(element);
+        return !element.eIsProxy() && this.isProjectResource(element.eResource(), resourceSet) && this.modelQueryElementService.isExposable(element);
     }
 
     /**

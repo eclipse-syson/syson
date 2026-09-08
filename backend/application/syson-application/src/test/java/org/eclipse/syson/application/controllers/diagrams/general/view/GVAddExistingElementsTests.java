@@ -54,6 +54,7 @@ import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expose;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
 import org.eclipse.syson.tests.api.GivenSysONServer;
@@ -62,6 +63,8 @@ import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -237,6 +240,75 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
                         .noneMatch(node -> Objects.equals(node.getTargetObjectLabel(), PART2))))
                 .then(invokeFromPart1)
                 .consumeNextWith(afterPart2)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    /**
+     * Verify real General View descriptions exclude owned attributes and ports for both tool entry points.
+     *
+     * @param group whether to invoke the group tool
+     */
+    @GivenSysONServer({ GeneralViewEdgeOnEdgeTestProjectData.SCRIPT_PATH })
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void connectedElementsExcludeNestedContent(boolean group) {
+        String editingContextId = GeneralViewEdgeOnEdgeTestProjectData.EDITING_CONTEXT_ID;
+        var flux = this.givenDiagramSubscription.subscribe(new DiagramEventInput(UUID.randomUUID(), editingContextId,
+                GeneralViewEdgeOnEdgeTestProjectData.GraphicalIds.DIAGRAM_ID));
+        var description = this.givenDiagramDescription.getDiagramDescription(editingContextId, SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var ids = new DiagramDescriptionIdProvider(description, this.diagramIdProvider);
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        AtomicReference<ViewUsage> view = new AtomicReference<>();
+        var attribute = SysmlFactory.eINSTANCE.createAttributeUsage();
+        attribute.setDeclaredName("connectedAttribute");
+        var port = SysmlFactory.eINSTANCE.createPortUsage();
+        port.setDeclaredName("connectedPort");
+        var external = SysmlFactory.eINSTANCE.createPartUsage();
+        external.setDeclaredName("externalNeighbor");
+        Runnable prepare = () -> {
+            UUID inputId = UUID.randomUUID();
+            BiFunction<IEditingContext, IInput, IPayload> function = (context, input) -> {
+                var part1 = (Element) this.objectSearchService.getObject(context, this.getTargetObjectIdWithLabel(diagram.get(), PART1)).orElseThrow();
+                var part2 = (Element) this.objectSearchService.getObject(context, this.getTargetObjectIdWithLabel(diagram.get(), PART2)).orElseThrow();
+                view.set((ViewUsage) this.objectSearchService.getObject(context, diagram.get().getTargetObjectId()).orElseThrow());
+                for (Element child : List.of(attribute, port)) {
+                    var membership = SysmlFactory.eINSTANCE.createFeatureMembership();
+                    membership.getOwnedRelatedElement().add(child);
+                    part2.getOwnedRelationship().add(membership);
+                }
+                var externalMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+                externalMembership.getOwnedRelatedElement().add(external);
+                part2.getOwner().getOwnedRelationship().add(externalMembership);
+                var dependency = SysmlFactory.eINSTANCE.createDependency();
+                dependency.getClient().addAll(List.of(part1, part2));
+                dependency.getSupplier().addAll(List.of(attribute, port, external));
+                part1.getOwnedRelationship().add(dependency);
+                return new ExecuteEditingContextFunctionSuccessPayload(input.id(), true);
+            };
+            var change = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContextId, () -> inputId);
+            assertThat(this.executeEditingContextFunctionRunner.execute(new ExecuteEditingContextFunctionInput(inputId, editingContextId, function, change)).block())
+                    .isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
+        };
+        Runnable invoke = () -> {
+            String toolId = ids.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "Add existing connected elements");
+            List<String> selectedIds = List.of(this.getNodeIdWithLabel(diagram.get(), PART2));
+            if (group) {
+                toolId = ids.getGroupNodeToolId("Add existing connected elements");
+                selectedIds = List.of(this.getNodeIdWithLabel(diagram.get(), PART1), this.getNodeIdWithLabel(diagram.get(), PART2));
+            }
+            this.nodeCreationTester.invokeTool(editingContextId, diagram.get().getId(), selectedIds, toolId, List.of());
+        };
+        StepVerifier.create(flux)
+                .consumeNextWith(assertRefreshedDiagramThat(diagram::set))
+                .then(prepare)
+                .consumeNextWith(assertRefreshedDiagramThat(diagram::set))
+                .then(invoke)
+                .consumeNextWith(assertRefreshedDiagramThat(updated -> {
+                    assertThat(view.get().getExposedElement()).contains(external).doesNotContain(attribute, port);
+                    assertThat(updated.getNodes()).anyMatch(node -> "externalNeighbor".equals(node.getTargetObjectLabel()));
+                    assertThat(updated.getNodes()).noneMatch(node -> List.of("connectedAttribute", "connectedPort").contains(node.getTargetObjectLabel()));
+                }))
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

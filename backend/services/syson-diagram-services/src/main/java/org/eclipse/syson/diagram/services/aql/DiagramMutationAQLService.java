@@ -115,21 +115,23 @@ public class DiagramMutationAQLService {
     }
 
     /**
-     * {@link DiagramMutationExposeService#addExistingConnectedElements(Element, IEditingContext, DiagramContext, Map)}.
+     * {@link DiagramMutationExposeService#addExistingConnectedElements(List, IEditingContext, DiagramContext, List, Map)}.
      *
-     * @param element
-     *            the selected semantic element
+     * @param elements
+     *            the selected semantic elements
      * @param editingContext
      *            the project editing context
      * @param diagramContext
      *            the diagram to update
      * @param convertedNodes
      *            the converted node descriptions
-     * @return the selected element
+     * @param selectedNodes
+     *            the selected graphical nodes
+     * @return the selected elements
      */
-    public Element addExistingConnectedElements(Element element, IEditingContext editingContext, DiagramContext diagramContext,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        return this.diagramMutationExposeService.addExistingConnectedElements(element, editingContext, diagramContext, convertedNodes);
+    public List<Element> addExistingConnectedElements(List<Element> elements, IEditingContext editingContext, DiagramContext diagramContext,
+            List<Node> selectedNodes, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        return this.diagramMutationExposeService.addExistingConnectedElements(elements, editingContext, diagramContext, selectedNodes, convertedNodes);
     }
 
     /**

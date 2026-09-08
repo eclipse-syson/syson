@@ -39,7 +39,7 @@ public class ConnectedElementsToolTest {
                     .singleElement().satisfies(tool -> {
                         assertThat(tool.getPreconditionExpression()).contains("isView(");
                         assertThat(tool.getBody()).singleElement().isInstanceOfSatisfying(ChangeContext.class,
-                                context -> assertThat(context.getExpression()).contains("self.addExistingConnectedElements("));
+                                context -> assertThat(context.getExpression()).contains("->addExistingConnectedElements("));
                     });
         }
         NodeTool groupTool = service.relatedElementsGroupToolSection().getNodeTools().getLast();

@@ -21,15 +21,23 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.clearInvocations;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 
 import java.util.Map;
+import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
+import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
-import org.eclipse.syson.model.services.ModelQueryElementService;
 import org.eclipse.syson.services.api.SiriusWebCoreServices;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.junit.jupiter.api.Test;
@@ -86,19 +94,18 @@ public class DiagramMutationExposeServiceTest {
         resource.getContents().add(redefinedFeature);
         resource.getContents().add(subsettedFeature);
         resource.getContents().add(superclassifier);
+        List.of(definition, nestedUsage, annotatedElement, redefinedFeature, subsettedFeature, superclassifier).forEach(element -> element.setDeclaredName("element"));
 
         var editingContext = mock(IEMFEditingContext.class, org.mockito.Mockito.RETURNS_DEEP_STUBS);
         when(editingContext.getDomain().getResourceSet()).thenReturn(resourceSet);
-        var modelQueryElementService = mock(ModelQueryElementService.class);
-        when(modelQueryElementService.isExposable(any())).thenReturn(true);
         var coreServices = mock(SiriusWebCoreServices.class);
         when(coreServices.objectSearchService()).thenReturn(mock(IObjectSearchService.class));
-        var service = spy(new DiagramMutationExposeService(coreServices, mock(DiagramMutationElementService.class), mock(DiagramQueryElementService.class), modelQueryElementService));
+        var service = spy(new DiagramMutationExposeService(coreServices, mock(DiagramMutationElementService.class), mock(DiagramQueryElementService.class), mock(DiagramQueryExposeService.class)));
         doAnswer(invocation -> invocation.getArgument(0)).when(service).expose(any(), same(editingContext), isNull(), isNull(), anyMap());
 
-        service.addExistingConnectedElements(nestedUsage, editingContext, null, Map.of());
-        service.addExistingConnectedElements(definition, editingContext, null, Map.of());
-        service.addExistingConnectedElements(comment, editingContext, null, Map.of());
+        service.addExistingConnectedElements(List.of(nestedUsage), editingContext, null, List.of(), Map.of());
+        service.addExistingConnectedElements(List.of(definition), editingContext, null, List.of(), Map.of());
+        service.addExistingConnectedElements(List.of(comment), editingContext, null, List.of(), Map.of());
 
         verify(service).expose(definition, editingContext, null, null, Map.of());
         verify(service).expose(annotatedElement, editingContext, null, null, Map.of());
@@ -106,5 +113,56 @@ public class DiagramMutationExposeServiceTest {
         verify(service).expose(subsettedFeature, editingContext, null, null, Map.of());
         verify(service).expose(nestedUsage, editingContext, null, null, Map.of());
         verify(service).expose(superclassifier, editingContext, null, null, Map.of());
+    }
+
+    /**
+     * Filter against the entire selection before exposure, regardless of selection order.
+     */
+    @Test
+    void filtersAgainstEverySelectedNode() {
+        var definition = SysmlFactory.eINSTANCE.createPartDefinition();
+        var comment = SysmlFactory.eINSTANCE.createComment();
+        var nestedUsage = SysmlFactory.eINSTANCE.createPartUsage();
+        var superclassifier = SysmlFactory.eINSTANCE.createPartDefinition();
+        var annotatedElement = SysmlFactory.eINSTANCE.createPartUsage();
+        var resourceSet = new ResourceSetImpl();
+        var resource = new ResourceImpl(URI.createURI("test:/selection.sysml"));
+        resourceSet.getResources().add(resource);
+        resource.getContents().addAll(List.of(definition, comment, nestedUsage, superclassifier, annotatedElement));
+        List.of(definition, nestedUsage, superclassifier, annotatedElement).forEach(element -> element.setDeclaredName("element"));
+        var editingContext = mock(IEMFEditingContext.class, org.mockito.Mockito.RETURNS_DEEP_STUBS);
+        when(editingContext.getDomain().getResourceSet()).thenReturn(resourceSet);
+        var coreServices = mock(SiriusWebCoreServices.class);
+        when(coreServices.objectSearchService()).thenReturn(mock(IObjectSearchService.class));
+        var service = spy(new DiagramMutationExposeService(coreServices, mock(DiagramMutationElementService.class), mock(DiagramQueryElementService.class), mock(DiagramQueryExposeService.class)));
+        var dependency = SysmlFactory.eINSTANCE.createDependency();
+        dependency.getClient().add(comment);
+        dependency.getSupplier().addAll(List.of(nestedUsage, superclassifier, annotatedElement));
+        comment.getOwnedRelationship().add(dependency);
+        var node = mock(Node.class);
+        when(node.getId()).thenReturn("definitionNode");
+        when(node.getTargetObjectId()).thenReturn("definition");
+        when(node.getDescriptionId()).thenReturn("definitionDescription");
+        var diagram = mock(Diagram.class);
+        when(diagram.getNodes()).thenReturn(List.of(node));
+        var context = mock(DiagramContext.class);
+        when(context.diagram()).thenReturn(diagram);
+        when(coreServices.objectSearchService().getObject(editingContext, "definition")).thenReturn(Optional.of(definition));
+        var description = mock(NodeDescription.class);
+        when(description.getId()).thenReturn("definitionDescription");
+        var child = mock(NodeDescription.class);
+        when(child.getSemanticElementsProvider()).thenReturn(variables -> List.of(nestedUsage));
+        when(child.getShouldRenderPredicate()).thenReturn(variables -> true);
+        when(description.getChildNodeDescriptions()).thenReturn(List.of(child));
+        var descriptions = Map.of(org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createNodeDescription(), description);
+        doAnswer(invocation -> invocation.getArgument(0)).when(service).expose(any(), same(editingContext), same(context), isNull(), anyMap());
+        clearInvocations(service);
+
+        service.addExistingConnectedElements(List.of(comment, definition), editingContext, context, List.of(node), descriptions);
+        service.addExistingConnectedElements(List.of(definition, comment), editingContext, context, List.of(node), descriptions);
+
+        verify(service, never()).expose(nestedUsage, editingContext, context, null, descriptions);
+        verify(service, times(2)).expose(superclassifier, editingContext, context, null, descriptions);
+        verify(service, times(2)).expose(annotatedElement, editingContext, context, null, descriptions);
     }
 }

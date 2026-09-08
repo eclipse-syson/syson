@@ -236,9 +236,13 @@ public class ToolDescriptionService {
     private NodeTool addExistingConnectedElementsTool(boolean group) {
         String receiver = "self";
         String selectedNode = Node.SELECTED_NODE;
+        String elements = "Sequence{self}";
+        String nodes = "Sequence{selectedNode}";
         if (group) {
             receiver = "self->first()";
             selectedNode = "n";
+            elements = "self";
+            nodes = "selectedNodes";
         }
         String precondition = ServiceMethod.of4(DiagramQueryAQLService.class, DiagramQueryAQLService::isView, Element.class, String.class, Node.class,
                 IEditingContext.class, DiagramContext.class)
@@ -253,9 +257,9 @@ public class ToolDescriptionService {
                 .iconURLsExpression("/icons/AddReferencedElements.svg")
                 .preconditionExpression(precondition)
                 .body(this.viewBuilderHelper.newChangeContext()
-                        .expression(ServiceMethod.of3(DiagramMutationAQLService.class, DiagramMutationAQLService::addExistingConnectedElements, Element.class,
-                                IEditingContext.class, DiagramContext.class, java.util.Map.class)
-                                .aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT,
+                        .expression(ServiceMethod.of4(DiagramMutationAQLService.class, DiagramMutationAQLService::addExistingConnectedElements, List.class,
+                                IEditingContext.class, DiagramContext.class, List.class, java.util.Map.class)
+                                .aqlArrow(elements, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, nodes,
                                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
                         .build())
                 .build();

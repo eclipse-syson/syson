@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -191,5 +191,36 @@ public class NodeDescriptionService {
         }
 
         return canNodeDescriptionRenderElement;
+    }
+
+    /**
+     * Check semantic membership and rendering eligibility with the actual graphical ancestors.
+     *
+     * @param description
+     *            the candidate description
+     * @param element
+     *            the element to render
+     * @param owner
+     *            the semantic parent
+     * @param editingContext
+     *            the editing context
+     * @param diagramContext
+     *            the diagram context
+     * @param ancestors
+     *            semantic ancestors, nearest parent first
+     * @return whether this description can render the element
+     */
+    public boolean canNodeDescriptionRenderElement(NodeDescription description, Element element, Object owner, IEditingContext editingContext,
+            DiagramContext diagramContext, List<Object> ancestors) {
+        var variables = new VariableManager();
+        variables.put(VariableManager.SELF, owner);
+        variables.put(IEditingContext.EDITING_CONTEXT, editingContext);
+        variables.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
+        variables.put(NodeDescription.ANCESTORS, ancestors);
+        if (!description.getSemanticElementsProvider().apply(variables).contains(element)) {
+            return false;
+        }
+        variables.put(VariableManager.SELF, element);
+        return description.getShouldRenderPredicate().test(variables);
     }
 }
