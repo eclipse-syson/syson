@@ -14,12 +14,13 @@
 
 === Improvements
 
-- [releng] Remove redundant inherited Maven `groupId` and `version` declarations from backend modules.
 - https://github.com/eclipse-syson/syson/issues/2494[#2494] [test] Improve `SemanticRunnableFactory` by adding an API that emits the appropriate change description for editing context updates in integration tests.
 - [cleanup] Use `SemanticRunnableFactory` more widely in integration tests, replacing the `IExecuteEditingContextFunctionRunner` by the `SemanticRunnableFactory`.
+- [releng] Remove redundant inherited Maven `groupId` and `version` declarations from backend modules.
 
 === New features
 
+- [releng] Add the `syson-starter` Maven module so downstream Spring Boot applications can use SysON with a single dependency.
 
 == v2026.9.0
 
