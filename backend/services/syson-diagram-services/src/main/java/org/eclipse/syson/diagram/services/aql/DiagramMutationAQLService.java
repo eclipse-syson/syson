@@ -116,6 +116,16 @@ public class DiagramMutationAQLService {
 
     /**
      * {@link DiagramMutationExposeService#addExistingConnectedElements(Element, IEditingContext, DiagramContext, Map)}.
+     *
+     * @param element
+     *            the selected semantic element
+     * @param editingContext
+     *            the project editing context
+     * @param diagramContext
+     *            the diagram to update
+     * @param convertedNodes
+     *            the converted node descriptions
+     * @return the selected element
      */
     public Element addExistingConnectedElements(Element element, IEditingContext editingContext, DiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {

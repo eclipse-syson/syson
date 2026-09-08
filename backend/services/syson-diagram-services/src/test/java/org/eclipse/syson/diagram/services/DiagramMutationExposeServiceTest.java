@@ -37,10 +37,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests for {@link DiagramMutationExposeService}.
  *
- * @author arichard
+ * @author cbrun
  */
 public class DiagramMutationExposeServiceTest {
 
+    /**
+     * Verify exposure through composition, annotation and specialization relationships.
+     */
     @Test
     void testAddExistingConnectedElements() {
         var resourceSet = new ResourceSetImpl();

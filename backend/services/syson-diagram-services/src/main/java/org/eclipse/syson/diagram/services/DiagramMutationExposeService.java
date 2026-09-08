@@ -42,22 +42,13 @@ import org.eclipse.syson.services.api.SiriusWebCoreServices;
 import org.eclipse.syson.services.api.ViewDefinitionKind;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
-import org.eclipse.syson.sysml.AllocationUsage;
-import org.eclipse.syson.sysml.Annotation;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Comment;
-import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.ControlNode;
 import org.eclipse.syson.sysml.Definition;
-import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expose;
-import org.eclipse.syson.sysml.FeatureTyping;
-import org.eclipse.syson.sysml.FeatureValue;
-import org.eclipse.syson.sysml.FlowUsage;
-import org.eclipse.syson.sysml.FramedConcernMembership;
-import org.eclipse.syson.sysml.IncludeUseCaseUsage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.Package;
@@ -65,16 +56,9 @@ import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
-import org.eclipse.syson.sysml.ReferenceSubsetting;
-import org.eclipse.syson.sysml.Redefinition;
-import org.eclipse.syson.sysml.Relationship;
-import org.eclipse.syson.sysml.SatisfyRequirementUsage;
-import org.eclipse.syson.sysml.Subclassification;
-import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
-import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
@@ -252,7 +236,19 @@ public class DiagramMutationExposeService {
         return element;
     }
 
-    /** Adds every project element connected to the given element to the current view. */
+    /**
+     * Add project elements connected to the selected element to the current view.
+     *
+     * @param element
+     *            the selected semantic element
+     * @param editingContext
+     *            the editing context containing project resources
+     * @param diagramContext
+     *            the diagram to update
+     * @param convertedNodes
+     *            the converted node descriptions
+     * @return the selected element
+     */
     public Element addExistingConnectedElements(Element element, IEditingContext editingContext, DiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
@@ -264,11 +260,21 @@ public class DiagramMutationExposeService {
         return element;
     }
 
+    /**
+     * Find exposable project elements connected in either direction, excluding the selected element.
+     *
+     * @param element
+     *            the selected element
+     * @param resourceSet
+     *            the project resources
+     * @return the distinct connected elements
+     */
     private Set<Element> getConnectedElements(Element element, ResourceSet resourceSet) {
         var connectedElements = new LinkedHashSet<Element>();
+        var edgeEndpointsSwitch = new GeneralViewEdgeEndpointsSwitch();
         // ponytail: project-wide scan is O(elements × relationships); add an endpoint index only if profiling requires it.
         for (Element candidate : this.getProjectElements(resourceSet)) {
-            var endpoints = this.getGeneralViewEdgeEndpoints(candidate);
+            var endpoints = edgeEndpointsSwitch.doSwitch(candidate);
             if (endpoints.sources().contains(element)) {
                 connectedElements.addAll(endpoints.targets());
             }
@@ -289,6 +295,13 @@ public class DiagramMutationExposeService {
         return connectedElements;
     }
 
+    /**
+     * Collect semantic elements from project resources, excluding standard libraries.
+     *
+     * @param resourceSet
+     *            the resources to inspect
+     * @return the distinct project elements
+     */
     private Set<Element> getProjectElements(ResourceSet resourceSet) {
         var elements = new LinkedHashSet<Element>();
         for (Resource resource : resourceSet.getResources()) {
@@ -306,78 +319,32 @@ public class DiagramMutationExposeService {
         return elements;
     }
 
+    /**
+     * Check whether an element is resolved, exposable and contained in a project resource.
+     *
+     * @param element
+     *            the candidate element
+     * @param resourceSet
+     *            the project resources
+     * @return whether the element can be exposed
+     */
     private boolean isProjectElement(Element element, ResourceSet resourceSet) {
         return !element.eIsProxy() && this.isProjectResource(element.eResource(), resourceSet) && new ModelQueryElementService().isExposable(element);
     }
 
+    /**
+     * Check whether a resource belongs to the project and is not a standard library.
+     *
+     * @param resource
+     *            the candidate resource, possibly null
+     * @param resourceSet
+     *            the project resources
+     * @return whether the resource is a project resource
+     */
     private boolean isProjectResource(Resource resource, ResourceSet resourceSet) {
         return resource != null && resourceSet.getResources().contains(resource) && !ElementUtil.isStandardLibraryResource(resource);
     }
 
-    private EdgeEndpoints getGeneralViewEdgeEndpoints(Element candidate) {
-        var sources = new LinkedHashSet<Element>();
-        var targets = new LinkedHashSet<Element>();
-        if (candidate instanceof AllocationUsage allocationUsage) {
-            sources.add(this.metamodelQueryElementService.getSourceAllocateEdge(allocationUsage));
-            targets.add(this.metamodelQueryElementService.getTargetAllocateEdge(allocationUsage));
-        } else if (candidate instanceof FlowUsage flowUsage) {
-            sources.add(flowUsage.getSourceOutputFeature());
-            targets.add(flowUsage.getTargetInputFeature());
-        } else if (candidate instanceof Connector connector) {
-            sources.add(this.metamodelQueryElementService.getConnectorSource(connector));
-            targets.addAll(this.metamodelQueryElementService.getConnectorTarget(connector));
-        } else if (candidate instanceof TransitionUsage transitionUsage) {
-            sources.add(transitionUsage.getSource());
-            targets.add(transitionUsage.getTarget());
-        } else if (candidate instanceof SatisfyRequirementUsage satisfy) {
-            if (satisfy.getSatisfyingFeature() != null) {
-                sources.add(satisfy.getSatisfyingFeature());
-            } else {
-                sources.add(satisfy.getOwner());
-            }
-            targets.add(satisfy.getSatisfiedRequirement());
-        } else if (candidate instanceof IncludeUseCaseUsage include) {
-            sources.add(include.getOwningUsage());
-            targets.add(include.getUseCaseIncluded());
-        } else if (candidate instanceof FeatureValue featureValue) {
-            sources.add(featureValue.getFeatureWithValue());
-            targets.add(this.metamodelQueryElementService.getFeatureValueTarget(featureValue));
-        } else if (candidate instanceof FramedConcernMembership framedConcern) {
-            sources.add(((Relationship) framedConcern).getOwningRelatedElement());
-            targets.add(this.metamodelQueryElementService.getFramedConcernTarget(framedConcern));
-        } else if (candidate instanceof RequirementConstraintMembership requirementConstraint) {
-            sources.add(requirementConstraint.getOwningRelatedElement());
-            targets.add(this.metamodelQueryElementService.getRequirementConstraintTarget(requirementConstraint));
-        } else if (candidate instanceof Annotation annotation) {
-            sources.add(annotation.getAnnotatingElement());
-            targets.add(annotation.getAnnotatedElement());
-        } else if (candidate instanceof Dependency dependency) {
-            sources.addAll(dependency.getClient());
-            targets.addAll(dependency.getSupplier());
-        } else if (candidate instanceof FeatureTyping featureTyping) {
-            sources.add(featureTyping.getTypedFeature());
-            targets.add(featureTyping.getType());
-        } else if (candidate instanceof Redefinition redefinition) {
-            sources.add(redefinition.getRedefiningFeature());
-            targets.add(redefinition.getRedefinedFeature());
-        } else if (candidate instanceof ReferenceSubsetting referenceSubsetting) {
-            sources.add(referenceSubsetting.getReferencingFeature());
-            targets.add(referenceSubsetting.getReferencedFeature());
-        } else if (candidate instanceof Subsetting subsetting) {
-            sources.add(subsetting.getSubsettingFeature());
-            targets.add(subsetting.getSubsettedFeature());
-        } else if (candidate instanceof Subclassification subclassification) {
-            sources.add(subclassification.getSubclassifier());
-            targets.add(subclassification.getSuperclassifier());
-        }
-        sources.remove(null);
-        targets.remove(null);
-        return new EdgeEndpoints(sources, targets);
-    }
-
-    /** Endpoints of a relationship rendered as an edge. */
-    private record EdgeEndpoints(Set<Element> sources, Set<Element> targets) {
-    }
 
     private Node findSelectedNode(Element element, List<Node> selectedNodes) {
         if (selectedNodes == null) {

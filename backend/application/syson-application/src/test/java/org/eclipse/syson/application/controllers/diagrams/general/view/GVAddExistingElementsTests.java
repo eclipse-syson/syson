@@ -169,6 +169,9 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
+    /**
+     * Verify that the connected elements tool restores hidden endpoints in both relationship directions.
+     */
     @DisplayName("GIVEN a GV diagram, WHEN adding connected elements, THEN both edge endpoints are added")
     @GivenSysONServer({ GeneralViewEdgeOnEdgeTestProjectData.SCRIPT_PATH })
     @Test
@@ -556,6 +559,15 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
                 .orElseThrow();
     }
 
+    /**
+     * Find a node by semantic label, including child nodes.
+     *
+     * @param nodes
+     *            the nodes to search
+     * @param label
+     *            the expected target object label
+     * @return the matching node, if any
+     */
     private Optional<Node> findNodeWithLabel(List<Node> nodes, String label) {
         return nodes.stream()
                 .filter(node -> Objects.equals(node.getTargetObjectLabel(), label))
@@ -565,6 +577,15 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
                 .findFirst());
     }
 
+    /**
+     * Find the semantic identifier of a top-level node with the given label.
+     *
+     * @param diagram
+     *            the diagram to search
+     * @param label
+     *            the expected target object label
+     * @return the matching target object identifier
+     */
     private String getTargetObjectIdWithLabel(Diagram diagram, String label) {
         return diagram.getNodes().stream()
                 .filter(node -> Objects.equals(node.getTargetObjectLabel(), label))
