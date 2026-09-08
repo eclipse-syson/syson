@@ -44,57 +44,12 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-starter</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.eclipse.syson</groupId>
-			<artifactId>syson-sysml-metamodel</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.syson</groupId>
-			<artifactId>syson-sysml-metamodel-edit</artifactId>
+			<artifactId>syson-starter</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-frontend</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.syson</groupId>
-			<artifactId>syson-application-configuration</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.syson</groupId>
-			<artifactId>syson-sysml-rest-api-services</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.syson</groupId>
-			<artifactId>syson-diagram-common-view</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.syson</groupId>
-			<artifactId>syson-standard-diagrams-view</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.syson</groupId>
-			<artifactId>syson-table-requirements-view</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.syson</groupId>
-			<artifactId>syson-tree-explorer-view</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.syson</groupId>
-			<artifactId>syson-sysml-import</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.syson</groupId>
-			<artifactId>syson-sysml-export</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.syson</groupId>
-			<artifactId>syson-sysml-validation</artifactId>
 		</dependency>
 
 		<!-- Test Dependencies -->
