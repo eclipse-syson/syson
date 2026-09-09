@@ -35,7 +35,7 @@ asciidoc:
     source-code-url: "https://github.com/eclipse-syson/syson"
     milestones: "{source-code-url}/milestones"
     stv: "State Transition view"
-    syson-tag: "v2026.7.0"
+    syson-tag: "v2026.9.0"
     sysml: "SysML"
     sysmlv1: "{sysml} v1"
     sysmlv2: "{sysml} v2"
