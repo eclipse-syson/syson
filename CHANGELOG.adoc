@@ -2,10 +2,6 @@
 
 == v2026.9.0
 
-=== Shapes
-
-=== Architectural decision records
-
 === Breaking changes
 
 - [services] As part of the migration to the new diagram service architecture, the methods that were exposed by `ViewToolService` (which has been deleted) are now split between `org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService` for mutation services, `org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService` for diagram query and tool precondition services, and `org.eclipse.syson.tree.services.aql.TreeQueryAQLService` for selection dialog tree query services.
@@ -26,7 +22,7 @@ Please use `org.eclipse.sirius.components.trees.tests.graphql.TreeItemPaletteExe
 
 === Dependency update
 
-- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.7.4].
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.9.0].
 - [releng] Update the version of `turbo` used for the frontend from 2.4.4 to 2.10.5.
 - [releng] Update `vite` from 8.0.14 to 8.1.5.
 - [releng] Update `playwright` from 1.57.0 to 1.62.0
