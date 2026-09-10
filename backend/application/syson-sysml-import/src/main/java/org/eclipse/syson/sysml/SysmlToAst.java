@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.eclipse.syson.sysml.metamodel.services.textual.utils.Severity;
@@ -47,6 +48,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class SysmlToAst {
 
+    private static final int MAX_VALIDATION_REPORT_BYTES = 64 * 1024;
+
+    private static final String VALIDATION_ERRORS_HEADER = "There are validation errors:";
+
+    private static final Pattern SYNTAX_DIAGNOSTIC = Pattern.compile("line \\d+: (Expecting|unexpected character: ->)");
+
+    private static final String PARTIAL_IMPORT_WARNING = "The file contains a syntax error. The elements that follow it may be missing from the imported model.";
+
+    private static final String VALIDATION_UNAVAILABLE_WARNING = "The file could not be checked for syntax errors. The imported model may be incomplete.";
+
     private final Logger logger = LoggerFactory.getLogger(SysmlToAst.class);
 
     private final String cliPath;
@@ -56,6 +67,22 @@ public class SysmlToAst {
     }
 
     public AstParsingResult convert(final InputStream input, final String fileExtension) {
+        return this.convert(input, fileExtension, false);
+    }
+
+    /**
+     * Converts the document, optionally collecting validation diagnostics for the upload report.
+     * Validation does not decide whether the AST is imported.
+     *
+     * @param input
+     *            the document to parse
+     * @param fileExtension
+     *            the document extension
+     * @param includeValidationReport
+     *            whether to collect the CLI validation report
+     * @return the AST and any reported diagnostics
+     */
+    public AstParsingResult convert(final InputStream input, final String fileExtension, final boolean includeValidationReport) {
         Path sysmlInputPath = null;
         Path sysIdeInputPath = null;
         Optional<InputStream> astInputStream = Optional.empty();
@@ -91,6 +118,9 @@ public class SysmlToAst {
                 int exitCode = sysIdeProcess.exitValue();
                 if (exitCode == 0) {
                     astInputStream = Optional.of(new ByteArrayInputStream(stdout.getBytes()));
+                    if (includeValidationReport) {
+                        this.collectValidationReport(sysIdeInputPath, sysmlInputPath, reports);
+                    }
                 } else {
                     this.logger.error("The process that parse the SysML file ended with an error core : {}", exitCode);
                 }
@@ -112,6 +142,79 @@ public class SysmlToAst {
         return new AstParsingResult(astInputStream, reports);
 
 
+    }
+
+    /**
+     * Runs the parser a second time to find out whether it dropped part of the file.
+     * <p>
+     * The parser reports lexer and parser diagnostics before linking and semantic ones, so only a syntax error can
+     * come first, and only a syntax error makes the parser stop before the end of the file. The report is
+     * human-readable text quoting the source, so only that first diagnostic is interpreted; the rest is repeated
+     * verbatim so the author can locate the problem. Later diagnostics are deliberately left alone, because the
+     * command line parser runs without the standard library and reports the names a valid model borrows from it as
+     * unresolved.
+     * </p>
+     */
+    private void collectValidationReport(Path cli, Path input, List<Status> reports) {
+        Path reportFile = null;
+        Process process = null;
+        try {
+            reportFile = Files.createTempFile("syside-validation", ".txt");
+            ProcessBuilder builder = new ProcessBuilder("node", cli.toString(), "dump", "--validate", "--stdlib", "none", input.toString());
+            builder.environment().put("FORCE_COLOR", "0");
+            // Native redirection avoids pipe deadlocks without introducing another asynchronous reader.
+            process = builder.redirectOutput(ProcessBuilder.Redirect.DISCARD).redirectError(reportFile.toFile()).start();
+            if (process.waitFor(60, TimeUnit.SECONDS)) {
+                this.reportSyntaxError(this.readValidationReport(reportFile), process.exitValue(), reports);
+            } else {
+                reports.add(new Status(Severity.WARNING, VALIDATION_UNAVAILABLE_WARNING));
+            }
+        } catch (IOException e) {
+            this.logger.warn("Could not collect the SysML validation report.", e);
+            reports.add(new Status(Severity.WARNING, VALIDATION_UNAVAILABLE_WARNING));
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            reports.add(new Status(Severity.WARNING, VALIDATION_UNAVAILABLE_WARNING));
+        } finally {
+            if (process != null && process.isAlive()) {
+                process.destroyForcibly();
+            }
+            if (reportFile != null) {
+                reportFile.toFile().delete();
+            }
+        }
+    }
+
+    private String readValidationReport(Path reportFile) throws IOException {
+        try (InputStream stream = Files.newInputStream(reportFile)) {
+            String report = new String(stream.readNBytes(MAX_VALIDATION_REPORT_BYTES), StandardCharsets.UTF_8);
+            if (stream.read() != -1) {
+                report = report + System.lineSeparator() + "[Report shortened]";
+            }
+            return report;
+        }
+    }
+
+    private void reportSyntaxError(String report, int exitCode, List<Status> reports) {
+        String firstDiagnostic = this.firstDiagnostic(report);
+        if (firstDiagnostic == null) {
+            if (exitCode != 0) {
+                reports.add(new Status(Severity.WARNING, VALIDATION_UNAVAILABLE_WARNING));
+            }
+        } else if (SYNTAX_DIAGNOSTIC.matcher(firstDiagnostic).lookingAt()) {
+            // The report quotes the source, so it is appended as is instead of being formatted.
+            reports.add(new Status(Severity.WARNING, PARTIAL_IMPORT_WARNING + System.lineSeparator() + report));
+        }
+    }
+
+    private String firstDiagnostic(String report) {
+        String[] lines = report.split("\\R");
+        for (int i = 0; i < lines.length - 1; i++) {
+            if (VALIDATION_ERRORS_HEADER.equals(lines[i].strip())) {
+                return lines[i + 1];
+            }
+        }
+        return null;
     }
 
     private CompletableFuture<String> readStdErr(Process sysIdeProcess, List<Status> messages) {

@@ -78,7 +78,7 @@ public class SysMLExternalResourceLoaderService implements IExternalResourceLoad
 
     @Override
     public Optional<ExternalResourceLoadingResult> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet, boolean applyMigrationParticipants) {
-        AstParsingResult astResult = this.sysmlToAst.convert(inputStream, resourceURI.fileExtension());
+        AstParsingResult astResult = this.sysmlToAst.convert(inputStream, resourceURI.fileExtension(), true);
 
         List<String> reports = new ArrayList<>(astResult.reports().stream().map(Status::toString).toList());
         final Resource resource;
