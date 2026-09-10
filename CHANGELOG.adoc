@@ -13,6 +13,8 @@
 === Bug fixes
 
 - https://github.com/eclipse-syson/syson/issues/1074[#1074] [diagrams] Fix available diagram tools on standard diagrams created on a root namespace
+- https://github.com/eclipse-syson/syson/issues/2510[#2510] [import] Report syntax errors that may leave an uploaded SysML file partially imported.
+The parsed elements are still imported, and the loading report includes the parser diagnostics and a warning about possibly missing elements.
 
 === Improvements
 

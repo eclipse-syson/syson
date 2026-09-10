@@ -18,6 +18,11 @@ The tools are also able to create an empty `ReferenceUsage`.
 
 ** Fix available diagram tools on standard diagrams created on a root `Namespace`.
 
+* In textual import/export:
+
+** Report syntax errors that may leave an uploaded SysML file partially imported.
+The parsed elements are still imported, and the loading report identifies the syntax problem and warns about possibly missing elements.
+
 == Improvements
 
 == Technical details
