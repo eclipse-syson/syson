@@ -49,10 +49,14 @@ public class ConnectedElementRepresentationFilter {
     /**
      * Create a filter for one invocation of the connected elements tool.
      *
-     * @param objectSearchService the semantic object lookup
-     * @param editingContext the project context
-     * @param diagramContext the current diagram
-     * @param convertedNodes the converted descriptions
+     * @param objectSearchService
+     *            the semantic object lookup
+     * @param editingContext
+     *            the project context
+     * @param diagramContext
+     *            the current diagram
+     * @param convertedNodes
+     *            the converted descriptions
      */
     public ConnectedElementRepresentationFilter(IObjectSearchService objectSearchService, IEditingContext editingContext, DiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
@@ -66,7 +70,8 @@ public class ConnectedElementRepresentationFilter {
     /**
      * Resolve a compartment selection to the enclosing representation of the same semantic element.
      *
-     * @param selectedNode the selected node
+     * @param selectedNode
+     *            the selected node
      * @return the reference node
      */
     public Node getReferenceNode(Node selectedNode) {
@@ -81,8 +86,10 @@ public class ConnectedElementRepresentationFilter {
     /**
      * Check border and nested descriptions, including compartments that are currently hidden.
      *
-     * @param candidate the connected element
-     * @param reference the normalized selected node
+     * @param candidate
+     *            the connected element
+     * @param reference
+     *            the normalized selected node
      * @return whether the candidate has a representation inside the reference node
      */
     public boolean canRenderInside(Element candidate, Node reference) {
@@ -105,11 +112,16 @@ public class ConnectedElementRepresentationFilter {
     /**
      * Traverse only containers representing the same owner, guarding reused-description cycles.
      *
-     * @param candidate the connected element
-     * @param owner the selected semantic element
-     * @param description the current container description
-     * @param ancestors the semantic ancestors of its children
-     * @param visited the descriptions already inspected for this owner
+     * @param candidate
+     *            the connected element
+     * @param owner
+     *            the selected semantic element
+     * @param description
+     *            the current container description
+     * @param ancestors
+     *            the semantic ancestors of its children
+     * @param visited
+     *            the descriptions already inspected for this owner
      * @return whether a nested description renders the candidate
      */
     private boolean canRenderInside(Element candidate, Element owner, NodeDescription description, List<Object> ancestors, Set<String> visited) {
