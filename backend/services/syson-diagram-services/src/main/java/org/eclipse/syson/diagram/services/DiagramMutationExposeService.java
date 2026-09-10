@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
@@ -30,6 +31,10 @@ import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.syson.model.services.ModelQueryElementService;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.UtilService;
@@ -58,6 +63,7 @@ import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
+import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.NodeFinder;
 import org.springframework.stereotype.Service;
 
@@ -76,6 +82,8 @@ public class DiagramMutationExposeService {
     private final DiagramQueryElementService diagramQueryElementService;
 
     private final DiagramQueryExposeService diagramQueryExposeService;
+
+    private final ModelQueryElementService modelQueryElementService = new ModelQueryElementService();
 
     private final MetamodelQueryElementService metamodelQueryElementService;
 
@@ -229,6 +237,122 @@ public class DiagramMutationExposeService {
         this.addToExposedElements(element, recursive, editingContext, diagramContext, selectedNode, convertedNodes);
         return element;
     }
+
+    /**
+     * Add connected project elements that cannot be rendered inside any selected node.
+     *
+     * @param elements
+     *            the selected semantic elements
+     * @param editingContext
+     *            the editing context containing project resources
+     * @param diagramContext
+     *            the diagram to update
+     * @param convertedNodes
+     *            the converted node descriptions
+     * @param selectedNodes
+     *            the selected graphical nodes
+     * @return the selected elements
+     */
+    public List<Element> addExistingConnectedElements(List<Element> elements, IEditingContext editingContext, DiagramContext diagramContext,
+            List<Node> selectedNodes, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        if (editingContext instanceof IEMFEditingContext emfEditingContext) {
+            var resourceSet = emfEditingContext.getDomain().getResourceSet();
+            var candidates = this.getConnectedElements(new LinkedHashSet<>(elements), resourceSet);
+            var filter = new ConnectedElementRepresentationFilter(this.siriusWebCoreServices.objectSearchService(), editingContext, diagramContext, convertedNodes);
+            var referenceNodes = selectedNodes.stream().map(filter::getReferenceNode).distinct().toList();
+            candidates.removeIf(candidate -> referenceNodes.stream().anyMatch(node -> filter.canRenderInside(candidate, node)));
+            for (Element connectedElement : candidates) {
+                this.expose(connectedElement, editingContext, diagramContext, null, convertedNodes);
+            }
+        }
+        return elements;
+    }
+
+    /**
+     * Find exposable project elements connected in either direction, excluding the selected element.
+     *
+     * @param elements
+     *            the selected elements
+     * @param resourceSet
+     *            the project resources
+     * @return the distinct connected elements
+     */
+    private Set<Element> getConnectedElements(Set<Element> elements, ResourceSet resourceSet) {
+        var connectedElements = new LinkedHashSet<Element>();
+        var edgeEndpointsSwitch = new GeneralViewEdgeEndpointsSwitch();
+        // ponytail: scan the project for each invocation; add an endpoint index only if profiling requires it.
+        for (Element candidate : this.getProjectElements(resourceSet)) {
+            var endpoints = edgeEndpointsSwitch.doSwitch(candidate);
+            if (endpoints.sources().stream().anyMatch(elements::contains)) {
+                connectedElements.addAll(endpoints.targets());
+            }
+            if (endpoints.targets().stream().anyMatch(elements::contains)) {
+                connectedElements.addAll(endpoints.sources());
+            }
+            if (candidate instanceof Usage usage && (usage.getOwningUsage() != null || usage.getOwner() instanceof Definition)) {
+                if (elements.contains(usage.getOwner())) {
+                    connectedElements.add(usage);
+                }
+                if (elements.contains(usage)) {
+                    connectedElements.add(usage.getOwner());
+                }
+            }
+        }
+        connectedElements.removeAll(elements);
+        connectedElements.removeIf(candidate -> !this.isProjectElement(candidate, resourceSet));
+        return connectedElements;
+    }
+
+    /**
+     * Collect semantic elements from project resources, excluding standard libraries.
+     *
+     * @param resourceSet
+     *            the resources to inspect
+     * @return the distinct project elements
+     */
+    private Set<Element> getProjectElements(ResourceSet resourceSet) {
+        var elements = new LinkedHashSet<Element>();
+        for (Resource resource : resourceSet.getResources()) {
+            if (this.isProjectResource(resource, resourceSet)) {
+                var contents = resource.getAllContents();
+                while (contents.hasNext()) {
+                    EObject content = contents.next();
+                    if (content instanceof Element projectElement) {
+                        elements.add(projectElement);
+                    }
+                }
+                resource.getContents().stream().filter(Element.class::isInstance).map(Element.class::cast).forEach(elements::add);
+            }
+        }
+        return elements;
+    }
+
+    /**
+     * Check whether an element is resolved, exposable and contained in a project resource.
+     *
+     * @param element
+     *            the candidate element
+     * @param resourceSet
+     *            the project resources
+     * @return whether the element can be exposed
+     */
+    private boolean isProjectElement(Element element, ResourceSet resourceSet) {
+        return !element.eIsProxy() && this.isProjectResource(element.eResource(), resourceSet) && this.modelQueryElementService.isExposable(element);
+    }
+
+    /**
+     * Check whether a resource belongs to the project and is not a standard library.
+     *
+     * @param resource
+     *            the candidate resource, possibly null
+     * @param resourceSet
+     *            the project resources
+     * @return whether the resource is a project resource
+     */
+    private boolean isProjectResource(Resource resource, ResourceSet resourceSet) {
+        return resource != null && resourceSet.getResources().contains(resource) && !ElementUtil.isStandardLibraryResource(resource);
+    }
+
 
     private Node findSelectedNode(Element element, List<Node> selectedNodes) {
         if (selectedNodes == null) {

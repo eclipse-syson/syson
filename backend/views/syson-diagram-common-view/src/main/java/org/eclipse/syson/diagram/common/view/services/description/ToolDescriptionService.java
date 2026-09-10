@@ -42,8 +42,10 @@ import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
+import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -158,7 +160,7 @@ public class ToolDescriptionService {
     }
 
     /**
-     * Create a {@link NodeToolSection} containing the {@code Add Existing Elements} tools.
+     * Create a {@link NodeToolSection} containing tools for existing and connected elements.
      *
      * @param nested
      *            Whether the created tools adds nested elements
@@ -167,19 +169,19 @@ public class ToolDescriptionService {
     public NodeToolSection relatedElementsNodeToolSection(boolean nested) {
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Related Elements")
-                .nodeTools(this.addExistingElementsTool(false, nested), this.addExistingElementsTool(true, nested))
+                .nodeTools(this.addExistingElementsTool(false, nested), this.addExistingElementsTool(true, nested), this.addExistingConnectedElementsTool(false))
                 .build();
     }
 
     /**
-     * Create a {@link NodeToolSection} containing the {@code Add Existing Elements} tools for node multi-selection.
+     * Create a {@link NodeToolSection} containing existing and connected element tools for node multi-selection.
      *
      * @return The created {@link NodeToolSection}
      */
     public NodeToolSection relatedElementsGroupToolSection() {
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Related Elements")
-                .nodeTools(this.addExistingElementsGroupTool(false), this.addExistingElementsGroupTool(true))
+                .nodeTools(this.addExistingElementsGroupTool(false), this.addExistingElementsGroupTool(true), this.addExistingConnectedElementsTool(true))
                 .build();
     }
 
@@ -221,6 +223,45 @@ public class ToolDescriptionService {
                 .name(title)
                 .iconURLsExpression(iconURL)
                 .body(changeContextViewUsageOwner.build())
+                .build();
+    }
+
+    /**
+     * Create the tool exposing connected project elements in General View diagrams.
+     *
+     * @param group
+     *            whether the tool operates on a node selection
+     * @return the connected elements tool
+     */
+    private NodeTool addExistingConnectedElementsTool(boolean group) {
+        String receiver = "self";
+        String selectedNode = Node.SELECTED_NODE;
+        String elements = "Sequence{self}";
+        String nodes = "Sequence{selectedNode}";
+        if (group) {
+            receiver = "self->first()";
+            selectedNode = "n";
+            elements = "self";
+            nodes = "selectedNodes";
+        }
+        String precondition = ServiceMethod.of4(DiagramQueryAQLService.class, DiagramQueryAQLService::isView, Element.class, String.class, Node.class,
+                IEditingContext.class, DiagramContext.class)
+                .aql(receiver, AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), selectedNode,
+                        IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT);
+        if (group) {
+            precondition = "aql:selectedNodes->notEmpty() and selectedEdges->isEmpty() and self->forAll(e | e.oclIsKindOf(sysml::Element))"
+                    + " and selectedNodes->forAll(n | " + precondition.substring(4) + ")";
+        }
+        return this.diagramBuilderHelper.newNodeTool()
+                .name("Add existing connected elements")
+                .iconURLsExpression("/icons/AddReferencedElements.svg")
+                .preconditionExpression(precondition)
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression(ServiceMethod.of4(DiagramMutationAQLService.class, DiagramMutationAQLService::addExistingConnectedElements, List.class,
+                                IEditingContext.class, DiagramContext.class, List.class, java.util.Map.class)
+                                .aqlArrow(elements, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, nodes,
+                                        ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
+                        .build())
                 .build();
     }
 

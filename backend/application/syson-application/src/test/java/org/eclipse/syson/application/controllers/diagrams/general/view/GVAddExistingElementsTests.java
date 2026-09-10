@@ -22,25 +22,40 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
+import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionRunner;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.GeneralViewAddExistingElementsActionFlowCompartmentTestProjectData;
 import org.eclipse.syson.application.data.GeneralViewAddExistingElementsTestProjectData;
+import org.eclipse.syson.application.data.GeneralViewEdgeOnEdgeTestProjectData;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
+import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Expose;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
 import org.eclipse.syson.tests.api.GivenSysONServer;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -48,6 +63,8 @@ import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -97,6 +114,12 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
     @Autowired
     private ToolTester nodeCreationTester;
 
+    @Autowired
+    private IObjectSearchService objectSearchService;
+
+    @Autowired
+    private ExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
+
     private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
@@ -145,6 +168,147 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(nodeCreationRunner)
                 .consumeNextWith(updatedDiagramConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    /**
+     * Verify that the connected elements tool restores hidden endpoints in both relationship directions.
+     */
+    @DisplayName("GIVEN a GV diagram, WHEN adding connected elements, THEN both edge endpoints are added")
+    @GivenSysONServer({ GeneralViewEdgeOnEdgeTestProjectData.SCRIPT_PATH })
+    @Test
+    public void addConnectedElementsOnDiagram() {
+        var input = new DiagramEventInput(UUID.randomUUID(), GeneralViewEdgeOnEdgeTestProjectData.EDITING_CONTEXT_ID,
+                GeneralViewEdgeOnEdgeTestProjectData.GraphicalIds.DIAGRAM_ID);
+        var flux = this.givenDiagramSubscription.subscribe(input);
+        var description = this.givenDiagramDescription.getDiagramDescription(GeneralViewEdgeOnEdgeTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var ids = new DiagramDescriptionIdProvider(description, this.diagramIdProvider);
+        String toolId = ids.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "Add existing connected elements");
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        AtomicReference<String> part1Id = new AtomicReference<>();
+        AtomicReference<String> part2Id = new AtomicReference<>();
+        AtomicReference<String> part1NodeId = new AtomicReference<>();
+
+        Consumer<Object> initial = assertRefreshedDiagramThat(newDiagram -> {
+            diagram.set(newDiagram);
+            part1Id.set(this.getTargetObjectIdWithLabel(newDiagram, PART1));
+            part2Id.set(this.getTargetObjectIdWithLabel(newDiagram, PART2));
+            part1NodeId.set(this.getNodeIdWithLabel(newDiagram, PART1));
+        });
+        Consumer<String> removeExposure = elementId -> {
+            UUID inputId = UUID.randomUUID();
+            BiFunction<IEditingContext, IInput, IPayload> function = (editingContext, functionInput) -> {
+                var viewUsage = this.objectSearchService.getObject(editingContext, diagram.get().getTargetObjectId())
+                        .filter(ViewUsage.class::isInstance)
+                        .map(ViewUsage.class::cast)
+                        .orElseThrow();
+                var element = this.objectSearchService.getObject(editingContext, elementId)
+                        .filter(Element.class::isInstance)
+                        .map(Element.class::cast)
+                        .orElseThrow();
+                viewUsage.getOwnedRelationship().removeIf(relationship -> relationship instanceof Expose expose && Objects.equals(expose.getImportedElement(), element));
+                return new ExecuteEditingContextFunctionSuccessPayload(functionInput.id(), true);
+            };
+            var changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, GeneralViewEdgeOnEdgeTestProjectData.EDITING_CONTEXT_ID, () -> inputId);
+            var payload = this.executeEditingContextFunctionRunner.execute(
+                    new ExecuteEditingContextFunctionInput(inputId, GeneralViewEdgeOnEdgeTestProjectData.EDITING_CONTEXT_ID, function, changeDescription)).block();
+            assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
+        };
+        Runnable removePart1 = () -> removeExposure.accept(part1Id.get());
+        Runnable invokeFromPart2 = () -> this.nodeCreationTester.invokeTool(GeneralViewEdgeOnEdgeTestProjectData.EDITING_CONTEXT_ID, diagram, part2Id.get(), toolId);
+        Consumer<Object> afterPart1 = assertRefreshedDiagramThat(newDiagram -> {
+            diagram.set(newDiagram);
+            part1NodeId.set(this.getNodeIdWithLabel(newDiagram, PART1));
+            assertThat(newDiagram.getNodes()).anyMatch(node -> Objects.equals(node.getTargetObjectLabel(), PART2));
+        });
+        Runnable removePart2 = () -> removeExposure.accept(part2Id.get());
+        Runnable invokeFromPart1 = () -> this.nodeCreationTester.invokeTool(GeneralViewEdgeOnEdgeTestProjectData.EDITING_CONTEXT_ID, diagram.get().getId(), part1NodeId.get(), toolId, List.of());
+        Consumer<Object> afterPart2 = assertRefreshedDiagramThat(newDiagram -> assertThat(newDiagram.getNodes())
+                .anyMatch(node -> Objects.equals(node.getTargetObjectLabel(), PART2)));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initial)
+                .then(removePart1)
+                .consumeNextWith(assertRefreshedDiagramThat(newDiagram -> assertThat(newDiagram.getNodes())
+                        .noneMatch(node -> Objects.equals(node.getTargetObjectLabel(), PART1))))
+                .then(invokeFromPart2)
+                .consumeNextWith(afterPart1)
+                .then(removePart2)
+                .consumeNextWith(assertRefreshedDiagramThat(newDiagram -> assertThat(newDiagram.getNodes())
+                        .noneMatch(node -> Objects.equals(node.getTargetObjectLabel(), PART2))))
+                .then(invokeFromPart1)
+                .consumeNextWith(afterPart2)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    /**
+     * Verify real General View descriptions exclude owned attributes and ports for both tool entry points.
+     *
+     * @param group whether to invoke the group tool
+     */
+    @GivenSysONServer({ GeneralViewEdgeOnEdgeTestProjectData.SCRIPT_PATH })
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void connectedElementsExcludeNestedContent(boolean group) {
+        String editingContextId = GeneralViewEdgeOnEdgeTestProjectData.EDITING_CONTEXT_ID;
+        var flux = this.givenDiagramSubscription.subscribe(new DiagramEventInput(UUID.randomUUID(), editingContextId,
+                GeneralViewEdgeOnEdgeTestProjectData.GraphicalIds.DIAGRAM_ID));
+        var description = this.givenDiagramDescription.getDiagramDescription(editingContextId, SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var ids = new DiagramDescriptionIdProvider(description, this.diagramIdProvider);
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        AtomicReference<ViewUsage> view = new AtomicReference<>();
+        var attribute = SysmlFactory.eINSTANCE.createAttributeUsage();
+        attribute.setDeclaredName("connectedAttribute");
+        var port = SysmlFactory.eINSTANCE.createPortUsage();
+        port.setDeclaredName("connectedPort");
+        var external = SysmlFactory.eINSTANCE.createPartUsage();
+        external.setDeclaredName("externalNeighbor");
+        Runnable prepare = () -> {
+            UUID inputId = UUID.randomUUID();
+            BiFunction<IEditingContext, IInput, IPayload> function = (context, input) -> {
+                var part1 = (Element) this.objectSearchService.getObject(context, this.getTargetObjectIdWithLabel(diagram.get(), PART1)).orElseThrow();
+                var part2 = (Element) this.objectSearchService.getObject(context, this.getTargetObjectIdWithLabel(diagram.get(), PART2)).orElseThrow();
+                view.set((ViewUsage) this.objectSearchService.getObject(context, diagram.get().getTargetObjectId()).orElseThrow());
+                for (Element child : List.of(attribute, port)) {
+                    var membership = SysmlFactory.eINSTANCE.createFeatureMembership();
+                    membership.getOwnedRelatedElement().add(child);
+                    part2.getOwnedRelationship().add(membership);
+                }
+                var externalMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+                externalMembership.getOwnedRelatedElement().add(external);
+                part2.getOwner().getOwnedRelationship().add(externalMembership);
+                var dependency = SysmlFactory.eINSTANCE.createDependency();
+                dependency.getClient().addAll(List.of(part1, part2));
+                dependency.getSupplier().addAll(List.of(attribute, port, external));
+                part1.getOwnedRelationship().add(dependency);
+                return new ExecuteEditingContextFunctionSuccessPayload(input.id(), true);
+            };
+            var change = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContextId, () -> inputId);
+            assertThat(this.executeEditingContextFunctionRunner.execute(new ExecuteEditingContextFunctionInput(inputId, editingContextId, function, change)).block())
+                    .isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
+        };
+        Runnable invoke = () -> {
+            String toolId = ids.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "Add existing connected elements");
+            List<String> selectedIds = List.of(this.getNodeIdWithLabel(diagram.get(), PART2));
+            if (group) {
+                toolId = ids.getGroupNodeToolId("Add existing connected elements");
+                selectedIds = List.of(this.getNodeIdWithLabel(diagram.get(), PART1), this.getNodeIdWithLabel(diagram.get(), PART2));
+            }
+            this.nodeCreationTester.invokeTool(editingContextId, diagram.get().getId(), selectedIds, toolId, List.of());
+        };
+        StepVerifier.create(flux)
+                .consumeNextWith(assertRefreshedDiagramThat(diagram::set))
+                .then(prepare)
+                .consumeNextWith(assertRefreshedDiagramThat(diagram::set))
+                .then(invoke)
+                .consumeNextWith(assertRefreshedDiagramThat(updated -> {
+                    assertThat(view.get().getExposedElement()).contains(external).doesNotContain(attribute, port);
+                    assertThat(updated.getNodes()).anyMatch(node -> "externalNeighbor".equals(node.getTargetObjectLabel()));
+                    assertThat(updated.getNodes()).noneMatch(node -> List.of("connectedAttribute", "connectedPort").contains(node.getTargetObjectLabel()));
+                }))
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -462,9 +626,42 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
     }
 
     private String getNodeIdWithLabel(Diagram diagram, String label) {
+        return this.findNodeWithLabel(diagram.getNodes(), label)
+                .map(Node::getId)
+                .orElseThrow();
+    }
+
+    /**
+     * Find a node by semantic label, including child nodes.
+     *
+     * @param nodes
+     *            the nodes to search
+     * @param label
+     *            the expected target object label
+     * @return the matching node, if any
+     */
+    private Optional<Node> findNodeWithLabel(List<Node> nodes, String label) {
+        return nodes.stream()
+                .filter(node -> Objects.equals(node.getTargetObjectLabel(), label))
+                .findFirst()
+                .or(() -> nodes.stream()
+                        .flatMap(node -> this.findNodeWithLabel(node.getChildNodes(), label).stream())
+                .findFirst());
+    }
+
+    /**
+     * Find the semantic identifier of a top-level node with the given label.
+     *
+     * @param diagram
+     *            the diagram to search
+     * @param label
+     *            the expected target object label
+     * @return the matching target object identifier
+     */
+    private String getTargetObjectIdWithLabel(Diagram diagram, String label) {
         return diagram.getNodes().stream()
                 .filter(node -> Objects.equals(node.getTargetObjectLabel(), label))
-                .map(Node::getId)
+                .map(Node::getTargetObjectId)
                 .findFirst()
                 .orElseThrow();
     }
