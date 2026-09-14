@@ -39,14 +39,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         if: ${{ env.GITHUB_EVENT_NAME != 'pull_request' }}
         with:
           fetch-depth: 0
           persist-credentials: false
 
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         if: ${{ env.GITHUB_EVENT_NAME == 'pull_request' }}
         with:
           ref: ${{ env.GITHUB_EVENT_PR_HEAD_SHA }}
@@ -68,7 +68,7 @@ jobs:
             ${{ runner.OS }}-
 
       - name: Setup Java SDK
-        uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # v5.4.0
+        uses: actions/setup-java@dd06d9cba3e5552c54d9f8ea23572deb30010f7c # v6.0.0
         with:
           java-version: 21
           distribution: "temurin"
@@ -146,7 +146,7 @@ jobs:
         uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
 
       - name: Set up Docker Buildx to use cache feature
-        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
+        uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
 
       - name: Build Docker image
         id: load
@@ -196,7 +196,7 @@ jobs:
 
       - name: Run Cypress end to end tests against the application
         if: startsWith(env.GITHUB_REF, 'refs/tags/v') == false && env.GITHUB_REF != 'refs/heads/main' && env.GITHUB_REF != 'refs/heads/cooldown'
-        uses: cypress-io/github-action@6c143abc292aa835d827652c2ea025d098311070 # v6.10.1
+        uses: cypress-io/github-action@09090944bd8aaa2a517cefb6e38bf1aae336b42b # v7.4.3
         with:
           build: docker compose -f ../backend/application/syson-application/docker-compose.yml up -d
           start: docker compose -f ../backend/application/syson-application/docker-compose.yml ps
@@ -218,7 +218,7 @@ jobs:
 
       - name: Log in to Docker Hub
         if: env.GITHUB_EVENT_NAME == 'push' && (env.GITHUB_REF == 'refs/heads/main' || startsWith(env.GITHUB_REF, 'refs/tags/v'))
-        uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
           username: ${{ env.DOCKER_HUB_USER }}
           password: ${{ env.DOCKER_HUB_TOKEN }}
