@@ -15,7 +15,7 @@ package org.eclipse.syson.table.requirements.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.builder.generated.table.TableBuilders;
@@ -167,7 +167,7 @@ public class RTVTableDescriptionProvider implements IRepresentationDescriptionPr
                 .labelExpression("Delete from table")
                 .iconURLExpression("/images/graphicalDelete.svg")
                 .body(this.viewBuilders.newChangeContext()
-                        .expression(ServiceMethod.of2(RTVMutationServices::removeFromExposedElements).aqlSelf(IEditingContext.EDITING_CONTEXT, TableDescription.TABLE))
+                        .expression(ServiceMethod.of2(RTVMutationServices::removeFromExposedElements).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), TableDescription.TABLE))
                         .build())
                 .build();
 
@@ -185,7 +185,7 @@ public class RTVTableDescriptionProvider implements IRepresentationDescriptionPr
                 .labelExpression("New Nested Requirement")
                 .iconURLExpression("/images/createRequirement.svg")
                 .body(this.viewBuilders.newChangeContext()
-                        .expression(ServiceMethod.of2(RTVMutationServices::createNestedRequirement).aqlSelf(IEditingContext.EDITING_CONTEXT, TableDescription.TABLE))
+                        .expression(ServiceMethod.of2(RTVMutationServices::createNestedRequirement).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), TableDescription.TABLE))
                         .build())
                 .build();
 

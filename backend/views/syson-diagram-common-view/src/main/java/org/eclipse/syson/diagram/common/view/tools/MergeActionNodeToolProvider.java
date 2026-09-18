@@ -14,7 +14,7 @@ package org.eclipse.syson.diagram.common.view.tools;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionProvider;
@@ -58,10 +58,10 @@ public class MergeActionNodeToolProvider extends AbstractFreeFormCompartmentNode
     protected String getPreconditionServiceCallExpression() {
         if (this.ownerEClass == null) {
             // this tool will be invoked on the diagram background
-            return ServiceMethod.of2(DiagramQueryAQLService::isControlNodeActionCreationToolInsideActionOnAFV).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT);
+            return ServiceMethod.of2(DiagramQueryAQLService::isControlNodeActionCreationToolInsideActionOnAFV).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT);
         } else {
             // this tool will be invoked from a selected node
-            return ServiceMethod.of1(DiagramQueryAQLService::isControlNodeActionCreationToolInAction).aql(IEditingContext.EDITING_CONTEXT, Node.SELECTED_NODE);
+            return ServiceMethod.of1(DiagramQueryAQLService::isControlNodeActionCreationToolInAction).aql(CoreVariables.EDITING_CONTEXT.name(), Node.SELECTED_NODE);
         }
     }
 }

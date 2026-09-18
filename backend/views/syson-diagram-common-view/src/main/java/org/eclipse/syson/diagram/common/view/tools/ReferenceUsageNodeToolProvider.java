@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
@@ -66,7 +66,7 @@ public class ReferenceUsageNodeToolProvider extends ReferenceUsageCompartmentNod
                 .semanticElementExpression(AQLConstants.AQL_SELF);
 
         var addToExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
@@ -82,7 +82,7 @@ public class ReferenceUsageNodeToolProvider extends ReferenceUsageCompartmentNod
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .dialogDescription(this.getSelectionDialogDescription())
                 .body(changeContextViewUsageOwner.build())
-                .preconditionExpression(ServiceMethod.of3(DiagramQueryAQLService::toolShouldBeAvailable).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT,
+                .preconditionExpression(ServiceMethod.of3(DiagramQueryAQLService::toolShouldBeAvailable).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT,
                         SysMLMetamodelHelper.buildQualifiedName(eClass)))
                 .build();
     }

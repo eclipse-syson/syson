@@ -15,7 +15,7 @@ package org.eclipse.syson.standard.diagrams.view.edges;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -97,7 +97,7 @@ public class ConnectionUsageEdgeDescriptionProvider extends AbstractEdgeDescript
                         .aqlSelf(org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_SOURCE,
                                 org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_TARGET,
                                 org.eclipse.sirius.components.diagrams.description.DiagramDescription.CACHE,
-                                IEditingContext.EDITING_CONTEXT)
+                                CoreVariables.EDITING_CONTEXT.name())
                         // Needs this to avoid instantiation on inheriting concept
                         + " and self.oclIsTypeOf(" + domainType + ")"
                         // Requirement derivations have their own edge, see RequirementDerivationEdgeDescriptionProvider
@@ -118,7 +118,7 @@ public class ConnectionUsageEdgeDescriptionProvider extends AbstractEdgeDescript
                                 AQLConstants.SEMANTIC_RECONNECTION_TARGET,
                                 AQLConstants.RECONNECTION_TARGET_VIEW,
                                 AQLConstants.OTHER_END,
-                                IEditingContext.EDITING_CONTEXT,
+                                CoreVariables.EDITING_CONTEXT.name(),
                                 AQLConstants.DIAGRAM
                         ));
     }
@@ -131,7 +131,7 @@ public class ConnectionUsageEdgeDescriptionProvider extends AbstractEdgeDescript
                         AQLConstants.SEMANTIC_RECONNECTION_TARGET,
                         AQLConstants.OTHER_END,
                         AQLConstants.RECONNECTION_TARGET_VIEW,
-                        IEditingContext.EDITING_CONTEXT,
+                        CoreVariables.EDITING_CONTEXT.name(),
                         AQLConstants.DIAGRAM
                 ));
     }

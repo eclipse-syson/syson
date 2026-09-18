@@ -25,13 +25,12 @@ import org.eclipse.sirius.web.tests.graphql.SearchQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.data.ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData;
+import org.eclipse.syson.tests.api.GivenSysONServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -54,11 +53,9 @@ public class SearchIntegrationTests extends AbstractIntegrationTests {
         this.givenInitialServerState.initialize();
     }
 
-    @Test
     @DisplayName("GIVEN a SysML project, WHEN we execute a search including user libraries, THEN all the matching semantic elements are returned")
-    @Sql(scripts = { ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.SCRIPT_PATH })
+    @Test
     public void givenSysMLProjectWhenWeExecuteSearchIncludingUserLibrariesThenAllMatchingElementsAreReturned() {
         List<String> matches = this.search(ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.EDITING_CONTEXT, "Library.sysml", false, false, false, false, /* searchInLibraries */ false);
         assertThat(matches).isEmpty();
@@ -66,11 +63,9 @@ public class SearchIntegrationTests extends AbstractIntegrationTests {
         assertThat(matches).containsExactlyInAnyOrder("Library.sysml");
     }
 
-    @Test
     @DisplayName("GIVEN a SysML project, WHEN we execute a search including standard libraries, THEN all the matching semantic elements are returned")
-    @Sql(scripts = { ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.SCRIPT_PATH })
+    @Test
     public void givenSysMLProjectWhenWeExecuteSearchIncludingStandardLibrariesThenAllMatchingElementsAreReturned() {
         List<String> matches = this.search(ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.EDITING_CONTEXT, "parts", true, true, false, false, /* searchInLibraries */ false);
         assertThat(matches).isEmpty();

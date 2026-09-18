@@ -22,8 +22,8 @@ import {
   NodeData,
   applyRatioOnNewNodeSizeValue,
   computePreviousSize,
-  findNodeIndex,
   getDefaultOrMinHeight,
+  getNodeBorderWidth,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node } from '@xyflow/react';
 import { SysMLNoteNodeData } from './SysMLNoteNode.types';
@@ -37,14 +37,12 @@ export class SysMLNoteNodeLayoutHandler implements INodeLayoutHandler<SysMLNoteN
     _layoutEngine: ILayoutEngine,
     previousDiagram: Diagram | null,
     node: Node<SysMLNoteNodeData, 'sysMLNoteNode'>,
-    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    _: Node<NodeData, DiagramNodeType>[],
     _directChildren: Node<NodeData, DiagramNodeType>[],
     _newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
     forceDimensions?: ForcedDimensions
   ) {
-    const nodeIndex = findNodeIndex(visibleNodes, node.id);
-    const nodeElement = document.getElementById(`${node.id}-sysMLNoteNode-${nodeIndex}`)?.children[0];
-    const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 1;
+    const borderWidth = getNodeBorderWidth(node.data.style);
 
     const nodeMinComputeHeight = (node.data.insideLabel?.height ?? 0) + borderWidth * 2;
 

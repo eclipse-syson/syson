@@ -21,7 +21,7 @@ import {
   INodeLayoutHandler,
   NodeData,
   computePreviousSize,
-  findNodeIndex,
+  getNodeBorderWidth,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Dimensions, Node } from '@xyflow/react';
 
@@ -43,9 +43,7 @@ export class SysMLImportedPackageNodeLayoutHandler implements INodeLayoutHandler
     _newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
     forceDimensions?: ForcedDimensions
   ) {
-    const nodeIndex = findNodeIndex(visibleNodes, node.id);
-    const nodeElement = document.getElementById(`${node.id}-rectangularNode-${nodeIndex}`)?.children[0];
-    const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 0;
+    const borderWidth = getNodeBorderWidth(node.data.style);
 
     this.handleLeafNode(previousDiagram, node, visibleNodes, borderWidth, forceDimensions);
   }
@@ -57,7 +55,7 @@ export class SysMLImportedPackageNodeLayoutHandler implements INodeLayoutHandler
     _borderWidth: number,
     _forceDimensions?: ForcedDimensions
   ) {
-    const nodeIndex: number = findNodeIndex(visibleNodes, node.id);
+    const nodeIndex: number = visibleNodes.findIndex((nd) => nd.id === node.id);
     const labelElement: HTMLElement | null = document.getElementById(`${node.id}-label-${nodeIndex}`);
 
     const labelHeight: number =

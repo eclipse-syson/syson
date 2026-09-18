@@ -41,6 +41,7 @@ import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.UtilService;
@@ -300,7 +301,7 @@ public class SysMLv2EditService implements IEditServiceDelegate {
                 .map(DiagramDescription.class::cast)
                 .ifPresent(diagramDescription -> {
                     var variableManager = new VariableManager();
-                    variableManager.put(VariableManager.SELF, viewUsage);
+                    variableManager.put(RepresentationVariables.SELF.name(), viewUsage);
                     variableManager.put(DiagramDescription.LABEL, viewUsage.getDeclaredName());
                     String label = diagramDescription.getLabelProvider().apply(variableManager);
                     List<String> iconURLs = diagramDescription.getIconURLsProvider().apply(variableManager);

@@ -17,7 +17,7 @@ import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.ChangeContext;
@@ -72,7 +72,7 @@ public class StateSubactionNodeToolProvider implements INodeToolProvider {
 
     private ChangeContext getCreateSubactionOperation() {
         var revealOperation = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of4(DiagramMutationAQLService::revealCompartment).aql(Node.SELECTED_NODE, AQLConstants.SELF, DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT,
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::revealCompartment).aql(Node.SELECTED_NODE, AQLConstants.SELF, DiagramContext.DIAGRAM_CONTEXT, CoreVariables.EDITING_CONTEXT.name(),
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         return this.viewBuilderHelper.newChangeContext()
@@ -86,8 +86,8 @@ public class StateSubactionNodeToolProvider implements INodeToolProvider {
 
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
                 .isSelectableExpression(AQLConstants.AQL_SELF + ".oclIsKindOf(" + actionUsageType + ")")
-                .elementsExpression(ServiceMethod.of0(TreeQueryAQLService::getActionReferenceSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT))
-                .childrenExpression(ServiceMethod.of2(TreeQueryAQLService::getActionReferenceSelectionDialogChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, TreeRenderer.EXPANDED))
+                .elementsExpression(ServiceMethod.of0(TreeQueryAQLService::getActionReferenceSelectionDialogElements).aql(CoreVariables.EDITING_CONTEXT.name()))
+                .childrenExpression(ServiceMethod.of2(TreeQueryAQLService::getActionReferenceSelectionDialogChildren).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), TreeRenderer.EXPANDED))
                 .build();
 
         var actionKind = StringUtils.capitalize(this.kind.getName());

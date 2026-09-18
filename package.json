@@ -11,10 +11,10 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "engines": {
-    "node": "22.16.0",
-    "npm": "10.9.2"
+    "node": "24.20.0",
+    "npm": "11.19.0"
   },
-  "packageManager": "npm@10.9.2",
+  "packageManager": "npm@11.19.0",
   "workspaces": [
     "./frontend/*"
   ],
@@ -27,6 +27,11 @@
     "format-lint": "turbo run format-lint"
   },
   "devDependencies": {
-    "turbo": "2.10.5"
+    "turbo": "2.10.12"
+  },
+  "allowScripts": {
+    "core-js-pure@3.50.0": true,
+    "esbuild@0.28.2": true,
+    "fsevents@2.3.3": true
   }
 }

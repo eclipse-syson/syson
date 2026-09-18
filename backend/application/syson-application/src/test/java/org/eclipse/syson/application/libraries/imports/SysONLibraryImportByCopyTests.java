@@ -22,7 +22,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.web.application.library.dto.ImportLibrariesInput;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
-import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.syson.InvalidateStandardLibrariesCache;
 import org.eclipse.syson.application.libraries.SysONLibraryImportTestServer;
@@ -72,7 +71,7 @@ public class SysONLibraryImportByCopyTests extends SysONLibraryImportTests {
     @DisplayName("The metadata of the imported library have not changed")
     @SysONLibraryImportTestServer
     public void testLibraryMetadataHaveNotChanged(CapturedOutput capturedOutput) {
-        final Library myLibraryV1 = this.loadMyLibraryV1();
+        var myLibraryV1 = this.loadMyLibraryV1();
         assertThat(myLibraryV1.getLastModifiedOn()).isEqualTo(this.myLibraryV1LastModifiedInstantBefore);
     }
 

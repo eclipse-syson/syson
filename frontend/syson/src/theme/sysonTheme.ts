@@ -62,6 +62,9 @@ export const baseTheme: Theme = createTheme({
       background: '#292253',
     },
     selected: '#8321FF',
+    view: {
+      background: '#F1F0F6',
+    },
     action: {
       hover: '#A1A4C436',
       selected: '#A1A4C460',
