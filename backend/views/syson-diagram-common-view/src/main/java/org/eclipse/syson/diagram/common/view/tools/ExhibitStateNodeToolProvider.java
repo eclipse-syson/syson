@@ -13,7 +13,7 @@
 package org.eclipse.syson.diagram.common.view.tools;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -79,7 +79,7 @@ public class ExhibitStateNodeToolProvider implements INodeToolProvider {
                 .valueExpression(AQLConstants.AQL + this.isParallel);
 
         var revealOperation = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of4(DiagramMutationAQLService::revealCompartment).aql(Node.SELECTED_NODE, "self", DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT,
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::revealCompartment).aql(Node.SELECTED_NODE, "self", DiagramContext.DIAGRAM_CONTEXT, CoreVariables.EDITING_CONTEXT.name(),
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var conditionalRevealOperation = this.viewBuilderHelper.newIf()
@@ -87,7 +87,7 @@ public class ExhibitStateNodeToolProvider implements INodeToolProvider {
                 .children(revealOperation.build());
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var exposeAndRevealNewInstance = this.viewBuilderHelper.newChangeContext()
@@ -95,7 +95,7 @@ public class ExhibitStateNodeToolProvider implements INodeToolProvider {
                 .children(conditionalRevealOperation.build(), updateExposedElements.build());
 
         var createExhibit = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of6(DiagramMutationAQLService::createChildState).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                .expression(ServiceMethod.of6(DiagramMutationAQLService::createChildState).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE, String.valueOf(this.isParallel),
                         String.valueOf(Boolean.TRUE)))
                 .children(conditionalReferenceSubsettingInstance.build(), setIsParallel.build(), exposeAndRevealNewInstance.build());
@@ -118,8 +118,8 @@ public class ExhibitStateNodeToolProvider implements INodeToolProvider {
         var domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getStateUsage());
 
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(ServiceMethod.of0(TreeQueryAQLService::getExhibitStateSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT))
-                .childrenExpression(ServiceMethod.of2(TreeQueryAQLService::getExhibitStateSelectionDialogChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, TreeRenderer.EXPANDED))
+                .elementsExpression(ServiceMethod.of0(TreeQueryAQLService::getExhibitStateSelectionDialogElements).aql(CoreVariables.EDITING_CONTEXT.name()))
+                .childrenExpression(ServiceMethod.of2(TreeQueryAQLService::getExhibitStateSelectionDialogChildren).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), TreeRenderer.EXPANDED))
                 .isSelectableExpression(AQLConstants.AQL_SELF + ".oclIsKindOf(" + domainType + ")")
                 .build();
 

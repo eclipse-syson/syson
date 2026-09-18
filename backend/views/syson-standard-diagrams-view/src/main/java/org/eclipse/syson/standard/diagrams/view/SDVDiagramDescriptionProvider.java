@@ -22,7 +22,7 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
@@ -445,7 +445,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 .preconditionExpression("aql:selectedNodes->notEmpty() and selectedEdges->isEmpty() and self->forAll(e | e.oclIsKindOf(sysml::Element) and not e.oclIsKindOf(sysml::Relationship))")
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression(ServiceMethod.of4(DiagramMutationAQLService::duplicateElementAndExpose)
-                                .aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, "selectedNodes",
+                                .aqlSelf(CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, "selectedNodes",
                                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
                         .build())
                 .build();
@@ -459,7 +459,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression("aql:self->viewNodeAs(" + viewDefinition + ", editingContext, diagramContext, selectedNodes)")
                         .children(this.viewBuilderHelper.newChangeContext()
-                                .expression(ServiceMethod.of1(DiagramMutationAQLService::createDiagram).aqlSelf(IEditingContext.EDITING_CONTEXT))
+                                .expression(ServiceMethod.of1(DiagramMutationAQLService::createDiagram).aqlSelf(CoreVariables.EDITING_CONTEXT.name()))
                                 .build())
                         .build())
                 .build();
@@ -1706,7 +1706,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 .acceptedNodeTypes(acceptedNodeTypes.toArray(NodeDescription[]::new))
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression(ServiceMethod.of6(DiagramMutationAQLService::dropElementFromDiagram).aqlArrow("droppedElements", "droppedNodes", "targetElement", "targetNode",
-                                IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
+                                CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
                         .build())
                 .build();
     }

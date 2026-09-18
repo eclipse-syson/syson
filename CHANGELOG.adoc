@@ -14,6 +14,13 @@
 
 === Dependency update
 
+- [releng] Update to https://github.com/spring-projects/spring-boot/releases/tag/v4.1.1[Spring Boot 4.1.1]
+- [releng] Update to https://github.com/testing-library/user-event/releases/tag/v14.6.7[@testing-library/user-event 14.6.7]
+- [releng] Update to https://github.com/testing-library/react-testing-library/releases/tag/v16.3.3[@testing-library/react 16.3.3]
+- [releng] Update to https://github.com/vercel/turborepo/releases#release-v2.10.12[turbo 2.10.12]
+- [releng] Update to https://github.com/vitejs/vite/releases/tag/v8.3.0[Vite 8.3.0] and https://github.com/vitejs/vite-plugin-react/releases/tag/plugin-react%406.1.1[@vitejs/plugin-react 6.1.1]
+- [releng] Update to https://github.com/nodejs/node/releases/tag/v24.20.0[node.js 24.20.0] and https://docs.npmjs.com/cli/v11/using-npm/changelog#11190-2026-07-28[npm 11.19.0] for our development environment.
+
 === Bug fixes
 
 - https://github.com/eclipse-syson/syson/issues/1074[#1074] [diagrams] Fix available diagram tools on standard diagrams created on a root namespace

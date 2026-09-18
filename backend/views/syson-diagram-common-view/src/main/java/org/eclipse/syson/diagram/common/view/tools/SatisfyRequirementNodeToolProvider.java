@@ -15,7 +15,7 @@ package org.eclipse.syson.diagram.common.view.tools;
 import java.util.List;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -52,7 +52,7 @@ public class SatisfyRequirementNodeToolProvider implements INodeToolProvider {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
         var addToExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var newSatisfyRequirementTool = this.viewBuilderHelper.newChangeContext()
@@ -73,9 +73,9 @@ public class SatisfyRequirementNodeToolProvider implements INodeToolProvider {
         var selectableTypes = List.of(reqUsageType, defType);
 
         var selectionDialogTreeDescription = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(ServiceMethod.of1(TreeQueryAQLService::getSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT, AQLUtils.aqlSequence(selectableTypes)))
+                .elementsExpression(ServiceMethod.of1(TreeQueryAQLService::getSelectionDialogElements).aql(CoreVariables.EDITING_CONTEXT.name(), AQLUtils.aqlSequence(selectableTypes)))
                 .childrenExpression(
-                        ServiceMethod.of3(TreeQueryAQLService::getSelectionDialogChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, TreeRenderer.EXPANDED, AQLUtils.aqlSequence(selectableTypes)))
+                        ServiceMethod.of3(TreeQueryAQLService::getSelectionDialogChildren).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), TreeRenderer.EXPANDED, AQLUtils.aqlSequence(selectableTypes)))
                 .isSelectableExpression(AQLConstants.AQL + "self.oclIsKindOf(" + defType + ") or self.oclIsKindOf(" + reqUsageType + ")")
                 .build();
 

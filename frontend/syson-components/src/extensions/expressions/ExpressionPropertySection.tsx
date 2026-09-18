@@ -87,7 +87,7 @@ export const ExpressionPropertySection: PropertySectionComponent<GQLLabelWidget>
   const targetObjectId = extractObjectIdFromDetailsString(formId);
   const expressionPresent = widget.label === 'syson:expression-value-widget';
 
-  let modalElement: JSX.Element | null = null;
+  let modalElement: React.JSX.Element | null = null;
   if (state.state === 'modal' && targetObjectId !== null) {
     modalElement = (
       <EditSysMLExpressionModal

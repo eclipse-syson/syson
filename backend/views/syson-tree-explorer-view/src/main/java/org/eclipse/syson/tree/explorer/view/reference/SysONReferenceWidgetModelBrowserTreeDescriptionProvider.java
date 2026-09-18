@@ -22,7 +22,9 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.web.application.browser.DefaultModelBrowsersTreeDescriptionProvider;
@@ -102,7 +104,7 @@ public class SysONReferenceWidgetModelBrowserTreeDescriptionProvider implements 
     }
 
     private List<Object> getDefaultChildren(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         List<Object> children = List.of();
         if (self instanceof Resource resource) {
             children = new ArrayList<>(resource.getContents());
@@ -113,13 +115,13 @@ public class SysONReferenceWidgetModelBrowserTreeDescriptionProvider implements 
     }
 
     private List<Object> applyFilters(VariableManager variableManager, List<? extends Object> children) {
-        return variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+        return variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
                 .map(editingContext -> this.filterService.applyFilters(editingContext, children, FILTER_IDS))
                 .orElseGet(List::of);
     }
 
     private Object getParentObject(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         Object parent = null;
         if (self instanceof Element element && element.getOwningMembership() != null) {
             parent = element.getOwningMembership().eContainer();

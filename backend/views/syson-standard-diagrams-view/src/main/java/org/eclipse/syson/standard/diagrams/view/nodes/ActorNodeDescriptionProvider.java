@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
@@ -115,7 +115,7 @@ public class ActorNodeDescriptionProvider extends UsageNodeDescriptionProvider {
 
     @Override
     protected String getSemanticCandidatesExpression(String domainType) {
-        return ServiceMethod.of4(DiagramQueryAQLService::getExposedActors).aqlSelf(domainType, org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS, IEditingContext.EDITING_CONTEXT,
+        return ServiceMethod.of4(DiagramQueryAQLService::getExposedActors).aqlSelf(domainType, org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS, CoreVariables.EDITING_CONTEXT.name(),
                 DiagramContext.DIAGRAM_CONTEXT);
     }
 

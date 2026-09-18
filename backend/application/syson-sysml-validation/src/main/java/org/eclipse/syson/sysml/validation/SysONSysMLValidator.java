@@ -25,7 +25,7 @@ import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
-import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -109,7 +109,7 @@ public class SysONSysMLValidator implements EValidator {
      * @return <code>true</code> if the AQL expression returns true, <code>false</code> otherwise.
      */
     private boolean executeConstraint(Element element, String aqlExpression) {
-        final Map<String, Object> variables = Map.ofEntries(Map.entry(VariableManager.SELF, element));
+        final Map<String, Object> variables = Map.ofEntries(Map.entry(RepresentationVariables.SELF.name(), element));
         return this.aqlInterpreter.evaluateExpression(variables, aqlExpression).asBoolean().orElse(Boolean.FALSE).booleanValue();
     }
 

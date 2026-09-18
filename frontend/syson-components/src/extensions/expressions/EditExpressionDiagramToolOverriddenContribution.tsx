@@ -86,7 +86,7 @@ export const EditExpressionDiagramToolOverriddenContribution = ({
     hidePalette();
   };
 
-  let modalElement: JSX.Element | null = null;
+  let modalElement: React.JSX.Element | null = null;
   if (modalVisible) {
     modalElement = (
       <EditSysMLExpressionModal

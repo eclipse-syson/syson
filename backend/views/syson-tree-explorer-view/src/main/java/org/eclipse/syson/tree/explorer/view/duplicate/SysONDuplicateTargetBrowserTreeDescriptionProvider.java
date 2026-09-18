@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,12 +31,14 @@ import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
@@ -88,7 +90,7 @@ public class SysONDuplicateTargetBrowserTreeDescriptionProvider implements IEdit
                 .treeItemIdProvider(this::getTreeItemId)
                 .kindProvider(this::getKind)
                 .labelProvider(this::getLabel)
-                .targetObjectIdProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+                .targetObjectIdProvider(variableManager -> variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
                         .map(IEditingContext::getId)
                         .orElse(null))
                 .treeItemIconURLsProvider(this::getImageURL)
@@ -112,7 +114,7 @@ public class SysONDuplicateTargetBrowserTreeDescriptionProvider implements IEdit
 
     private Object getTreeItemObject(VariableManager variableManager) {
         Object result = null;
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         var optionalId = variableManager.get(TreeDescription.ID, String.class);
         if (optionalId.isPresent() && optionalEditingContext.isPresent()) {
             var optionalObject = this.objectSearchService.getObject(optionalEditingContext.get(), optionalId.get());
@@ -140,7 +142,7 @@ public class SysONDuplicateTargetBrowserTreeDescriptionProvider implements IEdit
 
     private Object getParentObject(VariableManager variableManager) {
         Object result = null;
-        var self = variableManager.getVariables().get(VariableManager.SELF);
+        var self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         if (self instanceof Element element) {
             var owningMemberElement = element.getOwningMembership();
             if (owningMemberElement != null) {
@@ -157,7 +159,7 @@ public class SysONDuplicateTargetBrowserTreeDescriptionProvider implements IEdit
 
     private boolean hasChildren(VariableManager variableManager) {
         boolean hasChildren = false;
-        var self = variableManager.getVariables().get(VariableManager.SELF);
+        var self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         if (self instanceof Element element) {
             hasChildren = !element.getOwnedElement().isEmpty();
         } else if (self instanceof Resource resource) {
@@ -176,11 +178,11 @@ public class SysONDuplicateTargetBrowserTreeDescriptionProvider implements IEdit
             expandedIds = list.stream().filter(String.class::isInstance).map(String.class::cast).toList();
         }
 
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         if (optionalEditingContext.isPresent()) {
             var id = this.getTreeItemId(variableManager);
             if (expandedIds.contains(id)) {
-                var self = variableManager.getVariables().get(VariableManager.SELF);
+                var self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
                 if (self instanceof Element element) {
                     result.addAll(element.getOwnedElement());
                 } else if (self instanceof Resource resource) {
@@ -197,7 +199,7 @@ public class SysONDuplicateTargetBrowserTreeDescriptionProvider implements IEdit
     }
 
     private List<? extends Object> getElements(VariableManager variableManager) {
-        var optionalResourceSet = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class)
+        var optionalResourceSet = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEMFEditingContext.class)
                 .map(IEMFEditingContext::getDomain)
                 .map(EditingDomain::getResourceSet);
 
@@ -221,7 +223,7 @@ public class SysONDuplicateTargetBrowserTreeDescriptionProvider implements IEdit
     }
 
     private Boolean isSelectableProvider(VariableManager variableManager, IEditingContext editingContext) {
-        var targetContainer = variableManager.getVariables().get(VariableManager.SELF);
+        var targetContainer = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         var representationId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class).orElse(MODEL_BROWSER_CONTAINER_PREFIX);
         var ownerId = this.urlParser.getParameterValues(representationId).get("ownerId");
         return ownerId != null && ownerId.stream()
@@ -235,10 +237,10 @@ public class SysONDuplicateTargetBrowserTreeDescriptionProvider implements IEdit
 
     private List<String> getImageURL(VariableManager variableManager) {
         List<String> imageURL = List.of(CoreImageConstants.DEFAULT_SVG);
-        var self = variableManager.getVariables().get(VariableManager.SELF);
+        var self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         if (self instanceof EObject) {
             imageURL = this.labelService.getImagePaths(self);
-        } else if (self instanceof Resource resource) {
+        } else if (self instanceof Resource) {
             imageURL = List.of("/icons/Resource.svg");
         }
         return imageURL;
@@ -246,7 +248,7 @@ public class SysONDuplicateTargetBrowserTreeDescriptionProvider implements IEdit
 
     private StyledString getLabel(VariableManager variableManager) {
         String label = "";
-        var self = variableManager.getVariables().get(VariableManager.SELF);
+        var self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         if (self instanceof EObject) {
             var styledString = this.labelService.getStyledLabel(self);
             if (!styledString.toString().isBlank()) {
@@ -264,7 +266,7 @@ public class SysONDuplicateTargetBrowserTreeDescriptionProvider implements IEdit
 
     private String getTreeItemId(VariableManager variableManager) {
         String id = null;
-        var self = variableManager.getVariables().get(VariableManager.SELF);
+        var self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         if (self instanceof Resource || self instanceof EObject) {
             id = this.identityService.getId(self);
         }
@@ -273,7 +275,7 @@ public class SysONDuplicateTargetBrowserTreeDescriptionProvider implements IEdit
 
     private String getKind(VariableManager variableManager) {
         final String kind;
-        var self = variableManager.getVariables().get(VariableManager.SELF);
+        var self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         if (self instanceof Resource) {
             kind = ExplorerDescriptionProvider.DOCUMENT_KIND;
         } else {

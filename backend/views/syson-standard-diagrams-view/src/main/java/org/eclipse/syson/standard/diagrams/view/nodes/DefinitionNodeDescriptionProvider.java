@@ -22,6 +22,7 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -59,7 +60,7 @@ public class DefinitionNodeDescriptionProvider extends AbstractDefinitionNodeDes
     @Override
     protected String getSemanticCandidatesExpression(String domainType) {
         return ServiceMethod.of4(DiagramQueryAQLService.class, DiagramQueryAQLService::getExposedElements, Element.class, EClass.class, List.class, IEditingContext.class, DiagramContext.class)
-                .aqlSelf(domainType, ANCESTORS, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT);
+                .aqlSelf(domainType, ANCESTORS, CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT);
     }
 
     @Override

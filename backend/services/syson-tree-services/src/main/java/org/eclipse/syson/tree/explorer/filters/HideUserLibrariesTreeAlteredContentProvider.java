@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerTreeAlteredContentProvider;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
@@ -48,7 +49,7 @@ public class HideUserLibrariesTreeAlteredContentProvider implements IExplorerTre
     @Override
     public List<Object> apply(List<Object> computedElements, VariableManager variableManager) {
         List<Object> result = new ArrayList<>();
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         if (optionalEditingContext.isPresent()) {
             result = this.filterService.hideUserLibraries(optionalEditingContext.get(), computedElements);
         } else {

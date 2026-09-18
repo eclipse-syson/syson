@@ -30,8 +30,8 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { ExpressionFeatureValueProperties } from './ExpressionFeatureValueProperties';
 import { EditSysMLExpressionModalProps, EditSysMLExpressionModalState } from './EditSysMLExpressionModal.types';
+import { ExpressionFeatureValueProperties } from './ExpressionFeatureValueProperties';
 import {
   defaultFeatureValueExpressionProperties,
   FeatureValueExpressionProperties,
@@ -116,7 +116,7 @@ export const EditSysMLExpressionModal = ({
   const validationStatus = computeValidationStatus(state.validationResult);
   const busy = state.operationInProgress !== null;
 
-  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
+  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
 
   const { editorState, loading } = useExpressionTextualRepresentation(editingContextId, elementId);
   useEffect(() => {

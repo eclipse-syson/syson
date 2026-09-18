@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
@@ -76,9 +76,9 @@ public class AcceptActionPayloadNodeToolProvider implements INodeToolProvider {
     private DialogDescription getSelectionDialogDescription() {
         var payloadTypeName = SysMLMetamodelHelper.buildQualifiedName(this.payloadEClass);
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(ServiceMethod.of1(TreeQueryAQLService::getSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT, AQLUtils.aqlSequence(List.of(payloadTypeName))))
+                .elementsExpression(ServiceMethod.of1(TreeQueryAQLService::getSelectionDialogElements).aql(CoreVariables.EDITING_CONTEXT.name(), AQLUtils.aqlSequence(List.of(payloadTypeName))))
                 .childrenExpression(
-                        ServiceMethod.of3(TreeQueryAQLService::getSelectionDialogChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, TreeRenderer.EXPANDED, AQLUtils.aqlSequence(List.of(payloadTypeName))))
+                        ServiceMethod.of3(TreeQueryAQLService::getSelectionDialogChildren).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), TreeRenderer.EXPANDED, AQLUtils.aqlSequence(List.of(payloadTypeName))))
                 .isSelectableExpression(AQLConstants.AQL_SELF + ".oclIsKindOf(" + payloadTypeName + ")")
                 .build();
         String payloadName = this.payloadEClass.getName();

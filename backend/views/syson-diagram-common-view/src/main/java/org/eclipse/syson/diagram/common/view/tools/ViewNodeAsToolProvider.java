@@ -14,7 +14,7 @@ package org.eclipse.syson.diagram.common.view.tools;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -52,7 +52,7 @@ public class ViewNodeAsToolProvider implements INodeToolProvider {
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression("aql:Sequence{self}->viewNodeAs(" + this.viewDefinition + ", editingContext, diagramContext, Sequence{selectedNode})")
                         .children(this.viewBuilderHelper.newChangeContext()
-                                .expression(ServiceMethod.of1(DiagramMutationAQLService::createDiagram).aqlSelf(IEditingContext.EDITING_CONTEXT))
+                                .expression(ServiceMethod.of1(DiagramMutationAQLService::createDiagram).aqlSelf(CoreVariables.EDITING_CONTEXT.name()))
                                 .build())
                         .build())
                 .build();

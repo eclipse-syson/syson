@@ -29,8 +29,8 @@ import org.eclipse.sirius.components.collaborative.validation.dto.ValidationEven
 import org.eclipse.sirius.components.collaborative.validation.dto.ValidationRefreshedEventPayload;
 import org.eclipse.sirius.web.application.library.dto.ImportLibrariesInput;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
-import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.web.library.domain.Library;
 import org.eclipse.sirius.web.tests.graphql.ValidationEventSubscriptionRunner;
 import org.eclipse.syson.InvalidateStandardLibrariesCache;
 import org.eclipse.syson.application.libraries.SysONLibraryImportTestServer;
@@ -75,7 +75,7 @@ public class SysONLibraryImportByReferenceTests extends SysONLibraryImportTests 
     @SysONLibraryImportTestServer
     public void testLibraryMetadataHaveNotChanged(CapturedOutput capturedOutput) {
         this.importLibraryV1();
-        final Library myLibraryV1 = this.loadMyLibraryV1();
+        var myLibraryV1 = this.loadMyLibraryV1();
         assertThat(myLibraryV1.getLastModifiedOn()).isEqualTo(this.myLibraryV1LastModifiedInstantBefore);
     }
 

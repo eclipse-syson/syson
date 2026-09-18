@@ -29,6 +29,8 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
@@ -113,7 +115,7 @@ public class SysONExplorerTreePathProvider implements ITreePathProvider {
     private Optional<String> getItemId(IEditingContext editingContext, TreeDescription treeDescription, Tree tree, Object object) {
         if (treeDescription != null) {
             var variableManager = new VariableManager();
-            variableManager.put(VariableManager.SELF, object);
+            variableManager.put(RepresentationVariables.SELF.name(), object);
             return Optional.of(treeDescription.getTreeItemIdProvider().apply(variableManager));
         }
         return Optional.empty();
@@ -122,7 +124,7 @@ public class SysONExplorerTreePathProvider implements ITreePathProvider {
     private Optional<Object> getTreeItemObject(IEditingContext editingContext, TreeDescription treeDescription, Tree tree, String id) {
         if (treeDescription != null) {
             var variableManager = new VariableManager();
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
             variableManager.put(TreeDescription.ID, id);
             return Optional.ofNullable(treeDescription.getTreeItemObjectProvider().apply(variableManager));
         }
