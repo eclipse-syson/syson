@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
@@ -64,7 +64,7 @@ public class CaseUsageSubjectCompartmentNodeDescriptionProvider extends Abstract
 
     @Override
     protected String getDropElementFromDiagramExpression() {
-        return ServiceMethod.of6(DiagramMutationAQLService::dropSubjectFromDiagram).aqlArrow("droppedElements", "droppedNodes", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT,
+        return ServiceMethod.of6(DiagramMutationAQLService::dropSubjectFromDiagram).aqlArrow("droppedElements", "droppedNodes", "targetElement", "targetNode", CoreVariables.EDITING_CONTEXT.name(),
                 DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
     }
 

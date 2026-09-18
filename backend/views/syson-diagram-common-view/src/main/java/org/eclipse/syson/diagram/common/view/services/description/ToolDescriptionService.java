@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -201,7 +202,7 @@ public class ToolDescriptionService {
         var addToExposedElements = this.viewBuilderHelper.newChangeContext()
                 .expression(
                         ServiceMethod.of5(DiagramMutationAQLService.class, DiagramMutationAQLService::addToExposedElements, Element.class, boolean.class, IEditingContext.class, DiagramContext.class,
-                                Node.class, java.util.Map.class).aqlSelf("" + recursive, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                                Node.class, java.util.Map.class).aqlSelf("" + recursive, CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
                                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
@@ -247,7 +248,7 @@ public class ToolDescriptionService {
         String precondition = ServiceMethod.of4(DiagramQueryAQLService.class, DiagramQueryAQLService::isView, Element.class, String.class, Node.class,
                 IEditingContext.class, DiagramContext.class)
                 .aql(receiver, AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), selectedNode,
-                        IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT);
+                        CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT);
         if (group) {
             precondition = "aql:selectedNodes->notEmpty() and selectedEdges->isEmpty() and self->forAll(e | e.oclIsKindOf(sysml::Element))"
                     + " and selectedNodes->forAll(n | " + precondition.substring(4) + ")";
@@ -259,7 +260,7 @@ public class ToolDescriptionService {
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression(ServiceMethod.of4(DiagramMutationAQLService.class, DiagramMutationAQLService::addExistingConnectedElements, List.class,
                                 IEditingContext.class, DiagramContext.class, List.class, java.util.Map.class)
-                                .aqlArrow(elements, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, nodes,
+                                .aqlArrow(elements, CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, nodes,
                                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
                         .build())
                 .build();
@@ -280,7 +281,7 @@ public class ToolDescriptionService {
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression(ServiceMethod.of5(DiagramMutationAQLService.class, DiagramMutationAQLService::addToExposedElements, Element.class, boolean.class, IEditingContext.class, DiagramContext.class,
                                 List.class, java.util.Map.class)
-                                .aqlSelf("" + recursive, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, "selectedNodes",
+                                .aqlSelf("" + recursive, CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, "selectedNodes",
                                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
                         .build())
                 .build();
@@ -400,7 +401,7 @@ public class ToolDescriptionService {
         return this.diagramBuilderHelper.newDropTool()
                 .name("Drop from Explorer")
                 .body(this.viewBuilderHelper.newChangeContext()
-                        .expression(ServiceMethod.of4(DiagramMutationAQLService::dropElementFromExplorer).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                        .expression(ServiceMethod.of4(DiagramMutationAQLService::dropElementFromExplorer).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
                                 ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
                         .build())
                 .build();
@@ -510,14 +511,14 @@ public class ToolDescriptionService {
         }
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression(ServiceMethod.of0(ModelMutationAQLService::initialize).aql(NEW_INSTANCE));
 
         var createDiagramIfNeeded = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of1(DiagramMutationAQLService::createDiagram).aqlSelf(IEditingContext.EDITING_CONTEXT));
+                .expression(ServiceMethod.of1(DiagramMutationAQLService::createDiagram).aqlSelf(CoreVariables.EDITING_CONTEXT.name()));
 
         if (direction != null) {
             changeContextNewInstance.children(setDirection.build(), updateExposedElements.build(), createDiagramIfNeeded.build());
@@ -562,7 +563,7 @@ public class ToolDescriptionService {
                 .iconURLsExpression(iconPath.toString())
                 .body(changeContextRoot.build())
                 .elementsToSelectExpression("aql:newInstance")
-                .preconditionExpression(ServiceMethod.of3(DiagramQueryAQLService::toolShouldBeAvailable).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT,
+                .preconditionExpression(ServiceMethod.of3(DiagramQueryAQLService::toolShouldBeAvailable).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT,
                         SysMLMetamodelHelper.buildQualifiedName(eClass)))
                 .build();
     }
@@ -598,7 +599,7 @@ public class ToolDescriptionService {
         }
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
@@ -653,7 +654,7 @@ public class ToolDescriptionService {
                 .iconURLsExpression(iconPath.toString())
                 .body(changeContextRoot.build())
                 .elementsToSelectExpression("aql:newInstance")
-                .preconditionExpression(ServiceMethod.of3(DiagramQueryAQLService::toolShouldBeAvailable).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT,
+                .preconditionExpression(ServiceMethod.of3(DiagramQueryAQLService::toolShouldBeAvailable).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT,
                         SysMLMetamodelHelper.buildQualifiedName(eClass)))
                 .build();
     }

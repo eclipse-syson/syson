@@ -20,6 +20,7 @@ import java.util.Objects;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -31,8 +32,8 @@ import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
-import org.eclipse.syson.diagram.common.view.DiagramDefaultToolsFactory;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
+import org.eclipse.syson.diagram.common.view.DiagramDefaultToolsFactory;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.sysml.Element;
@@ -108,7 +109,7 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
                 .body(this.diagramBuilderHelper.newDeleteView()
                         .children(this.viewBuilderHelper.newChangeContext()
                                 .expression(
-                                        ServiceMethod.of3(DiagramMutationAQLService::removeFromExposedElements).aqlSelf(Node.SELECTED_NODE, IEditingContext.EDITING_CONTEXT,
+                                        ServiceMethod.of3(DiagramMutationAQLService::removeFromExposedElements).aqlSelf(Node.SELECTED_NODE, CoreVariables.EDITING_CONTEXT.name(),
                                                 DiagramContext.DIAGRAM_CONTEXT))
                                 .build())
                         .build())
@@ -124,7 +125,7 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
                         .expression(
                                 ServiceMethod.of4(DiagramMutationAQLService.class, DiagramMutationAQLService::duplicateElementAndExpose, Element.class, IEditingContext.class,
                                                 DiagramContext.class, List.class, Map.class)
-                                        .aqlSelf(IEditingContext.EDITING_CONTEXT,
+                                        .aqlSelf(CoreVariables.EDITING_CONTEXT.name(),
                                                 DiagramContext.DIAGRAM_CONTEXT,
                                                 "Sequence{selectedNode}",
                                                 ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
@@ -142,7 +143,7 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
                         .expression(
                                 ServiceMethod.of4(DiagramMutationAQLService.class, DiagramMutationAQLService::duplicateElementAndExpose, Element.class, IEditingContext.class,
                                                 DiagramContext.class, List.class, Map.class)
-                                        .aqlSelf(IEditingContext.EDITING_CONTEXT,
+                                        .aqlSelf(CoreVariables.EDITING_CONTEXT.name(),
                                                 DiagramContext.DIAGRAM_CONTEXT,
                                                 "selectedNodes",
                                                 ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
@@ -156,11 +157,11 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
                 .iconURLsExpression("/icons/full/obj16/ShowTool.svg")
                 .preconditionExpression(ServiceMethod.of4(DiagramQueryAQLService.class, DiagramQueryAQLService::isView,
                         Element.class, String.class, Node.class, IEditingContext.class, DiagramContext.class)
-                        .aqlSelf(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), Node.SELECTED_NODE, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT))
+                        .aqlSelf(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), Node.SELECTED_NODE, CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT))
                 .body(this.diagramBuilderHelper.newDeleteView()
                         .children(this.viewBuilderHelper.newChangeContext()
                                 .expression(
-                                        ServiceMethod.of3(DiagramMutationAQLService::showContentAsNested).aqlSelf(Node.SELECTED_NODE, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT))
+                                        ServiceMethod.of3(DiagramMutationAQLService::showContentAsNested).aqlSelf(Node.SELECTED_NODE, CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT))
                                 .build())
                         .build())
                 .build();
@@ -172,11 +173,11 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
                 .iconURLsExpression("/icons/full/obj16/ShowTool.svg")
                 .preconditionExpression(ServiceMethod.of4(DiagramQueryAQLService.class, DiagramQueryAQLService::isView,
                         Element.class, String.class, Node.class, IEditingContext.class, DiagramContext.class)
-                        .aqlSelf(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), Node.SELECTED_NODE, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT))
+                        .aqlSelf(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), Node.SELECTED_NODE, CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT))
                 .body(this.diagramBuilderHelper.newDeleteView()
                         .children(this.viewBuilderHelper.newChangeContext()
                                 .expression(
-                                        ServiceMethod.of3(DiagramMutationAQLService::showContentAsTree).aqlSelf(Node.SELECTED_NODE, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT))
+                                        ServiceMethod.of3(DiagramMutationAQLService::showContentAsTree).aqlSelf(Node.SELECTED_NODE, CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT))
                                 .build())
                         .build())
                 .build();

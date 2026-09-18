@@ -14,7 +14,7 @@ package org.eclipse.syson.tree.explorer.view;
 
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
@@ -58,14 +58,14 @@ public class SysONExplorerTreeDescriptionProvider {
     private TreeDescription build() {
         TreeDescription description = new TreeDescriptionBuilder()
                 .name(SYSON_EXPLORER)
-                .childrenExpression(ServiceMethod.of4(TreeQueryAQLService::getChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, "existingRepresentations", "expanded", "activeFilterIds"))
+                .childrenExpression(ServiceMethod.of4(TreeQueryAQLService::getChildren).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), "existingRepresentations", "expanded", "activeFilterIds"))
                 .deletableExpression(ServiceMethod.of0(TreeQueryAQLService::isDeletable).aqlSelf())
                 .editableExpression(ServiceMethod.of0(TreeQueryAQLService::isEditable).aqlSelf())
-                .elementsExpression(ServiceMethod.of1(TreeQueryAQLService::getElements).aql(IEditingContext.EDITING_CONTEXT, "activeFilterIds"))
-                .hasChildrenExpression(ServiceMethod.of4(TreeQueryAQLService::hasChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, "existingRepresentations", "expanded", "activeFilterIds"))
+                .elementsExpression(ServiceMethod.of1(TreeQueryAQLService::getElements).aql(CoreVariables.EDITING_CONTEXT.name(), "activeFilterIds"))
+                .hasChildrenExpression(ServiceMethod.of4(TreeQueryAQLService::hasChildren).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), "existingRepresentations", "expanded", "activeFilterIds"))
                 .treeItemIconExpression(ServiceMethod.of0(TreeQueryAQLService::getImageURL).aqlSelf())
                 .kindExpression(ServiceMethod.of0(TreeQueryAQLService::getKind).aqlSelf())
-                .parentExpression(ServiceMethod.of2(TreeQueryAQLService::getParent).aqlSelf("id", IEditingContext.EDITING_CONTEXT))
+                .parentExpression(ServiceMethod.of2(TreeQueryAQLService::getParent).aqlSelf("id", CoreVariables.EDITING_CONTEXT.name()))
                 // This predicate will NOT be used while creating the explorer, but we don't want to see the description
                 // of the explorer in the list of representations that can be created. Thus, we will return false all
                 // the time.
@@ -73,7 +73,7 @@ public class SysONExplorerTreeDescriptionProvider {
                 .selectableExpression(ServiceMethod.of0(TreeQueryAQLService::isSelectable).aqlSelf())
                 .titleExpression(SYSON_EXPLORER)
                 .treeItemIdExpression(ServiceMethod.of0(TreeQueryAQLService::getTreeItemId).aqlSelf())
-                .treeItemObjectExpression(ServiceMethod.of1(TreeQueryAQLService::getTreeItemObject).aql("id", IEditingContext.EDITING_CONTEXT))
+                .treeItemObjectExpression(ServiceMethod.of1(TreeQueryAQLService::getTreeItemObject).aql("id", CoreVariables.EDITING_CONTEXT.name()))
                 .treeItemLabelDescriptions(this.createDefaultStyle())
                 .treeItemTooltipExpression(ServiceMethod.of0(TreeQueryAQLService::getTreeItemTooltip).aqlSelf())
                 .build();

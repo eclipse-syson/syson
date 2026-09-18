@@ -15,7 +15,7 @@ package org.eclipse.syson.diagram.common.view.tools;
 
 import java.util.List;
 
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
@@ -59,8 +59,8 @@ public class ReferenceUsageCompartmentNodeToolProvider extends AbstractCompartme
         var classifierType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getClassifier());
 
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(ServiceMethod.of1(TreeQueryAQLService::getSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT, AQLUtils.aqlSequence(List.of(featureType, classifierType))))
-                .childrenExpression(ServiceMethod.of3(TreeQueryAQLService::getSelectionDialogChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, TreeRenderer.EXPANDED, AQLUtils.aqlSequence(List.of(featureType, classifierType))))
+                .elementsExpression(ServiceMethod.of1(TreeQueryAQLService::getSelectionDialogElements).aql(CoreVariables.EDITING_CONTEXT.name(), AQLUtils.aqlSequence(List.of(featureType, classifierType))))
+                .childrenExpression(ServiceMethod.of3(TreeQueryAQLService::getSelectionDialogChildren).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), TreeRenderer.EXPANDED, AQLUtils.aqlSequence(List.of(featureType, classifierType))))
                 .isSelectableExpression(AQLConstants.AQL_SELF + ".oclIsKindOf(" + featureType + ") or self.oclIsKindOf(" + classifierType + ")")
                 .build();
 

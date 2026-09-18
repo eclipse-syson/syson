@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
@@ -39,8 +39,8 @@ public class SubjectCompartmentNodeToolProvider extends AbstractCompartmentNodeT
     protected SelectionDialogDescription getSelectionDialogDescription() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getType());
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(ServiceMethod.of0(TreeQueryAQLService::getSubjectSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT))
-                .childrenExpression(ServiceMethod.of2(TreeQueryAQLService::getSubjectSelectionDialogChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, TreeRenderer.EXPANDED))
+                .elementsExpression(ServiceMethod.of0(TreeQueryAQLService::getSubjectSelectionDialogElements).aql(CoreVariables.EDITING_CONTEXT.name()))
+                .childrenExpression(ServiceMethod.of2(TreeQueryAQLService::getSubjectSelectionDialogChildren).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), TreeRenderer.EXPANDED))
                 .isSelectableExpression(AQLConstants.AQL_SELF + ".oclIsKindOf(" + domainType + ")")
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()

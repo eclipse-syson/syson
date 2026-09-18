@@ -20,6 +20,7 @@ import java.util.List;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
@@ -77,7 +78,7 @@ public class InterconnectionCompartmentNodeDescriptionProvider extends AbstractC
                 .preconditionExpression(ServiceMethod.of4(DiagramQueryAQLService.class, DiagramQueryAQLService::isView, Element.class, String.class, List.class,
                         IEditingContext.class, DiagramContext.class)
                         .aqlSelf(AQLUtils.aqlString(StandardDiagramsConstants.IV_QN), ANCESTORS,
-                                IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT))
+                                CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT))
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF)
                 .style(this.createCompartmentNodeStyle())
                 .userResizable(UserResizableDirection.NONE)
@@ -172,6 +173,6 @@ public class InterconnectionCompartmentNodeDescriptionProvider extends AbstractC
     @Override
     protected String isHiddenByDefaultExpression() {
         return ServiceMethod.of4(DiagramQueryAQLService::isHiddenByDefault).aqlSelf(AQLUtils.aqlString(this.compartmentName), ANCESTORS,
-                IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT);
+                CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT);
     }
 }

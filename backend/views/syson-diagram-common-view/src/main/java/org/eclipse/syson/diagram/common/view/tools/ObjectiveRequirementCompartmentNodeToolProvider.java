@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
@@ -47,8 +47,8 @@ public class ObjectiveRequirementCompartmentNodeToolProvider extends AbstractCom
         String reqDefType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getRequirementDefinition());
 
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(ServiceMethod.of0(TreeQueryAQLService::getObjectiveRequirementSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT))
-                .childrenExpression(ServiceMethod.of2(TreeQueryAQLService::getObjectiveRequirementSelectionDialogChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, TreeRenderer.EXPANDED))
+                .elementsExpression(ServiceMethod.of0(TreeQueryAQLService::getObjectiveRequirementSelectionDialogElements).aql(CoreVariables.EDITING_CONTEXT.name()))
+                .childrenExpression(ServiceMethod.of2(TreeQueryAQLService::getObjectiveRequirementSelectionDialogChildren).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), TreeRenderer.EXPANDED))
                 .isSelectableExpression(AQLConstants.AQL_SELF + ".oclIsKindOf(" + reqUsageType + ") or self.oclIsKindOf(" + reqDefType + ")")
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()

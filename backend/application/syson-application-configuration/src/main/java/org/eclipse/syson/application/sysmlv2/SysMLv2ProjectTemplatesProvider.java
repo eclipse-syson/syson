@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,9 +41,9 @@ public class SysMLv2ProjectTemplatesProvider implements IProjectTemplateProvider
 
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
-        var sysmlv2LibraryTemplate = new ProjectTemplate(SYSMLV2_LIBRARY_TEMPLATE_ID, SYSMLV2_LIBRARY_TEMPLATE_NAME, "/images/sysmlv2-logo.png", List.of());
-        var sysmlv2Template = new ProjectTemplate(SYSMLV2_TEMPLATE_ID, SYSMLV2_TEMPLATE_NAME, "/images/sysmlv2-logo.png", List.of());
-        var batmobileTemplate = new ProjectTemplate(BATMOBILE_TEMPLATE_ID, BATMOBILE_TEMPLATE_NAME, "/images/sysmlv2-logo.png", List.of());
+        var sysmlv2LibraryTemplate = new ProjectTemplate(SYSMLV2_LIBRARY_TEMPLATE_ID, SYSMLV2_LIBRARY_TEMPLATE_NAME, "/images/sysmlv2-logo.png", List.of(), List.of());
+        var sysmlv2Template = new ProjectTemplate(SYSMLV2_TEMPLATE_ID, SYSMLV2_TEMPLATE_NAME, "/images/sysmlv2-logo.png", List.of(), List.of());
+        var batmobileTemplate = new ProjectTemplate(BATMOBILE_TEMPLATE_ID, BATMOBILE_TEMPLATE_NAME, "/images/sysmlv2-logo.png", List.of(), List.of());
         return List.of(sysmlv2LibraryTemplate, sysmlv2Template, batmobileTemplate);
     }
 

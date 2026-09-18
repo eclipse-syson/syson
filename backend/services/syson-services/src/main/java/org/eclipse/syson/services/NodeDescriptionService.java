@@ -21,7 +21,9 @@ import java.util.stream.Stream;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.ViewUsage;
@@ -169,8 +171,8 @@ public class NodeDescriptionService {
     public boolean canNodeDescriptionRenderElement(NodeDescription nodeDescription, Element element, Object ownerObject, IEditingContext editingContext, DiagramContext diagramContext) {
         boolean canNodeDescriptionRenderElement = false;
         VariableManager semanticElementsProviderVariableManager = new VariableManager();
-        semanticElementsProviderVariableManager.put(VariableManager.SELF, ownerObject);
-        semanticElementsProviderVariableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+        semanticElementsProviderVariableManager.put(RepresentationVariables.SELF.name(), ownerObject);
+        semanticElementsProviderVariableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
         semanticElementsProviderVariableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
         var ancestors = new ArrayList<>();
         this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId())
@@ -183,8 +185,8 @@ public class NodeDescriptionService {
 
         if (candidatesList.contains(element)) {
             VariableManager shouldRenderPredicateVariableManager = new VariableManager();
-            shouldRenderPredicateVariableManager.put(VariableManager.SELF, element);
-            shouldRenderPredicateVariableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            shouldRenderPredicateVariableManager.put(RepresentationVariables.SELF.name(), element);
+            shouldRenderPredicateVariableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
             shouldRenderPredicateVariableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
             shouldRenderPredicateVariableManager.put(NodeDescription.ANCESTORS, null);
             canNodeDescriptionRenderElement = nodeDescription.getShouldRenderPredicate().test(shouldRenderPredicateVariableManager);
@@ -213,14 +215,14 @@ public class NodeDescriptionService {
     public boolean canNodeDescriptionRenderElement(NodeDescription description, Element element, Object owner, IEditingContext editingContext,
             DiagramContext diagramContext, List<Object> ancestors) {
         var variables = new VariableManager();
-        variables.put(VariableManager.SELF, owner);
-        variables.put(IEditingContext.EDITING_CONTEXT, editingContext);
+        variables.put(RepresentationVariables.SELF.name(), owner);
+        variables.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
         variables.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
         variables.put(NodeDescription.ANCESTORS, ancestors);
         if (!description.getSemanticElementsProvider().apply(variables).contains(element)) {
             return false;
         }
-        variables.put(VariableManager.SELF, element);
+        variables.put(RepresentationVariables.SELF.name(), element);
         return description.getShouldRenderPredicate().test(variables);
     }
 }

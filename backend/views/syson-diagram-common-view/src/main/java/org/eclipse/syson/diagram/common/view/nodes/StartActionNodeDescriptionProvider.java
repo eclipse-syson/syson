@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -93,7 +93,7 @@ public class StartActionNodeDescriptionProvider extends AbstractNodeDescriptionP
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression(
                                 ServiceMethod.of5(DiagramMutationAQLService::createSuccessionEdge).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE,
-                                        EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT, IDiagramService.DIAGRAM_SERVICES))
+                                        EdgeDescription.EDGE_TARGET, CoreVariables.EDITING_CONTEXT.name(), IDiagramService.DIAGRAM_SERVICES))
                         .build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();

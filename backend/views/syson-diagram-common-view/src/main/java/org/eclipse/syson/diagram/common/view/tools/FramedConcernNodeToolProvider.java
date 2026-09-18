@@ -13,7 +13,7 @@
 package org.eclipse.syson.diagram.common.view.tools;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -47,7 +47,7 @@ public class FramedConcernNodeToolProvider implements INodeToolProvider {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var selectedElementToExpose = this.viewBuilderHelper.newChangeContext()
@@ -75,8 +75,8 @@ public class FramedConcernNodeToolProvider implements INodeToolProvider {
 
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
                 .isSelectableExpression(AQLConstants.AQL_SELF + ".oclIsKindOf(" + concernUsageType + ")")
-                .elementsExpression(ServiceMethod.of0(TreeQueryAQLService::getConcernReferenceSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT))
-                .childrenExpression(ServiceMethod.of2(TreeQueryAQLService::getConcernReferenceSelectionDialogChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, TreeRenderer.EXPANDED))
+                .elementsExpression(ServiceMethod.of0(TreeQueryAQLService::getConcernReferenceSelectionDialogElements).aql(CoreVariables.EDITING_CONTEXT.name()))
+                .childrenExpression(ServiceMethod.of2(TreeQueryAQLService::getConcernReferenceSelectionDialogChildren).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), TreeRenderer.EXPANDED))
                 .build();
 
         return this.diagramBuilderHelper.newSelectionDialogDescription()

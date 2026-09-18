@@ -25,7 +25,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.web.application.browser.DefaultModelBrowsersTreeDescriptionProvider;
@@ -70,7 +72,7 @@ public class SysONReferenceWidgetModelBrowserTreeDescriptionProviderTest {
         assertThat(descriptions).singleElement().isInstanceOfSatisfying(TreeDescription.class, treeDescription -> {
             assertThat(treeDescription.getId()).isEqualTo(SysONReferenceWidgetModelBrowserTreeDescriptionProvider.DESCRIPTION_ID);
             var variableManager = new VariableManager();
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
             assertThat(treeDescription.getChildrenProvider().apply(variableManager)).isEqualTo(List.of(filteredChild));
         });
         verify(filterService).applyFilters(eq(editingContext), eq(List.of(defaultChild)), eq(List.of(
@@ -142,8 +144,8 @@ public class SysONReferenceWidgetModelBrowserTreeDescriptionProviderTest {
 
     private VariableManager variableManager(IEditingContext editingContext, Object self) {
         var variableManager = new VariableManager();
-        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-        variableManager.put(VariableManager.SELF, self);
+        variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
+        variableManager.put(RepresentationVariables.SELF.name(), self);
         return variableManager;
     }
 

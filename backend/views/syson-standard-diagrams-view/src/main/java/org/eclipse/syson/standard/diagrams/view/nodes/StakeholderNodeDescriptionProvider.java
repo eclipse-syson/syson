@@ -13,7 +13,7 @@
 package org.eclipse.syson.standard.diagrams.view.nodes;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.model.services.aql.ModelQueryAQLService;
@@ -48,7 +48,7 @@ public class StakeholderNodeDescriptionProvider extends UsageNodeDescriptionProv
     @Override
     protected String getSemanticCandidatesExpression(String domainType) {
         return ServiceMethod.of4(DiagramQueryAQLService::getExposedStakeholders).aqlSelf(domainType, org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS,
-                IEditingContext.EDITING_CONTEXT,
+                CoreVariables.EDITING_CONTEXT.name(),
                 DiagramContext.DIAGRAM_CONTEXT);
     }
 }
