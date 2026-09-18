@@ -29,9 +29,9 @@ import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.eclipse.sirius.web.projects.semanticdata.domain.ProjectSemanticData;
+import org.eclipse.sirius.web.projects.semanticdata.domain.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.tests.graphql.CreateProjectMutationRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -42,6 +42,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.tests.api.GivenSysONServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -83,10 +84,8 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
     }
 
     @DisplayName("GIVEN the Batmobile project template, WHEN the mutation is performed, THEN the project is created")
+    @GivenSysONServer({ SimpleProjectElementsTestProjectData.SCRIPT_PATH })
     @Test
-    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenBatmobileProjectTemplateWhenMutationIsPerformedThenTheProjectIsCreated() {
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -168,10 +167,8 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
     }
 
     @DisplayName("GIVEN the SysMLv2-Library project template, WHEN the mutation is performed, THEN the project is created")
+    @GivenSysONServer({ SimpleProjectElementsTestProjectData.SCRIPT_PATH })
     @Test
-    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSysMLv2LibraryProjectTemplateWhenMutationIsPerformedThenTheProjectIsCreated() {
         TestTransaction.flagForCommit();
         TestTransaction.end();

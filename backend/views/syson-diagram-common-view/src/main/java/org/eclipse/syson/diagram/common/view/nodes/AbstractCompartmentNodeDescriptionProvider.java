@@ -20,7 +20,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
@@ -147,7 +147,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
     protected String isHiddenByDefaultExpression() {
         return ServiceMethod.of4(DiagramQueryAQLService::isHiddenByDefault).aqlSelf(AQLUtils.aqlString(this.getCompartmentName()),
                 org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS,
-                IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT);
+                CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT);
     }
 
     /**
@@ -157,7 +157,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
      */
     protected String getDropElementFromDiagramExpression() {
         return ServiceMethod.of6(DiagramMutationAQLService::dropElementFromDiagram).aqlArrow("droppedElements", "droppedNodes", "targetElement", "targetNode",
-                IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
+                CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
     }
 
     /**

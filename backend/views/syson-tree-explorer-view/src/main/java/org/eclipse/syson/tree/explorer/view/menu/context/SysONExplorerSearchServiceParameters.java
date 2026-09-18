@@ -13,9 +13,9 @@
 package org.eclipse.syson.tree.explorer.view.menu.context;
 
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.springframework.stereotype.Service;
 
 /**

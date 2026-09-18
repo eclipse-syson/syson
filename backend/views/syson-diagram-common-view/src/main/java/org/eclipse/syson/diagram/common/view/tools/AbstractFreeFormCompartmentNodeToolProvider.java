@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
@@ -116,11 +116,11 @@ public abstract class AbstractFreeFormCompartmentNodeToolProvider implements INo
         var builder = this.diagramBuilderHelper.newNodeTool();
 
         var addToExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var revealOperation = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of4(DiagramMutationAQLService::revealCompartment).aql(Node.SELECTED_NODE, AQLConstants.SELF, DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT,
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::revealCompartment).aql(Node.SELECTED_NODE, AQLConstants.SELF, DiagramContext.DIAGRAM_CONTEXT, CoreVariables.EDITING_CONTEXT.name(),
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var conditionalRevealOperation = this.viewBuilderHelper.newIf()

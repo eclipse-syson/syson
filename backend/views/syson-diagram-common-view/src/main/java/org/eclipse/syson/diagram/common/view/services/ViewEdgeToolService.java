@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -188,7 +188,7 @@ public class ViewEdgeToolService {
                 .children(letExistingSubsetting.build());
 
         var precondition = ServiceMethod.of2(DiagramQueryAQLService::isTargetNodeOfType)
-                .aqlSelf(IEditingContext.EDITING_CONTEXT, AQLUtils.aqlString(targetTypeName));
+                .aqlSelf(CoreVariables.EDITING_CONTEXT.name(), AQLUtils.aqlString(targetTypeName));
 
         return builder
                 .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSubclassification()))
@@ -412,7 +412,7 @@ public class ViewEdgeToolService {
                         .aql(org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_SOURCE,
                                 org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET,
                                 org.eclipse.sirius.components.diagrams.description.EdgeDescription.EDGE_SOURCE,
-                                EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT,
+                                EdgeDescription.EDGE_TARGET, CoreVariables.EDITING_CONTEXT.name(),
                                 DiagramContext.DIAGRAM_CONTEXT));
 
         return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage()) + " (bind)")
@@ -430,7 +430,7 @@ public class ViewEdgeToolService {
                         .aql(org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_SOURCE,
                                 org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET,
                                 org.eclipse.sirius.components.diagrams.description.EdgeDescription.EDGE_SOURCE,
-                                EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT,
+                                EdgeDescription.EDGE_TARGET, CoreVariables.EDITING_CONTEXT.name(),
                                 DiagramContext.DIAGRAM_CONTEXT));
 
         return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getConnectionUsage()) + " (connect)")
@@ -448,7 +448,7 @@ public class ViewEdgeToolService {
                         .aql(org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_SOURCE,
                                 org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET,
                                 org.eclipse.sirius.components.diagrams.description.EdgeDescription.EDGE_SOURCE,
-                                EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT,
+                                EdgeDescription.EDGE_TARGET, CoreVariables.EDITING_CONTEXT.name(),
                                 DiagramContext.DIAGRAM_CONTEXT));
 
         return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFlowUsage()) + " (flow)")
@@ -466,7 +466,7 @@ public class ViewEdgeToolService {
                         .aql(org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_SOURCE,
                                 org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET,
                                 org.eclipse.sirius.components.diagrams.description.EdgeDescription.EDGE_SOURCE,
-                                EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT,
+                                EdgeDescription.EDGE_TARGET, CoreVariables.EDITING_CONTEXT.name(),
                                 DiagramContext.DIAGRAM_CONTEXT));
 
         return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getInterfaceUsage()) + " (connect)")
@@ -555,7 +555,7 @@ public class ViewEdgeToolService {
                 .expression(ServiceMethod.of1(DiagramMutationAQLService::becomeNestedUsage).aql(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.SEMANTIC_EDGE_SOURCE));
 
         var precondition = ServiceMethod.of2(DiagramQueryAQLService::isTargetNodeOfType)
-                .aqlSelf(IEditingContext.EDITING_CONTEXT, AQLUtils.aqlString(targetType.getName()));
+                .aqlSelf(CoreVariables.EDITING_CONTEXT.name(), AQLUtils.aqlString(targetType.getName()));
 
         return builder
                 .name(this.nameGenerator.getCreationToolName("Add target as nested ", targetType))
@@ -582,7 +582,7 @@ public class ViewEdgeToolService {
                 .expression(ServiceMethod.of1(DiagramMutationAQLService::becomeNestedUsage).aql(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.SEMANTIC_EDGE_SOURCE));
 
         var precondition = ServiceMethod.of2(DiagramQueryAQLService::isTargetNodeOfType)
-                .aqlSelf(IEditingContext.EDITING_CONTEXT, AQLUtils.aqlString(targetType.getName()));
+                .aqlSelf(CoreVariables.EDITING_CONTEXT.name(), AQLUtils.aqlString(targetType.getName()));
 
         return builder
                 .name(this.nameGenerator.getCreationToolName("Add target as owned ", targetType))
@@ -626,7 +626,7 @@ public class ViewEdgeToolService {
 
         var callService = this.viewBuilderHelper.newChangeContext()
                 .expression(ServiceMethod.of5(DiagramMutationAQLService::createTransitionUsage).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE,
-                        EdgeDescription.EDGE_TARGET, IDiagramService.DIAGRAM_SERVICES, IEditingContext.EDITING_CONTEXT));
+                        EdgeDescription.EDGE_TARGET, IDiagramService.DIAGRAM_SERVICES, CoreVariables.EDITING_CONTEXT.name()));
 
         return builder
                 .name(this.nameGenerator.getCreationToolName(eClass))
@@ -660,7 +660,7 @@ public class ViewEdgeToolService {
 
         var body = this.viewBuilderHelper.newChangeContext()
                 .expression(ServiceMethod.of4(DiagramMutationAQLService::createAllocateEdge).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE,
-                        IEditingContext.EDITING_CONTEXT, IDiagramService.DIAGRAM_SERVICES));
+                        CoreVariables.EDITING_CONTEXT.name(), IDiagramService.DIAGRAM_SERVICES));
 
         return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getAllocationUsage()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getDependency().getName() + SVG)
@@ -673,7 +673,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
         var body = this.viewBuilderHelper.newChangeContext()
                 .expression(ServiceMethod.of5(DiagramMutationAQLService::createSuccessionEdge).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE,
-                        EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT, IDiagramService.DIAGRAM_SERVICES));
+                        EdgeDescription.EDGE_TARGET, CoreVariables.EDITING_CONTEXT.name(), IDiagramService.DIAGRAM_SERVICES));
 
         return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSuccession()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getSuccession().getName() + SVG)

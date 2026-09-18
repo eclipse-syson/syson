@@ -23,13 +23,13 @@ import {
   computeNodesBox,
   computePreviousPosition,
   computePreviousSize,
-  findNodeIndex,
   getBorderNodeExtent,
   getChildNodePosition,
   getDefaultOrMinHeight,
   getDefaultOrMinWidth,
   getEastBorderNodeFootprintHeight,
   getHeaderHeightFootprint,
+  getNodeBorderWidth,
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
@@ -54,9 +54,8 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
     newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
     forceDimensions?: ForcedDimensions
   ) {
-    const nodeIndex = findNodeIndex(visibleNodes, node.id);
-    const nodeElement = document.getElementById(`${node.id}-rectangularNode-${nodeIndex}`)?.children[0];
-    const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 0;
+    const borderWidth = getNodeBorderWidth(node.data.style);
+
     if (directChildren.length > 0) {
       this.handleParentNode(
         layoutEngine,
@@ -223,7 +222,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
     _borderWidth: number,
     _forceDimensions?: ForcedDimensions
   ) {
-    const nodeIndex: number = findNodeIndex(visibleNodes, node.id);
+    const nodeIndex: number = visibleNodes.findIndex((nd) => nd.id === node.id);
     const labelElement: HTMLElement | null = document.getElementById(`${node.id}-label-${nodeIndex}`);
 
     const labelHeight: number =

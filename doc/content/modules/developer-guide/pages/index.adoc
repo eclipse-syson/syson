@@ -267,8 +267,8 @@ Click on _Apply and Close_.
 ==== Node/NPM
 
 All {product} frontend modules are NodeJS packages.
-The current Node version to use is 22.16.0.
-The current NPM version to use is 10.9.2.
+The current Node version to use is 24.20.0.
+The current NPM version to use is 11.19.0.
 
 We strongly encourage the use of Node Version Manager (NVM) to manage your Node/NPM versions.
 Indeed, Node/NPM version have changed since the beginning of the development of {product} and will change again.
@@ -282,7 +282,7 @@ On MS Windows, please follow: https://github.com/coreybutler/nvm-windows
 Once installed, you can run the following shell command (from anywhere):
 [source,shell]
 ----
-nvm install 22.16.0
+nvm install 24.20.0
 ----
 This will install the appropriate version of NPM as well.
 

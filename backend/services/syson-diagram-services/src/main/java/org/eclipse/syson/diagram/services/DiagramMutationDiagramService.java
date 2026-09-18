@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.emf.utils.SiriusEMFCopier;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.syson.model.services.ModelMutationElementService;
 import org.eclipse.syson.sysml.Element;
@@ -90,7 +91,7 @@ public class DiagramMutationDiagramService {
                     .map(DiagramDescription.class::cast)
                     .ifPresent(diagramDescription -> {
                         var variableManager = new VariableManager();
-                        variableManager.put(VariableManager.SELF, viewUsage);
+                        variableManager.put(RepresentationVariables.SELF.name(), viewUsage);
                         variableManager.put(DiagramDescription.LABEL, viewUsage.getDeclaredName());
                         String label = diagramDescription.getLabelProvider().apply(variableManager);
                         List<String> iconURLs = diagramDescription.getIconURLsProvider().apply(variableManager);

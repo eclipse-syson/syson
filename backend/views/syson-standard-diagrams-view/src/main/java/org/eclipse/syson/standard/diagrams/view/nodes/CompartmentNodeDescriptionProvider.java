@@ -18,7 +18,7 @@ import java.util.List;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
@@ -81,14 +81,14 @@ public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeD
         if (this.eReference == SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint()
                 || this.eReference == SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint()) {
             customExpression = ServiceMethod.of6(DiagramMutationAQLService::dropElementFromDiagramInRequirementAssumeConstraintCompartment).aqlArrow("droppedElements", "droppedNodes",
-                    "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
+                    "targetElement", "targetNode", CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
         } else if (this.eReference == SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint()
                 || this.eReference == SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint()) {
             customExpression = ServiceMethod.of6(DiagramMutationAQLService::dropElementFromDiagramInRequirementRequireConstraintCompartment).aqlArrow("droppedElements", "droppedNodes",
-                    "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
+                    "targetElement", "targetNode", CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
         } else if (this.eReference == SysmlPackage.eINSTANCE.getUsage_NestedConstraint() || this.eReference == SysmlPackage.eINSTANCE.getDefinition_OwnedConstraint()) {
             customExpression = ServiceMethod.of6(DiagramMutationAQLService::dropElementFromDiagramInConstraintCompartment).aqlArrow("droppedElements", "droppedNodes", "targetElement",
-                    "targetNode", IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
+                    "targetNode", CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
         }
         return customExpression;
     }

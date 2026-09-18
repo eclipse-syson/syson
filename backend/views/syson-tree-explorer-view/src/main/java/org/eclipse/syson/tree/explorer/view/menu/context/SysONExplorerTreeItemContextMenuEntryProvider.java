@@ -38,11 +38,11 @@ import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapte
 import org.eclipse.sirius.web.application.messages.ISiriusWebApplicationMessageService;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerTreeItemContextMenuEntryProvider;
-import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
-import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
+import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.ViewUsage;

@@ -21,6 +21,7 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.FreeFormLayoutStrategyDescriptionBuilder;
@@ -141,7 +142,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .semanticCandidatesExpression(ServiceMethod.of4(DiagramQueryAQLService.class,
                         DiagramQueryAQLService::getExposedElements, Element.class, EClass.class, List.class,
                         IEditingContext.class, DiagramContext.class)
-                        .aqlSelf(domainType, ANCESTORS, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT))
+                        .aqlSelf(domainType, ANCESTORS, CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT))
                 .style(this.createPackageNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -236,7 +237,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .acceptedNodeTypes(this.getDroppableNodes(cache).toArray(NodeDescription[]::new))
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression(ServiceMethod.of6(DiagramMutationAQLService::dropElementFromDiagram).aqlArrow("droppedElements", "droppedNodes", "targetElement", "targetNode",
-                                IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
+                                CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
                         .build())
                 .build();
     }
@@ -279,7 +280,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
         }
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()

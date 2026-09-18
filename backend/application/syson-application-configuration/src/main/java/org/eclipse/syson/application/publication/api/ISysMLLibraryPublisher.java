@@ -15,7 +15,6 @@ package org.eclipse.syson.application.publication.api;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.events.ICause;
-import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 
 /**
  * Publishes the proper SysML contents of an {@link IEditingContext} as a {@link Library}.

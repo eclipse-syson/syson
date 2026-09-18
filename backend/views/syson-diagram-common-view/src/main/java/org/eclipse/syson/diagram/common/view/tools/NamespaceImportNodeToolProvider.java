@@ -15,7 +15,7 @@ package org.eclipse.syson.diagram.common.view.tools;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
@@ -85,8 +85,8 @@ public class NamespaceImportNodeToolProvider implements INodeToolProvider {
         var domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPackage());
 
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(ServiceMethod.of0(TreeQueryAQLService::getNamespaceImportSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT))
-                .childrenExpression(ServiceMethod.of2(TreeQueryAQLService::getNamespaceImportSelectionDialogChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, TreeRenderer.EXPANDED))
+                .elementsExpression(ServiceMethod.of0(TreeQueryAQLService::getNamespaceImportSelectionDialogElements).aql(CoreVariables.EDITING_CONTEXT.name()))
+                .childrenExpression(ServiceMethod.of2(TreeQueryAQLService::getNamespaceImportSelectionDialogChildren).aqlSelf(CoreVariables.EDITING_CONTEXT.name(), TreeRenderer.EXPANDED))
                 .isSelectableExpression(AQLConstants.AQL_SELF + ".oclIsKindOf(" + domainType + ")")
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()
