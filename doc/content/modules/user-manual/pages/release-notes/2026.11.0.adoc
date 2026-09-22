@@ -29,6 +29,8 @@ Use the existing content tools to display these elements. Existing representatio
 
 ** Report syntax errors that may leave an uploaded SysML file partially imported.
 The parsed elements are still imported, and the loading report identifies the syntax problem and warns about possibly missing elements.
+** Export connector ends that reference feature chains, such as `battery.powerPort to batmobileEngine.enginePort`, instead of leaving the ends empty.
+** `InterfaceUsage` elements are now exported with the `interface` keyword.
 
 == Improvements
 

@@ -77,6 +77,7 @@ import org.eclipse.syson.sysml.ForkNode;
 import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.IncludeUseCaseUsage;
 import org.eclipse.syson.sysml.InterfaceDefinition;
+import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.InvocationExpression;
 import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.ItemUsage;
@@ -421,9 +422,14 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 .filter(e -> !ends.contains(e))
                 .toList();
 
-        if (!declarationAndValueBuilder.isEmpty() || !contentMemberships.isEmpty()) {
-            // If the ConnectionUsage as a declaration, a value or some content we need to use the keyword connection
-            builder.appendWithSpaceIfNeeded("connection").appendWithSpaceIfNeeded(declarationAndValueBuilder);
+        if (connectionUsage instanceof InterfaceUsage || !declarationAndValueBuilder.isEmpty() || !contentMemberships.isEmpty()) {
+            // InterfaceUsage always requires its keyword; ConnectionUsage only when it has a declaration, a value or some content
+            if (connectionUsage instanceof InterfaceUsage) {
+                builder.appendWithSpaceIfNeeded(this.getUsageKeyword(connectionUsage));
+            } else {
+                builder.appendWithSpaceIfNeeded(SysMLv2Keywords.CONNECTION);
+            }
+            builder.appendWithSpaceIfNeeded(declarationAndValueBuilder);
         }
 
         if (!connectorPartBuilder.isEmpty()) {
@@ -1776,7 +1782,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private void appendOwnedReferenceSubsetting(Appender builder, ReferenceSubsetting refSubsetting) {
-        Feature referencedFeature = refSubsetting.getReferencedFeature();
+        Feature referencedFeature = this.resolveReferencedFeature(refSubsetting);
 
         if (referencedFeature != null) {
 
@@ -1790,6 +1796,26 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 builder.appendWithSpaceIfNeeded(deresolvedName);
             }
         }
+    }
+
+    /**
+     * Resolves the referenced feature, falling back to an owned feature chain when no reference is set.
+     *
+     * @param refSubsetting
+     *         the reference subsetting to resolve
+     * @return the referenced feature or an owned feature chain, or {@code null} if neither is available
+     */
+    private Feature resolveReferencedFeature(ReferenceSubsetting refSubsetting) {
+        Feature referencedFeature = refSubsetting.getReferencedFeature();
+        if (referencedFeature == null) {
+            referencedFeature = refSubsetting.getOwnedRelatedElement().stream()
+                    .filter(Feature.class::isInstance)
+                    .map(Feature.class::cast)
+                    .filter(feature -> !feature.eIsProxy() && !feature.getOwnedFeatureChaining().isEmpty())
+                    .findFirst()
+                    .orElse(null);
+        }
+        return referencedFeature;
     }
 
     private void appendOwnedCrossMultiplicityMember(Appender builder, OwningMembership owningMembership) {

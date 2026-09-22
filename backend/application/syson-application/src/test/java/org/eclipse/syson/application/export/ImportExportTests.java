@@ -1494,6 +1494,34 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 .check();
     }
 
+    @Test
+    @DisplayName("GIVEN a model with an InterfaceUsage whose end is a feature chain, WHEN importing and exporting the model, THEN the InterfaceUsage should be exported properly")
+    public void checkInterfaceUsageWithChainedEnd() throws IOException {
+        var input = """
+                package P {
+                    port def PI;
+                    part def PD { port p : PI; }
+                    part a { part b : PD; }
+                    part c : PD;
+                    interface i connect a.b.p to c.p;
+                }""";
+        var expected = """
+                package P {
+                    port def PI;
+                    part def PD {
+                        port p : PI;
+                    }
+                    part a {
+                        part b : PD;
+                    }
+                    part c : PD;
+                    interface i connect a.b.p to c.p;
+                }""";
+        this.checker.textToImport(input)
+                .expectedResult(expected)
+                .check();
+    }
+
     /**
      * Test import/export on test file StateTest.sysml. The content of StateTest.sysml that have been copied below
      * is under LGPL-3.0-only license. The LGPL-3.0-only license is accessible at the root of this repository, in the
