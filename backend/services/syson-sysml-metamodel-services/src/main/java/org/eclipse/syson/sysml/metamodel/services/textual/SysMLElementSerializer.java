@@ -1782,7 +1782,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private void appendOwnedReferenceSubsetting(Appender builder, ReferenceSubsetting refSubsetting) {
-        Feature referencedFeature = this.getReferencedFeature(refSubsetting);
+        Feature referencedFeature = this.resolveReferencedFeature(refSubsetting);
 
         if (referencedFeature != null) {
 
@@ -1798,7 +1798,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
     }
 
-    private Feature getReferencedFeature(ReferenceSubsetting refSubsetting) {
+    private Feature resolveReferencedFeature(ReferenceSubsetting refSubsetting) {
         Feature referencedFeature = refSubsetting.getReferencedFeature();
         if (referencedFeature == null) {
             referencedFeature = refSubsetting.getOwnedRelatedElement().stream()
