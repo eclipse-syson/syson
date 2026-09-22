@@ -83,6 +83,7 @@ import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.ReturnParameterMembership;
+import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.Subsetting;
@@ -1425,6 +1426,48 @@ public class SysMLElementSerializerTest {
         subset.setSubsettedFeature(attr);
         subset.setSubsettingFeature(ref);
         this.assertTextualFormEquals("refu :> attr;", ref);
+    }
+
+    @Test
+    public void satisfyRequirementUsageWithoutSubject() {
+        PartUsage partUsage = this.builder.createWithName(PartUsage.class, "partUsage");
+        RequirementUsage req1 = this.builder.createInWithName(RequirementUsage.class, partUsage, "req1");
+        SatisfyRequirementUsage satisfy = this.builder.createIn(SatisfyRequirementUsage.class, partUsage);
+        satisfy.setIsComposite(true);
+        this.builder.addReferenceSubsetting(satisfy, req1);
+
+        this.assertTextualFormEquals("assert satisfy req1;", satisfy);
+    }
+
+    @Test
+    public void satisfyRequirementUsageWithSubject() {
+        PartUsage partUsage = this.builder.createWithName(PartUsage.class, "partUsage");
+        RequirementUsage req1 = this.builder.createInWithName(RequirementUsage.class, partUsage, "req1");
+        PartUsage subjectPart = this.builder.createInWithName(PartUsage.class, partUsage, "p1");
+        SatisfyRequirementUsage satisfy = this.builder.createIn(SatisfyRequirementUsage.class, partUsage);
+        satisfy.setIsComposite(true);
+        this.builder.addReferenceSubsetting(satisfy, req1);
+        satisfy.getOwnedRelationship().add(this.createSubjectMembership(subjectPart));
+
+        this.assertTextualFormEquals("assert satisfy req1 by p1;", satisfy);
+    }
+
+    /**
+     * Builds the subject membership of a satisfy usage: a {@link ReferenceUsage} valued with a
+     * {@link FeatureReferenceExpression} pointing to the given feature.
+     */
+    private SubjectMembership createSubjectMembership(Feature subject) {
+        SubjectMembership subjectMembership = this.fact.createSubjectMembership();
+        ReferenceUsage referenceUsage = this.fact.createReferenceUsage();
+        subjectMembership.getOwnedRelatedElement().add(referenceUsage);
+        FeatureValue featureValue = this.fact.createFeatureValue();
+        referenceUsage.getOwnedRelationship().add(featureValue);
+        FeatureReferenceExpression featureReferenceExpression = this.fact.createFeatureReferenceExpression();
+        featureValue.getOwnedRelatedElement().add(featureReferenceExpression);
+        Membership membership = this.fact.createMembership();
+        membership.setMemberElement(subject);
+        featureReferenceExpression.getOwnedRelationship().add(membership);
+        return subjectMembership;
     }
 
     @Test
