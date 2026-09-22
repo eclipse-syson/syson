@@ -1443,6 +1443,35 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("GIVEN a model with SatisfyRequirementUsage with and without a subject, WHEN importing and exporting the model, THEN no dangling by is exported")
+    public void checkSatisfyRequirementUsageWithoutSubject() throws IOException {
+        var input = """
+                package P {
+                    requirement def RD;
+                    requirement r1 : RD;
+                    part p1;
+                    part p2 {
+                        satisfy r1;
+                        satisfy r1 by p1;
+                    }
+                }""";
+        // The strict BNF form of the SatisfyRequirementUsage forces the use of the "assert" keyword
+        var expected = """
+                package P {
+                    requirement def RD;
+                    requirement r1 : RD;
+                    part p1;
+                    part p2 {
+                        assert satisfy r1;
+                        assert satisfy r1 by p1;
+                    }
+                }""";
+        this.checker.textToImport(input)
+                .expectedResult(expected)
+                .check();
+    }
+
+    @Test
     @DisplayName("GIVEN a model with ConnectionUsage, WHEN importing and exporting the model, THEN the ConnectionUsage should be exported properly")
     public void checkConnectionUsage() throws IOException {
         var input = """
