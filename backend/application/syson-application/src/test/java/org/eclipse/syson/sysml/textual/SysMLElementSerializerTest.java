@@ -1876,7 +1876,7 @@ public class SysMLElementSerializerTest {
                     then decide;
                     then merge;
                 }""", actionUsage);
-        assertTrue(this.status.stream().noneMatch(s -> s.severity() == Severity.ERROR));
+        assertTrue(this.status.stream().noneMatch(s -> s.severity() == Severity.ERROR || s.severity() == Severity.WARNING));
     }
 
     @DisplayName("ActionUsage with a succession whose target end references the following action")
@@ -1888,7 +1888,7 @@ public class SysMLElementSerializerTest {
         subAction1.setIsComposite(true);
         ActionUsage subAction2 = this.builder.createWithName(ActionUsage.class, "a_2");
         subAction2.setIsComposite(true);
-        this.createImplicitSuccession(actionUsage, subAction1, subAction2);
+        this.createImplicitSuccession(actionUsage, subAction1, subAction2, false);
         this.addAsFeatureMember(actionUsage, subAction2);
 
         this.assertTextualFormEquals("""
@@ -1957,17 +1957,29 @@ public class SysMLElementSerializerTest {
      * are implied.
      */
     private SuccessionAsUsage createImplicitSuccession(Element parent, Feature source, Feature target) {
+        return this.createImplicitSuccession(parent, source, target, true);
+    }
+
+    private SuccessionAsUsage createImplicitSuccession(Element parent, Feature source, Feature target, boolean implicitTargetEnd) {
         SuccessionAsUsage succession = this.builder.createSuccessionAsUsage(SuccessionAsUsage.class, parent, source, target);
-        succession.getOwnedRelationship().stream()
+        List<EndFeatureMembership> ends = succession.getOwnedRelationship().stream()
                 .filter(EndFeatureMembership.class::isInstance)
                 .map(EndFeatureMembership.class::cast)
-                .flatMap(end -> end.getOwnedRelatedElement().stream())
+                .toList();
+        this.markEndImplicit(ends.get(0));
+        if (implicitTargetEnd) {
+            this.markEndImplicit(ends.get(1));
+        }
+        return succession;
+    }
+
+    private void markEndImplicit(EndFeatureMembership end) {
+        end.getOwnedRelatedElement().stream()
                 .filter(Feature.class::isInstance)
                 .map(Feature.class::cast)
                 .map(Feature::getOwnedReferenceSubsetting)
                 .filter(Objects::nonNull)
                 .forEach(refSubsetting -> refSubsetting.setIsImplied(true));
-        return succession;
     }
 
     @DisplayName("Check PerfomAction simple form")

@@ -1332,9 +1332,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 builder.appendWithSpaceIfNeeded("then").appendWithSpaceIfNeeded(this.doSwitch(targetMembership));
                 this.childrenMembershipToSkip.add(targetMembership);
                 this.childrenMembershipToSkip.add(second);
-                if (!children.isEmpty()) {
-                    this.reportConsumer.accept(Status.warning("Unable to export the body of a SuccessionAsUsage ({0}) with an implicit target", successionAsUsage.getElementId()));
-                }
                 result = builder.toString();
             } else if (this.isImplicitEnd(second)) {
                 this.reportConsumer.accept(Status.warning("Unable to export a SuccessionAsUsage ({0}) with an implicit target and no following action", successionAsUsage.getElementId()));
@@ -1350,9 +1347,13 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
 
         List<Relationship> remainingChildren = children.stream().filter(membership -> !this.childrenMembershipToSkip.contains(membership)).toList();
-        if (result == null && (!builder.toString().isEmpty() || !remainingChildren.isEmpty())) {
-            this.appendChildrenContent(builder, successionAsUsage, children);
-            result = builder.toString();
+        if (result == null) {
+            if (!builder.toString().isEmpty() || !remainingChildren.isEmpty()) {
+                this.appendChildrenContent(builder, successionAsUsage, children);
+                result = builder.toString();
+            }
+        } else if (!remainingChildren.isEmpty()) {
+            this.reportConsumer.accept(Status.warning("Unable to export the body of a SuccessionAsUsage ({0}) with an implicit target", successionAsUsage.getElementId()));
         }
 
         return result;
@@ -1770,10 +1771,12 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (owningType != null) {
             List<Membership> memberships = owningType.getOwnedMembership();
             int index = memberships.indexOf(feature.getOwningFeatureMembership());
-            for (int i = index + 1; i < memberships.size() && result.isEmpty(); i++) {
-                Membership candidate = memberships.get(i);
-                if (!this.childrenMembershipToSkip.contains(candidate)) {
-                    result = Optional.of(candidate);
+            if (index >= 0) {
+                for (int i = index + 1; i < memberships.size() && result.isEmpty(); i++) {
+                    Membership candidate = memberships.get(i);
+                    if (!this.childrenMembershipToSkip.contains(candidate)) {
+                        result = Optional.of(candidate);
+                    }
                 }
             }
         }
