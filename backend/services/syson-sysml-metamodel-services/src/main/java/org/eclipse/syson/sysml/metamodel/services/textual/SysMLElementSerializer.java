@@ -1336,6 +1336,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             } else if (this.isImplicitEnd(second)) {
                 this.reportConsumer.accept(Status.warning("Unable to export a SuccessionAsUsage ({0}) with an implicit target and no following action", successionAsUsage.getElementId()));
                 this.childrenMembershipToSkip.add(second);
+                result = "";
             } else {
                 builder.appendWithSpaceIfNeeded("then");
                 this.childrenMembershipToSkip.add(second);
