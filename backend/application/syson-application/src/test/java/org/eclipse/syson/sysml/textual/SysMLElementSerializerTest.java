@@ -142,6 +142,8 @@ public class SysMLElementSerializerTest {
 
     private static final String BODY = "A body";
 
+    private static final String SOCKET = "socket";
+
     private ModelBuilder builder;
 
     private List<Status> status;
@@ -1650,7 +1652,7 @@ public class SysMLElementSerializerTest {
         PartUsage rootPart = this.builder.createWithName(PartUsage.class, "part1");
 
         PartUsage heater = this.builder.createInWithName(PartUsage.class, rootPart, "heater");
-        PortUsage socket = this.builder.createInWithName(PortUsage.class, heater, "socket");
+        PortUsage socket = this.builder.createInWithName(PortUsage.class, heater, SOCKET);
         PortUsage outlet = this.builder.createInWithName(PortUsage.class, rootPart, "outlet");
 
         Feature source = this.builder.createFeatureChaining(heater, socket);
@@ -1659,7 +1661,7 @@ public class SysMLElementSerializerTest {
         interfaceUsage.getOwnedRelationship().add(this.createConnectionEndFeatureMembership(source));
         interfaceUsage.getOwnedRelationship().add(this.createConnectionEndFeatureMembership(outlet));
 
-        this.assertTextualFormEquals("connection interface1 connect heater.socket to outlet;", interfaceUsage);
+        this.assertTextualFormEquals("interface interface1 connect heater.socket to outlet;", interfaceUsage);
     }
 
     @Test
@@ -1677,7 +1679,42 @@ public class SysMLElementSerializerTest {
         interfaceUsage.getOwnedRelationship().add(this.createConnectionEndFeatureMembership(source));
         interfaceUsage.getOwnedRelationship().add(this.createConnectionEndFeatureMembership(outlet));
 
-        this.assertTextualFormEquals("connection interface1 connect livingRoom.heater.socket to outlet;", interfaceUsage);
+        this.assertTextualFormEquals("interface interface1 connect livingRoom.heater.socket to outlet;", interfaceUsage);
+    }
+
+    @Test
+    public void interfaceUsageWithChainedEndsWithoutReferencedFeature() {
+        PartUsage rootPart = this.builder.createWithName(PartUsage.class, "root");
+
+        PartUsage livingRoom = this.builder.createInWithName(PartUsage.class, rootPart, "livingRoom");
+        PartUsage heater = this.builder.createInWithName(PartUsage.class, livingRoom, "heater");
+        PortUsage socket = this.builder.createInWithName(PortUsage.class, heater, SOCKET);
+        PortUsage outlet = this.builder.createInWithName(PortUsage.class, rootPart, "outlet");
+
+        Feature source = this.builder.createFeatureChaining(livingRoom, heater, socket);
+        InterfaceUsage interfaceUsage = this.builder.createWithName(InterfaceUsage.class, "interface1");
+        this.addAsFeatureMember(rootPart, interfaceUsage);
+        interfaceUsage.getOwnedRelationship().add(this.createChainedEndFeatureMembership(source));
+        interfaceUsage.getOwnedRelationship().add(this.createConnectionEndFeatureMembership(outlet));
+
+        this.assertTextualFormEquals("interface interface1 connect livingRoom.heater.socket to outlet;", interfaceUsage);
+    }
+
+    /**
+     * Creates an end whose feature chain is only owned by the {@link ReferenceSubsetting}, without
+     * {@code referencedFeature} set, as produced by old models and imports.
+     */
+    private EndFeatureMembership createChainedEndFeatureMembership(Feature chain) {
+        EndFeatureMembership endFeatureMembership = this.fact.createEndFeatureMembership();
+        PortUsage endFeature = this.fact.createPortUsage();
+        endFeature.setIsEnd(true);
+        endFeatureMembership.getOwnedRelatedElement().add(endFeature);
+        endFeatureMembership.setMemberElement(endFeature);
+        ReferenceSubsetting refSubsetting = this.fact.createReferenceSubsetting();
+        refSubsetting.setSubsettingFeature(endFeature);
+        refSubsetting.getOwnedRelatedElement().add(chain);
+        endFeature.getOwnedRelationship().add(refSubsetting);
+        return endFeatureMembership;
     }
 
     @Test
@@ -1697,7 +1734,7 @@ public class SysMLElementSerializerTest {
         interfaceUsage.getOwnedRelationship().add(sourceEnd);
         interfaceUsage.getOwnedRelationship().add(targetEnd);
 
-        this.assertTextualFormEquals("connection interface1 connect #original socket to #derive outlet;", interfaceUsage);
+        this.assertTextualFormEquals("interface interface1 connect #original socket to #derive outlet;", interfaceUsage);
     }
 
     /**
@@ -1735,7 +1772,7 @@ public class SysMLElementSerializerTest {
         interfaceUsage.getOwnedRelationship().add(this.createConnectionEndFeatureMembership(socket));
         interfaceUsage.getOwnedRelationship().add(this.createUnresolvedConnectionEndFeatureMembership());
 
-        this.assertTextualFormEquals("connection interface1 connect socket to ;", interfaceUsage);
+        this.assertTextualFormEquals("interface interface1 connect socket to ;", interfaceUsage);
     }
 
     @Test
