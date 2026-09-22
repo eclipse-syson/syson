@@ -32,6 +32,8 @@ The parsed elements are still imported, and the loading report identifies the sy
 
 == Improvements
 
+* The Docker image can be built from the sources with `docker compose up --build`, see https://github.com/eclipse-syson/syson/issues/2529[#2529].
+
 == Technical details
 
 * For technical details on this {product} release, including breaking changes, please refer to the https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
