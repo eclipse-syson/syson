@@ -1948,6 +1948,27 @@ public class SysMLElementSerializerTest {
         assertTrue(this.status.stream().anyMatch(s -> s.severity() == Severity.WARNING && s.message().startsWith("Unable to export a SuccessionAsUsage")));
     }
 
+    @DisplayName("SuccessionAsUsage with an explicit source and an implicit target references the following action")
+    @Test
+    public void successionUsageWithExplicitSourceAndImplicitFollowingActionTarget() {
+        ActionUsage actionUsage = this.builder.createWithName(ActionUsage.class, ACTION_A);
+
+        ActionUsage subAction1 = this.builder.createInWithName(ActionUsage.class, actionUsage, ACTION_A_1);
+        subAction1.setIsComposite(true);
+        ActionUsage subAction2 = this.builder.createWithName(ActionUsage.class, "a_2");
+        subAction2.setIsComposite(true);
+        this.builder.createSuccessionAsUsage(SuccessionAsUsage.class, actionUsage, subAction1, null);
+        this.addAsFeatureMember(actionUsage, subAction2);
+
+        this.assertTextualFormEquals("""
+                action a {
+                    action a_1;
+                    first a_1 then a_2;
+                    action a_2;
+                }""", actionUsage);
+        assertTrue(this.status.stream().noneMatch(s -> s.severity() == Severity.ERROR || s.severity() == Severity.WARNING));
+    }
+
     @DisplayName("DecisionNode with and without a name")
     @Test
     public void decisionNodeWithoutName() {

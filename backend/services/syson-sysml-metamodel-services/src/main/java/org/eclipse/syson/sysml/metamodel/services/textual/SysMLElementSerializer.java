@@ -1318,21 +1318,36 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (endFeatureMemberships.size() == 2) {
 
             EndFeatureMembership first = endFeatureMemberships.get(0);
+            boolean explicitSource = false;
             if (!this.isImplicitEnd(first) || !this.isPreviousFeatureEqualsTo(successionAsUsage.getSourceFeature(), successionAsUsage,
                     m -> this.isNotSuccessionWithSameSource(m, successionAsUsage.getSourceFeature()))) {
                 builder.appendWithSpaceIfNeeded("first");
                 this.appendConnectorEndMember(builder, first);
+                explicitSource = true;
             }
             this.childrenMembershipToSkip.add(first);
 
             EndFeatureMembership second = endFeatureMemberships.get(1);
             Optional<Membership> implicitTarget = this.getImplicitSuccessionTarget(successionAsUsage, second);
-            if (implicitTarget.isPresent()) {
+            if (implicitTarget.isPresent() && !explicitSource) {
                 Membership targetMembership = implicitTarget.get();
                 builder.appendWithSpaceIfNeeded("then").appendWithSpaceIfNeeded(this.doSwitch(targetMembership));
                 this.childrenMembershipToSkip.add(targetMembership);
                 this.childrenMembershipToSkip.add(second);
                 result = builder.toString();
+            } else if (implicitTarget.isPresent()) {
+                // An explicit "first" source cannot precede an inlined action; reference the following action instead.
+                Membership targetMembership = implicitTarget.get();
+                Feature targetFeature = ((FeatureMembership) targetMembership).getOwnedMemberFeature();
+                String targetName = this.nameDeresolver.getDeresolvedName(targetFeature, successionAsUsage);
+                if (targetName != null && !targetName.isBlank()) {
+                    builder.appendWithSpaceIfNeeded("then").appendWithSpaceIfNeeded(targetName);
+                    this.childrenMembershipToSkip.add(second);
+                } else {
+                    this.reportConsumer.accept(Status.warning("Unable to export a SuccessionAsUsage ({0}) with an implicit target and no following action", successionAsUsage.getElementId()));
+                    this.childrenMembershipToSkip.add(second);
+                    result = "";
+                }
             } else if (this.isImplicitEnd(second)) {
                 this.reportConsumer.accept(Status.warning("Unable to export a SuccessionAsUsage ({0}) with an implicit target and no following action", successionAsUsage.getElementId()));
                 this.childrenMembershipToSkip.add(second);

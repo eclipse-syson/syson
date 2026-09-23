@@ -763,6 +763,28 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("GIVEN a SuccessionAsUsage with an explicit start source and implicit targets on the following actions, WHEN importing and exporting the model, THEN the following actions are referenced by name, not inlined.")
+    public void checkSuccessionExplicitStartThenDefinedActions() throws IOException {
+        var input = """
+                action def ActionDef1 {
+                    first start;
+                    then action a1;
+                    then action a2;
+                }""";
+
+        var expected = """
+                action def ActionDef1 {
+                    first start then a1;
+                    action a1;
+                    then action a2;
+                }""";
+
+        this.checker.textToImport(input)
+                .expectedResult(expected)
+                .check();
+    }
+
+    @Test
     @DisplayName("GIVEN a SuccessionAsUsage with an explicit source feature, WHEN importing and exporting the model, THEN the exported text file should be the same as the imported one.")
     public void checkSuccessionAsUsageExplicitSourceTest() throws IOException {
         var input = """
