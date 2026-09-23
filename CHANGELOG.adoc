@@ -21,6 +21,7 @@
 - [releng] Update to https://github.com/vercel/turborepo/releases#release-v2.10.12[turbo 2.10.12]
 - [releng] Update to https://github.com/vitejs/vite/releases/tag/v8.3.0[Vite 8.3.0] and https://github.com/vitejs/vite-plugin-react/releases/tag/plugin-react%406.1.1[@vitejs/plugin-react 6.1.1]
 - [releng] Update to https://github.com/nodejs/node/releases/tag/v24.20.0[node.js 24.20.0] and https://docs.npmjs.com/cli/v11/using-npm/changelog#11190-2026-07-28[npm 11.19.0] for our development environment.
+- [releng] Update to EMFJson 2.5.4
 
 === Bug fixes
 
