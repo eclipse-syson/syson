@@ -606,14 +606,28 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     action a1;
                     action a2;
                     action a3;
-                    then d1;
-                    decide d1;
+                    then decide d1;
                     succession sd1 first d1 if x < 0 then a1;
                     succession sd2 first d1 if x == 0 then a2;
                     succession sd3 first d1 then a3;
                 }""";
         this.checker.textToImport(input)
                 .expectedResult(expected)
+                .check();
+    }
+
+    @Test
+    @DisplayName("GIVEN a model with successions with implicit targets, WHEN importing and exporting the model, THEN the following members are inlined after then")
+    public void checkSuccessionWithImplicitTargets() throws IOException {
+        var input = """
+                action def A2 {
+                    action a1;
+                    then decide;
+                    then merge;
+                    then action a3;
+                }""";
+        this.checker.textToImport(input)
+                .expectedResult(input)
                 .check();
     }
 
@@ -704,17 +718,15 @@ public class ImportExportTests extends AbstractIntegrationTests {
          * Here we have differences here because :
          *
          * <ul>
-         * <li>The construction of SuccessionAsUsage defining new ActionUsage is hard to detect so we chose to use the
-         * complete syntax "first source then target;"</li>
+         * <li>A succession whose implicit target is the following member is exported by inlining that member after the
+         * then keyword</li>
          * <ul>
          */
         var expected = """
                 action def ActionDef1 {
                     action a0;
-                    then a1;
-                    action a1;
-                    then a2;
-                    action a2;
+                    then action a1;
+                    then action a2;
                 }""";
 
         this.checker.textToImport(input)
@@ -743,6 +755,28 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 action def ActionDef1 {
                     action a2;
                     first start then a2;
+                }""";
+
+        this.checker.textToImport(input)
+                .expectedResult(expected)
+                .check();
+    }
+
+    @Test
+    @DisplayName("GIVEN a SuccessionAsUsage with an explicit start source and implicit targets on the following actions, WHEN importing and exporting the model, THEN the following actions are referenced by name, not inlined.")
+    public void checkSuccessionExplicitStartThenDefinedActions() throws IOException {
+        var input = """
+                action def ActionDef1 {
+                    first start;
+                    then action a1;
+                    then action a2;
+                }""";
+
+        var expected = """
+                action def ActionDef1 {
+                    first start then a1;
+                    action a1;
+                    then action a2;
                 }""";
 
         this.checker.textToImport(input)

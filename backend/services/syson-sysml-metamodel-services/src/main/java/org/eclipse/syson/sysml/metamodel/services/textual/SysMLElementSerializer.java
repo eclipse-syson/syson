@@ -457,7 +457,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         this.appendControlNodePrefix(builder, decisionNode);
 
         if (decisionNode.isIsComposite()) {
-            builder.appendWithSpaceIfNeeded("decide ");
+            builder.appendWithSpaceIfNeeded("decide");
             this.appendUsageDeclaration(builder, decisionNode);
         }
 
@@ -1310,33 +1310,69 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 .map(EndFeatureMembership.class::cast)
                 .toList();
 
+        List<Relationship> children = successionAsUsage.getOwnedRelationship().stream()
+                .filter(this.relationPredicates.isDefinitionBodyItemMember())
+                .toList();
 
+        String result = null;
         if (endFeatureMemberships.size() == 2) {
 
             EndFeatureMembership first = endFeatureMemberships.get(0);
-            if (!this.isSuccessionUsageImplicitSource(first) || !this.isPreviousFeatureEqualsTo(successionAsUsage.getSourceFeature(), successionAsUsage,
+            boolean explicitSource = false;
+            if (!this.isImplicitEnd(first) || !this.isPreviousFeatureEqualsTo(successionAsUsage.getSourceFeature(), successionAsUsage,
                     m -> this.isNotSuccessionWithSameSource(m, successionAsUsage.getSourceFeature()))) {
                 builder.appendWithSpaceIfNeeded("first");
                 this.appendConnectorEndMember(builder, first);
+                explicitSource = true;
             }
             this.childrenMembershipToSkip.add(first);
 
-            builder.appendWithSpaceIfNeeded("then");
             EndFeatureMembership second = endFeatureMemberships.get(1);
-            this.childrenMembershipToSkip.add(second);
-            this.appendConnectorEndMember(builder, second);
+            Optional<Membership> implicitTarget = this.getImplicitSuccessionTarget(successionAsUsage, second);
+            if (implicitTarget.isPresent() && !explicitSource) {
+                Membership targetMembership = implicitTarget.get();
+                builder.appendWithSpaceIfNeeded("then").appendWithSpaceIfNeeded(this.doSwitch(targetMembership));
+                this.childrenMembershipToSkip.add(targetMembership);
+                this.childrenMembershipToSkip.add(second);
+                result = builder.toString();
+            } else if (implicitTarget.isPresent()) {
+                // An explicit "first" source cannot precede an inlined action; reference the following action instead.
+                Membership targetMembership = implicitTarget.get();
+                Feature targetFeature = ((FeatureMembership) targetMembership).getOwnedMemberFeature();
+                String targetName = this.nameDeresolver.getDeresolvedName(targetFeature, successionAsUsage);
+                if (targetName != null && !targetName.isBlank()) {
+                    builder.appendWithSpaceIfNeeded("then").appendWithSpaceIfNeeded(targetName);
+                    this.childrenMembershipToSkip.add(second);
+                } else {
+                    this.reportConsumer.accept(Status.warning("Unable to export a SuccessionAsUsage ({0}) with an implicit target and no following action", successionAsUsage.getElementId()));
+                    this.childrenMembershipToSkip.add(second);
+                    result = "";
+                }
+            } else if (this.isImplicitEnd(second)) {
+                this.reportConsumer.accept(Status.warning("Unable to export a SuccessionAsUsage ({0}) with an implicit target and no following action", successionAsUsage.getElementId()));
+                this.childrenMembershipToSkip.add(second);
+                result = "";
+            } else {
+                builder.appendWithSpaceIfNeeded("then");
+                this.childrenMembershipToSkip.add(second);
+                this.appendConnectorEndMember(builder, second);
+            }
 
         } else {
             this.reportConsumer.accept(Status.warning("Unable to export a SuccessionAsUsage ({0}) invalid number of ends", successionAsUsage.getElementId()));
         }
 
-        List<Relationship> children = successionAsUsage.getOwnedRelationship().stream()
-                .filter(this.relationPredicates.isDefinitionBodyItemMember())
-                .toList();
+        List<Relationship> remainingChildren = children.stream().filter(membership -> !this.childrenMembershipToSkip.contains(membership)).toList();
+        if (result == null) {
+            if (!builder.toString().isEmpty() || !remainingChildren.isEmpty()) {
+                this.appendChildrenContent(builder, successionAsUsage, children);
+                result = builder.toString();
+            }
+        } else if (!remainingChildren.isEmpty()) {
+            this.reportConsumer.accept(Status.warning("Unable to export the body of a SuccessionAsUsage ({0}) with an implicit target", successionAsUsage.getElementId()));
+        }
 
-        this.appendChildrenContent(builder, successionAsUsage, children);
-
-        return builder.toString();
+        return result;
     }
 
     @Override
@@ -1723,21 +1759,65 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     /**
-     * Checks if the source feature define force the given {@link EndFeatureMembership} is implicit or not
+     * Checks if the given {@link EndFeatureMembership} represents an implicit connector end: a single unnamed
+     * {@link ReferenceUsage} whose specializations are all implied (or absent).
      *
      * @param endFeatureMembership
      *         the element to test
-     * @return <code>true</code> if the given EndFeatureMembership represent an implicit feature
+     * @return <code>true</code> if the given EndFeatureMembership represents an implicit end
      */
-    private boolean isSuccessionUsageImplicitSource(EndFeatureMembership endFeatureMembership) {
+    private boolean isImplicitEnd(EndFeatureMembership endFeatureMembership) {
         EList<Element> relatedElements = endFeatureMembership.getOwnedRelatedElement();
         if (relatedElements.size() == 1) {
             Element relatedElement = relatedElements.get(0);
             if (relatedElement instanceof ReferenceUsage refUsage) {
-                return refUsage.getOwnedSpecialization().stream().allMatch(s -> s.isIsImplied());
+                return this.isNullOrEmpty(refUsage.getDeclaredName()) && refUsage.getOwnedSpecialization().stream().allMatch(Specialization::isIsImplied);
             }
         }
         return false;
+    }
+
+    /**
+     * Returns the membership following the given feature in its owning type, ignoring memberships already serialized
+     * elsewhere.
+     */
+    private Optional<Membership> getNextMembership(Feature feature) {
+        Optional<Membership> result = Optional.empty();
+        Type owningType = feature.getOwningType();
+        if (owningType != null) {
+            List<Membership> memberships = owningType.getOwnedMembership();
+            int index = memberships.indexOf(feature.getOwningFeatureMembership());
+            if (index >= 0) {
+                for (int i = index + 1; i < memberships.size() && result.isEmpty(); i++) {
+                    Membership candidate = memberships.get(i);
+                    if (!this.childrenMembershipToSkip.contains(candidate)) {
+                        result = Optional.of(candidate);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns the membership holding the action implicitly targeted by the succession's second end, when the end is an
+     * implicit one or references the feature owned by that membership. Only {@link ActionUsage} members that are not
+     * {@link TransitionUsage} qualify.
+     */
+    private Optional<Membership> getImplicitSuccessionTarget(SuccessionAsUsage successionAsUsage, EndFeatureMembership secondEnd) {
+        Optional<Membership> result = Optional.empty();
+        Optional<Membership> nextMembership = this.getNextMembership(successionAsUsage);
+        if (nextMembership.isPresent() && nextMembership.get() instanceof FeatureMembership featureMembership
+                && featureMembership.getOwnedMemberFeature() instanceof ActionUsage && !(featureMembership.getOwnedMemberFeature() instanceof TransitionUsage)) {
+            Element relatedElement = secondEnd.getOwnedRelatedElement().stream().filter(ReferenceUsage.class::isInstance).findFirst().orElse(null);
+            if (relatedElement instanceof ReferenceUsage refUsage && this.isNullOrEmpty(refUsage.getDeclaredName())) {
+                ReferenceSubsetting refSubsetting = refUsage.getOwnedReferenceSubsetting();
+                if (this.isImplicitEnd(secondEnd) || (refSubsetting != null && refSubsetting.getReferencedFeature() == featureMembership.getOwnedMemberFeature())) {
+                    result = Optional.of(featureMembership);
+                }
+            }
+        }
+        return result;
     }
 
     private void appendConnectorEndMember(Appender builder, EndFeatureMembership endFeatureMembership) {

@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.syson.data.ClasspathXmiModelLoader;
@@ -32,6 +33,7 @@ import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.DataType;
+import org.eclipse.syson.sysml.DecisionNode;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
@@ -57,6 +59,7 @@ import org.eclipse.syson.sysml.LiteralRational;
 import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MembershipImport;
+import org.eclipse.syson.sysml.MergeNode;
 import org.eclipse.syson.sysml.Metaclass;
 import org.eclipse.syson.sysml.MetadataDefinition;
 import org.eclipse.syson.sysml.MetadataUsage;
@@ -83,6 +86,8 @@ import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.ReturnParameterMembership;
+import org.eclipse.syson.sysml.StateDefinition;
+import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.Subsetting;
@@ -141,6 +146,10 @@ public class SysMLElementSerializerTest {
     private static final String OCCURRENCE1 = "occurrence1";
 
     private static final String BODY = "A body";
+
+    private static final String ACTION_A = "a";
+
+    private static final String ACTION_A_1 = "a_1";
 
     private ModelBuilder builder;
 
@@ -1845,6 +1854,169 @@ public class SysMLElementSerializerTest {
         // Check that the error is reported
         assertTrue(this.status.stream().anyMatch(s -> s.severity() == Severity.ERROR && s.message().startsWith("Unable to compute a valid identifier for")));
 
+    }
+
+    @DisplayName("ActionUsage with successions whose implicit targets are the following members")
+    @Test
+    public void successionUsageWithImplicitControlNodeTargets() {
+        ActionUsage actionUsage = this.builder.createWithName(ActionUsage.class, ACTION_A);
+
+        ActionUsage subAction1 = this.builder.createInWithName(ActionUsage.class, actionUsage, ACTION_A_1);
+        subAction1.setIsComposite(true);
+        this.createImplicitSuccession(actionUsage, subAction1, null);
+        DecisionNode decisionNode = this.builder.createIn(DecisionNode.class, actionUsage);
+        decisionNode.setIsComposite(true);
+        this.createImplicitSuccession(actionUsage, decisionNode, null);
+        MergeNode mergeNode = this.builder.createIn(MergeNode.class, actionUsage);
+        mergeNode.setIsComposite(true);
+
+        this.assertTextualFormEquals("""
+                action a {
+                    action a_1;
+                    then decide;
+                    then merge;
+                }""", actionUsage);
+        assertTrue(this.status.stream().noneMatch(s -> s.severity() == Severity.ERROR || s.severity() == Severity.WARNING));
+    }
+
+    @DisplayName("ActionUsage with a succession whose target end references the following action")
+    @Test
+    public void successionUsageWithImplicitNamedActionTarget() {
+        ActionUsage actionUsage = this.builder.createWithName(ActionUsage.class, ACTION_A);
+
+        ActionUsage subAction1 = this.builder.createInWithName(ActionUsage.class, actionUsage, ACTION_A_1);
+        subAction1.setIsComposite(true);
+        ActionUsage subAction2 = this.builder.createWithName(ActionUsage.class, "a_2");
+        subAction2.setIsComposite(true);
+        this.createImplicitSuccession(actionUsage, subAction1, subAction2, false);
+        this.addAsFeatureMember(actionUsage, subAction2);
+
+        this.assertTextualFormEquals("""
+                action a {
+                    action a_1;
+                    then action a_2;
+                }""", actionUsage);
+    }
+
+    @DisplayName("StateDefinition with a succession whose implicit target is the following state")
+    @Test
+    public void successionUsageWithImplicitTargetInStateDefinition() {
+        StateDefinition stateDefinition = this.builder.createWithName(StateDefinition.class, "S");
+
+        StateUsage state1 = this.builder.createInWithName(StateUsage.class, stateDefinition, "s1");
+        state1.setIsComposite(true);
+        this.createImplicitSuccession(stateDefinition, state1, null);
+        StateUsage state2 = this.builder.createInWithName(StateUsage.class, stateDefinition, "s2");
+        state2.setIsComposite(true);
+
+        this.assertTextualFormEquals("""
+                state def S {
+                    state s1;
+                    then state s2;
+                }""", stateDefinition);
+    }
+
+    @DisplayName("ActionUsage with a succession whose implicit target has no following action")
+    @Test
+    public void successionUsageWithImplicitTargetAndNoFollowingMember() {
+        ActionUsage actionUsage = this.builder.createWithName(ActionUsage.class, ACTION_A);
+
+        ActionUsage subAction1 = this.builder.createInWithName(ActionUsage.class, actionUsage, ACTION_A_1);
+        subAction1.setIsComposite(true);
+        this.createImplicitSuccession(actionUsage, subAction1, null);
+
+        this.assertTextualFormEquals("""
+                action a {
+                    action a_1;
+                }""", actionUsage);
+        assertTrue(this.status.stream().anyMatch(s -> s.severity() == Severity.WARNING && s.message().startsWith("Unable to export a SuccessionAsUsage")));
+    }
+
+    @DisplayName("SuccessionAsUsage with an explicit source and an implicit target with no following member is omitted")
+    @Test
+    public void successionUsageWithExplicitSourceAndUnresolvedImplicitTarget() {
+        ActionUsage actionUsage = this.builder.createWithName(ActionUsage.class, ACTION_A);
+
+        ActionUsage subAction1 = this.builder.createInWithName(ActionUsage.class, actionUsage, ACTION_A_1);
+        subAction1.setIsComposite(true);
+        this.builder.createSuccessionAsUsage(SuccessionAsUsage.class, actionUsage, subAction1, null);
+
+        this.assertTextualFormEquals("""
+                action a {
+                    action a_1;
+                }""", actionUsage);
+        assertTrue(this.status.stream().anyMatch(s -> s.severity() == Severity.WARNING && s.message().startsWith("Unable to export a SuccessionAsUsage")));
+    }
+
+    @DisplayName("SuccessionAsUsage with an explicit source and an implicit target references the following action")
+    @Test
+    public void successionUsageWithExplicitSourceAndImplicitFollowingActionTarget() {
+        ActionUsage actionUsage = this.builder.createWithName(ActionUsage.class, ACTION_A);
+
+        ActionUsage subAction1 = this.builder.createInWithName(ActionUsage.class, actionUsage, ACTION_A_1);
+        subAction1.setIsComposite(true);
+        ActionUsage subAction2 = this.builder.createWithName(ActionUsage.class, "a_2");
+        subAction2.setIsComposite(true);
+        this.builder.createSuccessionAsUsage(SuccessionAsUsage.class, actionUsage, subAction1, null);
+        this.addAsFeatureMember(actionUsage, subAction2);
+
+        this.assertTextualFormEquals("""
+                action a {
+                    action a_1;
+                    first a_1 then a_2;
+                    action a_2;
+                }""", actionUsage);
+        assertTrue(this.status.stream().noneMatch(s -> s.severity() == Severity.ERROR || s.severity() == Severity.WARNING));
+    }
+
+    @DisplayName("DecisionNode with and without a name")
+    @Test
+    public void decisionNodeWithoutName() {
+        ActionUsage actionUsage = this.builder.createWithName(ActionUsage.class, ACTION_A);
+
+        DecisionNode decisionNode = this.builder.createIn(DecisionNode.class, actionUsage);
+        decisionNode.setIsComposite(true);
+
+        this.assertTextualFormEquals("""
+                action a {
+                    decide;
+                }""", actionUsage);
+
+        decisionNode.setDeclaredName("d1");
+        this.assertTextualFormEquals("""
+                action a {
+                    decide d1;
+                }""", actionUsage);
+    }
+
+    /**
+     * Creates a succession the way the importer models a {@code then} shorthand: the reference subsettings of its ends
+     * are implied.
+     */
+    private SuccessionAsUsage createImplicitSuccession(Element parent, Feature source, Feature target) {
+        return this.createImplicitSuccession(parent, source, target, true);
+    }
+
+    private SuccessionAsUsage createImplicitSuccession(Element parent, Feature source, Feature target, boolean implicitTargetEnd) {
+        SuccessionAsUsage succession = this.builder.createSuccessionAsUsage(SuccessionAsUsage.class, parent, source, target);
+        List<EndFeatureMembership> ends = succession.getOwnedRelationship().stream()
+                .filter(EndFeatureMembership.class::isInstance)
+                .map(EndFeatureMembership.class::cast)
+                .toList();
+        this.markEndImplicit(ends.get(0));
+        if (implicitTargetEnd) {
+            this.markEndImplicit(ends.get(1));
+        }
+        return succession;
+    }
+
+    private void markEndImplicit(EndFeatureMembership end) {
+        end.getOwnedRelatedElement().stream()
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .map(Feature::getOwnedReferenceSubsetting)
+                .filter(Objects::nonNull)
+                .forEach(refSubsetting -> refSubsetting.setIsImplied(true));
     }
 
     @DisplayName("Check PerfomAction simple form")
