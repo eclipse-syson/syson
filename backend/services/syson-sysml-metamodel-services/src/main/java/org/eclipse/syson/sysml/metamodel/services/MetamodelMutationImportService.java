@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.services;
+package org.eclipse.syson.sysml.metamodel.services;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,20 +25,20 @@ import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.SysmlFactory;
 
 /**
- * Import-related Java services used by SysON representations.
+ * Atomic services that create the imports required by a SysML model mutation.
  *
  * @author arichard
  */
-public class ImportService {
+public class MetamodelMutationImportService {
 
     /**
-     * Add import corresponding to "elementToImport" in the Package of the given {@link Element}. If an import already
-     * handle the "elementToImport" in the namespace hierarchy, then no new import is added.
+     * Creates the namespace import needed to make {@code elementToImport} visible from the package containing
+     * {@code element}, unless an existing import already provides that visibility.
      *
      * @param element
-     *            the given {@link Element}.
+     *            the element whose package requires the import
      * @param elementToImport
-     *            the element for which an import must be added.
+     *            the element to make visible
      */
     public void handleImport(Element element, Element elementToImport) {
         List<Namespace> namespacesHierarchy = this.getAllNamespaces(element);
@@ -60,6 +60,13 @@ public class ImportService {
         }
     }
 
+    /**
+     * Gets the namespaces that contain {@code element}, from its owning namespace to the root namespace.
+     *
+     * @param element
+     *            the element whose namespace hierarchy is requested
+     * @return the namespace hierarchy
+     */
     private List<Namespace> getAllNamespaces(Element element) {
         List<Namespace> namespacesHierarchy = new ArrayList<>();
         Namespace elementNamespace = element.getOwningNamespace();
@@ -70,6 +77,13 @@ public class ImportService {
         return namespacesHierarchy;
     }
 
+    /**
+     * Gets the namespace ancestors of {@code element}.
+     *
+     * @param element
+     *            the element whose namespace ancestors are requested
+     * @return the namespace ancestors, from closest to farthest
+     */
     private List<Namespace> getNamespacesHierarchy(Element element) {
         List<Namespace> namespacesHierarchy = new ArrayList<>();
         if (element != null) {
@@ -84,6 +98,13 @@ public class ImportService {
         return namespacesHierarchy;
     }
 
+    /**
+     * Gets the closest package containing {@code element}.
+     *
+     * @param element
+     *            the element whose containing package is requested
+     * @return the closest containing package, or {@code null} when none exists
+     */
     private org.eclipse.syson.sysml.Package getPackageParent(Element element) {
         org.eclipse.syson.sysml.Package pkg = null;
         if (element != null) {
@@ -97,6 +118,15 @@ public class ImportService {
         return pkg;
     }
 
+    /**
+     * Determines whether {@code imprt} makes {@code elementToImport} visible.
+     *
+     * @param imprt
+     *            the import to inspect
+     * @param elementToImport
+     *            the element to make visible
+     * @return {@code true} when the import already covers the element
+     */
     private boolean isImportForElement(Import imprt, Element elementToImport) {
         boolean isImportForElement = false;
         if (imprt instanceof NamespaceImport namespaceImport) {
@@ -118,6 +148,15 @@ public class ImportService {
         return isImportForElement;
     }
 
+    /**
+     * Determines whether {@code parent} contains {@code child} in the EMF containment hierarchy.
+     *
+     * @param parent
+     *            the potential ancestor
+     * @param child
+     *            the potential descendant
+     * @return {@code true} when the child is equal to or contained by the parent
+     */
     private boolean isParentOf(EObject parent, EObject child) {
         boolean isParentOf = false;
         if (parent != null && child != null) {

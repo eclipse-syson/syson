@@ -99,6 +99,7 @@ import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.metamodel.helper.DeresolvingNamespaceProvider;
 import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
 import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationImportService;
 import org.eclipse.syson.util.NamedProxy;
 
 /**
@@ -121,7 +122,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     private final UtilService utilService;
 
-    private final ImportService importService;
+    private final MetamodelMutationImportService metamodelMutationImportService;
 
     private final ElementInitializerSwitch elementInitializer;
 
@@ -145,7 +146,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             this.options = Arrays.asList(options);
         }
         this.utilService = new UtilService();
-        this.importService = new ImportService();
+        this.metamodelMutationImportService = new MetamodelMutationImportService();
         this.elementInitializer = new ElementInitializerSwitch();
         this.visitedTransitionFeatures = new HashMap<>();
         this.getVisitedTransitionFeatures().put(TransitionFeatureKind.TRIGGER, false);
@@ -397,7 +398,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                         newMembership.getOwnedRelatedElement().add(type);
                     }
                 } else {
-                    this.importService.handleImport(this.element, type);
+                    this.metamodelMutationImportService.handleImport(this.element, type);
                 }
                 if (type instanceof ConjugatedPortDefinition conjugatedPortDef) {
                     this.handleConjugatedPortTyping(usage, conjugatedPortDef);
@@ -609,7 +610,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                     newMembership.getOwnedRelatedElement().add(definition);
                 }
             } else {
-                this.importService.handleImport(this.element, definition);
+                this.metamodelMutationImportService.handleImport(this.element, definition);
             }
 
             if (definition != null) {
@@ -637,7 +638,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                     newMembership.getOwnedRelatedElement().add(usage);
                 }
             } else {
-                this.importService.handleImport(this.element, usage);
+                this.metamodelMutationImportService.handleImport(this.element, usage);
             }
 
             if (usage != null) {
@@ -665,7 +666,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                     newMembership.getOwnedRelatedElement().add(usage);
                 }
             } else {
-                this.importService.handleImport(this.element, usage);
+                this.metamodelMutationImportService.handleImport(this.element, usage);
             }
 
             if (usage != null) {

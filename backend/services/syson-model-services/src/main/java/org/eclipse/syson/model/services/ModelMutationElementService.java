@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.emf.utils.SiriusEMFCopier;
-import org.eclipse.syson.services.ImportService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
@@ -40,6 +39,7 @@ import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationElementService;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationImportService;
 import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.eclipse.syson.util.GetIntermediateContainerCreationSwitch;
 import org.springframework.stereotype.Service;
@@ -60,13 +60,13 @@ public class ModelMutationElementService {
 
     private final UtilService utilService;
 
-    private final ImportService importService;
+    private final MetamodelMutationImportService metamodelMutationImportService;
 
     public ModelMutationElementService() {
         this.metamodelMutationElementService = new MetamodelMutationElementService();
         this.elementUtil = new ElementUtil();
         this.utilService = new UtilService();
-        this.importService = new ImportService();
+        this.metamodelMutationImportService = new MetamodelMutationImportService();
     }
 
     /**
@@ -94,7 +94,7 @@ public class ModelMutationElementService {
                     derivedEndMetadata);
             // The ends and the connection reference the metadata of the RequirementDerivation library, which has to be
             // imported for the created derivation to be valid on its own.
-            this.importService.handleImport(derivation, derivationMetadata);
+            this.metamodelMutationImportService.handleImport(derivation, derivationMetadata);
             return derivation;
         }
         return derived;

@@ -26,7 +26,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
-import org.eclipse.syson.services.ImportService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Comment;
@@ -50,6 +49,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationImportService;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 
 /**
@@ -61,13 +61,13 @@ public class FormMutationElementService {
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    private final ImportService importService;
-
-    private final ElementInitializerSwitch elementInitializerSwitch;
-
     private final MetamodelQueryElementService metamodelQueryElementService;
 
     private final FormQueryElementService formQueryElementService;
+
+    private final MetamodelMutationImportService metamodelMutationImportService;
+
+    private final ElementInitializerSwitch elementInitializerSwitch;
 
     /**
      * Creates the form mutation element service.
@@ -82,10 +82,10 @@ public class FormMutationElementService {
     public FormMutationElementService(IFeedbackMessageService feedbackMessageService, MetamodelQueryElementService metamodelQueryElementService,
             FormQueryElementService formQueryElementService) {
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
-        this.importService = new ImportService();
-        this.elementInitializerSwitch = new ElementInitializerSwitch();
         this.metamodelQueryElementService = Objects.requireNonNull(metamodelQueryElementService);
         this.formQueryElementService = Objects.requireNonNull(formQueryElementService);
+        this.metamodelMutationImportService = new MetamodelMutationImportService();
+        this.elementInitializerSwitch = new ElementInitializerSwitch();
     }
 
     /**
@@ -176,13 +176,13 @@ public class FormMutationElementService {
         this.setNewValue(element, element.eClass().getEStructuralFeature(eStructuralFeature), newValue);
         if (element.eContainer() instanceof Element parent) {
             if (newValue instanceof Element elementToImport) {
-                this.importService.handleImport(parent, elementToImport);
+                this.metamodelMutationImportService.handleImport(parent, elementToImport);
             } else if (newValue instanceof Collection<?> newValues) {
                 newValues.stream()
                         .filter(Element.class::isInstance)
                         .map(Element.class::cast)
                         .forEach(elementToImport -> {
-                            this.importService.handleImport(parent, elementToImport);
+                            this.metamodelMutationImportService.handleImport(parent, elementToImport);
                         });
             }
         }

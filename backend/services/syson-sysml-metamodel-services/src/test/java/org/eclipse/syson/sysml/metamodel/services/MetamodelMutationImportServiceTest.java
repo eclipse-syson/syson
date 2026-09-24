@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.services;
+package org.eclipse.syson.sysml.metamodel.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.NamespaceImport;
@@ -31,27 +36,27 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
- * Import-related Java services tests.
+ * Test class for {@link MetamodelMutationImportService}.
  *
  * @author arichard
  */
-public class ImportServiceTest extends AbstractServiceTest {
+public class MetamodelMutationImportServiceTest {
 
     private ResourceSetImpl resourceSet;
 
-    private ImportService importService;
+    private MetamodelMutationImportService metamodelMutationImportService;
 
     @BeforeEach
     void beforeEach() {
         this.resourceSet = new ResourceSetImpl();
         this.resourceSet.getPackageRegistry().put(SysmlPackage.eNS_URI, SysmlPackage.eINSTANCE);
-        this.importService = new ImportService();
+        this.metamodelMutationImportService = new MetamodelMutationImportService();
     }
 
     @DisplayName("A Usage with a type that is a Definition from another Package")
     @Test
     void testHandleImportForTypeFromAnotherPackage() {
-        Resource resource = this.loadResourcesFrom(this.resourceSet, "testImport.xmi");
+        Resource resource = this.loadResource();
         assertNotNull(resource);
         EObject usage1 = resource.getEObject("3ebdee69-3032-46a9-8fbf-f337034829c9");
         assertNotNull(usage1);
@@ -68,7 +73,7 @@ public class ImportServiceTest extends AbstractServiceTest {
         EList<Import> ownedImport = ((org.eclipse.syson.sysml.Package) package2).getOwnedImport();
         assertEquals(0, ownedImport.size());
 
-        this.importService.handleImport((PartUsage) usage1, (PartDefinition) p1Def1);
+        this.metamodelMutationImportService.handleImport((PartUsage) usage1, (PartDefinition) p1Def1);
 
         ownedImport = ((org.eclipse.syson.sysml.Package) package2).getOwnedImport();
         assertEquals(1, ownedImport.size());
@@ -79,7 +84,7 @@ public class ImportServiceTest extends AbstractServiceTest {
 
         // If an import already handle the definition that is outside the scope, then a new call to handleImport should
         // do nothing.
-        this.importService.handleImport((PartUsage) usage1, (PartDefinition) p1Def1);
+        this.metamodelMutationImportService.handleImport((PartUsage) usage1, (PartDefinition) p1Def1);
         ownedImport = ((org.eclipse.syson.sysml.Package) package2).getOwnedImport();
         assertEquals(1, ownedImport.size());
     }
@@ -87,7 +92,7 @@ public class ImportServiceTest extends AbstractServiceTest {
     @DisplayName("A Usage with a type that is a Definition from the same Package")
     @Test
     void testHandleImportForTypeFromSamePackage() {
-        Resource resource = this.loadResourcesFrom(this.resourceSet, "testImport.xmi");
+        Resource resource = this.loadResource();
         assertNotNull(resource);
         EObject usage2 = resource.getEObject("28e306bc-1329-4be0-be10-d2b4f792c383");
         assertNotNull(usage2);
@@ -104,7 +109,7 @@ public class ImportServiceTest extends AbstractServiceTest {
         EList<Import> ownedImport = ((org.eclipse.syson.sysml.Package) package2).getOwnedImport();
         assertEquals(0, ownedImport.size());
 
-        this.importService.handleImport((PartUsage) usage2, (PartDefinition) p2Def1);
+        this.metamodelMutationImportService.handleImport((PartUsage) usage2, (PartDefinition) p2Def1);
 
         ownedImport = ((org.eclipse.syson.sysml.Package) package2).getOwnedImport();
         assertEquals(0, ownedImport.size());
@@ -113,7 +118,7 @@ public class ImportServiceTest extends AbstractServiceTest {
     @DisplayName("A Usage with a type that is a Definition from another Package, but a recursive import already exists")
     @Test
     void testHandleRecursiveImportForTypeFromAnotherPackage() {
-        Resource resource = this.loadResourcesFrom(this.resourceSet, "testImport.xmi");
+        Resource resource = this.loadResource();
         assertNotNull(resource);
         EObject usage1 = resource.getEObject("3ebdee69-3032-46a9-8fbf-f337034829c9");
         assertNotNull(usage1);
@@ -133,7 +138,7 @@ public class ImportServiceTest extends AbstractServiceTest {
         EList<Import> ownedImport = ((org.eclipse.syson.sysml.Package) package2).getOwnedImport();
         assertEquals(0, ownedImport.size());
 
-        this.importService.handleImport((PartUsage) usage1, (PartDefinition) p1Def1);
+        this.metamodelMutationImportService.handleImport((PartUsage) usage1, (PartDefinition) p1Def1);
 
         ownedImport = ((org.eclipse.syson.sysml.Package) package2).getOwnedImport();
         assertEquals(1, ownedImport.size());
@@ -149,12 +154,29 @@ public class ImportServiceTest extends AbstractServiceTest {
         featureTyping.setType((PartDefinition) p111Def1);
 
         // No new import because the existing recursive import should handle the new type
-        this.importService.handleImport((PartUsage) usage1, (PartDefinition) p1Def1);
+        this.metamodelMutationImportService.handleImport((PartUsage) usage1, (PartDefinition) p1Def1);
         ownedImport = ((org.eclipse.syson.sysml.Package) package2).getOwnedImport();
         assertEquals(1, ownedImport.size());
         namespaceImport = ownedImport.get(0);
         assertInstanceOf(NamespaceImport.class, namespaceImport);
         assertEquals(package1, ((NamespaceImport) namespaceImport).getImportedNamespace());
         assertEquals(package2, namespaceImport.getImportOwningNamespace());
+    }
+
+    /**
+     * Loads the model used by import mutation tests.
+     *
+     * @return the loaded model resource
+     */
+    private Resource loadResource() {
+        Resource resource = new XMIResourceImpl();
+        try (InputStream inputStream = MetamodelMutationImportServiceTest.class.getResourceAsStream("/testImport.xmi")) {
+            assertNotNull(inputStream);
+            resource.load(inputStream, Map.of());
+            this.resourceSet.getResources().add(resource);
+            return resource;
+        } catch (IOException exception) {
+            throw new IllegalStateException("Unable to load the import test model", exception);
+        }
     }
 }
