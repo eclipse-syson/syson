@@ -11,6 +11,11 @@
 === Breaking changes
 
 - [services] The new `addExistingConnectedElements` service accepts a list of semantic elements and a list of selected graphical nodes so that filtering is applied to the whole selection before exposure.
+- https://github.com/eclipse-syson/syson/issues/2535[#2535] [services] `org.eclipse.syson.application.services.DetailsViewService` has been removed as part of the form service architecture migration.
+Its AQL entry points are now exposed by `org.eclipse.syson.form.services.aql.FormMutationAQLService` for mutations and `org.eclipse.syson.form.services.aql.FormQueryAQLService` for queries.
+Downstream code using the former implementation service must migrate to `org.eclipse.syson.form.services.FormMutationElementService` and `org.eclipse.syson.form.services.FormQueryElementService`, according to whether it mutates or queries the form model.
+`CoreFeaturesSwitch` and `EStructuralFeatureLabelProvider` have moved from `org.eclipse.syson.application.services` to `org.eclipse.syson.form.services`.
+The `getCommentBody`, `getComment`, and `getDocumentation` query APIs are now provided by `org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService`.
 
 === Dependency update
 

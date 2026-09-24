@@ -27,8 +27,10 @@ import org.eclipse.syson.sysml.CaseDefinition;
 import org.eclipse.syson.sysml.CaseUsage;
 import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.ConnectionUsage;
+import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.ConstraintUsage;
+import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Expression;
@@ -129,6 +131,60 @@ public class MetamodelQueryElementService {
      */
     public boolean isStakeholder(Element element) {
         return element instanceof PartUsage && element.getOwningMembership() instanceof StakeholderMembership;
+    }
+
+    /**
+     * Gets the body of the first documentation owned by an element.
+     *
+     * @param element
+     *            the documented element
+     * @return the documentation body, or an empty string
+     */
+    public String getDocumentation(Element element) {
+        if (element.getDocumentation().isEmpty()) {
+            return "";
+        }
+        return element.getDocumentation().get(0).getBody();
+    }
+
+    /**
+     * Gets the first non-documentation comment associated with an element.
+     *
+     * @param element
+     *            the commented element
+     * @return the comment, or {@code null}
+     */
+    public Comment getComment(Element element) {
+        if (!element.getOwnedAnnotation().isEmpty()) {
+            return element.getOwnedAnnotation().stream()
+                    .map(annotation -> annotation.getAnnotatingElement())
+                    .filter(Comment.class::isInstance)
+                    .map(Comment.class::cast)
+                    .filter(comment -> !(comment instanceof Documentation))
+                    .findFirst()
+                    .orElse(null);
+        }
+        return element.getOwnedElement().stream()
+                .filter(Comment.class::isInstance)
+                .map(Comment.class::cast)
+                .filter(comment -> !(comment instanceof Documentation))
+                .findFirst()
+                .orElse(null);
+    }
+
+    /**
+     * Gets the body of the first non-documentation comment associated with an element.
+     *
+     * @param element
+     *            the commented element
+     * @return the comment body, or an empty string
+     */
+    public String getCommentBody(Element element) {
+        Comment comment = this.getComment(element);
+        if (comment == null) {
+            return "";
+        }
+        return comment.getBody();
     }
 
     /**
