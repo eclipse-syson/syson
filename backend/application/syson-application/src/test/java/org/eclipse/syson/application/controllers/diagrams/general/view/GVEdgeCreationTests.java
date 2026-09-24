@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorPaletteQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnTwoDiagramElementsToolMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
@@ -123,6 +124,9 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
     @Autowired
     private ConnectorPaletteQueryRunner connectorPaletteQueryRunner;
 
+    @Autowired
+    private PaletteQueryRunner paletteQueryRunner;
+
     private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
     private static Stream<Arguments> addAttributeUsageAsNestedOfEdgeSourceParameters() {
@@ -171,6 +175,37 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
         assertThat(concernUsageNodeDescription.get().getPalette().getEdgeTools())
                 .extracting(edgeTool -> edgeTool.getName())
                 .contains("Become nested Concern");
+    }
+
+    /**
+     * Checks that edge tools remain available before a connector target has been selected.
+     */
+    @DisplayName("GIVEN a Usage node, WHEN retrieving its palette, THEN target-specific edge tools are available")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void nodePaletteProvidesTargetSpecificEdgeTools() {
+        var flux = this.givenSubscriptionToDiagram(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
+
+        StepVerifier.create(flux)
+                .consumeNextWith(assertRefreshedDiagramThat(diagram -> {
+                    Map<String, Object> variables = Map.of(
+                            "editingContextId", GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                            "representationId", diagram.getId(),
+                            "diagramElementIds", List.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID));
+                    var result = this.paletteQueryRunner.run(variables);
+                    List<String> paletteEntries = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
+                    assertThat(paletteEntries).contains("Add target as nested Part", "Add target as nested Accept Action");
+
+                    variables = Map.of(
+                            "editingContextId", GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                            "representationId", diagram.getId(),
+                            "diagramElementIds", List.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_ID));
+                    result = this.paletteQueryRunner.run(variables);
+                    paletteEntries = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
+                    assertThat(paletteEntries).contains("Add target as owned Part", NEW_SUBCLASSIFICATION_TOOL_LABEL);
+                }))
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
     @DisplayName("GIVEN a Usage source and a Usage target, WHEN retrieving the connector palette, THEN the nested tools name their target and source respectively")
