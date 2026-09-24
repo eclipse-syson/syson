@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.application.services;
+package org.eclipse.syson.form.services;
 
 import java.util.ArrayList;
 import java.util.List;

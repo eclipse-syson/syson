@@ -35,6 +35,14 @@
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.syson</groupId>
+			<artifactId>syson-sysml-metamodel-services</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.syson</groupId>
+			<artifactId>syson-services</artifactId>
+		</dependency>
 		<!-- Tests -->
 		<dependency>
 			<groupId>org.testcontainers</groupId>
