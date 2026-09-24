@@ -1,0 +1,4 @@
+# .git stays in the build context: frontend/syson/vite.config.js stamps the build with the commit hash
+**/node_modules
+**/target
+**/dist

@@ -12,7 +12,13 @@ services:
     networks:
       - syson
   app:
-    image: "${IMAGE_TAG:-eclipsesyson/syson:v2026.9.0}"
+    image: "${IMAGE_TAG:-eclipsesyson/syson:v2026.9.2}"
+    # Built from the working tree by docker compose build; USERNAME and PASSWORD come from the environment, see Dockerfile
+    build:
+      context: .
+      args:
+        - USERNAME
+        - PASSWORD
     ports:
       - "8080:8080"
     environment:
