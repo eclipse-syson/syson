@@ -41,6 +41,7 @@ The parsed elements are still imported, and the loading report includes the pars
 - https://github.com/eclipse-syson/syson/issues/2494[#2494] [test] Improve `SemanticRunnableFactory` by adding an API that emits the appropriate change description for editing context updates in integration tests.
 - [cleanup] Use `SemanticRunnableFactory` more widely in integration tests, replacing the `IExecuteEditingContextFunctionRunner` by the `SemanticRunnableFactory`.
 - [releng] Remove redundant inherited Maven `groupId` and `version` declarations from backend modules.
+- [frontend] Export six components and eight hooks from `@eclipse-syson/syson-components` for expression tools and properties, the new-object report, diagram visibility, and node rotation.
 
 === New features
 
