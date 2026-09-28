@@ -1,0 +1,63 @@
+= Release process
+
+Use `YYYY.MM.X` for the release version and `vYYYY.MM.X` for its Git tag and Docker image.
+A major release has `X` equal to `0`.
+
+== Update Sirius Web
+
+When the release requires a newer Sirius Web version, run the update script from the repository root on a branch with a clean working tree:
+
+[source,shell]
+----
+node ./scripts/update-sirius-web.js YYYY.MM.X
+----
+
+Use the Sirius Web version for `YYYY.MM.X`.
+The script updates `sirius.web.version` in `pom.xml`, installs the matching `@eclipse-sirius` frontend packages in `frontend/syson` and `frontend/syson-components`, stages all changes, and creates a signed-off `[releng] Switch to Sirius Web YYYY.MM.X` commit.
+Keep the Sirius Web bump in this dedicated commit, separate from the `[releng] Bump version to YYYY.MM.X` release commit.
+Update the `CHANGELOG.adoc` file with the Sirius Web version.
+Update the `doc/content/modules/developer-guide/pages/release-process.adoc` file if the Sirius Web update requires changes to the release process.
+Review the dependency and lockfile changes, test SysON locally, and open a pull request for the update.
+
+== Prepare the release pull request
+
+. For a major release only, update `syson-tag` in `doc/content/antora.yml` and the image version in the repository's `docker-compose.yml` to `vYYYY.MM.0`.
+. Set `@eclipse-syson/syson-components` in `frontend/syson/package.json` to `YYYY.MM.X`.
+. Run the release script from the repository root.
+The script updates project versions and creates the `[releng] Bump version to YYYY.MM.X` commit:
++
+[source,shell]
+----
+node ./scripts/prepare-release.js YYYY.MM.X
+----
+. Update `doc/content/modules/installation-guide/pages/migration-process.adoc` if the release needs migration instructions.
+. If the Sirius Web or SysON REST APIs changed, run SysON locally, copy the JSON from `http://localhost:8080/v3/api-docs/rest-apis`, and update `doc/content/modules/developer-guide/assets/attachments/sirius-web-openapi.json`.
+. Stage any changes made after the script, including `docker-compose.yml`, amend the bump commit, and open a pull request.
+. Review the pull request against a previous release pull request.
+Check `package-lock.json` carefully; if it contains unexpected changes, delete `package-lock.json` and all `node_modules` directories, run `npm install` again, and amend the pull request.
+. Run SysON locally and verify that it works.
+. Merge the pull request.
+
+== Tag the release
+
+After the pull request is merged, create and push an annotated tag from `main`:
+
+[source,shell]
+----
+git switch main
+git pull
+git tag -a vYYYY.MM.X -m "vYYYY.MM.X"
+git push origin vYYYY.MM.X
+----
+
+== Prepare the next major release
+
+For major releases only, merge the `cooldown` branch into `main` if it already contains the preparation commit.
+Otherwise, create a `[releng] Prepare next release` commit with these changes:
+
+* Add a section for the next release to `CHANGELOG.adoc`.
+* Create the next release notes file in `doc/content/modules/user-manual/pages/release-notes/` and include it from `release-notes.adoc` in the same directory, using the existing file naming convention, such as `2026.11.0.adoc`.
+* Add a section for the next release to `doc/content/modules/installation-guide/pages/migration-process.adoc`.
+* Set `site.start_page` in `doc/docs-site/antora-playbook.yml` to the major release just published, such as `v2026.9.0@syson::index.adoc`.
+
+Verify all four changes after merging `cooldown` or the preparation commit.
