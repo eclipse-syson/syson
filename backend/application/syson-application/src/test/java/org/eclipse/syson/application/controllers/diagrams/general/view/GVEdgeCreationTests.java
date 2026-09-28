@@ -224,7 +224,16 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
                     var actionTargetPaletteEntries = this.getConnectorPaletteLabels(diagram.getId(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID,
                             GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID);
                     assertThat(actionTargetPaletteEntries).contains("Add target as nested Action", "Become nested Part");
+                    assertThat(actionTargetPaletteEntries).doesNotContain("New Satisfy Requirement", "New Feature Typing");
                     assertThat(actionTargetPaletteEntries).filteredOn(label -> label.startsWith("Add target as nested ")).containsExactly("Add target as nested Action");
+
+                    var requirementTargetPaletteEntries = this.getConnectorPaletteLabels(diagram.getId(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID,
+                            GeneralViewWithTopNodesTestProjectData.GraphicalIds.REQUIREMENT_USAGE_ID);
+                    assertThat(requirementTargetPaletteEntries).contains("New Satisfy Requirement");
+
+                    var partDefinitionTargetPaletteEntries = this.getConnectorPaletteLabels(diagram.getId(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID,
+                            GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_ID);
+                    assertThat(partDefinitionTargetPaletteEntries).contains("New Feature Typing");
 
                     var allocationTargetPaletteEntries = this.getConnectorPaletteLabels(diagram.getId(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.ALLOCATION_DEFINITION_ID,
                             GeneralViewWithTopNodesTestProjectData.GraphicalIds.ALLOCATION_USAGE_ID);

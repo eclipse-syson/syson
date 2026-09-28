@@ -24,6 +24,9 @@ Use the existing content tools to display these elements. Existing representatio
 * In diagrams:
 
 ** Fix available diagram tools on standard diagrams created on a root `Namespace`.
+** In standard view diagrams, the connector palette now shows only edge creation tools compatible with the selected target node.
+For example, _New Feature Typing_ is no longer offered between two `Usage` graphical nodes, but remains available from a `Usage` to its corresponding `Definition`.
+_New Satisfy Requirement_ remains available when the target is a `RequirementUsage` or `SatisfyRequirementUsage`.
 
 * In textual import/export:
 
