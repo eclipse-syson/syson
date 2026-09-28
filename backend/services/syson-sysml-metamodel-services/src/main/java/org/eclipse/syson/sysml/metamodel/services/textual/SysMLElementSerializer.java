@@ -16,10 +16,12 @@ import static java.util.stream.Collectors.joining;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -196,6 +198,11 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
      * In most case, those  membership has been handled with their parent content.
      */
     private final Set<Membership> childrenMembershipToSkip = new HashSet<>();
+
+    /**
+     * Names generated for unnamed members serialized by reference, so the member is exported with the same name.
+     */
+    private final Map<Element, String> generatedNames = new HashMap<>();
 
     /**
      * Simple constructor.
@@ -463,7 +470,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         this.appendControlNodePrefix(builder, decisionNode);
 
         if (decisionNode.isIsComposite()) {
-            builder.appendWithSpaceIfNeeded("decide ");
+            builder.appendWithSpaceIfNeeded("decide");
             this.appendUsageDeclaration(builder, decisionNode);
         }
 
@@ -1316,33 +1323,59 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 .map(EndFeatureMembership.class::cast)
                 .toList();
 
+        List<Relationship> children = successionAsUsage.getOwnedRelationship().stream()
+                .filter(this.relationPredicates.isDefinitionBodyItemMember())
+                .toList();
 
+        String result = null;
         if (endFeatureMemberships.size() == 2) {
 
             EndFeatureMembership first = endFeatureMemberships.get(0);
-            if (!this.isSuccessionUsageImplicitSource(first) || !this.isPreviousFeatureEqualsTo(successionAsUsage.getSourceFeature(), successionAsUsage,
+            boolean explicitSource = false;
+            if (!this.isImplicitEnd(first) || !this.isPreviousFeatureEqualsTo(successionAsUsage.getSourceFeature(), successionAsUsage,
                     m -> this.isNotSuccessionWithSameSource(m, successionAsUsage.getSourceFeature()))) {
                 builder.appendWithSpaceIfNeeded("first");
                 this.appendConnectorEndMember(builder, first);
+                explicitSource = true;
             }
             this.childrenMembershipToSkip.add(first);
 
-            builder.appendWithSpaceIfNeeded("then");
             EndFeatureMembership second = endFeatureMemberships.get(1);
-            this.childrenMembershipToSkip.add(second);
-            this.appendConnectorEndMember(builder, second);
+            Optional<Membership> implicitTarget = this.getImplicitSuccessionTarget(successionAsUsage, second);
+            boolean hasBody = children.stream().anyMatch(child -> !this.childrenMembershipToSkip.contains(child) && !(child instanceof EndFeatureMembership));
+            if (implicitTarget.isPresent() && !explicitSource && !hasBody) {
+                Membership targetMembership = implicitTarget.get();
+                builder.appendWithSpaceIfNeeded("then").appendWithSpaceIfNeeded(this.doSwitch(targetMembership));
+                this.childrenMembershipToSkip.add(targetMembership);
+                this.childrenMembershipToSkip.add(second);
+                result = builder.toString();
+            } else if (implicitTarget.isPresent()) {
+                // An explicit "first" source or a body cannot precede an inlined action; reference the following action by name instead.
+                Feature targetFeature = ((FeatureMembership) implicitTarget.get()).getOwnedMemberFeature();
+                String targetName = this.getOrGenerateName(targetFeature, successionAsUsage);
+                builder.appendWithSpaceIfNeeded("then").appendWithSpaceIfNeeded(targetName);
+                this.childrenMembershipToSkip.add(second);
+            } else if (this.isImplicitEnd(second) && !this.hasReferencedFeature(second)) {
+                this.reportConsumer.accept(Status.warning("Unable to export a SuccessionAsUsage ({0}) with an implicit target and no following action", successionAsUsage.getElementId()));
+                this.childrenMembershipToSkip.add(second);
+                result = "";
+            } else {
+                builder.appendWithSpaceIfNeeded("then");
+                this.childrenMembershipToSkip.add(second);
+                this.appendConnectorEndMember(builder, second);
+            }
 
         } else {
             this.reportConsumer.accept(Status.warning("Unable to export a SuccessionAsUsage ({0}) invalid number of ends", successionAsUsage.getElementId()));
         }
 
-        List<Relationship> children = successionAsUsage.getOwnedRelationship().stream()
-                .filter(this.relationPredicates.isDefinitionBodyItemMember())
-                .toList();
+        List<Relationship> remainingChildren = children.stream().filter(membership -> !this.childrenMembershipToSkip.contains(membership)).toList();
+        if (result == null && (!builder.toString().isEmpty() || !remainingChildren.isEmpty())) {
+            this.appendChildrenContent(builder, successionAsUsage, children);
+            result = builder.toString();
+        }
 
-        this.appendChildrenContent(builder, successionAsUsage, children);
-
-        return builder.toString();
+        return result;
     }
 
     @Override
@@ -1729,21 +1762,119 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     /**
-     * Checks if the source feature define force the given {@link EndFeatureMembership} is implicit or not
+     * Checks if the given {@link EndFeatureMembership} represents an implicit connector end: a single unnamed
+     * {@link ReferenceUsage} whose specializations are all implied (or absent).
      *
      * @param endFeatureMembership
      *         the element to test
-     * @return <code>true</code> if the given EndFeatureMembership represent an implicit feature
+     * @return <code>true</code> if the given EndFeatureMembership represents an implicit end
      */
-    private boolean isSuccessionUsageImplicitSource(EndFeatureMembership endFeatureMembership) {
+    private boolean isImplicitEnd(EndFeatureMembership endFeatureMembership) {
         EList<Element> relatedElements = endFeatureMembership.getOwnedRelatedElement();
         if (relatedElements.size() == 1) {
             Element relatedElement = relatedElements.get(0);
             if (relatedElement instanceof ReferenceUsage refUsage) {
-                return refUsage.getOwnedSpecialization().stream().allMatch(s -> s.isIsImplied());
+                return this.isNullOrEmpty(refUsage.getDeclaredName()) && refUsage.getOwnedSpecialization().stream().allMatch(Specialization::isIsImplied);
             }
         }
         return false;
+    }
+
+    /**
+     * Returns the membership following the given feature in its owning type, ignoring memberships already serialized
+     * elsewhere.
+     */
+    private Optional<Membership> getNextMembership(Feature feature) {
+        Optional<Membership> result = Optional.empty();
+        Type owningType = feature.getOwningType();
+        if (owningType != null) {
+            List<Membership> memberships = owningType.getOwnedMembership();
+            int index = memberships.indexOf(feature.getOwningFeatureMembership());
+            if (index >= 0) {
+                for (int i = index + 1; i < memberships.size() && result.isEmpty(); i++) {
+                    Membership candidate = memberships.get(i);
+                    if (!this.childrenMembershipToSkip.contains(candidate)) {
+                        result = Optional.of(candidate);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns the membership holding the action implicitly targeted by the succession's second end, when the end is an
+     * implicit one or references the feature owned by that membership. Only {@link ActionUsage} members that are not
+     * {@link TransitionUsage} qualify.
+     */
+    private Optional<Membership> getImplicitSuccessionTarget(SuccessionAsUsage successionAsUsage, EndFeatureMembership secondEnd) {
+        Optional<Membership> result = Optional.empty();
+        Optional<Membership> nextMembership = this.getNextMembership(successionAsUsage);
+        if (nextMembership.isPresent() && nextMembership.get() instanceof FeatureMembership featureMembership
+                && featureMembership.getOwnedMemberFeature() instanceof ActionUsage && !(featureMembership.getOwnedMemberFeature() instanceof TransitionUsage)) {
+            Element relatedElement = secondEnd.getOwnedRelatedElement().stream().filter(ReferenceUsage.class::isInstance).findFirst().orElse(null);
+            if (relatedElement instanceof ReferenceUsage refUsage && this.isNullOrEmpty(refUsage.getDeclaredName())) {
+                ReferenceSubsetting refSubsetting = refUsage.getOwnedReferenceSubsetting();
+                Feature referenced = null;
+                if (refSubsetting != null) {
+                    referenced = this.resolveReferencedFeature(refSubsetting);
+                }
+                if (referenced == null || referenced == featureMembership.getOwnedMemberFeature()) {
+                    result = Optional.of(featureMembership);
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns the name used to reference the target feature, generating and remembering a unique one when the feature
+     * has no declared name. The generated name does not collide with the names of the members of the feature's owning
+     * namespace.
+     */
+    private String getOrGenerateName(Feature target, Element context) {
+        String result;
+        if (!this.isNullOrEmpty(target.getDeclaredName())) {
+            result = this.nameDeresolver.getDeresolvedName(target, context);
+        } else {
+            result = this.generatedNames.computeIfAbsent(target, t -> {
+                String base = switch (t) {
+                    case DecisionNode ignored -> SysMLv2Keywords.DECIDE;
+                    case MergeNode ignored -> SysMLv2Keywords.MERGE;
+                    case ForkNode ignored -> SysMLv2Keywords.FORK;
+                    case JoinNode ignored -> SysMLv2Keywords.JOIN;
+                    case StateUsage ignored -> SysMLv2Keywords.STATE;
+                    default -> SysMLv2Keywords.ACTION;
+                };
+                Namespace namespace = t.getOwningNamespace();
+                int index = 0;
+                String candidate;
+                do {
+                    index++;
+                    candidate = base + index;
+                } while (this.isNameTaken(candidate, namespace));
+                return candidate;
+            });
+        }
+        return result;
+    }
+
+    private boolean isNameTaken(String name, Namespace namespace) {
+        boolean taken = namespace != null && namespace.getMember().stream().anyMatch(member -> name.equals(member.getName()) || name.equals(member.getShortName()));
+        if (!taken) {
+            taken = this.generatedNames.entrySet().stream()
+                    .anyMatch(entry -> entry.getKey().getOwningNamespace() == namespace && name.equals(entry.getValue()));
+        }
+        return taken;
+    }
+
+    private boolean hasReferencedFeature(EndFeatureMembership endFeatureMembership) {
+        return endFeatureMembership.getOwnedRelatedElement().stream()
+                .filter(ReferenceUsage.class::isInstance)
+                .map(ReferenceUsage.class::cast)
+                .map(ReferenceUsage::getOwnedReferenceSubsetting)
+                .filter(Objects::nonNull)
+                .anyMatch(refSubsetting -> this.resolveReferencedFeature(refSubsetting) != null);
     }
 
     private void appendConnectorEndMember(Appender builder, EndFeatureMembership endFeatureMembership) {
@@ -2437,6 +2568,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             builder.appendSpaceIfNeeded().append("<").appendPrintableName(shortName).append(">");
         }
         String name = element.getDeclaredName();
+        if (this.isNullOrEmpty(name)) {
+            name = this.generatedNames.get(element);
+        }
         if (!this.isNullOrEmpty(name)) {
             builder.appendSpaceIfNeeded().appendPrintableName(name);
         }
