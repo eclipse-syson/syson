@@ -238,3 +238,35 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  # This workflow runs on: branch and tag push, pull requests and manual dispatch.
+  # SBOMs are only wanted for two refs: `main`, uploaded as `<version>@dev`, and
+  # `v*` release tags. Feature branches and pull requests are skipped.
+  maven-sbom:
+    name: Generate Maven SBOM
+    needs: build
+    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/generate-maven-sbom.yml
+
+  npm-full-sbom:
+    name: Generate NPM Full SBOM
+    needs: build
+    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+    permissions:
+      contents: read
+      packages: read
+      id-token: write
+    uses: ./.github/workflows/generate-npm-full-sbom.yml
+
+  npm-runtime-sbom:
+    name: Generate NPM Runtime SBOM
+    needs: build
+    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+    permissions:
+      contents: read
+      packages: read
+      id-token: write
+    uses: ./.github/workflows/generate-npm-runtime-sbom.yml
