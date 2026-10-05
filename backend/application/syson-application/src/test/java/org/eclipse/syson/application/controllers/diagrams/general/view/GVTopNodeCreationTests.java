@@ -13,6 +13,7 @@
 package org.eclipse.syson.application.controllers.diagrams.general.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.type;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 import java.time.Duration;
@@ -26,6 +27,7 @@ import java.util.stream.Stream;
 
 import org.assertj.core.api.Assertions;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -33,6 +35,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInpu
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
+import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.selection.dto.SelectionDialogTreeEventInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -53,6 +56,7 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.sirius.web.tests.services.selection.SelectionDialogTreeEventSubscriptionRunner;
@@ -63,6 +67,7 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.CheckNodeOnDi
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
+import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -114,6 +119,9 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenDiagramSubscription givenDiagramSubscription;
+
+    @Autowired
+    private IGivenCreatedDiagramSubscription givenCreatedDiagramSubscription;
 
     @Autowired
     private IDiagramIdProvider diagramIdProvider;
@@ -194,6 +202,17 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
         return this.givenDiagramSubscription.subscribe(diagramEventInput);
     }
 
+    private Flux<Object> createAndSubscribeToDiagram() {
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID,
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.ROOT_NAMESPACE_ID,
+                "root Namespace diagram"
+        );
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
+    }
+
     @BeforeEach
     public void setUp() {
         this.givenInitialServerState.initialize();
@@ -265,6 +284,72 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                 .then(semanticCheck)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @DisplayName("GIVEN a general view diagram on a root namespace, WHEN creating two successive PartUsage, THEN the index in their label increments correctly")
+    public void checkLabelSuffixForElementCreatedOnRootNamespace() {
+        var flux = this.createAndSubscribeToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        String creationToolId = diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getPartUsage()));
+
+        Runnable createNodeRunnable = () -> {
+            this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, null, creationToolId);
+        };
+
+        AtomicReference<String> lastCreatedSemanticElementId = new AtomicReference<>();
+        Consumer<Object> firstPartCreatedDiagramChecker = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
+            var newNodes = this.diagramComparator.newNodes(initialDiagram, newDiagram);
+            assertThat(newNodes).anySatisfy(node -> {
+                assertThat(node.getInsideLabel().getText()).contains("part1");
+                lastCreatedSemanticElementId.set(node.getTargetObjectId());
+            });
+            diagram.set(newDiagram);
+        });
+
+        Runnable semanticChecker = this.semanticRunnableFactory.createQueryRunnable(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, (editingContext, executeEditingContextFunctionInput) -> {
+            var object = this.objectSearchService.getObject(editingContext, lastCreatedSemanticElementId.get());
+            assertThat(object).isPresent()
+                    .get()
+                    .isInstanceOf(EObject.class)
+                    .asInstanceOf(type(EObject.class))
+                    .satisfies(eObject -> {
+                        var container = eObject.eContainer();
+                        assertThat(container.eClass()).isEqualTo(SysmlPackage.eINSTANCE.getOwningMembership());
+                    });
+            return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
+        });
+
+        Consumer<Object> secondPartCreatedDiagramChecker = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
+            var newNodes = this.diagramComparator.newNodes(initialDiagram, newDiagram);
+            assertThat(newNodes).anySatisfy(node -> {
+                assertThat(node.getInsideLabel().getText()).contains("part2");
+                lastCreatedSemanticElementId.set(node.getTargetObjectId());
+            });
+            diagram.set(newDiagram);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(firstPartCreatedDiagramChecker)
+                .then(semanticChecker)
+                .then(createNodeRunnable)
+                .consumeNextWith(secondPartCreatedDiagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
     }
 
     @DisplayName("GIVEN an empty SysML Project, WHEN New Namespace Import tool on diagram is requested, THEN a new NamespaceImport is created")
