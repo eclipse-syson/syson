@@ -13,6 +13,7 @@
 package org.eclipse.syson.sysml.metamodel.services;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -75,7 +76,7 @@ public class MetamodelMutationElementService {
      */
     public Membership createMembership(Element element) {
         Membership membership = null;
-        if (element instanceof Package) {
+        if (element instanceof Package || Objects.equals(element.eClass(), SysmlPackage.eINSTANCE.getNamespace())) {
             membership = SysmlFactory.eINSTANCE.createOwningMembership();
         } else {
             membership = SysmlFactory.eINSTANCE.createFeatureMembership();
