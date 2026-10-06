@@ -25,6 +25,7 @@ bin
 bin/
 target
 target/
+build-artifacts/
 pom.xml.versionsBackup
 
 # Log file

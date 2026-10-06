@@ -1,0 +1,31 @@
+services:
+  verify:
+    build:
+      context: .
+      target: verify
+      args:
+        - USERNAME
+      secrets:
+        - github_token
+    environment:
+      USERNAME: ${USERNAME}
+      PASSWORD: ${PASSWORD}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./build-artifacts:/artifacts
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        mvn -U -B -e clean verify --settings settings.xml
+        jshell scripts/check-coverage.jsh
+        mkdir -p /artifacts/backend/application/syson-application
+        cp -R backend/application/syson-application/target /artifacts/backend/application/syson-application/
+        mkdir -p /artifacts/backend/releng/syson-test-coverage/target/site
+        cp -R backend/releng/syson-test-coverage/target/site/jacoco-aggregate /artifacts/backend/releng/syson-test-coverage/target/site/
+
+  app:
+    pull_policy: never
+    environment:
+      SIRIUS_COMPONENTS_DIAGRAM_DEBUG: true
+      SIRIUS_WEB_TREE_NEW-PALETTE_ENABLED: true

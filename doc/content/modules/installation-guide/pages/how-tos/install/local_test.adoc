@@ -41,6 +41,19 @@ To run Docker Compose confirm your Docker is running.
 
 This method deploys {product} matching the version tagged in this documentation with a PostgreSQL database, all within a Docker container.
 
+=== Build and run from a source checkout
+
+To build the application image from a local checkout, run the following command from the repository root:
+
+[source, bash]
+----
+docker compose up --build -d
+----
+
+The source build downloads private Maven and npm packages from GitHub Packages. Before running the command, provide the `USERNAME` and `PASSWORD` environment variables with your GitHub user name and a token that has the `read:packages` permission. Docker BuildKit passes the token to the build as a secret; it is not included in the resulting image.
+
+Use `docker compose logs -f app` to follow the application startup. The application is available at `http://localhost:8080` when the logs report that it has started.
+
 [TIP]
 ====
 {product} Docker images are multi-platform (x86_64 and arm64) starting with version v2026.9.0, so they run natively on Mac Silicon and other arm64 machines.

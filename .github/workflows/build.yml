@@ -4,7 +4,6 @@ on:
   push:
     paths-ignore:
       - "CHANGELOG.adoc"
-      - "docker-compose.yml"
       - ".github/PULL_REQUEST_TEMPLATE.md"
       - "doc/**"
     branches:
@@ -14,7 +13,6 @@ on:
   pull_request:
     paths-ignore:
       - "CHANGELOG.adoc"
-      - "docker-compose.yml"
       - ".github/PULL_REQUEST_TEMPLATE.md"
       - "doc/**"
   workflow_dispatch:
@@ -52,65 +50,20 @@ jobs:
           ref: ${{ env.GITHUB_EVENT_PR_HEAD_SHA }}
           persist-credentials: false
 
-      - name: Setup Node SDK
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
-          node-version: "24.20"
-          registry-url: https://npm.pkg.github.com/
+      - name: Set up QEMU to build the Docker image for additional platforms
+        uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
+
+      - name: Set up Docker Buildx to use cache feature
+        uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
+
+      - name: Verify the application source with Docker
         env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-      - name: Cache Node.js modules
-        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
-        with:
-          path: ~/.npm
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-node-
-            ${{ runner.OS }}-
-
-      - name: Setup Java SDK
-        uses: actions/setup-java@dd06d9cba3e5552c54d9f8ea23572deb30010f7c # v6.0.0
-        with:
-          java-version: 21
-          distribution: "temurin"
-
-      - name: Setup some global environment variables
-        run: |
-          echo "git_describe=$(git describe --always)" >> $GITHUB_ENV
-
-      - name: Cache Maven packages
-        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-
-      - name: Build the frontend packages
-        run: |
-          echo "//npm.pkg.github.com/:_authToken=${{ github.token }}" >> .npmrc
-          echo "CI=true" >> $GITHUB_ENV
-          npm ci
-          npm run build
-
-      - name: Check that the frontend dependencies are ok
-        env:
-          GITHUB_EVENT: ${{ toJSON(github.event) }}
-        run: node scripts/check-frontend-dependencies.js
-
-      - name: Copy frontend artifacts
-        run: |
-          mkdir -p backend/application/syson-frontend/src/main/resources/static
-          cp -R frontend/syson/dist/* backend/application/syson-frontend/src/main/resources/static
-
-      - name: Build the backend
-        env:
-          USERNAME: ${{github.actor}}
-          PASSWORD: ${{secrets.GITHUB_TOKEN}}
-        run: mvn -U -B -e clean verify --settings settings.xml
+          USERNAME: ${{ github.actor }}
+          PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+        run: docker compose -f docker-compose.yml -f .github/workflows/compose.ci.yml run --build --rm verify
 
       - name: Archive the code coverage results
-        run: tar -cf coverage.tar backend/releng/syson-test-coverage/target/site/jacoco-aggregate
+        run: tar -cf coverage.tar -C build-artifacts backend/releng/syson-test-coverage/target/site/jacoco-aggregate
 
       - name: Store code coverage results
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -120,23 +73,31 @@ jobs:
           path: coverage.tar
           retention-days: 5
 
-      - name: Check the global code coverage
-        run: jshell scripts/check-coverage.jsh
-
       - name: Publish the backend
         if: startsWith(env.GITHUB_REF, 'refs/tags/v')
-        env:
-          USERNAME: ${{github.actor}}
-          PASSWORD: ${{secrets.GITHUB_TOKEN}}
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: mvn -B deploy -DskipTests --settings settings.xml
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        with:
+          context: .
+          target: backend-publish
+          build-args: |
+            USERNAME=${{ github.actor }}
+          secrets: |
+            github_token=${{ secrets.GITHUB_TOKEN }}
+          no-cache-filters: backend-publish
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Publish the frontend packages
         if: startsWith(env.GITHUB_REF, 'refs/tags/v')
-        run: |
-          npm publish --workspaces --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        with:
+          context: .
+          target: frontend-publish
+          secrets: |
+            github_token=${{ secrets.GITHUB_TOKEN }}
+          no-cache-filters: frontend-publish
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -144,20 +105,34 @@ jobs:
         with:
           images: eclipsesyson/syson
 
-      - name: Set up QEMU to build the Docker image for additional platforms
-        uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
+      - name: Package the verified JAR as a Docker image
+        env:
+          USERNAME: ${{ github.actor }}
+          PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          BUILD_TARGET: prebuilt
+          IMAGE_TAG: eclipsesyson/syson:${{ steps.meta.outputs.version }}
+          IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
+          IMAGE_CREATED: ${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
+          IMAGE_DESCRIPTION: ${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.description'] }}
+          IMAGE_LICENSES: ${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.licenses'] }}
+          IMAGE_REVISION: ${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
+          IMAGE_SOURCE: ${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.source'] }}
+          IMAGE_TITLE: ${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.title'] }}
+          IMAGE_URL: ${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.url'] }}
+          IMAGE_VERSION: ${{ steps.meta.outputs.version }}
+        run: |
+          docker compose build app
+          while IFS= read -r tag; do
+            docker tag "eclipsesyson/syson:${{ steps.meta.outputs.version }}" "$tag"
+          done <<< "$IMAGE_TAGS"
 
-      - name: Set up Docker Buildx to use cache feature
-        uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
-
-      - name: Build Docker image
-        id: load
-        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+      - name: Set up Node SDK for integration tests
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          context: backend/application/syson-application
-          load: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          node-version: "24.20"
+          registry-url: https://npm.pkg.github.com/
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check the Playwright integration test code
         run: |
@@ -173,8 +148,8 @@ jobs:
       - name: Run Playwright tests against the application
         if: startsWith(env.GITHUB_REF, 'refs/tags/v') == false && env.GITHUB_REF != 'refs/heads/main' && env.GITHUB_REF != 'refs/heads/cooldown'
         run: |
-          docker compose -f ../backend/application/syson-application/docker-compose.yml up -d
-          docker compose -f ../backend/application/syson-application/docker-compose.yml ps
+          docker compose -f ../docker-compose.yml -f ../.github/workflows/compose.ci.yml up -d --no-build
+          docker compose -f ../docker-compose.yml -f ../.github/workflows/compose.ci.yml ps
           npx wait-on -t 180000 http://localhost:8080
           npx playwright test
         working-directory: integration-tests-playwright
@@ -200,8 +175,8 @@ jobs:
         if: startsWith(env.GITHUB_REF, 'refs/tags/v') == false && env.GITHUB_REF != 'refs/heads/main' && env.GITHUB_REF != 'refs/heads/cooldown'
         uses: cypress-io/github-action@09090944bd8aaa2a517cefb6e38bf1aae336b42b # v7.4.3
         with:
-          build: docker compose -f ../backend/application/syson-application/docker-compose.yml up -d
-          start: docker compose -f ../backend/application/syson-application/docker-compose.yml ps
+          build: docker compose -f ../docker-compose.yml -f ../.github/workflows/compose.ci.yml up -d --no-build
+          start: docker compose -f ../docker-compose.yml -f ../.github/workflows/compose.ci.yml ps
           wait-on: "http://localhost:8080"
           wait-on-timeout: 180
           working-directory: integration-tests-cypress
@@ -233,7 +208,8 @@ jobs:
         id: push
         uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
         with:
-          context: backend/application/syson-application
+          context: .
+          target: prebuilt
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}

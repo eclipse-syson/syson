@@ -152,6 +152,31 @@ docker run -p 5433:5432 --rm --name syson-postgres \
 
 It will setup a PostgreSQL instance with the appropriate parameters to locally test the {product} application.
 
+==== Build and run the complete application with Docker Compose
+
+The repository root `Dockerfile` is the source of truth for the application image. It builds the frontend, checks its dependencies, packages the backend, and assembles the runtime image.
+
+From the repository root, provide GitHub Packages credentials through the `USERNAME` and `PASSWORD` environment variables, then build and start the complete stack:
+
+[source, bash]
+----
+docker compose up --build -d
+----
+
+`USERNAME` is your GitHub user name. `PASSWORD` is a GitHub token with the `read:packages` permission. Compose passes this token to BuildKit as a build secret; it is not stored in the image.
+
+The command starts PostgreSQL and {product}. Follow the startup with `docker compose logs -f app`, then open `http://localhost:8080`. Stop the stack with `docker compose down`.
+
+==== Continuous integration and releases
+
+GitHub Actions uses the same root `Dockerfile` and `docker-compose.yml`:
+
+* `.github/workflows/compose.ci.yml` adds the CI-only `verify` service. It runs `mvn clean verify` in the Dockerfile's verification stage and mounts the runner Docker socket so Testcontainers can start its test dependencies.
+* The verification service exports the tested JAR and coverage report to the ignored `build-artifacts/` directory.
+* The `prebuilt` Dockerfile target packages that exact tested JAR. GitHub Actions uses it for end-to-end tests and releases the resulting multi-platform image.
+
+Keep application build changes in the root Dockerfile and root Compose file. Limit `.github/workflows/compose.ci.yml` to CI credentials, verification, and end-to-end test options.
+
 ==== Development with Spring Tools 5 for Eclipse
 
 If you want to develop with Eclipse, you will need Spring Tools 5 for Eclipse.

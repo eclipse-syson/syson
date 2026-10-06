@@ -1,29 +1,55 @@
 # SysON images are multi-platform (linux/amd64 and linux/arm64) starting with v2026.9.0.
 # To run an older version on an ARM architecture, execute this command in your shell first:
 # export DOCKER_DEFAULT_PLATFORM=linux/amd64
-version: "3.8"
 services:
   database:
     image: postgres:15
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: username
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready --username=username --dbname=postgres"]
+      interval: 2s
+      timeout: 3s
+      retries: 10
     networks:
       - syson
   app:
-    image: "${IMAGE_TAG:-eclipsesyson/syson:v2026.9.0}"
+    image: "${IMAGE_TAG:-eclipsesyson/syson:v2026.9.2}"
+    # Built from the working tree by docker compose build; see Dockerfile for required credentials.
+    build:
+      context: .
+      target: ${BUILD_TARGET:-source}
+      args:
+        - USERNAME
+      secrets:
+        - github_token
+      labels:
+        org.opencontainers.image.created: "${IMAGE_CREATED:-}"
+        org.opencontainers.image.description: "${IMAGE_DESCRIPTION:-}"
+        org.opencontainers.image.licenses: "${IMAGE_LICENSES:-}"
+        org.opencontainers.image.revision: "${IMAGE_REVISION:-}"
+        org.opencontainers.image.source: "${IMAGE_SOURCE:-https://github.com/eclipse-syson/syson}"
+        org.opencontainers.image.title: "${IMAGE_TITLE:-SysON}"
+        org.opencontainers.image.url: "${IMAGE_URL:-https://github.com/eclipse-syson/syson}"
+        org.opencontainers.image.version: "${IMAGE_VERSION:-}"
     ports:
-      - "8080:8080"
+      - "${HOST_PORT:-8080}:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://database/postgres
       SPRING_DATASOURCE_USERNAME: username
-      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-password}
       SIRIUS_COMPONENTS_CORS_ALLOWEDORIGINPATTERNS: "*"
       SERVER_PORT: 8080
     depends_on:
-      - database
+      database:
+        condition: service_healthy
     networks:
       - syson
 networks:
   syson:
+
+secrets:
+  github_token:
+    environment: PASSWORD
