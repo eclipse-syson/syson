@@ -95,8 +95,8 @@ public class EditSysMLViewFrameNodeAppearanceControllerTests extends AbstractInt
                     .hasSize(1)
                     .allMatch(node -> node.getStyle() instanceof SysMLViewFrameNodeStyle)
                     .extracting(node -> (SysMLViewFrameNodeStyle) node.getStyle())
-                    .allMatch(sysMLViewFrameNodeStyle -> "#ffffff".equals(sysMLViewFrameNodeStyle.getBackground()))
-                    .allMatch(sysMLViewFrameNodeStyle -> "#000000".equals(sysMLViewFrameNodeStyle.getBorderColor()))
+                    .allMatch(sysMLViewFrameNodeStyle -> "#FDFDFE".equals(sysMLViewFrameNodeStyle.getBackground()))
+                    .allMatch(sysMLViewFrameNodeStyle -> "#818896".equals(sysMLViewFrameNodeStyle.getBorderColor()))
                     .allMatch(sysMLViewFrameNodeStyle -> sysMLViewFrameNodeStyle.getBorderSize() == 1)
                     .allMatch(sysMLViewFrameNodeStyle -> LineStyle.Solid.equals(sysMLViewFrameNodeStyle.getBorderStyle()))
                     .allMatch(sysMLViewFrameNodeStyle -> sysMLViewFrameNodeStyle.getBorderRadius() == 10);
@@ -148,8 +148,8 @@ public class EditSysMLViewFrameNodeAppearanceControllerTests extends AbstractInt
                     .hasSize(1)
                     .allMatch(node -> node.getStyle() instanceof SysMLViewFrameNodeStyle)
                     .extracting(node -> (SysMLViewFrameNodeStyle) node.getStyle())
-                    .allMatch(sysMLViewFrameNodeStyle -> "#ffffff".equals(sysMLViewFrameNodeStyle.getBackground()))
-                    .allMatch(sysMLViewFrameNodeStyle -> "#000000".equals(sysMLViewFrameNodeStyle.getBorderColor()))
+                    .allMatch(sysMLViewFrameNodeStyle -> "#FDFDFE".equals(sysMLViewFrameNodeStyle.getBackground()))
+                    .allMatch(sysMLViewFrameNodeStyle -> "#818896".equals(sysMLViewFrameNodeStyle.getBorderColor()))
                     .allMatch(sysMLViewFrameNodeStyle -> sysMLViewFrameNodeStyle.getBorderSize() == 1)
                     .allMatch(sysMLViewFrameNodeStyle -> LineStyle.Solid.equals(sysMLViewFrameNodeStyle.getBorderStyle()))
                     .allMatch(sysMLViewFrameNodeStyle -> sysMLViewFrameNodeStyle.getBorderRadius() == 10);
@@ -180,7 +180,7 @@ public class EditSysMLViewFrameNodeAppearanceControllerTests extends AbstractInt
                     .hasSize(1)
                     .allMatch(node -> node.getStyle() instanceof SysMLViewFrameNodeStyle)
                     .extracting(node -> (SysMLViewFrameNodeStyle) node.getStyle())
-                    .allMatch(sysMLViewFrameNodeStyle -> "#ffffff".equals(sysMLViewFrameNodeStyle.getBackground()))
+                    .allMatch(sysMLViewFrameNodeStyle -> "#FDFDFE".equals(sysMLViewFrameNodeStyle.getBackground()))
                     .allMatch(sysMLViewFrameNodeStyle -> sysMLViewFrameNodeStyle.getBorderSize() == 1);
 
             var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel(AllCustomNodesProjectData.Labels.VIEW_FRAME).getNode();

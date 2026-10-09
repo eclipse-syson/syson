@@ -59,3 +59,13 @@ You can reset it by deleting the {product} data in cache of your browser.
 Users can duplicate an `Element` and its representation node by clicking the _Duplicate Element_ button in the palette.
 
 image::manage-elements-duplicate-from-diagram.png[Duplicate element from Diagram]
+
+=== SysON Theme
+
+In newly created projects, the SysON theme applies by default to standard diagrams.
+The theme customizes the color of graphical elements according to their SysML element family (Structure, Behavior, ...).
+You can disable the theme for a project from the _Appearances_ tab in the project settings.
+
+You can still change colors through the _Appearance_ section of the palette.
+These changes take priority over the SysON theme.
+When the theme is enabled, resetting manual appearance changes restores the SysON theme.

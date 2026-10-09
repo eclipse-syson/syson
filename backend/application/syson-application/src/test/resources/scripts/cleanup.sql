@@ -9,4 +9,5 @@ DELETE FROM semantic_data;
 DELETE FROM image;
 DELETE FROM nature;
 DELETE FROM project_image;
+DELETE FROM project_style_customization;
 DELETE FROM project;

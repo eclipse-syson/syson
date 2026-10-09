@@ -65,6 +65,8 @@ An already visible suitable compartment remains in use; otherwise, the _intercon
 The action adds existing project elements connected to the selected element through inbound or outbound relationships.
 Elements representable as border nodes or inside any selected node are excluded, including when the corresponding compartment is hidden.
 Use the existing content tools to display those elements; existing representations are preserved.
+- https://github.com/eclipse-syson/syson/issues/2559[#2559] [diagrams] Add an optional SysON theme to standard diagrams.
+The theme is enabled by default for newly created projects and can be disabled in the _Appearances_ tab of the project settings.
 
 
 == v2026.9.0

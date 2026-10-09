@@ -60,6 +60,14 @@ INSERT INTO public.project (id, name, created_on, last_modified_on) VALUES ('6f2
 
 
 
+
+--
+-- Data for Name: project_style_customization; Type: TABLE DATA; Schema: public; Owner: dbuser
+--
+
+INSERT INTO public.project_style_customization (id, project_id, style_customization_description_id, created_on) VALUES ('94064c63-2b32-4283-9428-49ba52ae03c9', '6f2cb8c8-8a6d-4220-a420-ba5f053de08e', 'syson-standard-diagrams-theme-style-customization', '2026-10-27 11:22:35.916171+00');
+
+
 --
 -- Data for Name: project_semantic_data; Type: TABLE DATA; Schema: public; Owner: dbuser
 --
