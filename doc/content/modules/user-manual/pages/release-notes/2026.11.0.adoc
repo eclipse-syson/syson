@@ -37,6 +37,14 @@ The parsed elements are still imported, and the loading report identifies the sy
 
 == Improvements
 
+* In diagrams:
+
+** Standard diagrams can use a semantic color palette when enabled by the application administrator.
+The palette groups nodes into seven families: Structure, Actions / Behavior, States, Requirements / Constraints, Analysis / Cases, Time / Space, and Neutral / Organization.
+Headers and collapsed nodes use the main family color, while compartments use a lighter background and the family border color.
+Manual appearance changes remain prioritized; resetting them restores the palette colors.
+Border nodes, edges, and SVG symbols retain their existing appearance.
+
 == Technical details
 
 * For technical details on this {product} release, including breaking changes, please refer to the https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].

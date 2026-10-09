@@ -59,3 +59,14 @@ You can reset it by deleting the {product} data in cache of your browser.
 Users can duplicate an `Element` and its representation node by clicking the _Duplicate Element_ button in the palette.
 
 image::manage-elements-duplicate-from-diagram.png[Duplicate element from Diagram]
+
+=== Semantic colors
+
+When the application administrator enables the semantic palette, standard diagrams use colors to distinguish seven families of elements.
+Headers and collapsed nodes use the family's main color; compartments use a lighter background and the family border color.
+Items listed in a compartment share its background, while nested nodes use their own family's colors.
+Border nodes, edges, and SVG symbols keep their existing appearance.
+
+You can still change colors through the _Appearance_ section of the palette.
+These changes take priority over semantic colors; resetting them restores the family colors.
+See xref:developer-guide:extend.adoc#_semantic_diagram_palette[Semantic diagram palette] for application configuration.

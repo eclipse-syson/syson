@@ -7,3 +7,49 @@ Extensibility is a key strength of {product}, offering organizations the potenti
 
 Interested in extending {product}?
 Feel free to xref:ROOT:help.adoc[contact us] for more details.
+
+== Semantic diagram palette
+
+The semantic palette for standard diagrams is disabled by default.
+Enable it in the application's `application.properties`:
+
+[source,properties]
+----
+sirius.web.style.customization.enabled=true
+----
+
+=== Adjusting colors and families
+
+All colors and family associations are defined in `SDVSemanticPaletteProvider.java`, in `backend/views/syson-standard-diagrams-view/src/main/java/org/eclipse/syson/standard/diagrams/view/services`.
+Each family groups its three colors and the concepts or specific descriptions associated with it.
+Modify the corresponding value to change a header, compartment, or border color.
+Add a family and its associations in the same file without adding a family-specific branch to `SysONNodeStyleCustomizer`.
+Rebuild and restart the application after editing the palette; there is no palette editor in the user interface.
+
+The seven families are Structure, Actions / Behavior, States, Requirements / Constraints, Analysis / Cases, Time / Space, and Neutral / Organization.
+Each defines a header / collapsed background, a compartment background, and a border color.
+`SDVSemanticPaletteProvider` is the single source of these color values.
+
+=== Resolution and rendering
+
+`ISDVSemanticPaletteProvider.findPalette(String descriptionName)` returns an `Optional<SDVSemanticPalette>`.
+The public `SDVSemanticPalette` record in `services.api` contains the `headerBackground`, `compartmentBackground`, and `borderColor` strings.
+The Spring provider builds an immutable description-to-palette table once, using `SDVDescriptionNameGenerator` and delimited owner prefixes for compartments and their items.
+The lookup uses the graphical description rather than the semantic element's type.
+Descriptions not covered by the palette keep their original style; Snapshot and Timeslice representations keep the family of their base representation.
+
+`SysONNodeStyleCustomizer` resolves the View description and copies the existing node style, preserving its layout and other properties:
+
+* Simple nodes use the header background and family border color.
+The header remains visible when expanded, and the whole node uses that background when collapsed.
+* List and free-form compartments use the owner's lighter background and border color.
+Their items, including inherited items, have a transparent background; actual nested nodes use their own palette.
+* Package, Imported Package, Note, and View Frame styles are supported, as are rectangular Fork and Join nodes in the Actions / Behavior family.
+* Border nodes, SVG symbols, and edges retain their existing appearance.
+
+The customizer passes each simple node's description name to its descendants through the rendering variable scope.
+A compartment description reused under another kind of node therefore follows its actual graphical owner's family.
+
+Manual appearance changes take priority over the palette.
+Resetting these changes restores the palette-based style.
+This feature requires no database migration or changes to Sirius Web.
