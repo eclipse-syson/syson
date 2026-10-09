@@ -95,8 +95,8 @@ public class EditSysMLImportedPackageNodeAppearanceControllerTests extends Abstr
                     .hasSize(1)
                     .allMatch(node -> node.getStyle() instanceof SysMLImportedPackageNodeStyle)
                     .extracting(node -> (SysMLImportedPackageNodeStyle) node.getStyle())
-                    .allMatch(sysMLImportedPackageNodeStyle -> "#ffffff".equals(sysMLImportedPackageNodeStyle.getBackground()))
-                    .allMatch(sysMLImportedPackageNodeStyle -> "#000000".equals(sysMLImportedPackageNodeStyle.getBorderColor()))
+                    .allMatch(sysMLImportedPackageNodeStyle -> "#E2E5ED".equals(sysMLImportedPackageNodeStyle.getBackground()))
+                    .allMatch(sysMLImportedPackageNodeStyle -> "#818896".equals(sysMLImportedPackageNodeStyle.getBorderColor()))
                     .allMatch(sysMLImportedPackageNodeStyle -> sysMLImportedPackageNodeStyle.getBorderSize() == 1)
                     .allMatch(sysMLImportedPackageNodeStyle -> LineStyle.Solid.equals(sysMLImportedPackageNodeStyle.getBorderStyle()));
 
@@ -146,8 +146,8 @@ public class EditSysMLImportedPackageNodeAppearanceControllerTests extends Abstr
                     .hasSize(1)
                     .allMatch(node -> node.getStyle() instanceof SysMLImportedPackageNodeStyle)
                     .extracting(node -> (SysMLImportedPackageNodeStyle) node.getStyle())
-                    .allMatch(sysMLImportedPackageNodeStyle -> "#ffffff".equals(sysMLImportedPackageNodeStyle.getBackground()))
-                    .allMatch(sysMLImportedPackageNodeStyle -> "#000000".equals(sysMLImportedPackageNodeStyle.getBorderColor()))
+                    .allMatch(sysMLImportedPackageNodeStyle -> "#E2E5ED".equals(sysMLImportedPackageNodeStyle.getBackground()))
+                    .allMatch(sysMLImportedPackageNodeStyle -> "#818896".equals(sysMLImportedPackageNodeStyle.getBorderColor()))
                     .allMatch(sysMLImportedPackageNodeStyle -> sysMLImportedPackageNodeStyle.getBorderSize() == 1)
                     .allMatch(sysMLImportedPackageNodeStyle -> LineStyle.Solid.equals(sysMLImportedPackageNodeStyle.getBorderStyle()));
         });
@@ -177,7 +177,7 @@ public class EditSysMLImportedPackageNodeAppearanceControllerTests extends Abstr
                     .hasSize(1)
                     .allMatch(node -> node.getStyle() instanceof SysMLImportedPackageNodeStyle)
                     .extracting(node -> (SysMLImportedPackageNodeStyle) node.getStyle())
-                    .allMatch(sysMLImportedPackageNodeStyle -> "#ffffff".equals(sysMLImportedPackageNodeStyle.getBackground()))
+                    .allMatch(sysMLImportedPackageNodeStyle -> "#E2E5ED".equals(sysMLImportedPackageNodeStyle.getBackground()))
                     .allMatch(sysMLImportedPackageNodeStyle -> sysMLImportedPackageNodeStyle.getBorderSize() == 1);
 
             var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel(AllCustomNodesProjectData.Labels.IMPORTED_PACKAGE).getNode();

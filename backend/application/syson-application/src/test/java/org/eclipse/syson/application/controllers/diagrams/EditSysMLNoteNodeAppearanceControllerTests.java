@@ -95,8 +95,8 @@ public class EditSysMLNoteNodeAppearanceControllerTests extends AbstractIntegrat
                     .hasSize(1)
                     .allMatch(node -> node.getStyle() instanceof SysMLNoteNodeStyle)
                     .extracting(node -> (SysMLNoteNodeStyle) node.getStyle())
-                    .allMatch(sysMLNoteNodeStyle -> "#ffffff".equals(sysMLNoteNodeStyle.getBackground()))
-                    .allMatch(sysMLNoteNodeStyle -> "#000000".equals(sysMLNoteNodeStyle.getBorderColor()))
+                    .allMatch(sysMLNoteNodeStyle -> "#E2E5ED".equals(sysMLNoteNodeStyle.getBackground()))
+                    .allMatch(sysMLNoteNodeStyle -> "#818896".equals(sysMLNoteNodeStyle.getBorderColor()))
                     .allMatch(sysMLNoteNodeStyle -> sysMLNoteNodeStyle.getBorderSize() == 1)
                     .allMatch(sysMLNoteNodeStyle -> LineStyle.Solid.equals(sysMLNoteNodeStyle.getBorderStyle()));
 
@@ -146,8 +146,8 @@ public class EditSysMLNoteNodeAppearanceControllerTests extends AbstractIntegrat
                     .hasSize(1)
                     .allMatch(node -> node.getStyle() instanceof SysMLNoteNodeStyle)
                     .extracting(node -> (SysMLNoteNodeStyle) node.getStyle())
-                    .allMatch(sysMLNoteNodeStyle -> "#ffffff".equals(sysMLNoteNodeStyle.getBackground()))
-                    .allMatch(sysMLNoteNodeStyle -> "#000000".equals(sysMLNoteNodeStyle.getBorderColor()))
+                    .allMatch(sysMLNoteNodeStyle -> "#E2E5ED".equals(sysMLNoteNodeStyle.getBackground()))
+                    .allMatch(sysMLNoteNodeStyle -> "#818896".equals(sysMLNoteNodeStyle.getBorderColor()))
                     .allMatch(sysMLNoteNodeStyle -> sysMLNoteNodeStyle.getBorderSize() == 1)
                     .allMatch(sysMLNoteNodeStyle -> LineStyle.Solid.equals(sysMLNoteNodeStyle.getBorderStyle()));
         });
@@ -177,7 +177,7 @@ public class EditSysMLNoteNodeAppearanceControllerTests extends AbstractIntegrat
                     .hasSize(1)
                     .allMatch(node -> node.getStyle() instanceof SysMLNoteNodeStyle)
                     .extracting(node -> (SysMLNoteNodeStyle) node.getStyle())
-                    .allMatch(sysMLNoteNodeStyle -> "#ffffff".equals(sysMLNoteNodeStyle.getBackground()))
+                    .allMatch(sysMLNoteNodeStyle -> "#E2E5ED".equals(sysMLNoteNodeStyle.getBackground()))
                     .allMatch(sysMLNoteNodeStyle -> sysMLNoteNodeStyle.getBorderSize() == 1);
 
             var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel(AllCustomNodesProjectData.Labels.NOTE).getNode();
@@ -204,7 +204,7 @@ public class EditSysMLNoteNodeAppearanceControllerTests extends AbstractIntegrat
                     .allMatch(node -> node.getStyle() instanceof SysMLNoteNodeStyle)
                     .extracting(node -> (SysMLNoteNodeStyle) node.getStyle())
                     .allMatch(sysMLNoteNodeStyle -> "red".equals(sysMLNoteNodeStyle.getBackground()))
-                    .allMatch(sysMLNoteNodeStyle -> "#000000".equals(sysMLNoteNodeStyle.getBorderColor()))
+                    .allMatch(sysMLNoteNodeStyle -> "#818896".equals(sysMLNoteNodeStyle.getBorderColor()))
                     .allMatch(sysMLNoteNodeStyle -> sysMLNoteNodeStyle.getBorderSize() == 5);
         });
 
@@ -226,7 +226,7 @@ public class EditSysMLNoteNodeAppearanceControllerTests extends AbstractIntegrat
                     .allMatch(node -> node.getStyle() instanceof SysMLNoteNodeStyle)
                     .extracting(node -> (SysMLNoteNodeStyle) node.getStyle())
                     .allMatch(sysMLNoteNodeStyle -> "red".equals(sysMLNoteNodeStyle.getBackground()))
-                    .allMatch(sysMLNoteNodeStyle -> "#000000".equals(sysMLNoteNodeStyle.getBorderColor()))
+                    .allMatch(sysMLNoteNodeStyle -> "#818896".equals(sysMLNoteNodeStyle.getBorderColor()))
                     .allMatch(sysMLNoteNodeStyle -> sysMLNoteNodeStyle.getBorderSize() == 1);
         });
 

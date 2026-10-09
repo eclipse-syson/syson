@@ -95,8 +95,8 @@ public class EditSysMLPackageNodeAppearanceControllerTests extends AbstractInteg
                     .hasSize(1)
                     .allMatch(node -> node.getStyle() instanceof SysMLPackageNodeStyle)
                     .extracting(node -> (SysMLPackageNodeStyle) node.getStyle())
-                    .allMatch(sysMLPackageNodeStyle -> "#ffffff".equals(sysMLPackageNodeStyle.getBackground()))
-                    .allMatch(sysMLPackageNodeStyle -> "#000000".equals(sysMLPackageNodeStyle.getBorderColor()))
+                    .allMatch(sysMLPackageNodeStyle -> "#FDFDFE".equals(sysMLPackageNodeStyle.getBackground()))
+                    .allMatch(sysMLPackageNodeStyle -> "#818896".equals(sysMLPackageNodeStyle.getBorderColor()))
                     .allMatch(sysMLPackageNodeStyle -> sysMLPackageNodeStyle.getBorderSize() == 1)
                     .allMatch(sysMLPackageNodeStyle -> LineStyle.Solid.equals(sysMLPackageNodeStyle.getBorderStyle()));
 
@@ -146,8 +146,8 @@ public class EditSysMLPackageNodeAppearanceControllerTests extends AbstractInteg
                     .hasSize(1)
                     .allMatch(node -> node.getStyle() instanceof SysMLPackageNodeStyle)
                     .extracting(node -> (SysMLPackageNodeStyle) node.getStyle())
-                    .allMatch(sysMLPackageNodeStyle -> "#ffffff".equals(sysMLPackageNodeStyle.getBackground()))
-                    .allMatch(sysMLPackageNodeStyle -> "#000000".equals(sysMLPackageNodeStyle.getBorderColor()))
+                    .allMatch(sysMLPackageNodeStyle -> "#FDFDFE".equals(sysMLPackageNodeStyle.getBackground()))
+                    .allMatch(sysMLPackageNodeStyle -> "#818896".equals(sysMLPackageNodeStyle.getBorderColor()))
                     .allMatch(sysMLPackageNodeStyle -> sysMLPackageNodeStyle.getBorderSize() == 1)
                     .allMatch(sysMLPackageNodeStyle -> LineStyle.Solid.equals(sysMLPackageNodeStyle.getBorderStyle()));
         });
@@ -177,7 +177,7 @@ public class EditSysMLPackageNodeAppearanceControllerTests extends AbstractInteg
                     .hasSize(1)
                     .allMatch(node -> node.getStyle() instanceof SysMLPackageNodeStyle)
                     .extracting(node -> (SysMLPackageNodeStyle) node.getStyle())
-                    .allMatch(sysMLPackageNodeStyle -> "#ffffff".equals(sysMLPackageNodeStyle.getBackground()))
+                    .allMatch(sysMLPackageNodeStyle -> "#FDFDFE".equals(sysMLPackageNodeStyle.getBackground()))
                     .allMatch(sysMLPackageNodeStyle -> sysMLPackageNodeStyle.getBorderSize() == 1);
 
             var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel(AllCustomNodesProjectData.Labels.PACKAGE).getNode();
