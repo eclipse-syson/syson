@@ -19,6 +19,15 @@ The action adds existing project elements connected to the selected element thro
 For single and multiple selections, elements that can be displayed as ports or inside a selected element are excluded, even when their compartment is hidden.
 Use the existing content tools to display these elements. Existing representations are left unchanged.
 
+** Standard diagrams can now have a theme (experimental feature).
+Because it is experimental, the theme is not enabled by default.
+It can be enabled through the _Appearances_ project settings tab.
+The theme applying to graphical elements depend on the SysML element family (Structure, Behavior, ...).
++
+image::release-notes-diagram-theme.png[The standard diagram theme applied to different graphical nodes]
+Manual appearance changes take precedence over the theme; resetting them restores the theme if it is enabled.
+
+
 == Bug fixes
 
 * In diagrams:

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,8 @@ public class InterconnectionViewWithTopNodesTestProjectData {
         public static final String DIAGRAM_ID = "e940992c-8d3c-44c3-a389-75f33be0cc89";
 
         public static final String PART_1_ID = "f0c715c8-50fe-3928-bf28-9803b9ac7467";
+
+        public static final String PART_DIAGRAM_ID = "63cbb419-0e7b-3aaf-9122-26e02d41c76f";
     }
 
     /**
