@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2023, 2024 Obeo.
+/*******************************************************************************
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -9,7 +9,7 @@
  *
  * Contributors:
  *     Obeo - initial API and implementation
- */
+ *******************************************************************************/
 package org.eclipse.syson.sysml.provider;
 
 import java.util.Collection;
@@ -20,8 +20,10 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.syson.sysml.Behavior;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.ItemUsage;
+import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
@@ -82,7 +84,12 @@ public class ItemUsageItemProvider extends OccurrenceUsageItemProvider {
     @Override
     public Object getImage(Object object) {
         StringBuilder iconPath = new StringBuilder();
-        iconPath.append("full/obj16/ItemUsage");
+        boolean isParameter = this.isParameter(object);
+        if (isParameter) {
+            iconPath.append("full/obj16/parameter");
+        } else {
+            iconPath.append("full/obj16/ItemUsage");
+        }
         if (object instanceof ItemUsage item) {
             FeatureDirectionKind direction = item.getDirection();
             if (direction != null) {
@@ -91,6 +98,14 @@ public class ItemUsageItemProvider extends OccurrenceUsageItemProvider {
         }
         iconPath.append(".svg");
         return this.overlayImage(object, this.getResourceLocator().getImage(iconPath.toString()));
+    }
+
+    /**
+     * @generated NOT
+     */
+    private boolean isParameter(Object object) {
+        return object instanceof ItemUsage itemUsage && (itemUsage.getOwningType() instanceof Step || itemUsage.getOwningType() instanceof Behavior)
+                && itemUsage.getDirection() != null;
     }
 
     /**

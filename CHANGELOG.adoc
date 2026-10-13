@@ -48,6 +48,7 @@ The parsed elements are still imported, and the loading report includes the pars
 - [cleanup] Use `SemanticRunnableFactory` more widely in integration tests, replacing the `IExecuteEditingContextFunctionRunner` by the `SemanticRunnableFactory`.
 - [releng] Remove redundant inherited Maven `groupId` and `version` declarations from backend modules.
 - [frontend] Export six components and eight hooks from `@eclipse-syson/syson-components` for expression tools and properties, the new-object report, diagram visibility, and node rotation.
+- [core] Harmonize SysML icons
 
 === New features
 

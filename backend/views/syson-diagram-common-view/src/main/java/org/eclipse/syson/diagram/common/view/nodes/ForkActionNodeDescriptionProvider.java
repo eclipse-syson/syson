@@ -58,7 +58,7 @@ public class ForkActionNodeDescriptionProvider extends AbstractControlNodeAction
                 .borderColor(this.colorProvider.getColor("transparent"))
                 .borderRadius(0)
                 .borderSize(0)
-                .background(this.colorProvider.getColor("black"))
+                .background(this.colorProvider.getColor("actionGreen"))
                 .build();
     }
 }

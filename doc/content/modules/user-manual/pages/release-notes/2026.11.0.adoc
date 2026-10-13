@@ -37,6 +37,19 @@ The parsed elements are still imported, and the loading report identifies the sy
 
 == Improvements
 
+* In diagrams
+
+** Harmonize the SysML icons
++
+image::release-notes-diagram-sysml-icons-hamonization.png[New icons for ActionDefinition; ActionUsage; PartUsage; StateUsage; CaseUsage and ConstraintUsage graphical nodes, width=80%,height=80%]
+
+* In explorer:
+
+** Harmonize the SysML icons
++
+image::release-notes-explorer-sysml-icons-harmonization.png[New icons for ActionDefinition; ActionUsage; PartUsage; StateUsage; CaseUsage and ConstraintUsage explorer items, width=80%,height=80%]
+
+
 == Technical details
 
 * For technical details on this {product} release, including breaking changes, please refer to the https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
