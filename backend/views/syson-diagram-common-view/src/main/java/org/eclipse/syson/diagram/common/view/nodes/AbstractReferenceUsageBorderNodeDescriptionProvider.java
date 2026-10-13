@@ -123,15 +123,15 @@ public abstract class AbstractReferenceUsageBorderNodeDescriptionProvider extend
         return List.of(
                 this.diagramBuilderHelper.newConditionalNodeStyle()
                         .condition(ServiceMethod.of0(UtilService::isInFeature).aqlSelf())
-                        .style(this.createImageNodeStyleDescription("images/feature_in.svg", borderColor, true))
+                        .style(this.createImageNodeStyleDescription("images/parameter_in.svg", borderColor, true))
                         .build(),
                 this.diagramBuilderHelper.newConditionalNodeStyle()
                         .condition(ServiceMethod.of0(UtilService::isOutFeature).aqlSelf())
-                        .style(this.createImageNodeStyleDescription("images/feature_out.svg", borderColor, true))
+                        .style(this.createImageNodeStyleDescription("images/parameter_out.svg", borderColor, true))
                         .build(),
                 this.diagramBuilderHelper.newConditionalNodeStyle()
                         .condition(ServiceMethod.of0(UtilService::isInOutFeature).aqlSelf())
-                        .style(this.createImageNodeStyleDescription("images/feature_inout.svg", borderColor, true))
+                        .style(this.createImageNodeStyleDescription("images/parameter_inout.svg", borderColor, true))
                         .build());
     }
 

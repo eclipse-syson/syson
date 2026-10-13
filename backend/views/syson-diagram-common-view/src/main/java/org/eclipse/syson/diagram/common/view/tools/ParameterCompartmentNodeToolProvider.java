@@ -57,7 +57,7 @@ public class ParameterCompartmentNodeToolProvider extends AbstractCompartmentNod
 
     @Override
     protected String getNodeToolIconURLsExpression() {
-        StringBuilder iconURLsExpression = new StringBuilder("/icons/full/obj16/ReferenceUsage");
+        StringBuilder iconURLsExpression = new StringBuilder("/icons/full/obj16/parameter");
         if (FeatureDirectionKind.IN == this.direction) {
             iconURLsExpression.append("In");
         } else if (FeatureDirectionKind.INOUT == this.direction) {
