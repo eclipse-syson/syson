@@ -34,6 +34,9 @@ _New Satisfy Requirement_ remains available when the target is a `RequirementUsa
 The parsed elements are still imported, and the loading report identifies the syntax problem and warns about possibly missing elements.
 ** Export connector ends that reference feature chains, such as `battery.powerPort to batmobileEngine.enginePort`, instead of leaving the ends empty.
 ** `InterfaceUsage` elements are now exported with the `interface` keyword.
+** Export successions with an implicit target, such as `then decide;`, inline instead of a dangling `then;` followed by the target.
+When the succession has an explicit `first` source or a body, the target is referenced by name and an unnamed target gets a unique generated name in the exported text (`first a1 then decide1;` followed by `decide decide1;`).
+Unnamed decision nodes are exported as `decide;` without a trailing space.
 
 == Improvements
 
