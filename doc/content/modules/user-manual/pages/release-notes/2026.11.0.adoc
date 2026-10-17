@@ -34,6 +34,7 @@ _New Satisfy Requirement_ remains available when the target is a `RequirementUsa
 The parsed elements are still imported, and the loading report identifies the syntax problem and warns about possibly missing elements.
 ** Export connector ends that reference feature chains, such as `battery.powerPort to batmobileEngine.enginePort`, instead of leaving the ends empty.
 ** `InterfaceUsage` elements are now exported with the `interface` keyword.
+** Export `satisfy` usages without a subject as `satisfy 'system components';` instead of leaving a dangling `by`.
 
 == Improvements
 

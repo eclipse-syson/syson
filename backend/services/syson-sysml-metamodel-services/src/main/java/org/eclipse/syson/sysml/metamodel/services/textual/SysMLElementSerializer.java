@@ -1195,13 +1195,13 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         this.appendValuePart(builder, satisfyRequirementUsage);
 
-        builder.appendWithSpaceIfNeeded("by");
         List<Relationship> ownedMembershipToPutInBody = new ArrayList<>(satisfyRequirementUsage.getOwnedRelationship());
         ownedMembershipToPutInBody.stream()
                 .filter(SubjectMembership.class::isInstance)
                 .map(SubjectMembership.class::cast)
                 .findFirst()
                 .ifPresent(subjectMembership -> {
+                    builder.appendWithSpaceIfNeeded("by");
                     ownedMembershipToPutInBody.remove(subjectMembership);
                     this.appendSatisfactionSubjectMember(builder, subjectMembership);
                 });
