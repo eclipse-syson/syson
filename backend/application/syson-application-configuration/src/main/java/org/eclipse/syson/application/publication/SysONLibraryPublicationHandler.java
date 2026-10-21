@@ -25,7 +25,7 @@ import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryApplicationService;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryPublicationHandler;
 import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.projects.domain.services.api.IProjectSearchService;
 import org.eclipse.syson.application.publication.api.ISysMLLibraryPublisher;
 import org.springframework.stereotype.Service;
 
