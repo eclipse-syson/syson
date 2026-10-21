@@ -54,6 +54,8 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
 
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
+    private final ToolConversionHelper toolConversionHelper = new ToolConversionHelper();
+
     public AbstractControlNodeActionNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
@@ -133,6 +135,7 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(this.getNodeDescriptionName())).ifPresent(nodeDescription -> {
             diagramDescription.getNodeDescriptions().add(nodeDescription);
+            nodeDescription.getEdgeTools().add(this.toolConversionHelper.convertToSingleEdgeToolWithPalette(this.getEdgeTools(cache)));
             nodeDescription.setPalette(this.createNodePalette(cache));
         });
     }
@@ -159,7 +162,6 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
-                .edgeTools(edgeTools.toArray(EdgeTool[]::new))
                 .quickAccessTools(this.getDeleteFromDiagramTool(), this.getDuplicateElementAndNodeTool())
                 .toolSections(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .build();

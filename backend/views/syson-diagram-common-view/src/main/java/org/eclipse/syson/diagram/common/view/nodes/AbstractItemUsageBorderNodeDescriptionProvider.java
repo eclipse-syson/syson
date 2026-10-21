@@ -49,6 +49,8 @@ public abstract class AbstractItemUsageBorderNodeDescriptionProvider extends Abs
 
     protected final EReference eReference;
 
+    private final ToolConversionHelper toolConversionHelper = new ToolConversionHelper();
+
     public AbstractItemUsageBorderNodeDescriptionProvider(EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.eReference = Objects.requireNonNull(eReference);
@@ -130,6 +132,7 @@ public abstract class AbstractItemUsageBorderNodeDescriptionProvider extends Abs
 
         NodeDescription nodeDescription = optItemUsageBorderNodeDescription.get();
         nodeDescription.setPalette(this.createNodePalette(cache, nodeDescription));
+        nodeDescription.getEdgeTools().add(this.toolConversionHelper.convertToSingleEdgeToolWithPalette(this.getEdgeTools(cache, nodeDescription)));
     }
 
     private List<NodeDescription> getBindingConnectorAsUsageToolTarget(IViewDiagramElementFinder cache) {

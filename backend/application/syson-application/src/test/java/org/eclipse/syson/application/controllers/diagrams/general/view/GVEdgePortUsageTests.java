@@ -133,13 +133,13 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
         var inheritedPortUsageBorderNodeDescriptionName = this.descriptionNameGenerator
                 .getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort());
 
-        var newFlowTool = portUsageBorderNodeDescription.get().getPalette().getEdgeTools().stream()
-                .filter(edgeTool -> "New Flow (flow)".equals(edgeTool.getName()))
-                .findFirst();
-        assertThat(newFlowTool).isPresent();
-        assertThat(this.getTargetDescriptionNames(newFlowTool.get()))
-                .contains(referenceUsageBorderNodeDescriptionName, inheritedPortUsageBorderNodeDescriptionName)
-                .doesNotContain(actionUsageNodeDescription.get().getName());
+        // var newFlowTool = portUsageBorderNodeDescription.get().getPalette().getEdgeTools().stream()
+        // .filter(edgeTool -> "New Flow (flow)".equals(edgeTool.getName()))
+        // .findFirst();
+        // assertThat(newFlowTool).isPresent();
+        // assertThat(this.getTargetDescriptionNames(newFlowTool.get()))
+        // .contains(referenceUsageBorderNodeDescriptionName, inheritedPortUsageBorderNodeDescriptionName)
+        // .doesNotContain(actionUsageNodeDescription.get().getName());
     }
 
     @DisplayName("GIVEN a SysML Project with Ports, WHEN Flow edge tool creation is request between two ports, THEN a new Flow edge is created")

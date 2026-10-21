@@ -46,6 +46,8 @@ public abstract class AbstractReferenceUsageBorderNodeDescriptionProvider extend
 
     protected final IDescriptionNameGenerator descriptionNameGenerator;
 
+    private final ToolConversionHelper toolConversionHelper = new ToolConversionHelper();
+
     public AbstractReferenceUsageBorderNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
@@ -94,7 +96,10 @@ public abstract class AbstractReferenceUsageBorderNodeDescriptionProvider extend
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        cache.getNodeDescription(this.getName()).ifPresent(refUsageBorderNodeDescription -> refUsageBorderNodeDescription.setPalette(this.createNodePalette(cache, refUsageBorderNodeDescription)));
+        cache.getNodeDescription(this.getName()).ifPresent(refUsageBorderNodeDescription -> {
+            refUsageBorderNodeDescription.setPalette(this.createNodePalette(cache, refUsageBorderNodeDescription));
+            refUsageBorderNodeDescription.getEdgeTools().add(this.toolConversionHelper.convertToSingleEdgeToolWithPalette(this.getEdgeTools(cache, refUsageBorderNodeDescription)));
+        });
     }
 
     protected OutsideLabelStyle createOutsideLabelStyle() {

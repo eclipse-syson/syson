@@ -45,6 +45,8 @@ public class StartActionNodeDescriptionProvider extends AbstractNodeDescriptionP
 
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
+    private final ToolConversionHelper toolConversionHelper = new ToolConversionHelper();
+
     public StartActionNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
@@ -71,6 +73,7 @@ public class StartActionNodeDescriptionProvider extends AbstractNodeDescriptionP
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(START_ACTION_NAME)).ifPresent(nodeDescription -> {
             diagramDescription.getNodeDescriptions().add(nodeDescription);
             nodeDescription.setPalette(this.createNodePalette(cache));
+            nodeDescription.getEdgeTools().add(this.toolConversionHelper.convertToSingleEdgeToolWithPalette(this.getEdgeTools(cache)));
         });
     }
 
@@ -79,7 +82,6 @@ public class StartActionNodeDescriptionProvider extends AbstractNodeDescriptionP
         edgeTools.addAll(this.getEdgeTools(cache));
 
         return this.diagramBuilderHelper.newNodePalette()
-                .edgeTools(edgeTools.toArray(EdgeTool[]::new))
                 .quickAccessTools(this.getDeleteFromDiagramTool())
                 .toolSections(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .build();

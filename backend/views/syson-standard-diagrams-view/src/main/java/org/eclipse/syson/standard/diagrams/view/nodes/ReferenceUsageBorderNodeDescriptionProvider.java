@@ -110,7 +110,6 @@ public class ReferenceUsageBorderNodeDescriptionProvider extends AbstractReferen
                 .labelEditTool(editTool.build())
                 .toolSections(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .quickAccessTools(this.getDuplicateElementAndNodeTool())
-                .edgeTools(this.getEdgeTools(cache, nodeDescription).toArray(EdgeTool[]::new))
                 .build();
     }
 

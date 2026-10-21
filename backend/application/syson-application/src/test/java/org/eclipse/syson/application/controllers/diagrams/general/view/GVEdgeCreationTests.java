@@ -172,7 +172,7 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
                 .findFirst();
 
         assertThat(concernUsageNodeDescription).isPresent();
-        assertThat(concernUsageNodeDescription.get().getPalette().getEdgeTools())
+        assertThat(concernUsageNodeDescription.get().getEdgeTools().stream().flatMap(edgeTool -> edgeTool.getPalette().getNodeTools().stream()))
                 .extracting(edgeTool -> edgeTool.getName())
                 .contains("Become nested Concern");
     }

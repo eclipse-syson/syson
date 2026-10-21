@@ -69,6 +69,8 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
 
     private String precondition;
 
+    private final ToolConversionHelper toolConversionHelper = new ToolConversionHelper();
+
     public AbstractUsageNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider);
         this.eClass = Objects.requireNonNull(eClass);
@@ -200,6 +202,7 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
                 listLayout.getGrowableNodes().addAll(growableNodes);
             }
             nodeDescription.setPalette(this.createNodePalette(nodeDescription, cache));
+            nodeDescription.getEdgeTools().add(this.toolConversionHelper.convertToSingleEdgeToolWithPalette(this.getEdgeTools(nodeDescription, cache)));
         });
     }
 
@@ -286,7 +289,6 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
-                .edgeTools(edgeTools.toArray(EdgeTool[]::new))
                 .nodeTools(toolsWithoutSection.toArray(NodeTool[]::new))
                 .quickAccessTools(this.getDeleteFromDiagramTool(), this.getDuplicateElementAndNodeTool())
                 .toolSections(toolSections.toArray(NodeToolSection[]::new))
