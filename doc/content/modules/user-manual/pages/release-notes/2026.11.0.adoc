@@ -3,6 +3,7 @@
 == Key highlights
 
 * _General View_ diagrams now provide an action to add existing connected elements in both directions.
+* _Standard diagrams_ now have a semantic color palette enabled.
 
 == New features
 
@@ -43,6 +44,10 @@ The parsed elements are still imported, and the loading report identifies the sy
 ** Harmonize the SysML icons
 +
 image::release-notes-diagram-sysml-icons-hamonization.png[New icons for ActionDefinition; ActionUsage; PartUsage; StateUsage; CaseUsage and ConstraintUsage graphical nodes, width=80%,height=80%]
+
+** Standard diagrams now use a semantic color palette.
+Manual appearance changes remain prioritized; resetting them restores the palette colors.
+The semantic color palette can be disabled through the _Appearances_ project settings tab.
 
 * In explorer:
 

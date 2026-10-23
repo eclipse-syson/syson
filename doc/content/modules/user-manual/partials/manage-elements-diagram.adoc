@@ -59,3 +59,12 @@ You can reset it by deleting the {product} data in cache of your browser.
 Users can duplicate an `Element` and its representation node by clicking the _Duplicate Element_ button in the palette.
 
 image::manage-elements-duplicate-from-diagram.png[Duplicate element from Diagram]
+
+=== Semantic colors
+
+In newly created projects, standard diagrams use semantic colors by default to distinguish seven families of elements.
+You can disable semantic colors for a project from the _Appearances_ tab in the project settings.
+
+You can still change colors through the _Appearance_ section of the palette.
+These changes take priority over semantic colors.
+When semantic colors are enabled, resetting manual appearance changes restores the family colors.
