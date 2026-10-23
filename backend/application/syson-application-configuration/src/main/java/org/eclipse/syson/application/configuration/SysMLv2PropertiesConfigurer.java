@@ -344,6 +344,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getRedefinition_RedefinedFeature().getName());
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
+        refWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
+        refWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setRefWidget.setExpression(ServiceMethod.of2(FormMutationElementService::handleReferenceWidgetNewValue)
                 .aqlSelf(AQLUtils.aqlString(SysmlPackage.eINSTANCE.getRedefinition_RedefinedFeature().getName()), ViewFormDescriptionConverter.NEW_VALUE));
@@ -368,6 +370,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature().getName());
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
+        refWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
+        refWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setRefWidget.setExpression(ServiceMethod.of2(FormMutationElementService::handleReferenceWidgetNewValue)
                 .aqlSelf(AQLUtils.aqlString(SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature().getName()), ViewFormDescriptionConverter.NEW_VALUE));
@@ -418,6 +422,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getSubclassification_Superclassifier().getName());
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
+        refWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
+        refWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setRefWidget.setExpression(ServiceMethod.of2(FormMutationElementService::handleReferenceWidgetNewValue)
                 .aqlSelf(AQLUtils.aqlString(SysmlPackage.eINSTANCE.getSubclassification_Superclassifier().getName()), ViewFormDescriptionConverter.NEW_VALUE));
@@ -442,6 +448,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().getName());
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
+        refWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
+        refWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setRefWidget.setExpression(ServiceMethod.of2(FormMutationElementService::handleReferenceWidgetNewValue)
                 .aqlSelf(AQLUtils.aqlString(SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().getName()), ViewFormDescriptionConverter.NEW_VALUE));
@@ -469,6 +477,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setReferenceNameExpression(ServiceMethod.of0(FormQueryElementService::getTypedByReferenceName).aqlSelf());
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
+        refWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
+        refWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setRefWidget.setExpression(ServiceMethod.of1(FormMutationElementService::handleFeatureTypingNewValue).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
         refWidget.getBody().add(setRefWidget);
@@ -537,6 +547,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         payloadRefWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName());
         payloadRefWidget.setReferenceOwnerExpression(ServiceMethod.of0(FormMutationElementService::getOrCreateAcceptActionUsagePayloadFeatureTyping).aqlSelf());
         payloadRefWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
+        payloadRefWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
+        payloadRefWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
         ChangeContext setPayloadRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setPayloadRefWidget.setExpression(ServiceMethod.of1(FormMutationElementService::setAcceptActionUsagePayloadParameter).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
         payloadRefWidget.getBody().add(setPayloadRefWidget);
@@ -547,6 +559,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         receiverRefWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getMembership_MemberElement().getName());
         receiverRefWidget.setReferenceOwnerExpression(ServiceMethod.of0(FormMutationElementService::getOrCreateAcceptActionUsageReceiverMembership).aqlSelf());
         receiverRefWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
+        receiverRefWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
+        receiverRefWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
         ChangeContext setReceiverRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setReceiverRefWidget.setExpression(ServiceMethod.of1(FormMutationElementService::setAcceptActionUsageReceiverArgument).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
         receiverRefWidget.getBody().add(setReceiverRefWidget);
@@ -570,6 +584,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         sourceRefWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getTransitionUsage_Source().getName());
         sourceRefWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         sourceRefWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
+        sourceRefWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
+        sourceRefWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
         ChangeContext setSourceRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setSourceRefWidget.setExpression(ServiceMethod.of1(FormMutationElementService::setTransitionSourceParameter).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
         sourceRefWidget.getBody().add(setSourceRefWidget);
@@ -580,6 +596,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         targetRefWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getTransitionUsage_Target().getName());
         targetRefWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         targetRefWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
+        targetRefWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
+        targetRefWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
         ChangeContext setTargetRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setTargetRefWidget.setExpression(ServiceMethod.of1(FormMutationElementService::setTransitionTargetParameter).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
         targetRefWidget.getBody().add(setTargetRefWidget);
@@ -731,6 +749,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setReferenceNameExpression(AQLConstants.AQL + E_STRUCTURAL_FEATURE + ".name");
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY_E_STRUCTURAL_FEATURE);
+        refWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
+        refWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setRefWidget.setExpression(ServiceMethod.of2(FormMutationElementService::handleReferenceWidgetNewValue).aqlSelf(E_STRUCTURAL_FEATURE + ".name", ViewFormDescriptionConverter.NEW_VALUE));
         refWidget.getBody().add(setRefWidget);

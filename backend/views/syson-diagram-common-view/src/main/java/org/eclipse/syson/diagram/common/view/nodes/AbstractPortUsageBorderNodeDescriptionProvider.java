@@ -98,7 +98,10 @@ public abstract class AbstractPortUsageBorderNodeDescriptionProvider extends Abs
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        cache.getNodeDescription(this.getName()).ifPresent(portUsageBorderNodeDescription -> portUsageBorderNodeDescription.setPalette(this.createNodePalette(cache, portUsageBorderNodeDescription)));
+        cache.getNodeDescription(this.getName()).ifPresent(portUsageBorderNodeDescription -> {
+            portUsageBorderNodeDescription.setPalette(this.createNodePalette(cache, portUsageBorderNodeDescription));
+            portUsageBorderNodeDescription.getEdgeTools().addAll(this.edgeToolConverter.convertToEdgeToolsWithPalette(this.getEdgeTools(cache, portUsageBorderNodeDescription)));
+        });
     }
 
     protected String getToolIconURLsExpression(String elementName) {

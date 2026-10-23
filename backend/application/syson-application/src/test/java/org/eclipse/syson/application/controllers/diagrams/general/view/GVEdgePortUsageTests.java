@@ -30,8 +30,10 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
-import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
+import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.emf.api.IViewAQLInterpreterFactory;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -42,6 +44,7 @@ import org.eclipse.syson.application.controllers.diagrams.testers.EdgeCreationTe
 import org.eclipse.syson.application.data.GeneralViewPortTestProjectData;
 import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
 import org.eclipse.syson.services.SemanticRunnableFactory;
+import org.eclipse.syson.services.diagrams.ConnectorToolInspector;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
@@ -85,6 +88,9 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
 
     @Autowired
     private IDiagramIdProvider diagramIdProvider;
+
+    @Autowired
+    private IViewAQLInterpreterFactory viewAQLInterpreterFactory;
 
     @Autowired
     private EdgeCreationTester edgeCreationTester;
@@ -133,13 +139,15 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
         var inheritedPortUsageBorderNodeDescriptionName = this.descriptionNameGenerator
                 .getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort());
 
-        var newFlowTool = portUsageBorderNodeDescription.get().getPalette().getEdgeTools().stream()
-                .filter(edgeTool -> "New Flow (flow)".equals(edgeTool.getName()))
-                .findFirst();
-        assertThat(newFlowTool).isPresent();
-        assertThat(this.getTargetDescriptionNames(newFlowTool.get()))
-                .contains(referenceUsageBorderNodeDescriptionName, inheritedPortUsageBorderNodeDescriptionName)
-                .doesNotContain(actionUsageNodeDescription.get().getName());
+        this.semanticRunnableFactory.createQueryRunnable(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                (editingContext, input) -> {
+                    var interpreter = this.viewAQLInterpreterFactory.createInterpreter(editingContext, (View) diagramDescription.eContainer());
+                    var inspector = new ConnectorToolInspector(diagramDescription, this.diagramIdProvider, interpreter);
+                    assertThat(inspector.getTargetDescriptionNames(portUsageBorderNodeDescription.orElseThrow(), "New Flow (flow)", editingContext))
+                            .contains(referenceUsageBorderNodeDescriptionName, inheritedPortUsageBorderNodeDescriptionName)
+                            .doesNotContain(actionUsageNodeDescription.orElseThrow().getName());
+                    return new ExecuteEditingContextFunctionSuccessPayload(input.id(), true);
+                }).run();
     }
 
     @DisplayName("GIVEN a SysML Project with Ports, WHEN Flow edge tool creation is request between two ports, THEN a new Flow edge is created")
@@ -193,13 +201,6 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
 
     }
 
-    private List<String> getTargetDescriptionNames(EdgeTool edgeTool) {
-        return edgeTool.getTargetElementDescriptions().stream()
-                .filter(NodeDescription.class::isInstance)
-                .map(NodeDescription.class::cast)
-                .map(NodeDescription::getName)
-                .toList();
-    }
 
     @DisplayName("GIVEN a SysML Project with ports, WHEN binding connector as usage edge tool creation is request between two ports, THEN a new binding connector edge is created")
     @GivenSysONServer({ GeneralViewPortTestProjectData.SCRIPT_PATH })

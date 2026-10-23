@@ -83,7 +83,6 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractPortUsageBor
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
                 .toolSections(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection())
-                .edgeTools(this.getEdgeTools(cache, nodeDescription).toArray(EdgeTool[]::new))
                 .quickAccessTools(this.getDuplicateElementAndNodeTool())
                 .build();
     }

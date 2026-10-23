@@ -20,7 +20,7 @@ The `getCommentBody`, `getComment`, and `getDocumentation` query APIs are now pr
 
 === Dependency update
 
-- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.9.3].
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.9.4].
 - [releng] Update to https://github.com/spring-projects/spring-boot/releases/tag/v4.1.1[Spring Boot 4.1.1]
 - [releng] Update to https://github.com/testing-library/user-event/releases/tag/v14.6.7[@testing-library/user-event 14.6.7]
 - [releng] Update to https://github.com/testing-library/react-testing-library/releases/tag/v16.3.3[@testing-library/react 16.3.3]

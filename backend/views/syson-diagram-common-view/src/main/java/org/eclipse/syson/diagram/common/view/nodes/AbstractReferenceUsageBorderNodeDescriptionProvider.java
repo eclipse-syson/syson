@@ -94,7 +94,10 @@ public abstract class AbstractReferenceUsageBorderNodeDescriptionProvider extend
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        cache.getNodeDescription(this.getName()).ifPresent(refUsageBorderNodeDescription -> refUsageBorderNodeDescription.setPalette(this.createNodePalette(cache, refUsageBorderNodeDescription)));
+        cache.getNodeDescription(this.getName()).ifPresent(refUsageBorderNodeDescription -> {
+            refUsageBorderNodeDescription.setPalette(this.createNodePalette(cache, refUsageBorderNodeDescription));
+            refUsageBorderNodeDescription.getEdgeTools().addAll(this.edgeToolConverter.convertToEdgeToolsWithPalette(this.getEdgeTools(cache, refUsageBorderNodeDescription)));
+        });
     }
 
     protected OutsideLabelStyle createOutsideLabelStyle() {

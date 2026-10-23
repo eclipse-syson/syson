@@ -18,7 +18,6 @@ import java.util.List;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
-import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
@@ -65,11 +64,6 @@ public class ReferenceUsageBorderNodeDescriptionProvider extends AbstractReferen
     }
 
     @Override
-    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        cache.getNodeDescription(this.getName()).ifPresent(refUsageBorderNodeDescription -> refUsageBorderNodeDescription.setPalette(this.createNodePalette(cache, refUsageBorderNodeDescription)));
-    }
-
-    @Override
     protected OutsideLabelDescription createOutsideLabelDescription() {
         return this.diagramBuilderHelper.newOutsideLabelDescription()
                 .labelExpression(ServiceMethod.of0(DiagramQueryAQLService::getBorderNodeUsageLabel).aqlSelf())
@@ -110,7 +104,6 @@ public class ReferenceUsageBorderNodeDescriptionProvider extends AbstractReferen
                 .labelEditTool(editTool.build())
                 .toolSections(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .quickAccessTools(this.getDuplicateElementAndNodeTool())
-                .edgeTools(this.getEdgeTools(cache, nodeDescription).toArray(EdgeTool[]::new))
                 .build();
     }
 

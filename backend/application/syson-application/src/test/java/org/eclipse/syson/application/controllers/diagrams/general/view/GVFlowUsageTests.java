@@ -44,8 +44,9 @@ import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelMutationRun
 import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
-import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.emf.api.IViewAQLInterpreterFactory;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -57,6 +58,7 @@ import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.GeneralViewFlowConnectionItemUsagesProjectData;
 import org.eclipse.syson.application.data.GeneralViewFlowUsageProjectData;
 import org.eclipse.syson.services.SemanticRunnableFactory;
+import org.eclipse.syson.services.diagrams.ConnectorToolInspector;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
@@ -105,6 +107,9 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
 
     @Autowired
     private IDiagramIdProvider diagramIdProvider;
+
+    @Autowired
+    private IViewAQLInterpreterFactory viewAQLInterpreterFactory;
 
     @Autowired
     private EdgeCreationTester edgeCreationTester;
@@ -158,14 +163,15 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
                 this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem()));
         var actionUsageNodeDescription = this.findNodeDescription(diagramDescription, this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()));
 
-        var newFlowTool = itemUsageBorderNodeDescription.getPalette().getEdgeTools().stream()
-                .filter(edgeTool -> "New Flow (flow)".equals(edgeTool.getName()))
-                .findFirst();
-        assertThat(newFlowTool).isPresent();
-
-        assertThat(this.getTargetDescriptionNames(newFlowTool.get()))
-                .containsExactlyInAnyOrderElementsOf(this.getExpectedFlowTargetDescriptionNames())
-                .doesNotContain(actionUsageNodeDescription.getName());
+        this.semanticRunnableFactory.createQueryRunnable(GeneralViewFlowConnectionItemUsagesProjectData.EDITING_CONTEXT_ID,
+                (editingContext, input) -> {
+                    var interpreter = this.viewAQLInterpreterFactory.createInterpreter(editingContext, (View) diagramDescription.eContainer());
+                    var inspector = new ConnectorToolInspector(diagramDescription, this.diagramIdProvider, interpreter);
+                    assertThat(inspector.getTargetDescriptionNames(itemUsageBorderNodeDescription, "New Flow (flow)", editingContext))
+                            .containsExactlyInAnyOrderElementsOf(this.getExpectedFlowTargetDescriptionNames())
+                            .doesNotContain(actionUsageNodeDescription.getName());
+                    return new ExecuteEditingContextFunctionSuccessPayload(input.id(), true);
+                }).run();
     }
 
     @DisplayName("GIVEN a General View diagram description, WHEN inspecting the New Flow tool on ReferenceUsage border nodes, THEN it uses the full renderer-compatible border-node targets")
@@ -179,14 +185,15 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
                 this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getReferenceUsage()));
         var actionUsageNodeDescription = this.findNodeDescription(diagramDescription, this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()));
 
-        var newFlowTool = referenceUsageBorderNodeDescription.getPalette().getEdgeTools().stream()
-                .filter(edgeTool -> "New Flow (flow)".equals(edgeTool.getName()))
-                .findFirst();
-        assertThat(newFlowTool).isPresent();
-
-        assertThat(this.getTargetDescriptionNames(newFlowTool.get()))
-                .containsExactlyInAnyOrderElementsOf(this.getExpectedFlowTargetDescriptionNames())
-                .doesNotContain(actionUsageNodeDescription.getName());
+        this.semanticRunnableFactory.createQueryRunnable(GeneralViewFlowConnectionItemUsagesProjectData.EDITING_CONTEXT_ID,
+                (editingContext, input) -> {
+                    var interpreter = this.viewAQLInterpreterFactory.createInterpreter(editingContext, (View) diagramDescription.eContainer());
+                    var inspector = new ConnectorToolInspector(diagramDescription, this.diagramIdProvider, interpreter);
+                    assertThat(inspector.getTargetDescriptionNames(referenceUsageBorderNodeDescription, "New Flow (flow)", editingContext))
+                            .containsExactlyInAnyOrderElementsOf(this.getExpectedFlowTargetDescriptionNames())
+                            .doesNotContain(actionUsageNodeDescription.getName());
+                    return new ExecuteEditingContextFunctionSuccessPayload(input.id(), true);
+                }).run();
     }
 
     @DisplayName("GIVEN a SysML Project with ItemUsages on ActionUsage, WHEN creating a FlowUsage between them, THEN an edge should be displayed to represent that new flow")
@@ -691,11 +698,4 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
                 this.descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getReferenceUsage()));
     }
 
-    private List<String> getTargetDescriptionNames(EdgeTool edgeTool) {
-        return edgeTool.getTargetElementDescriptions().stream()
-                .filter(NodeDescription.class::isInstance)
-                .map(NodeDescription.class::cast)
-                .map(NodeDescription::getName)
-                .toList();
-    }
 }

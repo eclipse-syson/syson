@@ -290,6 +290,13 @@ public class DiagramQueryAQLService {
     }
 
     /**
+     * {@link DiagramQueryElementService#isTargetDescription(Object, IEditingContext, List)}.
+     */
+    public boolean isTargetDescription(Object target, IEditingContext editingContext, List<String> descriptionNames) {
+        return this.diagramQueryElementService.isTargetDescription(target, editingContext, descriptionNames);
+    }
+
+    /**
      * {@link DiagramQueryToolService#isControlNodeActionCreationToolInsideActionOnAFV(Element, IEditingContext, DiagramContext)}.
      */
     public boolean isControlNodeActionCreationToolInsideActionOnAFV(Element element, IEditingContext editingContext, DiagramContext diagramContext) {
