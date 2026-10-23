@@ -83,6 +83,13 @@ public class SDVDiagramDescriptionTests {
     }
 
     @Test
+    @DisplayName("Connector target descriptions have unique names")
+    public void connectorTargetDescriptionNamesAreUnique() {
+        assertThat(EMFUtils.allContainedObjectOfType(this.diagramDescription, NodeDescription.class)
+                .map(NodeDescription::getName).toList()).doesNotHaveDuplicates();
+    }
+
+    @Test
     @DisplayName("Each supported nested Usage reference has a composition edge description")
     public void eachSupportedNestedUsageReferenceHasACompositionEdgeDescription() {
         var nameGenerator = new SDVDescriptionNameGenerator();

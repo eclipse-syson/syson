@@ -49,6 +49,8 @@ public abstract class AbstractPortUsageBorderNodeDescriptionProvider extends Abs
 
     protected final EReference eReference;
 
+    private final ToolConversionHelper toolConversionHelper = new ToolConversionHelper();
+
     public AbstractPortUsageBorderNodeDescriptionProvider(EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.eReference = Objects.requireNonNull(eReference);
@@ -98,7 +100,10 @@ public abstract class AbstractPortUsageBorderNodeDescriptionProvider extends Abs
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        cache.getNodeDescription(this.getName()).ifPresent(portUsageBorderNodeDescription -> portUsageBorderNodeDescription.setPalette(this.createNodePalette(cache, portUsageBorderNodeDescription)));
+        cache.getNodeDescription(this.getName()).ifPresent(portUsageBorderNodeDescription -> {
+            portUsageBorderNodeDescription.setPalette(this.createNodePalette(cache, portUsageBorderNodeDescription));
+            portUsageBorderNodeDescription.getEdgeTools().addAll(this.toolConversionHelper.convertToEdgeToolsWithPalette(this.getEdgeTools(cache, portUsageBorderNodeDescription)));
+        });
     }
 
     protected String getToolIconURLsExpression(String elementName) {

@@ -96,12 +96,13 @@ public class DiagramDescriptionIdProvider {
     public String getEdgeCreationToolId(String nodeDescriptionName, String toolName) {
         Optional<String> creationToolId = EMFUtils.allContainedObjectOfType(this.diagramDescription, NodeDescription.class)
                 .filter(nodeDescription -> nodeDescription.getName().equals(nodeDescriptionName))
-                .findFirst()
-                .map(NodeDescription::getPalette)
-                .flatMap(palette -> EMFUtils.allContainedObjectOfType(palette, EdgeTool.class)
-                        .filter(edgeTool -> edgeTool.getName().equals(toolName))
-                        .map(edgeTool -> UUID.nameUUIDFromBytes(EcoreUtil.getURI(edgeTool).toString().getBytes()).toString())
-                        .findFirst());
+                .flatMap(nodeDescription -> nodeDescription.getEdgeTools().stream())
+                .map(EdgeTool::getPalette)
+                .filter(Objects::nonNull)
+                .flatMap(palette -> EMFUtils.allContainedObjectOfType(palette, NodeTool.class))
+                .filter(nodeTool -> nodeTool.getName().equals(toolName))
+                .map(nodeTool -> UUID.nameUUIDFromBytes(EcoreUtil.getURI(nodeTool).toString().getBytes()).toString())
+                .findFirst();
         assertThat(creationToolId).as(this.shouldExist(nodeDescriptionName + " edge tool " + toolName)).isPresent();
         return creationToolId.get();
     }

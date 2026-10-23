@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
@@ -320,6 +321,33 @@ public class DiagramQueryElementService {
             }
         }
         return nodeDescriptionId;
+    }
+
+    /**
+     * Checks the named visual description of a connector target. Unlike a semantic type check, this distinguishes
+     * ordinary, inherited, and border nodes representing the same SysML concept. Description names are unique in
+     * programmatic views, as required by the view element finder.
+     *
+     * @param target
+     *            the target node or edge
+     * @param editingContext
+     *            the editing context
+     * @param descriptionNames
+     *            the allowed visual description names
+     * @return whether the target uses one of the named descriptions
+     */
+    public boolean isTargetDescription(Object target, IEditingContext editingContext, List<String> descriptionNames) {
+        boolean matches = false;
+        if (target instanceof Node node) {
+            matches = this.viewDiagramDescriptionSearchService.findViewNodeDescriptionById(editingContext, node.getDescriptionId())
+                    .filter(description -> descriptionNames.contains(description.getName()))
+                    .isPresent();
+        } else if (target instanceof Edge edge) {
+            matches = this.viewDiagramDescriptionSearchService.findViewEdgeDescriptionById(editingContext, edge.getDescriptionId())
+                    .filter(description -> descriptionNames.contains(description.getName()))
+                    .isPresent();
+        }
+        return matches;
     }
 
     /**

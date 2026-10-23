@@ -68,6 +68,8 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
 
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
+    private final ToolConversionHelper toolConversionHelper = new ToolConversionHelper();
+
     public AbstractDefinitionNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider);
         this.eClass = Objects.requireNonNull(eClass);
@@ -169,6 +171,7 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
             if (childrenLayoutStrategy instanceof ListLayoutStrategyDescription listLayout) {
                 listLayout.getGrowableNodes().addAll(growableNodes);
             }
+            nodeDescription.getEdgeTools().addAll(this.toolConversionHelper.convertToEdgeToolsWithPalette(this.getEdgeTools(nodeDescription, cache)));
             nodeDescription.setPalette(this.createNodePalette(nodeDescription, cache));
         });
     }
@@ -236,9 +239,6 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
                 .initialDirectEditLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getDefaultInitialDirectEditLabel).aqlSelf())
                 .body(callEditService.build());
 
-        var edgeTools = new ArrayList<EdgeTool>();
-        edgeTools.addAll(this.getEdgeTools(nodeDescription, cache));
-
         var toolSections = new ArrayList<NodeToolSection>();
         toolSections.addAll(this.getToolSections(nodeDescription, cache));
         this.orderToolSectionsTools(toolSections);
@@ -253,7 +253,6 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
-                .edgeTools(edgeTools.toArray(EdgeTool[]::new))
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
                 .nodeTools(toolsWithoutSection.toArray(NodeTool[]::new))
                 .quickAccessTools(this.getDeleteFromDiagramTool(), this.getDuplicateElementAndNodeTool())
