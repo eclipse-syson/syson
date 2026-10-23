@@ -59,6 +59,8 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
 
     protected final IColorProvider colorProvider;
 
+    protected final LegacyEdgeToolConverter edgeToolConverter = new LegacyEdgeToolConverter();
+
     public AbstractNodeDescriptionProvider(IColorProvider colorProvider) {
         this.colorProvider = Objects.requireNonNull(colorProvider);
     }

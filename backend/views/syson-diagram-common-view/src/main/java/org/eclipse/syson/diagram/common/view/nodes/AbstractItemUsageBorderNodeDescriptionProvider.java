@@ -130,6 +130,7 @@ public abstract class AbstractItemUsageBorderNodeDescriptionProvider extends Abs
 
         NodeDescription nodeDescription = optItemUsageBorderNodeDescription.get();
         nodeDescription.setPalette(this.createNodePalette(cache, nodeDescription));
+        nodeDescription.getEdgeTools().addAll(this.edgeToolConverter.convertToEdgeToolsWithPalette(this.getEdgeTools(cache, nodeDescription)));
     }
 
     private List<NodeDescription> getBindingConnectorAsUsageToolTarget(IViewDiagramElementFinder cache) {

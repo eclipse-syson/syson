@@ -200,6 +200,7 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
                 listLayout.getGrowableNodes().addAll(growableNodes);
             }
             nodeDescription.setPalette(this.createNodePalette(nodeDescription, cache));
+            nodeDescription.getEdgeTools().addAll(this.edgeToolConverter.convertToEdgeToolsWithPalette(this.getEdgeTools(nodeDescription, cache)));
         });
     }
 
@@ -269,9 +270,6 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
                 .initialDirectEditLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getDefaultInitialDirectEditLabel).aqlSelf())
                 .body(callEditService.build());
 
-        var edgeTools = new ArrayList<EdgeTool>();
-        edgeTools.addAll(this.getEdgeTools(nodeDescription, cache));
-
         var toolSections = new ArrayList<NodeToolSection>();
         toolSections.addAll(this.getToolSections(nodeDescription, cache));
         this.orderToolSectionsTools(toolSections);
@@ -286,7 +284,6 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
-                .edgeTools(edgeTools.toArray(EdgeTool[]::new))
                 .nodeTools(toolsWithoutSection.toArray(NodeTool[]::new))
                 .quickAccessTools(this.getDeleteFromDiagramTool(), this.getDuplicateElementAndNodeTool())
                 .toolSections(toolSections.toArray(NodeToolSection[]::new))

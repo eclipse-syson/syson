@@ -323,6 +323,29 @@ public class DiagramQueryElementService {
     }
 
     /**
+     * Checks the named visual description of a connector target. Unlike a semantic type check, this distinguishes
+     * ordinary, inherited, and border nodes representing the same SysML concept. Description names are unique in
+     * programmatic views, as required by the view element finder.
+     *
+     * @param target
+     *            the target node
+     * @param editingContext
+     *            the editing context
+     * @param descriptionNames
+     *            the allowed visual description names
+     * @return whether the target uses one of the named descriptions
+     */
+    public boolean isTargetDescription(Object target, IEditingContext editingContext, List<String> descriptionNames) {
+        boolean matches = false;
+        if (target instanceof Node node) {
+            matches = this.viewDiagramDescriptionSearchService.findViewNodeDescriptionById(editingContext, node.getDescriptionId())
+                    .filter(description -> descriptionNames.contains(description.getName()))
+                    .isPresent();
+        }
+        return matches;
+    }
+
+    /**
      * Registers an information-level message to be displayed to the end-user after the tool has executed.
      *
      * @param self

@@ -40,7 +40,6 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorPaletteQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnTwoDiagramElementsToolMutationRunner;
-import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
@@ -124,9 +123,6 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
     @Autowired
     private ConnectorPaletteQueryRunner connectorPaletteQueryRunner;
 
-    @Autowired
-    private PaletteQueryRunner paletteQueryRunner;
-
     private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
     private static Stream<Arguments> addAttributeUsageAsNestedOfEdgeSourceParameters() {
@@ -172,40 +168,30 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
                 .findFirst();
 
         assertThat(concernUsageNodeDescription).isPresent();
-        assertThat(concernUsageNodeDescription.get().getPalette().getEdgeTools())
+        assertThat(concernUsageNodeDescription.get().getEdgeTools().stream().flatMap(edgeTool -> edgeTool.getPalette().getNodeTools().stream()))
                 .extracting(edgeTool -> edgeTool.getName())
                 .contains("Become nested Concern");
     }
 
-    /**
-     * Checks that edge tools remain available before a connector target has been selected.
-     */
-    @DisplayName("GIVEN a Usage node, WHEN retrieving its palette, THEN target-specific edge tools are available")
+    @DisplayName("GIVEN Usage and Definition nodes, WHEN inspecting their connector palettes, THEN target-specific actions are declared")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
-    public void nodePaletteProvidesTargetSpecificEdgeTools() {
-        var flux = this.givenSubscriptionToDiagram(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
+    public void nodeDescriptionsProvideTargetSpecificConnectorActions() {
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var partUsageName = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage());
+        var partDefinitionName = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartDefinition());
+        var partUsage = EMFUtils.allContainedObjectOfType(diagramDescription, NodeDescription.class)
+                .filter(description -> partUsageName.equals(description.getName())).findFirst().orElseThrow();
+        var partDefinition = EMFUtils.allContainedObjectOfType(diagramDescription, NodeDescription.class)
+                .filter(description -> partDefinitionName.equals(description.getName())).findFirst().orElseThrow();
 
-        StepVerifier.create(flux)
-                .consumeNextWith(assertRefreshedDiagramThat(diagram -> {
-                    Map<String, Object> variables = Map.of(
-                            "editingContextId", GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
-                            "representationId", diagram.getId(),
-                            "diagramElementIds", List.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID));
-                    var result = this.paletteQueryRunner.run(variables);
-                    List<String> paletteEntries = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
-                    assertThat(paletteEntries).contains("Add target as nested Part", "Add target as nested Accept Action");
-
-                    variables = Map.of(
-                            "editingContextId", GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
-                            "representationId", diagram.getId(),
-                            "diagramElementIds", List.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_ID));
-                    result = this.paletteQueryRunner.run(variables);
-                    paletteEntries = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
-                    assertThat(paletteEntries).contains("Add target as owned Part", NEW_SUBCLASSIFICATION_TOOL_LABEL);
-                }))
-                .thenCancel()
-                .verify(Duration.ofSeconds(10));
+        assertThat(partUsage.getEdgeTools()).hasSize(1);
+        assertThat(partUsage.getEdgeTools().getFirst().getPalette().getNodeTools()).extracting(action -> action.getName())
+                .contains("Add target as nested Part", "Add target as nested Accept Action");
+        assertThat(partDefinition.getEdgeTools()).hasSize(1);
+        assertThat(partDefinition.getEdgeTools().getFirst().getPalette().getNodeTools()).extracting(action -> action.getName())
+                .contains("Add target as owned Part", NEW_SUBCLASSIFICATION_TOOL_LABEL);
     }
 
     @DisplayName("GIVEN a Usage source and a Usage target, WHEN retrieving the connector palette, THEN the nested tools name their target and source respectively")

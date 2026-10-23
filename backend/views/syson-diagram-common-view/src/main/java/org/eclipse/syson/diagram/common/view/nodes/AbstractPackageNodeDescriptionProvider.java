@@ -158,6 +158,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
         packageNodeDescription.getReusedChildNodeDescriptions().addAll(this.getReusedChildren(cache));
 
         packageNodeDescription.setPalette(this.createNodePalette(packageNodeDescription, cache));
+        packageNodeDescription.getEdgeTools().addAll(this.edgeToolConverter.convertToEdgeToolsWithPalette(this.getEdgeTools(packageNodeDescription, cache)));
     }
 
     protected InsideLabelDescription createInsideLabelDescription() {
@@ -205,8 +206,6 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .initialDirectEditLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getDefaultInitialDirectEditLabel).aqlSelf())
                 .body(callEditService.build());
 
-        var edgeTools = new ArrayList<>(this.getEdgeTools(nodeDescription, cache));
-
         var nodesWithoutSection = new ArrayList<>();
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getComment())).ifPresent(commentNodeDesc -> {
             nodesWithoutSection.add(this.createNodeTool(commentNodeDesc, SysmlPackage.eINSTANCE.getComment()));
@@ -222,7 +221,6 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .toolSections(this.createToolSections(cache))
                 .nodeTools(nodesWithoutSection.toArray(NodeTool[]::new))
                 .quickAccessTools(this.getDeleteFromDiagramTool(), this.getDuplicateElementAndNodeTool())
-                .edgeTools(edgeTools.toArray(EdgeTool[]::new))
                 .build();
     }
 

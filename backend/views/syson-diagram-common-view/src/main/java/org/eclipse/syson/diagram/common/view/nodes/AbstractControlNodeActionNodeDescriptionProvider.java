@@ -14,7 +14,6 @@ package org.eclipse.syson.diagram.common.view.nodes;
 
 import static org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -133,6 +132,7 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(this.getNodeDescriptionName())).ifPresent(nodeDescription -> {
             diagramDescription.getNodeDescriptions().add(nodeDescription);
+            nodeDescription.getEdgeTools().addAll(this.edgeToolConverter.convertToEdgeToolsWithPalette(this.getEdgeTools(cache)));
             nodeDescription.setPalette(this.createNodePalette(cache));
         });
     }
@@ -153,13 +153,9 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
                 .initialDirectEditLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getDefaultInitialDirectEditLabel).aqlSelf())
                 .body(callEditService.build());
 
-        var edgeTools = new ArrayList<EdgeTool>();
-        edgeTools.addAll(this.getEdgeTools(cache));
-
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
-                .edgeTools(edgeTools.toArray(EdgeTool[]::new))
                 .quickAccessTools(this.getDeleteFromDiagramTool(), this.getDuplicateElementAndNodeTool())
                 .toolSections(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .build();
