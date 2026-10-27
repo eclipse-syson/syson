@@ -70,9 +70,16 @@ public class ViewFilterSwitch extends SysmlSwitch<Boolean> {
         return displayAsTreeNode;
     }
 
+    /**
+     * Display attributes only in General Views, following the same containment rules as other tree nodes.
+     *
+     * @param object
+     *            the attribute to display
+     * @return whether the attribute can be displayed in the current container
+     */
     @Override
     public Boolean caseAttributeUsage(AttributeUsage object) {
-        return ViewDefinitionKind.isGeneralView(this.kind);
+        return ViewDefinitionKind.isGeneralView(this.kind) && this.defaultCase(object);
     }
 
     @Override

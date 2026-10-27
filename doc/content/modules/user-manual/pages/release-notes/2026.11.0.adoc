@@ -28,6 +28,7 @@ Use the existing content tools to display these elements. Existing representatio
 For example, _New Feature Typing_ is no longer offered between two `Usage` graphical nodes, but remains available from a `Usage` to its corresponding `Definition`.
 _New Satisfy Requirement_ remains available when the target is a `RequirementUsage` or `SatisfyRequirementUsage`.
 ** Elements created in a diagram on a root `Namespace` are now named sequentially.
+** An `AttributeUsage` created inside a nested `Package` in a _General View_ diagram now appears only inside its owning package, without a duplicate in the outer package.
 
 * In textual import/export:
 
