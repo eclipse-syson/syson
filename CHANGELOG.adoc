@@ -17,6 +17,7 @@ Downstream code using the former implementation service must migrate to `org.ecl
 `CoreFeaturesSwitch` and `EStructuralFeatureLabelProvider` have moved from `org.eclipse.syson.application.services` to `org.eclipse.syson.form.services`.
 The `getCommentBody`, `getComment`, and `getDocumentation` query APIs are now provided by `org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService`.
 - https://github.com/eclipse-syson/syson/issues/2537[#2537] [services] `org.eclipse.syson.services.ImportService` has moved to `org.eclipse.syson.sysml.metamodel.services.MetamodelMutationImportService` as part of the metamodel service architecture migration.
+- [cleanup] Remove the now obsolete `org.eclipse.syson.diagram.common.view.services.SysONDiagramElementPaletteVariableManagerProvider`.
 
 === Dependency update
 
@@ -50,6 +51,7 @@ The parsed elements are still imported, and the loading report includes the pars
 - [releng] Remove redundant inherited Maven `groupId` and `version` declarations from backend modules.
 - [frontend] Export six components and eight hooks from `@eclipse-syson/syson-components` for expression tools and properties, the new-object report, diagram visibility, and node rotation.
 - [core] Harmonize SysML icons
+- [cleanup] Remove the now obsolete SysONDiagramElementPaletteVariableManagerProvider
 
 === New features
 
