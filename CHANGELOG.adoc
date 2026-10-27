@@ -43,6 +43,7 @@ A separate customizer annotated with Spring `@Primary` does not replace this fil
 The parsed elements are still imported, and the loading report includes the parser diagnostics and a warning about possibly missing elements.
 - https://github.com/eclipse-syson/syson/issues/2527[#2527] [export] Export connector ends whose feature chain is only owned by the `ReferenceSubsetting`, and export `InterfaceUsage` with the `interface` keyword instead of `connection`.
 - https://github.com/eclipse-syson/syson/issues/2518[#2518] [diagrams] Fix the numbering of node labels when creating elements in a diagram on a root `Namespace`.
+- https://github.com/eclipse-syson/syson/issues/2567[#2567] [diagrams] Fix duplicate `AttributeUsage` nodes in _General View_ diagrams when their owning `Package` is nested inside another `Package`.
 
 === Improvements
 
