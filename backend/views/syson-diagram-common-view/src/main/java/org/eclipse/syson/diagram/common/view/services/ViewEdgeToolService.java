@@ -21,16 +21,21 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.variables.CoreVariables;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
+import org.eclipse.sirius.components.view.If;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
@@ -38,6 +43,7 @@ import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
+import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -541,6 +547,7 @@ public class ViewEdgeToolService {
 
     /**
      * Creates an edge tool that adds a target Usage as a nested Usage of the source.
+     * Reveals a suitable source compartment in Interconnection View after a successful move.
      *
      * @param targetType
      *            the semantic type of the target Usage
@@ -552,7 +559,8 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callService = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of1(DiagramMutationAQLService::becomeNestedUsage).aql(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.SEMANTIC_EDGE_SOURCE));
+                .expression(ServiceMethod.of1(DiagramMutationAQLService::becomeNestedUsage).aql(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.SEMANTIC_EDGE_SOURCE))
+                .children(this.revealNewParentCompartment(EdgeDescription.EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_SOURCE));
 
         var precondition = ServiceMethod.of2(DiagramQueryAQLService::isTargetNodeOfType)
                 .aql(EdgeDescription.EDGE_TARGET, CoreVariables.EDITING_CONTEXT.name(), AQLUtils.aqlString(targetType.getName()));
@@ -568,6 +576,7 @@ public class ViewEdgeToolService {
 
     /**
      * Creates an edge tool that adds a target Usage as an owned Usage of the source Definition.
+     * Reveals a suitable source compartment in Interconnection View after a successful move.
      *
      * @param targetType
      *            the semantic type of the target Usage
@@ -579,7 +588,8 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callService = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of1(DiagramMutationAQLService::becomeNestedUsage).aql(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.SEMANTIC_EDGE_SOURCE));
+                .expression(ServiceMethod.of1(DiagramMutationAQLService::becomeNestedUsage).aql(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.SEMANTIC_EDGE_SOURCE))
+                .children(this.revealNewParentCompartment(EdgeDescription.EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_SOURCE));
 
         var precondition = ServiceMethod.of2(DiagramQueryAQLService::isTargetNodeOfType)
                 .aql(EdgeDescription.EDGE_TARGET, CoreVariables.EDITING_CONTEXT.name(), AQLUtils.aqlString(targetType.getName()));
@@ -593,17 +603,53 @@ public class ViewEdgeToolService {
                 .build();
     }
 
+    /**
+     * Creates an edge tool that moves the source Usage into the target and reveals a suitable target compartment in
+     * Interconnection View after a successful move.
+     *
+     * @param eClass
+     *            the semantic type of the source Usage
+     * @param targetElementDescriptions
+     *            the graphical descriptions representing the possible containers
+     * @return the configured edge tool
+     */
     public EdgeTool createBecomeNestedElementEdgeTool(EClass eClass, List<NodeDescription> targetElementDescriptions) {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callService = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of1(DiagramMutationAQLService::becomeNestedUsage).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET));
+                .expression(ServiceMethod.of1(DiagramMutationAQLService::becomeNestedUsage).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET))
+                .children(this.revealNewParentCompartment(EdgeDescription.EDGE_TARGET, EdgeDescription.SEMANTIC_EDGE_TARGET));
 
         return builder
                 .name(this.nameGenerator.getCreationToolName("Become nested ", eClass))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getMembership().getName() + SVG)
                 .body(callService.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
+                .build();
+    }
+
+    /**
+     * Reveals a suitable parent compartment when the current Usage belongs to that parent in Interconnection View.
+     *
+     * @param parentNode
+     *            the graphical variable identifying the new parent node
+     * @param parentElement
+     *            the semantic variable identifying the new parent element
+     * @return the conditional reveal operation
+     */
+    private If revealNewParentCompartment(String parentNode, String parentElement) {
+        var isInterconnectionView = ServiceMethod.of4(DiagramQueryAQLService.class, DiagramQueryAQLService::isView,
+                Element.class, String.class, Node.class, IEditingContext.class, DiagramContext.class)
+                .aql(parentElement, AQLUtils.aqlString(StandardDiagramsConstants.IV_QN), parentNode,
+                        CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT);
+
+        var revealCompartment = this.viewBuilderHelper.newChangeContext()
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::revealCompartment).aql(parentNode, AQLConstants.SELF,
+                        DiagramContext.DIAGRAM_CONTEXT, CoreVariables.EDITING_CONTEXT.name(), ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
+
+        return this.viewBuilderHelper.newIf()
+                .conditionExpression(isInterconnectionView + " and self.owner = " + parentElement)
+                .children(revealCompartment.build())
                 .build();
     }
 

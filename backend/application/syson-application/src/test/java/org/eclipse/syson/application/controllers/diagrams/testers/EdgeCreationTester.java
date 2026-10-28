@@ -27,13 +27,16 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClic
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnTwoDiagramElementsToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
+import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
+import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
+import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import reactor.test.StepVerifier;
 
 /**
- * Creates an edge on a diagram.
+ * Resolves edge creation tools and creates edges on diagrams.
  * <p>
  * This class should be used as part of a subscription verification (see
  * {@link StepVerifier#create(org.reactivestreams.Publisher)}).
@@ -46,6 +49,30 @@ public class EdgeCreationTester {
 
     @Autowired
     private InvokeSingleClickOnTwoDiagramElementsToolMutationRunner invokeSingleClickOnTwoDiagramElementsToolMutationRunner;
+
+    @Autowired
+    private IGivenDiagramDescription givenDiagramDescription;
+
+    @Autowired
+    private IDiagramIdProvider diagramIdProvider;
+
+    /**
+     * Resolves an edge creation tool by its source node description and label.
+     *
+     * @param editingContextId
+     *            the editing context containing the diagram description
+     * @param diagramDescriptionId
+     *            the diagram description identifier
+     * @param sourceNodeDescriptionName
+     *            the connector source's node description name
+     * @param toolName
+     *            the edge creation tool label
+     * @return the executable tool identifier
+     */
+    public String getEdgeCreationToolId(String editingContextId, String diagramDescriptionId, String sourceNodeDescriptionName, String toolName) {
+        var description = this.givenDiagramDescription.getDiagramDescription(editingContextId, diagramDescriptionId);
+        return new DiagramDescriptionIdProvider(description, this.diagramIdProvider).getEdgeCreationToolId(sourceNodeDescriptionName, toolName);
+    }
 
     @Deprecated
     public void createEdge(String projectId, AtomicReference<Diagram> diagram, String sourceNodeTargetObjectLabel, String targetNodeTargetObjectLabel, String toolId) {
