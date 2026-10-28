@@ -29,6 +29,8 @@ For example, _New Feature Typing_ is no longer offered between two `Usage` graph
 _New Satisfy Requirement_ remains available when the target is a `RequirementUsage` or `SatisfyRequirementUsage`.
 ** Elements created in a diagram on a root `Namespace` are now named sequentially.
 ** An `AttributeUsage` created inside a nested `Package` in a _General View_ diagram now appears only inside its owning package, without a duplicate in the outer package.
+** In _Interconnection View_ diagrams, the _Add target as nested_, _Become nested_, and _Add target as owned_ tools now reveal a suitable compartment on the new parent so the moved element remains visible.
+An already visible suitable compartment remains in use; otherwise, the _interconnection_ compartment is revealed for any eligible graphical node after successful reparenting in an _Interconnection View_ diagram.
 
 * In textual import/export:
 

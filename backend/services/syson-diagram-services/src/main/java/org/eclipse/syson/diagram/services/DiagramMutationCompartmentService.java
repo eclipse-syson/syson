@@ -57,6 +57,8 @@ public class DiagramMutationCompartmentService {
 
     /**
      * Reveals the compartment in {@code node} that can display {@code targetElement}.
+     * Keeps an already visible suitable compartment; otherwise, prefers interconnection in Interconnection View and
+     * the first free form compartment in other views.
      */
     public Node revealCompartment(Node node, Element targetElement, DiagramContext diagramContext, IEditingContext editingContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
@@ -99,8 +101,11 @@ public class DiagramMutationCompartmentService {
             var noCompartmentToHandleTargetElement = compartmentNodeCandidates.stream()
                     .allMatch(candidate -> ViewModifier.Hidden.equals(candidate.getState()));
             if (noCompartmentToHandleTargetElement) {
+                var isInterconnectionView = this.diagramQueryViewService.isView(targetElement, StandardDiagramsConstants.IV_QN, node, editingContext, diagramContext);
                 compartmentNodeCandidates.stream().reduce((previousCandidate, newCandidate) -> {
-                    if (previousCandidate.getStyle().getChildrenLayoutStrategy() instanceof ListLayoutStrategy && newCandidate.getStyle().getChildrenLayoutStrategy() instanceof FreeFormLayoutStrategy) {
+                    boolean isInterconnectionCandidate = isInterconnectionView && newCandidate.getInsideLabel() != null && "interconnection".equals(newCandidate.getInsideLabel().getText());
+                    if (isInterconnectionCandidate
+                            || (previousCandidate.getStyle().getChildrenLayoutStrategy() instanceof ListLayoutStrategy && newCandidate.getStyle().getChildrenLayoutStrategy() instanceof FreeFormLayoutStrategy)) {
                         return newCandidate;
                     }
                     return previousCandidate;
