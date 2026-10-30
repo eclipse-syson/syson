@@ -3,6 +3,7 @@
 == Key highlights
 
 * _General View_ diagrams now provide an action to add existing connected elements in both directions.
+* _Standard diagrams_ now have a theme customizing the color of graphical nodes.
 
 == New features
 
@@ -18,6 +19,21 @@ The tools are also able to create an empty `ReferenceUsage`.
 The action adds existing project elements connected to the selected element through inbound or outbound relationships and displays the corresponding edges when possible.
 For single and multiple selections, elements that can be displayed as ports or inside a selected element are excluded, even when their compartment is hidden.
 Use the existing content tools to display these elements. Existing representations are left unchanged.
+
+** Standard diagrams now have a theme.
+New SysON projects have a theme applied by default to graphical elements.
+Colors depend on the SysML element family (Structure, Behavior, ...).
++
+image::release-notes-diagram-theme.png[The standard diagram theme applied to different graphical nodes]
+The theme can be manually disabled through the _Appearances_ project settings tab.
+Manual appearance changes take precedence over the theme; resetting them restores the theme if it is enabled.
+
+[NOTE]
+====
+The theme is disabled by default for projects created with versions earlier than 2026.11.0.
+It can be enabled through the _Appearances_ project settings tab.
+====
+
 
 == Bug fixes
 
