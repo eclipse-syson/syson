@@ -16,8 +16,11 @@ package org.eclipse.syson.application.controllers.diagrams.general.view;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
+import com.jayway.jsonpath.JsonPath;
+
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -25,11 +28,13 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.OutsideLabel;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -46,6 +51,7 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
@@ -58,6 +64,8 @@ import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,6 +117,12 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
 
     @Autowired
     private IObjectSearchService objectSearchService;
+
+    @Autowired
+    private PaletteQueryRunner paletteQueryRunner;
+
+    @Autowired
+    private IIdentityService identityService;
 
     private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
@@ -477,6 +491,104 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
                 .consumeNextWith(diagramCheck)
                 .then(semanticCheckCreatedPartCopy)
                 .then(semanticCheckStateDefinitionCopy)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    /**
+     * Checks palette availability and duplication for usages and definitions that are also relationships.
+     *
+     * @param semanticId
+     *         the identifier of the semantic element represented by the selected node
+     */
+    @DisplayName("GIVEN a relationship represented as a node, WHEN duplicating it from its palette, THEN its semantic element and representation are copied")
+    @ParameterizedTest
+    @ValueSource(strings = {
+        GeneralViewWithTopNodesTestProjectData.SemanticIds.INTERFACE_USAGE_ID,
+        GeneralViewWithTopNodesTestProjectData.SemanticIds.INTERFACE_DEFINITION_ID,
+        GeneralViewWithTopNodesTestProjectData.SemanticIds.ALLOCATION_USAGE_ID,
+        GeneralViewWithTopNodesTestProjectData.SemanticIds.ALLOCATION_DEFINITION_ID
+    })
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    public void checkRelationshipNodeDuplication(String semanticId) {
+        this.checkPaletteNodeDuplication(List.of(semanticId));
+    }
+
+    /**
+     * Checks duplication of a mixed selection containing ordinary nodes and relationship usages and definitions.
+     */
+    @DisplayName("GIVEN a mixed selection of usage and definition nodes, WHEN duplicating from its palette, THEN every selected element and representation is copied once")
+    @Test
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    public void checkMixedRelationshipNodeDuplication() {
+        this.checkPaletteNodeDuplication(List.of(
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.INTERFACE_USAGE_ID,
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.ALLOCATION_DEFINITION_ID,
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID));
+    }
+
+    /**
+     * Queries the selected nodes' palette, invokes its duplication tool, and checks the semantic and graphical copies.
+     *
+     * @param semanticIds
+     *         the identifiers of the semantic elements represented by the selected nodes
+     */
+    private void checkPaletteNodeDuplication(List<String> semanticIds) {
+        String editingContextId = GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID;
+        String diagramId = GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID;
+        var flux = this.givenSubscriptionToDiagram(editingContextId, diagramId);
+        var checker = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, editingContextId,
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID);
+        AtomicReference<Diagram> initialDiagram = new AtomicReference<>();
+        AtomicReference<Diagram> duplicatedDiagram = new AtomicReference<>();
+
+        Runnable duplicateFromPalette = () -> {
+            List<String> nodeIds = semanticIds.stream()
+                    .map(id -> new DiagramNavigator(initialDiagram.get()).nodeWithTargetObjectId(id).getNode().getId())
+                    .toList();
+            var result = this.paletteQueryRunner.run(Map.of(
+                    "editingContextId", editingContextId,
+                    "representationId", diagramId,
+                    "diagramElementIds", nodeIds));
+            String toolLabel = "Duplicate Element";
+            if (semanticIds.size() > 1) {
+                toolLabel = "Duplicate Elements";
+            }
+            List<String> toolIds = JsonPath.read(result.data(),
+                    "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[?(@.label == '" + toolLabel + "')].id");
+            assertThat(toolIds).as("Duplication action offered for %s", semanticIds).hasSize(1);
+            this.toolTester.invokeTool(editingContextId, diagramId, nodeIds, toolIds.get(0), List.of());
+        };
+
+        Runnable semanticCheck = () -> semanticIds.forEach(id -> checker.checkElement(Element.class, () -> id, original -> {
+            var copies = original.getOwner().getOwnedElement().stream()
+                    .filter(element -> (original.getName() + "-copy").equals(element.getName()))
+                    .toList();
+            assertThat(copies).as("Exactly one copy of %s", original.getName()).hasSize(1);
+            var copy = copies.get(0);
+            assertThat(copy.eClass()).isSameAs(original.eClass());
+            assertThat(copy.getOwner()).isSameAs(original.getOwner());
+            assertThat(copy.getElementId()).isNotEqualTo(original.getElementId());
+            assertThat(original.getOwner().getOwnedElement()).contains(original);
+            var originalNode = new DiagramNavigator(initialDiagram.get()).nodeWithTargetObjectId(id).getNode();
+            var retainedNode = new DiagramNavigator(duplicatedDiagram.get()).nodeWithTargetObjectId(id).getNode();
+            assertThat(retainedNode.getId()).isEqualTo(originalNode.getId());
+            assertThat(retainedNode.getTargetObjectLabel()).isEqualTo(originalNode.getTargetObjectLabel());
+            assertThat(this.diagramComparator.newNodes(initialDiagram.get(), duplicatedDiagram.get()))
+                    .filteredOn(node -> this.identityService.getId(copy).equals(node.getTargetObjectId())
+                            && originalNode.getDescriptionId().equals(node.getDescriptionId()))
+                    .hasSize(1)
+                    .allSatisfy(node -> {
+                        assertThat(node.getTargetObjectLabel()).isEqualTo(copy.getName());
+                        assertThat(node.getState()).isEqualTo(ViewModifier.Normal);
+                    });
+        }).run());
+
+        StepVerifier.create(flux)
+                .consumeNextWith(assertRefreshedDiagramThat(initialDiagram::set))
+                .then(duplicateFromPalette)
+                .consumeNextWith(assertRefreshedDiagramThat(duplicatedDiagram::set))
+                .then(semanticCheck)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

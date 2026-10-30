@@ -31,6 +31,8 @@ _New Satisfy Requirement_ remains available when the target is a `RequirementUsa
 ** An `AttributeUsage` created inside a nested `Package` in a _General View_ diagram now appears only inside its owning package, without a duplicate in the outer package.
 ** In _Interconnection View_ diagrams, the _Add target as nested_, _Become nested_, and _Add target as owned_ tools now reveal a suitable compartment on the new parent so the moved element remains visible.
 An already visible suitable compartment remains in use; otherwise, the _interconnection_ compartment is revealed for any eligible graphical node after successful reparenting in an _Interconnection View_ diagram.
+** The _Duplicate Element_ action is now available on `Usage` and `Definition` graphical nodes that are also relationships, including interfaces and allocations.
+Duplication also works when these nodes are included in a multiple selection.
 
 * In textual import/export:
 

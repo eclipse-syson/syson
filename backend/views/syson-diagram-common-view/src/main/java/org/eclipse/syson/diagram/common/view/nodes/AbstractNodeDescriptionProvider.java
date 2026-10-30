@@ -118,11 +118,17 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
                 .build();
     }
 
+    /**
+     * Creates the duplication tool for an element node, including usages and definitions that are also relationships.
+     *
+     * @return the duplication tool
+     */
     protected NodeTool getDuplicateElementAndNodeTool() {
         return this.diagramBuilderHelper.newNodeTool()
                 .name("Duplicate Element")
                 .iconURLsExpression("/images/content_copy.svg")
-                .preconditionExpression(AQLConstants.AQL + "self.oclIsKindOf(sysml::Element) and not self.oclIsKindOf(sysml::Relationship)")
+                .preconditionExpression(AQLConstants.AQL + "self.oclIsKindOf(sysml::Element) and (not self.oclIsKindOf(sysml::Relationship)"
+                        + " or self.oclIsKindOf(sysml::Usage) or self.oclIsKindOf(sysml::Definition))")
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression(
                                 ServiceMethod.of4(DiagramMutationAQLService.class, DiagramMutationAQLService::duplicateElementAndExpose, Element.class, IEditingContext.class,
@@ -135,12 +141,18 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
                 .build();
     }
 
+    /**
+     * Creates the duplication tool for selected nodes, including usages and definitions that are also relationships.
+     *
+     * @return the duplication tool, unavailable when the selection contains edges
+     */
     protected NodeTool getDuplicateElementsAndNodesTool() {
         return this.diagramBuilderHelper.newNodeTool()
                 .name("Duplicate Element")
                 .iconURLsExpression("/images/content_copy.svg")
                 .preconditionExpression(AQLConstants.AQL
-                        + "selectedNodes->notEmpty() and selectedEdges->isEmpty() and self->forAll(e | e.oclIsKindOf(sysml::Element) and not e.oclIsKindOf(sysml::Relationship))")
+                        + "selectedNodes->notEmpty() and selectedEdges->isEmpty() and self->forAll(e | e.oclIsKindOf(sysml::Element)"
+                        + " and (not e.oclIsKindOf(sysml::Relationship) or e.oclIsKindOf(sysml::Usage) or e.oclIsKindOf(sysml::Definition)))")
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression(
                                 ServiceMethod.of4(DiagramMutationAQLService.class, DiagramMutationAQLService::duplicateElementAndExpose, Element.class, IEditingContext.class,
