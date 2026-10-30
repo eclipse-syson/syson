@@ -46,6 +46,7 @@ The parsed elements are still imported, and the loading report includes the pars
 - https://github.com/eclipse-syson/syson/issues/2567[#2567] [diagrams] Fix duplicate `AttributeUsage` nodes in _General View_ diagrams when their owning `Package` is nested inside another `Package`.
 - https://github.com/eclipse-syson/syson/issues/2568[#2568] [diagrams] Reveal a suitable parent compartment after using the _Add target as nested_, _Become nested_, or _Add target as owned_ tools in _Interconnection View_ diagrams so moved elements remain visible.
 An already visible suitable compartment remains in use; otherwise, the _interconnection_ compartment is revealed for any eligible graphical node after successful reparenting in an _Interconnection View_ diagram.
+- https://github.com/eclipse-syson/syson/issues/2565[#2565] [diagrams] Restore duplication of _Usage_ and _Definition_ graphical nodes that are also _Relationships_, including _Interface_ and _Allocation_ graphical nodes, for single and multiple selections.
 
 === Improvements
 

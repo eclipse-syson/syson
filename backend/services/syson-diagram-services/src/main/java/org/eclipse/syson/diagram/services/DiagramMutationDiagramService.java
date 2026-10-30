@@ -111,8 +111,8 @@ public class DiagramMutationDiagramService {
     }
 
     /**
-     * Duplicates the given elements (with their owning Relationship) and exposes the duplicated elements. Note that
-     * this method will do nothing on {@link org.eclipse.syson.sysml.Relationship}.
+     * Duplicates the given elements with their owning memberships and exposes the copies. Elements without an owning
+     * membership are skipped, while usages and definitions that are also relationships can be duplicated.
      *
      * @param elements
      *         the elements to duplicate

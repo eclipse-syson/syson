@@ -438,11 +438,17 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         return groupToolSections;
     }
 
+    /**
+     * Creates the group duplication tool, including usages and definitions that are also relationships.
+     *
+     * @return the duplication tool, unavailable when the selection contains edges
+     */
     private NodeTool createDuplicateElementsGroupTool() {
         return this.diagramBuilderHelper.newNodeTool()
                 .name("Duplicate Elements")
                 .iconURLsExpression("/images/content_copy.svg")
-                .preconditionExpression("aql:selectedNodes->notEmpty() and selectedEdges->isEmpty() and self->forAll(e | e.oclIsKindOf(sysml::Element) and not e.oclIsKindOf(sysml::Relationship))")
+                .preconditionExpression("aql:selectedNodes->notEmpty() and selectedEdges->isEmpty() and self->forAll(e | e.oclIsKindOf(sysml::Element)"
+                        + " and (not e.oclIsKindOf(sysml::Relationship) or e.oclIsKindOf(sysml::Usage) or e.oclIsKindOf(sysml::Definition)))")
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression(ServiceMethod.of4(DiagramMutationAQLService::duplicateElementAndExpose)
                                 .aqlSelf(CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, "selectedNodes",
