@@ -1159,7 +1159,7 @@ public enum SysMLValidationRule implements IValidationRule {
     validateClassSpecialization(
             SysmlPackage.eINSTANCE.getClass_(),
             "validateClassSpecialization",
-            "aql:self.ownedSpecialization.general->forAll(i | not i.oclIsKindOf(sysml::DataType)) and not i.oclIsKindOf(sysml::Association) implies self.ownedSpecialization.general->forAll(i | not i.oclIsKindOf(sysml::Association))",
+            "aql:self.ownedSpecialization.general->forAll(i | not i.oclIsKindOf(sysml::DataType) and (not self.oclIsKindOf(sysml::Association) implies not i.oclIsKindOf(sysml::Association)))",
             "A Class must not specialize a DataType and it can only specialize an Association if it is also itself a kind of Association (such as an AssociationStructure or Interaction)."),
     validateClassifierMultiplicityDomain(
             SysmlPackage.eINSTANCE.getClassifier(),
