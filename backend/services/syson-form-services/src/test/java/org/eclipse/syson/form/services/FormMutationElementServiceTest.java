@@ -15,7 +15,9 @@ package org.eclipse.syson.form.services;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.stream.Stream;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.syson.sysml.AnalysisCaseDefinition;
@@ -30,12 +32,17 @@ import org.eclipse.syson.sysml.RenderingDefinition;
 import org.eclipse.syson.sysml.RenderingUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.VerificationCaseDefinition;
 import org.eclipse.syson.sysml.VerificationCaseUsage;
 import org.eclipse.syson.sysml.ViewpointDefinition;
 import org.eclipse.syson.sysml.ViewpointUsage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Tests the {@link FormMutationElementServiceTest}.
@@ -60,6 +67,45 @@ public class FormMutationElementServiceTest {
         this.formMutationElementService.handleFeatureTypingNewValue(partUsage, partDefinition);
 
         assertThat(partUsage.getPartDefinition()).containsExactly(partDefinition);
+    }
+
+    /**
+     * Provides usage and definition types displayed by the Typed by widget.
+     *
+     * @return the usage and definition type pairs
+     */
+    private static Stream<Arguments> typedByTypes() {
+        var sysml = SysmlPackage.eINSTANCE;
+        return Stream.of(
+                Arguments.of(sysml.getActionUsage(), sysml.getActionDefinition()),
+                Arguments.of(sysml.getAttributeUsage(), sysml.getAttributeDefinition()),
+                Arguments.of(sysml.getAllocationUsage(), sysml.getAllocationDefinition()),
+                Arguments.of(sysml.getFlowUsage(), sysml.getFlowDefinition()),
+                Arguments.of(sysml.getInterfaceUsage(), sysml.getInterfaceDefinition()),
+                Arguments.of(sysml.getStateUsage(), sysml.getStateDefinition()),
+                Arguments.of(sysml.getPartUsage(), sysml.getPartDefinition()));
+    }
+
+    /**
+     * Checks that selecting a definition exposes it through the reference used to render the widget.
+     *
+     * @param usageType
+     *            the selected usage type
+     * @param definitionType
+     *            the definition type selected in the widget
+     */
+    @ParameterizedTest
+    @MethodSource("typedByTypes")
+    public void selectedDefinitionIsDisplayed(EClass usageType, EClass definitionType) {
+        var usage = (Usage) SysmlFactory.eINSTANCE.create(usageType);
+        var definition = (Type) SysmlFactory.eINSTANCE.create(definitionType);
+        var queryService = new FormQueryElementService(List.of(), element -> false, List.of(), new ILabelService.NoOp());
+        var reference = queryService.getTypedByReference(usage);
+
+        this.formMutationElementService.handleFeatureTypingNewValue(usage, definition);
+
+        assertThat((List<?>) usage.eGet(reference)).isEqualTo(List.of(definition));
+        assertThat(usage.eIsSet(reference)).isTrue();
     }
 
     @Test

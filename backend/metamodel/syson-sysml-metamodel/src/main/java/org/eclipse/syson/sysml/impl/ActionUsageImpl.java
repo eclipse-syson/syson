@@ -26,13 +26,13 @@ import org.eclipse.syson.sysml.Behavior;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
+import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.StateSubactionKind;
 import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
-import org.eclipse.syson.sysml.Usage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Action Usage</b></em>'. <!-- end-user-doc -->
@@ -96,7 +96,14 @@ public class ActionUsageImpl extends OccurrenceUsageImpl implements ActionUsage 
      */
     @Override
     public EList<Behavior> getActionDefinition() {
-        List<Usage> data = new ArrayList<>();
+        List<Behavior> data = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+                .filter(FeatureTyping.class::isInstance)
+                .map(FeatureTyping.class::cast)
+                .map(FeatureTyping::getType)
+                .filter(Behavior.class::isInstance)
+                .map(Behavior.class::cast)
+                .forEach(data::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getActionUsage_ActionDefinition(), data.size(), data.toArray());
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2026 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -19,10 +19,10 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreEList;
-import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.DataType;
+import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
 
@@ -65,7 +65,14 @@ public class AttributeUsageImpl extends UsageImpl implements AttributeUsage {
      */
     @Override
     public EList<DataType> getAttributeDefinition() {
-        List<ActionUsage> data = new ArrayList<>();
+        List<DataType> data = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+                .filter(FeatureTyping.class::isInstance)
+                .map(FeatureTyping.class::cast)
+                .map(FeatureTyping::getType)
+                .filter(DataType.class::isInstance)
+                .map(DataType.class::cast)
+                .forEach(data::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAttributeUsage_AttributeDefinition(), data.size(), data.toArray());
     }
 

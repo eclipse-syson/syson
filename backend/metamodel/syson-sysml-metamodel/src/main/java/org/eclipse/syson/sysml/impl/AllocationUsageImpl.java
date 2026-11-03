@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2026 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -22,9 +22,9 @@ import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.AllocationDefinition;
 import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.AssociationStructure;
+import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
-import org.eclipse.syson.sysml.Usage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Allocation Usage</b></em>'. <!-- end-user-doc
@@ -66,7 +66,14 @@ public class AllocationUsageImpl extends ConnectionUsageImpl implements Allocati
      */
     @Override
     public EList<AllocationDefinition> getAllocationDefinition() {
-        List<Usage> data = new ArrayList<>();
+        List<AllocationDefinition> data = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+                .filter(FeatureTyping.class::isInstance)
+                .map(FeatureTyping.class::cast)
+                .map(FeatureTyping::getType)
+                .filter(AllocationDefinition.class::isInstance)
+                .map(AllocationDefinition.class::cast)
+                .forEach(data::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAllocationUsage_AllocationDefinition(), data.size(), data.toArray());
     }
 

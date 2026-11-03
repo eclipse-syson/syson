@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2026 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.AssociationStructure;
+import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -65,6 +66,13 @@ public class InterfaceUsageImpl extends ConnectionUsageImpl implements Interface
     @Override
     public EList<InterfaceDefinition> getInterfaceDefinition() {
         List<InterfaceDefinition> data = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+                .filter(FeatureTyping.class::isInstance)
+                .map(FeatureTyping.class::cast)
+                .map(FeatureTyping::getType)
+                .filter(InterfaceDefinition.class::isInstance)
+                .map(InterfaceDefinition.class::cast)
+                .forEach(data::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getInterfaceUsage_InterfaceDefinition(), data.size(), data.toArray());
     }
 
