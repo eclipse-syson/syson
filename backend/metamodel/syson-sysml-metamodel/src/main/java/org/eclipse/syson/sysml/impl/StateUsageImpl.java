@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2025 Obeo.
+* Copyright (c) 2023, 2026 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -207,7 +207,7 @@ public class StateUsageImpl extends ActionUsageImpl implements StateUsage {
     public EList<Behavior> getStateDefinition() {
         List<Behavior> data = new ArrayList<>();
         this.getOwnedTyping().stream()
-                .map(FeatureTyping::getRelatedElement)
+                .map(FeatureTyping::getType)
                 .filter(Behavior.class::isInstance)
                 .map(Behavior.class::cast)
                 .forEach(data::add);
