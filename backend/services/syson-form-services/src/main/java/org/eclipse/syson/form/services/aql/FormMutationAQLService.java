@@ -41,6 +41,13 @@ public class FormMutationAQLService {
     }
 
     /**
+     * {@link FormMutationElementService#clearTypedByReferenceWidget(Element)}.
+     */
+    public boolean clearTypedByReferenceWidget(Element self) {
+        return this.formMutationElementService.clearTypedByReferenceWidget(self);
+    }
+
+    /**
      * {@link FormMutationElementService#getOrCreateAcceptActionUsagePayloadFeatureTyping(AcceptActionUsage)}.
      */
     public Element getOrCreateAcceptActionUsagePayloadFeatureTyping(AcceptActionUsage usage) {

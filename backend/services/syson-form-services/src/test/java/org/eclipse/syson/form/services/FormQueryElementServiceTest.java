@@ -17,9 +17,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +34,7 @@ public class FormQueryElementServiceTest {
 
     @BeforeEach
     public void setUp() {
-        this.formQueryElementService = new FormQueryElementService(List.of(), element -> false, new MetamodelQueryElementService(), List.of());
+        this.formQueryElementService = new FormQueryElementService(List.of(), element -> false, List.of(), new ILabelService.NoOp());
     }
 
     @Test
@@ -98,7 +98,7 @@ public class FormQueryElementServiceTest {
 
     @Test
     public void isReadOnlyElementUsesInjectedPredicate() {
-        FormQueryElementService readOnlyDetailsViewService = new FormQueryElementService(List.of(), element -> true, new MetamodelQueryElementService(), List.of());
+        FormQueryElementService readOnlyDetailsViewService = new FormQueryElementService(List.of(), element -> true, List.of(), new ILabelService.NoOp());
 
         assertThat(readOnlyDetailsViewService.isReadOnly(SysmlFactory.eINSTANCE.createPartUsage())).isTrue();
     }

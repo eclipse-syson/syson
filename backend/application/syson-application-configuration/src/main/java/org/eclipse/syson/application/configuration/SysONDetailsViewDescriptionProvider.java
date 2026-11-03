@@ -14,30 +14,21 @@ package org.eclipse.syson.application.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.acceleo.query.services.EObjectServices;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory.Descriptor;
-import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
-import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
-import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
-import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
-import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.components.view.emf.ViewConverterResult;
 import org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter;
 import org.eclipse.sirius.components.view.form.CheckboxDescription;
 import org.eclipse.sirius.components.view.form.FormDescription;
@@ -54,31 +45,32 @@ import org.eclipse.sirius.components.view.form.TextAreaDescription;
 import org.eclipse.sirius.components.view.form.TextfieldDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetAdd;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetSet;
+import org.eclipse.sirius.emfjson.resource.JsonResource;
+import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.syson.form.services.FormMutationElementService;
 import org.eclipse.syson.form.services.FormQueryElementService;
-import org.eclipse.syson.form.services.api.IDetailsViewHelpTextProvider;
-import org.eclipse.syson.form.services.aql.FormMutationAQLService;
 import org.eclipse.syson.form.services.aql.FormQueryAQLService;
-import org.eclipse.syson.model.services.ModelMutationElementService;
-import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
-import org.eclipse.syson.model.services.aql.ModelQueryAQLService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides custom Details view for SysML elements.
  *
  * @author arichard
  */
-@Configuration
-public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegistryConfigurer {
+@Service
+public class SysONDetailsViewDescriptionProvider implements IEditingContextProcessor {
+
+    public static final String SYSON_DETAILS_VIEW_NAME = "SysON Details View";
 
     private static final String CUSTOM_EXPRESSION_WIDGET_KEY = "syson:expression-value-widget";
 
@@ -116,36 +108,23 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     private static final String CLOSING_QUOTE_CLOSING_PARENTHESIS = "')";
 
-    private final List<Descriptor> composedAdapterFactoryDescriptors;
-
-    private final ViewFormDescriptionConverter converter;
-
-    private final IFeedbackMessageService feedbackMessageService;
-
-    private final ILabelService labelService;
-
-    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
-
-    private final List<IDetailsViewHelpTextProvider> detailViewHelpTextProviders;
-
-    public SysMLv2PropertiesConfigurer(List<Descriptor> composedAdapterFactoryDescriptors, ViewFormDescriptionConverter converter, IFeedbackMessageService feedbackMessageService,
-            ILabelService labelService, List<IDetailsViewHelpTextProvider> detailViewHelpTextProviders, final IReadOnlyObjectPredicate readOnlyObjectPredicate) {
-        this.composedAdapterFactoryDescriptors = Objects.requireNonNull(composedAdapterFactoryDescriptors);
-        this.converter = Objects.requireNonNull(converter);
-        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
-        this.labelService = Objects.requireNonNull(labelService);
-        this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
-        this.detailViewHelpTextProviders = Objects.requireNonNull(detailViewHelpTextProviders);
+    @Override
+    public void preProcess(IEditingContext editingContext) {
+        if (editingContext instanceof EditingContext siriusWebEditingContext) {
+            var propertiesView = this.create();
+            siriusWebEditingContext.getViews().add(propertiesView);
+        }
     }
 
-    @Override
-    public void addPropertiesDescriptions(IPropertiesDescriptionRegistry registry) {
+    private View create() {
         // Build the actual FormDescription that will be used in Detail view.
-        FormDescription viewFormDescription = this.createDetailsViewForElement();
+        FormDescription viewFormDescription = this.createFormDescription();
 
         // The FormDescription must be part of View inside a proper EMF Resource to be correctly handled
-        URI uri = URI.createURI(IEMFEditingContext.RESOURCE_SCHEME + ":///" + UUID.nameUUIDFromBytes(SysMLv2PropertiesConfigurer.class.getCanonicalName().getBytes()));
-        Resource resource = new XMIResourceImpl(uri);
+        String resourcePath = UUID.nameUUIDFromBytes(SYSON_DETAILS_VIEW_NAME.getBytes()).toString();
+        JsonResource resource = new JSONResourceFactory().createResourceFromPath(resourcePath);
+        resource.eAdapters().add(new ResourceMetadataAdapter(SYSON_DETAILS_VIEW_NAME, true));
+
         View view = ViewFactory.eINSTANCE.createView();
 
         view.eAllContents().forEachRemaining(eObject -> {
@@ -155,28 +134,16 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         resource.getContents().add(view);
         view.getDescriptions().add(viewFormDescription);
 
-        // Convert the View-based FormDescription and register the result into the system
-        MetamodelQueryElementService metamodelQueryElementService = new MetamodelQueryElementService();
-        FormQueryElementService formQueryElementService = new FormQueryElementService(this.composedAdapterFactoryDescriptors, this.readOnlyObjectPredicate,
-                metamodelQueryElementService, this.detailViewHelpTextProviders);
-        FormMutationElementService formMutationElementService = new FormMutationElementService(this.feedbackMessageService, metamodelQueryElementService,
-                formQueryElementService);
-        AQLInterpreter interpreter = new AQLInterpreter(List.of(),
-                List.of(this.labelService, new ModelMutationAQLService(new ModelMutationElementService()), new ModelQueryAQLService(),
-                        new FormMutationAQLService(formMutationElementService), new FormQueryAQLService(formQueryElementService)),
-                List.of(SysmlPackage.eINSTANCE));
-        ViewConverterResult converterResult = this.converter.convert(viewFormDescription, List.of(), interpreter);
-        if (converterResult != null && converterResult.representationDescription() instanceof org.eclipse.sirius.components.forms.description.FormDescription formDescription) {
-            formDescription.getPageDescriptions().forEach(registry::add);
-        }
+        return view;
     }
 
-    private FormDescription createDetailsViewForElement() {
+    private FormDescription createFormDescription() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement());
         FormDescription form = FormFactory.eINSTANCE.createFormDescription();
-        form.setName("SysON Details View");
+        form.setName(SYSON_DETAILS_VIEW_NAME);
         form.setDomainType(domainType);
-        form.setTitleExpression("SysON Details View");
+        form.setTitleExpression(SYSON_DETAILS_VIEW_NAME);
+        form.setPreconditionExpression(AQLConstants.AQL_FALSE);
 
         PageDescription pageCore = FormFactory.eINSTANCE.createPageDescription();
         pageCore.setName("SysON-DetailsView-Core");
@@ -346,10 +313,14 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         refWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
         refWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
+
+        ReferenceWidgetSet referenceWidgetSet = ReferenceFactory.eINSTANCE.createReferenceWidgetSet();
+        refWidget.setSet(referenceWidgetSet);
+
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setRefWidget.setExpression(ServiceMethod.of2(FormMutationElementService::handleReferenceWidgetNewValue)
                 .aqlSelf(AQLUtils.aqlString(SysmlPackage.eINSTANCE.getRedefinition_RedefinedFeature().getName()), ViewFormDescriptionConverter.NEW_VALUE));
-        refWidget.getBody().add(setRefWidget);
+        referenceWidgetSet.getBody().add(setRefWidget);
 
         group.getChildren().add(refWidget);
 
@@ -372,10 +343,14 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         refWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
         refWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
+
+        ReferenceWidgetSet referenceWidgetSet = ReferenceFactory.eINSTANCE.createReferenceWidgetSet();
+        refWidget.setSet(referenceWidgetSet);
+
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setRefWidget.setExpression(ServiceMethod.of2(FormMutationElementService::handleReferenceWidgetNewValue)
                 .aqlSelf(AQLUtils.aqlString(SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature().getName()), ViewFormDescriptionConverter.NEW_VALUE));
-        refWidget.getBody().add(setRefWidget);
+        referenceWidgetSet.getBody().add(setRefWidget);
 
         group.getChildren().add(refWidget);
 
@@ -424,10 +399,14 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         refWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
         refWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
+
+        ReferenceWidgetSet referenceWidgetSet = ReferenceFactory.eINSTANCE.createReferenceWidgetSet();
+        refWidget.setSet(referenceWidgetSet);
+
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setRefWidget.setExpression(ServiceMethod.of2(FormMutationElementService::handleReferenceWidgetNewValue)
                 .aqlSelf(AQLUtils.aqlString(SysmlPackage.eINSTANCE.getSubclassification_Superclassifier().getName()), ViewFormDescriptionConverter.NEW_VALUE));
-        refWidget.getBody().add(setRefWidget);
+        referenceWidgetSet.getBody().add(setRefWidget);
 
         group.getChildren().add(refWidget);
 
@@ -450,10 +429,14 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         refWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
         refWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
+
+        ReferenceWidgetSet referenceWidgetSet = ReferenceFactory.eINSTANCE.createReferenceWidgetSet();
+        refWidget.setSet(referenceWidgetSet);
+
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setRefWidget.setExpression(ServiceMethod.of2(FormMutationElementService::handleReferenceWidgetNewValue)
                 .aqlSelf(AQLUtils.aqlString(SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().getName()), ViewFormDescriptionConverter.NEW_VALUE));
-        refWidget.getBody().add(setRefWidget);
+        referenceWidgetSet.getBody().add(setRefWidget);
 
         group.getChildren().add(refWidget);
 
@@ -478,10 +461,18 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         refWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
-        refWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
+
+        ReferenceWidgetClearButtonDescription referenceWidgetClearButtonDescription = ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription();
+        refWidget.setClearButton(referenceWidgetClearButtonDescription);
+        ChangeContext clearRefWidget = ViewFactory.eINSTANCE.createChangeContext();
+        clearRefWidget.setExpression(ServiceMethod.of0(FormMutationElementService::clearTypedByReferenceWidget).aqlSelf());
+        referenceWidgetClearButtonDescription.getBody().add(clearRefWidget);
+
+        ReferenceWidgetAdd referenceWidgetAdd = ReferenceFactory.eINSTANCE.createReferenceWidgetAdd();
+        refWidget.setAdd(referenceWidgetAdd);
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setRefWidget.setExpression(ServiceMethod.of1(FormMutationElementService::handleFeatureTypingNewValue).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
-        refWidget.getBody().add(setRefWidget);
+        referenceWidgetAdd.getBody().add(setRefWidget);
 
         group.getChildren().add(refWidget);
 
@@ -549,9 +540,13 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         payloadRefWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         payloadRefWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
         payloadRefWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
+
+        ReferenceWidgetSet payloadReferenceWidgetSet = ReferenceFactory.eINSTANCE.createReferenceWidgetSet();
+        payloadRefWidget.setSet(payloadReferenceWidgetSet);
+
         ChangeContext setPayloadRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setPayloadRefWidget.setExpression(ServiceMethod.of1(FormMutationElementService::setAcceptActionUsagePayloadParameter).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
-        payloadRefWidget.getBody().add(setPayloadRefWidget);
+        payloadReferenceWidgetSet.getBody().add(setPayloadRefWidget);
 
         ReferenceWidgetDescription receiverRefWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
         receiverRefWidget.setName("ExtraReceiverWidget");
@@ -561,9 +556,13 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         receiverRefWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         receiverRefWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
         receiverRefWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
+
+        ReferenceWidgetSet receiverReferenceWidgetSet = ReferenceFactory.eINSTANCE.createReferenceWidgetSet();
+        receiverRefWidget.setSet(receiverReferenceWidgetSet);
+
         ChangeContext setReceiverRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setReceiverRefWidget.setExpression(ServiceMethod.of1(FormMutationElementService::setAcceptActionUsageReceiverArgument).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
-        receiverRefWidget.getBody().add(setReceiverRefWidget);
+        receiverReferenceWidgetSet.getBody().add(setReceiverRefWidget);
 
         group.getChildren().add(payloadRefWidget);
         group.getChildren().add(receiverRefWidget);
@@ -585,10 +584,14 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         sourceRefWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         sourceRefWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         sourceRefWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
-        sourceRefWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
+        sourceRefWidget.setClearButton(null);
+
+        ReferenceWidgetSet sourceReferenceWidgetSet = ReferenceFactory.eINSTANCE.createReferenceWidgetSet();
+        sourceRefWidget.setSet(sourceReferenceWidgetSet);
+
         ChangeContext setSourceRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setSourceRefWidget.setExpression(ServiceMethod.of1(FormMutationElementService::setTransitionSourceParameter).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
-        sourceRefWidget.getBody().add(setSourceRefWidget);
+        sourceReferenceWidgetSet.getBody().add(setSourceRefWidget);
 
         ReferenceWidgetDescription targetRefWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
         targetRefWidget.setName("ExtraTargetWidget");
@@ -597,10 +600,14 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         targetRefWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         targetRefWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         targetRefWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
-        targetRefWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
+        targetRefWidget.setClearButton(null);
+
+        ReferenceWidgetSet targetReferenceWidgetSet = ReferenceFactory.eINSTANCE.createReferenceWidgetSet();
+        targetRefWidget.setSet(targetReferenceWidgetSet);
+
         ChangeContext setTargetRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setTargetRefWidget.setExpression(ServiceMethod.of1(FormMutationElementService::setTransitionTargetParameter).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
-        targetRefWidget.getBody().add(setTargetRefWidget);
+        targetReferenceWidgetSet.getBody().add(setTargetRefWidget);
 
         group.getChildren().add(sourceRefWidget);
         group.getChildren().add(targetRefWidget);
@@ -751,9 +758,13 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY_E_STRUCTURAL_FEATURE);
         refWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
         refWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
+
+        ReferenceWidgetSet referenceWidgetSet = ReferenceFactory.eINSTANCE.createReferenceWidgetSet();
+        refWidget.setSet(referenceWidgetSet);
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setRefWidget.setExpression(ServiceMethod.of2(FormMutationElementService::handleReferenceWidgetNewValue).aqlSelf(E_STRUCTURAL_FEATURE + ".name", ViewFormDescriptionConverter.NEW_VALUE));
-        refWidget.getBody().add(setRefWidget);
+        referenceWidgetSet.getBody().add(setRefWidget);
+
         return refWidget;
     }
 

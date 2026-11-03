@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Comment;
@@ -51,41 +52,42 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationImportService;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
+import org.springframework.stereotype.Service;
 
 /**
  * Form-related element services doing mutations.
  *
  * @author arichard
  */
+@Service
 public class FormMutationElementService {
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    private final MetamodelQueryElementService metamodelQueryElementService;
-
     private final FormQueryElementService formQueryElementService;
+
+    private final MetamodelQueryElementService metamodelQueryElementService;
 
     private final MetamodelMutationImportService metamodelMutationImportService;
 
     private final ElementInitializerSwitch elementInitializerSwitch;
 
+    private final DeleteService deleteService;
     /**
      * Creates the form mutation element service.
      *
      * @param feedbackMessageService
      *            the feedback message service
-     * @param metamodelQueryElementService
-     *            the metamodel query service
      * @param formQueryElementService
      *            the form query element service
      */
-    public FormMutationElementService(IFeedbackMessageService feedbackMessageService, MetamodelQueryElementService metamodelQueryElementService,
-            FormQueryElementService formQueryElementService) {
+    public FormMutationElementService(IFeedbackMessageService feedbackMessageService, FormQueryElementService formQueryElementService) {
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
-        this.metamodelQueryElementService = Objects.requireNonNull(metamodelQueryElementService);
         this.formQueryElementService = Objects.requireNonNull(formQueryElementService);
+        this.metamodelQueryElementService = new MetamodelQueryElementService();
         this.metamodelMutationImportService = new MetamodelMutationImportService();
         this.elementInitializerSwitch = new ElementInitializerSwitch();
+        this.deleteService = new DeleteService();
     }
 
     /**
@@ -417,6 +419,20 @@ public class FormMutationElementService {
             result = this.setNewValue(membership, SysmlPackage.eINSTANCE.getMembership_Visibility().getName(), newValue);
         }
         return result;
+    }
+
+    public boolean clearTypedByReferenceWidget(Element self) {
+        var elementsToRemove = self.getOwnedRelationship().stream()
+                .filter(FeatureTyping.class::isInstance)
+                .map(FeatureTyping.class::cast)
+                .toList();
+
+        var iterator = elementsToRemove.iterator();
+        while (iterator.hasNext()) {
+            var next = iterator.next();
+            this.deleteService.deleteFromModel(next);
+        }
+        return true;
     }
 
     private void checkAndRepairAcceptActionUsagePayload(AcceptActionUsage aau) {
