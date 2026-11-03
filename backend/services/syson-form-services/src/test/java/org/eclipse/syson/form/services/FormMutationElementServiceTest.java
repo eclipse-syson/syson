@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.syson.sysml.AnalysisCaseDefinition;
 import org.eclipse.syson.sysml.AnalysisCaseUsage;
 import org.eclipse.syson.sysml.CalculationDefinition;
@@ -33,7 +34,6 @@ import org.eclipse.syson.sysml.VerificationCaseDefinition;
 import org.eclipse.syson.sysml.VerificationCaseUsage;
 import org.eclipse.syson.sysml.ViewpointDefinition;
 import org.eclipse.syson.sysml.ViewpointUsage;
-import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -48,9 +48,8 @@ public class FormMutationElementServiceTest {
 
     @BeforeEach
     public void setUp() {
-        MetamodelQueryElementService metamodelQueryElementService = new MetamodelQueryElementService();
-        FormQueryElementService formQueryElementService = new FormQueryElementService(List.of(), element -> false, metamodelQueryElementService, List.of());
-        this.formMutationElementService = new FormMutationElementService(new IFeedbackMessageService.NoOp(), metamodelQueryElementService, formQueryElementService);
+        FormQueryElementService formQueryElementService = new FormQueryElementService(List.of(), element -> false, List.of(), new ILabelService.NoOp());
+        this.formMutationElementService = new FormMutationElementService(new IFeedbackMessageService.NoOp(), formQueryElementService);
     }
 
     @Test

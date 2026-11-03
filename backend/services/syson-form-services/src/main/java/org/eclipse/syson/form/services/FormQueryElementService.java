@@ -30,7 +30,9 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory.Descriptor;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.syson.form.services.api.IDetailsViewHelpTextProvider;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
@@ -52,12 +54,14 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
+import org.springframework.stereotype.Service;
 
 /**
  * Form-related element services doing queries.
  *
  * @author arichard
  */
+@Service
 public class FormQueryElementService {
 
     private final List<Descriptor> composedAdapterFactoryDescriptors;
@@ -65,6 +69,8 @@ public class FormQueryElementService {
     private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
 
     private final List<IDetailsViewHelpTextProvider> detailsViewHelpTextProviders;
+
+    private final ILabelService labelService;
 
     private final EEnumLiteral unsetEnumLiteral;
 
@@ -77,20 +83,21 @@ public class FormQueryElementService {
      *            the EMF item-provider descriptors
      * @param readOnlyObjectPredicate
      *            the read-only predicate
-     * @param metamodelQueryElementService
-     *            the metamodel query service
      * @param detailsViewHelpTextProviders
      *            the details-view help text providers
+     * @param labelService
+     *            the label service
      */
     public FormQueryElementService(List<Descriptor> composedAdapterFactoryDescriptors, IReadOnlyObjectPredicate readOnlyObjectPredicate,
-            MetamodelQueryElementService metamodelQueryElementService, List<IDetailsViewHelpTextProvider> detailsViewHelpTextProviders) {
+            List<IDetailsViewHelpTextProvider> detailsViewHelpTextProviders, ILabelService labelService) {
         this.composedAdapterFactoryDescriptors = Objects.requireNonNull(composedAdapterFactoryDescriptors);
         this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.detailsViewHelpTextProviders = Objects.requireNonNull(detailsViewHelpTextProviders);
+        this.labelService = Objects.requireNonNull(labelService);
         this.unsetEnumLiteral = EcoreFactory.eINSTANCE.createEEnumLiteral();
         this.unsetEnumLiteral.setName("unset");
         this.unsetEnumLiteral.setLiteral("unset");
-        this.metamodelQueryElementService = Objects.requireNonNull(metamodelQueryElementService);
+        this.metamodelQueryElementService = new MetamodelQueryElementService();
     }
 
     /**
@@ -628,6 +635,17 @@ public class FormQueryElementService {
                     && (eType.equals(EcorePackage.Literals.ESTRING) || Objects.equals(eType.getInstanceClassName(), String.class.getName()));
         }
         return false;
+    }
+
+    /**
+     * Get the styled label of the given {@link EClassifier}.
+     *
+     * @param object
+     *            the given {@link EClassifier}.
+     * @return the styled label of the given {@link EClassifier}.
+     */
+    public StyledString getStyledLabel(EClassifier eClassifier) {
+        return this.labelService.getStyledLabel(eClassifier);
     }
 
     /**

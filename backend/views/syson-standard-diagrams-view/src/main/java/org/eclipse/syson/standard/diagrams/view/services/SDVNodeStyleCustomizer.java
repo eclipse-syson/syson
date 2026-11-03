@@ -29,17 +29,15 @@ import org.eclipse.sirius.components.representations.Variable;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
-import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
-import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationSearchService;
 import org.eclipse.syson.application.nodes.SysMLImportedPackageNodeStyle;
 import org.eclipse.syson.application.nodes.SysMLNoteNodeStyle;
 import org.eclipse.syson.application.nodes.SysMLPackageNodeStyle;
 import org.eclipse.syson.application.nodes.SysMLViewFrameNodeStyle;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
+import org.eclipse.syson.standard.diagrams.view.SDVProjectStyleCustomizationRendererVariableCustomizer;
 import org.eclipse.syson.standard.diagrams.view.services.api.ISDVThemeProvider;
 import org.eclipse.syson.standard.diagrams.view.services.api.SDVTheme;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,17 +57,9 @@ public class SDVNodeStyleCustomizer implements INodeStyleCustomizer {
 
     private final ISDVThemeProvider themeProvider;
 
-    private final IProjectEditingContextService projectEditingContextService;
-
-    private final IProjectStyleCustomizationSearchService projectStyleCustomizationSearchService;
-
-    public SDVNodeStyleCustomizer(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, ISDVThemeProvider themeProvider,
-            IProjectEditingContextService projectEditingContextService,
-            IProjectStyleCustomizationSearchService projectStyleCustomizationSearchService) {
+    public SDVNodeStyleCustomizer(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, ISDVThemeProvider themeProvider) {
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.themeProvider = Objects.requireNonNull(themeProvider);
-        this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
-        this.projectStyleCustomizationSearchService = Objects.requireNonNull(projectStyleCustomizationSearchService);
     }
 
     /**
@@ -108,10 +98,7 @@ public class SDVNodeStyleCustomizer implements INodeStyleCustomizer {
     private boolean canCustomize(VariableManager variableManager, INodeStyle nodeStyle) {
         var canCustomize = !(variableManager.get(NodeComponent.IS_BORDER_NODE, Boolean.class).orElse(false) || nodeStyle instanceof ImageNodeStyle || nodeStyle instanceof IconLabelNodeStyle);
         if (canCustomize) {
-            canCustomize = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
-                    .map(IEditingContext::getId)
-                    .flatMap(this.projectEditingContextService::getProjectId)
-                    .map(projectId -> this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(projectId), SDVStyleCustomizationDescriptionProvider.SYSON_STYLE_CUSTOMIZATION_DESCRIPTION_ID))
+            canCustomize = variableManager.get(SDVProjectStyleCustomizationRendererVariableCustomizer.IS_SDV_PROJECT_STYLE_CUSTOMIZATION_ENABLED.name(), Boolean.class)
                     .orElse(Boolean.FALSE);
         }
 

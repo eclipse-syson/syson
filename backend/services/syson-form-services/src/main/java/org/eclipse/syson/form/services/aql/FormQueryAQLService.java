@@ -16,8 +16,10 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.syson.form.services.FormQueryElementService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.Element;
@@ -182,6 +184,13 @@ public class FormQueryAQLService {
      */
     public StateUsage getStateUsage(Element element) {
         return this.formQueryElementService.getStateUsage(element);
+    }
+
+    /**
+     * {@link FormQueryElementService#getStyledLabel(EClassifier)}.
+     */
+    public StyledString getStyledLabel(EClassifier eClassifier) {
+        return this.formQueryElementService.getStyledLabel(eClassifier);
     }
 
     /**
