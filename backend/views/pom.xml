@@ -29,6 +29,7 @@
 
 	<modules>
 		<module>syson-common-view</module>
+		<module>syson-details-view</module>
 		<module>syson-diagram-common-view</module>
 		<module>syson-standard-diagrams-view</module>
 		<module>syson-table-requirements-view</module>
