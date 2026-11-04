@@ -3,18 +3,20 @@
 == Key highlights
 
 * _General View_ diagrams now provide an action to add existing connected elements in both directions.
+* SysML icons are now colored in all diagrams and in the _Explorer_ view.
+* Standard diagrams now support an experimental theme that can be enabled in the project settings.
 
 == New features
 
 * In diagrams:
 
 ** `New Reference` tools have a selection dialog.
-This allows to select an `Element` that the new `ReferenceUsage` uses.
-If the selected element is a `Classifier` (e.g `PartDefinition`), it is used to type the new `ReferenceUsage`.
-It it is a `Feature` then the new `ReferenceUsage` references this given feature.
-The tools are also able to create an empty `ReferenceUsage`.
+This allows users to select an `Element` for the new `ReferenceUsage` to use.
+If the selected element is a `Classifier` (e.g., `PartDefinition`), it is used to type the new `ReferenceUsage`.
+If it is a `Feature`, the new `ReferenceUsage` references that feature.
+The tools can also create an empty `ReferenceUsage`.
 
-** Add the _Add existing connected elements_ action in the _Related Elements_ context menu section.
+** The _Add existing connected elements_ action is now available in the _Related Elements_ section of the context menu.
 The action adds existing project elements connected to the selected element through inbound or outbound relationships and displays the corresponding edges when possible.
 For single and multiple selections, elements that can be displayed as ports or inside a selected element are excluded, even when their compartment is hidden.
 Use the existing content tools to display these elements. Existing representations are left unchanged.
@@ -22,17 +24,17 @@ Use the existing content tools to display these elements. Existing representatio
 ** Standard diagrams can now have a theme (experimental feature).
 Because it is experimental, the theme is not enabled by default.
 It can be enabled through the _Appearances_ project settings tab.
-The theme applying to graphical elements depend on the SysML element family (Structure, Behavior, ...).
+The theme applied to graphical elements depends on the SysML element family (e.g., Structure or Behavior).
 +
 image::release-notes-diagram-theme.png[The standard diagram theme applied to different graphical nodes]
++
 Manual appearance changes take precedence over the theme; resetting them restores the theme if it is enabled.
-
 
 == Bug fixes
 
 * In diagrams:
 
-** Fix available diagram tools on standard diagrams created on a root `Namespace`.
+** The available tools have been corrected for standard diagrams created on a root `Namespace`.
 ** In standard view diagrams, the connector palette now shows only edge creation tools compatible with the selected target node.
 For example, _New Feature Typing_ is no longer offered between two `Usage` graphical nodes, but remains available from a `Usage` to its corresponding `Definition`.
 _New Satisfy Requirement_ remains available when the target is a `RequirementUsage` or `SatisfyRequirementUsage`.
@@ -45,25 +47,20 @@ Duplication also works when these nodes are included in a multiple selection.
 
 * In textual import/export:
 
-** Report syntax errors that may leave an uploaded SysML file partially imported.
+** Syntax errors that may leave an uploaded SysML file partially imported are now reported.
 The parsed elements are still imported, and the loading report identifies the syntax problem and warns about possibly missing elements.
-** Export connector ends that reference feature chains, such as `battery.powerPort to batmobileEngine.enginePort`, instead of leaving the ends empty.
+** Connector ends that reference feature chains, such as `battery.powerPort to batmobileEngine.enginePort`, are now exported instead of being left empty.
 ** `InterfaceUsage` elements are now exported with the `interface` keyword.
 
 == Improvements
 
-* In diagrams
+* In SysON:
 
-** Harmonize the SysML icons
+** SysML icons have been updated and are now colored in all diagrams and in the _Explorer_ view.
 +
-image::release-notes-diagram-sysml-icons-hamonization.png[New icons for ActionDefinition; ActionUsage; PartUsage; StateUsage; CaseUsage and ConstraintUsage graphical nodes, width=80%,height=80%]
-
-* In explorer:
-
-** Harmonize the SysML icons
+image::release-notes-diagram-sysml-icons-hamonization.png["New icons for ActionDefinition; ActionUsage; PartUsage; StateUsage; CaseUsage and ConstraintUsage graphical nodes",width=50%]
 +
-image::release-notes-explorer-sysml-icons-harmonization.png[New icons for ActionDefinition; ActionUsage; PartUsage; StateUsage; CaseUsage and ConstraintUsage explorer items, width=80%,height=80%]
-
+image::release-notes-explorer-sysml-icons-harmonization.png["New icons for ActionDefinition; ActionUsage; PartUsage; StateUsage; CaseUsage and ConstraintUsage explorer items",width=50%]
 
 == Technical details
 

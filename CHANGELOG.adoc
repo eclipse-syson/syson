@@ -18,6 +18,16 @@ Downstream code using the former implementation service must migrate to `org.ecl
 The `getCommentBody`, `getComment`, and `getDocumentation` query APIs are now provided by `org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService`.
 - https://github.com/eclipse-syson/syson/issues/2537[#2537] [services] `org.eclipse.syson.services.ImportService` has moved to `org.eclipse.syson.sysml.metamodel.services.MetamodelMutationImportService` as part of the metamodel service architecture migration.
 - [cleanup] Remove the now obsolete `org.eclipse.syson.diagram.common.view.services.SysONDiagramElementPaletteVariableManagerProvider`.
+- [details] `org.eclipse.syson.application.configuration.SysMLv2PropertiesConfigurer` has been replaced by `SysONDetailsViewDescriptionProvider` in the same package.
+The Details view is now added to each editing context by an `IEditingContextProcessor`, rather than registered through `IPropertiesDescriptionRegistryConfigurer`.
+`SysONDetailsViewProvider` exposes its pages through `IDetailsViewPageDescriptionProviderDelegate`, and `SysONDetailsViewJavaServiceProvider` contributes its AQL service classes through `IJavaServiceProvider`.
+Downstream applications replacing the former configurer must adapt their configuration to these providers and extension points.
+- [details] Custom reference widgets must migrate their mutation bodies from `ReferenceWidgetDescription#getBody()` to the body of a `ReferenceWidgetSet` or `ReferenceWidgetAdd`, attached through `setSet(...)` or `setAdd(...)`.
+The _Typed by_ widget now uses `ReferenceWidgetAdd` for additions and a custom `ReferenceWidgetClearButtonDescription` body calling `clearTypedByReferenceWidget` to remove its owned `FeatureTyping` relationships.
+- [services] `FormMutationElementService` and `FormQueryElementService` are now Spring services, and their constructors have changed.
+`FormMutationElementService` now takes `(IFeedbackMessageService, FormQueryElementService)`; remove the former `MetamodelQueryElementService` argument.
+`FormQueryElementService` now takes `(List<Descriptor>, IReadOnlyObjectPredicate, List<IDetailsViewHelpTextProvider>, ILabelService)`; remove the former `MetamodelQueryElementService` argument and provide an `ILabelService` as the last argument.
+Downstream applications should inject these services or update any direct constructor calls.
 
 === Dependency update
 
@@ -57,6 +67,7 @@ An already visible suitable compartment remains in use; otherwise, the _intercon
 - [frontend] Export six components and eight hooks from `@eclipse-syson/syson-components` for expression tools and properties, the new-object report, diagram visibility, and node rotation.
 - [core] Harmonize SysML icons
 - [cleanup] Remove the now obsolete SysONDiagramElementPaletteVariableManagerProvider
+- https://github.com/eclipse-syson/syson/issues/2195[#2195] [details] Add a dedicated clear operation for the _Typed by_ widget and remove the clear buttons from the transition _Source_ and _Target_ widgets.
 
 === New features
 
