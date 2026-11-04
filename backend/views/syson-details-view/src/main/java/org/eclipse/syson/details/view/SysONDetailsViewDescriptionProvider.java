@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.application.configuration;
+package org.eclipse.syson.details.view;
 
 import java.util.ArrayList;
 import java.util.List;
