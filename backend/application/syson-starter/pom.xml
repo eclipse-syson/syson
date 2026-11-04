@@ -65,6 +65,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
+			<artifactId>syson-details-view</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-tree-explorer-view</artifactId>
 		</dependency>
 		<dependency>
