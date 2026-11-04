@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.sirius.components.collaborative.widget.reference.api.ReferenceWidgetVariables;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
@@ -762,7 +763,8 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         ReferenceWidgetSet referenceWidgetSet = ReferenceFactory.eINSTANCE.createReferenceWidgetSet();
         refWidget.setSet(referenceWidgetSet);
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
-        setRefWidget.setExpression(ServiceMethod.of2(FormMutationElementService::handleReferenceWidgetNewValue).aqlSelf(E_STRUCTURAL_FEATURE + ".name", ViewFormDescriptionConverter.NEW_VALUE));
+        setRefWidget.setExpression(ServiceMethod.of2(FormMutationElementService::handleReferenceWidgetNewValue)
+                .aqlSelf(ReferenceWidgetVariables.REFERENCE.name() + ".name", ViewFormDescriptionConverter.NEW_VALUE));
         referenceWidgetSet.getBody().add(setRefWidget);
 
         return refWidget;
