@@ -460,7 +460,7 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         refWidget.setReferenceNameExpression(ServiceMethod.of0(FormQueryElementService::getTypedByReferenceName).aqlSelf());
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
-        refWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
+        refWidget.setCreateButton(null);
 
         ReferenceWidgetClearButtonDescription referenceWidgetClearButtonDescription = ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription();
         refWidget.setClearButton(referenceWidgetClearButtonDescription);
