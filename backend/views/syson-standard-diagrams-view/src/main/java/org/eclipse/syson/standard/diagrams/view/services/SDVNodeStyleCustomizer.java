@@ -39,7 +39,6 @@ import org.eclipse.syson.standard.diagrams.view.services.api.ISDVThemeProvider;
 import org.eclipse.syson.standard.diagrams.view.services.api.SDVTheme;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The standard diagrams view node style customizer.
@@ -77,7 +76,6 @@ public class SDVNodeStyleCustomizer implements INodeStyleCustomizer {
      * @return The customized node style
      */
     @Override
-    @Transactional(readOnly = true)
     public INodeStyle customize(VariableManager variableManager, DiagramDescription diagramDescription, NodeDescription nodeDescription, INodeStyle nodeStyle) {
         if (!this.canCustomize(variableManager, nodeStyle)) {
             return nodeStyle;
@@ -93,7 +91,7 @@ public class SDVNodeStyleCustomizer implements INodeStyleCustomizer {
     /**
      * Checks whether the customization applies to the node.
      * It does not apply to border nodes, image nodes, or icon label nodes.
-     * Checks the database to determine whether style customization is enabled for the project associated with the editing context.
+     * Reads the rendering variable to determine whether style customization is enabled for the project.
      */
     private boolean canCustomize(VariableManager variableManager, INodeStyle nodeStyle) {
         var canCustomize = !(variableManager.get(NodeComponent.IS_BORDER_NODE, Boolean.class).orElse(false) || nodeStyle instanceof ImageNodeStyle || nodeStyle instanceof IconLabelNodeStyle);
