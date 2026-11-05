@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,13 @@ import static java.util.stream.Collectors.toCollection;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -41,6 +45,7 @@ import org.eclipse.syson.sysml.Intersecting;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Multiplicity;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
@@ -778,15 +783,56 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc --> KerML 8.3.3.1.10 Type, operation removeRedefinedFeatures (p. 147): <blockquote> Return a
+     * subset of memberships, removing those Memberships whose memberElements are Features and for which either of the
+     * following two conditions holds:
+     * <ol>
+     * <li>The memberElement of the Membership is included in redefined Features of another Membership in
+     * memberships.</li>
+     * <li>One of the redefined Features of the Membership is a directly redefinedFeature of an ownedFeature of this
+     * Type.</li>
+     * </ol>
+     * For this purpose, the redefined Features of a Membership whose memberElement is a Feature includes the
+     * memberElement and all Features directly or indirectly redefined by the memberElement. </blockquote>
      *
+     * @param memberships
+     *            the candidate inherited memberships
+     * @return the surviving memberships in input order, without modifying the input list or model <!-- end-user-doc -->
      * @generated NOT
      */
     @Override
     public EList<Membership> removeRedefinedFeatures(EList<Membership> memberships) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return new BasicEList<>();
+        // The closure includes the feature itself: distinguish its own membership from any other referencing membership.
+        Map<Feature, Membership> firstRedefiningMembership = new IdentityHashMap<>();
+        Set<Feature> redefinedBySeveralMemberships = Collections.newSetFromMap(new IdentityHashMap<>());
+        for (Membership membership : memberships) {
+            if (membership.getMemberElement() instanceof Feature feature) {
+                for (Feature redefined : feature.allRedefinedFeatures()) {
+                    Membership first = firstRedefiningMembership.putIfAbsent(redefined, membership);
+                    if (first != null && first != membership) {
+                        redefinedBySeveralMemberships.add(redefined);
+                    }
+                }
+            }
+        }
+
+        // The second rule compares the full inherited closure with only the direct targets of locally owned features.
+        Set<Feature> locallyRedefined = Collections.newSetFromMap(new IdentityHashMap<>());
+        this.getOwnedFeature().stream()
+                .flatMap(feature -> feature.getOwnedRedefinition().stream())
+                .map(Redefinition::getRedefinedFeature)
+                .filter(Objects::nonNull)
+                .forEach(locallyRedefined::add);
+
+        List<Membership> result = memberships.stream().filter(membership -> {
+            if (membership.getMemberElement() instanceof Feature feature) {
+                return firstRedefiningMembership.get(feature) == membership
+                        && !redefinedBySeveralMemberships.contains(feature)
+                        && feature.allRedefinedFeatures().stream().noneMatch(locallyRedefined::contains);
+            }
+            return true;
+        }).toList();
+        return new BasicEList<>(result);
     }
 
     /**
