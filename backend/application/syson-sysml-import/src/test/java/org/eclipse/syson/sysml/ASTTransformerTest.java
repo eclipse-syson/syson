@@ -447,7 +447,18 @@ public class ASTTransformerTest {
 
     }
 
-    @DisplayName("Test Inheritance")
+    /**
+     * Importing a renamed redefinition hides the original from the usage's namespace while preserving its target.
+     * <pre>{@code
+     * part def Def {
+     *     part a;
+     * }
+     * part p : Def {
+     *     b :>> a;
+     * }
+     * }</pre>
+     */
+    @DisplayName("GIVEN a renamed redefinition, WHEN importing a typed usage, THEN only its replacement resolves locally")
     @Test
     void convertInheritanceTest() {
         Resource testResource = this.getResourceFromFile("ASTTransformerTest/convertInheritanceTest/inheritance.ast.json", true);
@@ -478,7 +489,11 @@ public class ASTTransformerTest {
         assertInstanceOf(ReferenceUsage.class, elementB);
         ReferenceUsage referenceUsageB = (ReferenceUsage) elementB;
         assertEquals("b", referenceUsageB.getName());
-        assertEquals(partUsageA, referenceUsageB.getOwningNamespace().resolve("a").getMemberElement());
+        // KerML 7.3.4.5: the redefined feature is not inherited into p's namespace; b replaces it.
+        assertNull(partUsageP.resolve("a"));
+        assertThat(partUsageP.resolve("b")).isNotNull()
+                .extracting(Membership::getMemberElement).isSameAs(referenceUsageB);
+        // Resolving the owned redefinition starts from the supertypes, so its target remains Def::a.
         assertEquals(partUsageA, referenceUsageB.getOwnedRedefinition().get(0).getRedefinedFeature());
     }
 

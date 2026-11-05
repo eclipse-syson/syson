@@ -130,7 +130,7 @@ public class MembershipComputer<T extends Element> {
         if (conjugator != null) {
             Type type = conjugator.getOriginalType();
             if (type != null) {
-                conjugatedMemberships = this.visibleMemberships(type, false, true, true).stream().filter(namefilter).toList();
+                conjugatedMemberships = this.visibleMemberships(type, false, true, true);
             }
         }
 
@@ -138,15 +138,18 @@ public class MembershipComputer<T extends Element> {
         for (Specialization specialization : self.getOwnedSpecialization()) {
             Type general = specialization.getGeneral();
             if (general != null && !this.visited.contains(general)) {
-                this.visibleMemberships(general, false, true, true).stream()
-                        .filter(namefilter)
-                        .forEach(generalMemberships::add);
+                generalMemberships.addAll(this.visibleMemberships(general, false, true, true));
             }
         }
 
-        Membership[] data = Stream.concat(conjugatedMemberships.stream(), generalMemberships.stream())
+        EList<Membership> candidates = new BasicEList<>();
+        Stream.concat(conjugatedMemberships.stream(), generalMemberships.stream())
                 // Also inherit protected memberships
                 .filter(rel -> rel.getVisibility() != VisibilityKind.PRIVATE)
+                .forEach(candidates::add);
+        // Resolve semantic replacements before name conflicts can discard a redefining candidate in a later branch.
+        Membership[] data = self.removeRedefinedFeatures(candidates).stream()
+                .filter(namefilter)
                 .toArray(Membership[]::new);
         return new EcoreEList.UnmodifiableEList<>((InternalEObject) self, SysmlPackage.eINSTANCE.getType_InheritedMembership(), data.length, data);
     }
