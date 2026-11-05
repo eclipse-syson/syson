@@ -34,6 +34,7 @@ import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.OccurrenceUsage;
@@ -46,6 +47,7 @@ import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
 import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
+import org.eclipse.syson.sysml.util.ModelBuilder;
 import org.eclipse.syson.tests.api.GivenSysONServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -82,6 +84,53 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
     @BeforeEach
     public void setUp() {
         this.givenInitialServerState.initialize();
+    }
+
+    /**
+     * Extends the SQL-loaded model with a local attribute redefinition and verifies its effective memberships with
+     * the standard libraries available. The added fragment is:
+     * <pre>
+     * part def PartDefinition {
+     *     attribute source;
+     *     attribute preserved;
+     * }
+     * part configuredUsage : PartDefinition {
+     *     attribute replacement redefines PartDefinition::source;
+     * }
+     * </pre>
+     * The usage must expose replacement and preserved, while the definition retains source and preserved.
+     */
+    @Test
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @DisplayName("GIVEN a SQL-loaded model and standard libraries, WHEN a usage redefines an inherited attribute, THEN only its source membership is removed")
+    public void redefinedAttributeMembershipWithLibraries() {
+        var checkerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID);
+        var input = new EditingContextEventInput(UUID.randomUUID(), GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID);
+        var flux = this.editingContextEventSubscriptionRunner.run(input).flux();
+        ISemanticChecker checker = editingContext -> {
+            var root = (Element) this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID).orElseThrow();
+            var definition = (PartDefinition) this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_DEFINITION_ID).orElseThrow();
+            var builder = new ModelBuilder();
+            var source = builder.createInWithName(AttributeUsage.class, definition, "source");
+            var preserved = builder.createInWithName(AttributeUsage.class, definition, "preserved");
+            var usage = builder.createInWithName(PartUsage.class, root, "configuredUsage");
+            builder.setType(usage, definition);
+            var replacement = builder.createInWithName(AttributeUsage.class, usage, "replacement");
+            builder.addRedefinition(replacement, source);
+
+            // Ensure this exercises the application's library-backed inheritance rather than an isolated resource.
+            assertThat(usage.specializesFromLibrary("Parts::Part")).isTrue();
+            assertThat(definition.getFeature()).contains(source, preserved);
+            assertThat(usage.getFeature()).contains(replacement, preserved).doesNotContain(source);
+            assertThat(usage.getFeatureMembership()).contains(replacement.getOwningFeatureMembership(), preserved.getOwningFeatureMembership())
+                    .doesNotContain(source.getOwningFeatureMembership());
+            assertThat(usage.getInheritedMembership()).contains(preserved.getOwningMembership()).doesNotContain(source.getOwningMembership());
+        };
+        StepVerifier.create(flux)
+                .then(checkerService.checkEditingContext(checker))
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
     @DisplayName("GIVEN a PartUsage with or without Specialization (FeatureTyping, Subsetting or Redefinition), WHEN validation is executed, THEN the Part implicitly specializes 'Parts::parts' from the standard libraries.")
