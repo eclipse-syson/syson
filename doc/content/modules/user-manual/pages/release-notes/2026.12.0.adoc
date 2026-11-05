@@ -6,6 +6,10 @@
 
 == Bug fixes
 
+* In SysML models:
+
+** Redefined features now replace their originals in the features available on a `Definition` or `Usage`, including when a redefinition changes the feature name or is inherited through multiple specialization paths.
+
 == Improvements
 
 == Technical details
