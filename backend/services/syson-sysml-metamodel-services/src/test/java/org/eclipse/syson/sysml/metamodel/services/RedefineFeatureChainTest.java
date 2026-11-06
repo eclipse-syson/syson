@@ -27,6 +27,8 @@ import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.PartDefinition;
+import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.metamodel.services.data.SysMLTestModel;
@@ -160,27 +162,23 @@ public class RedefineFeatureChainTest {
     }
 
     /**
-     * Nested chains, parameters and other feature categories are rejected explicitly until their implementation lots.
+     * Parameters and other feature categories are rejected explicitly until their implementation lots.
      */
     @Test
     @DisplayName("GIVEN a chain outside the supported scope, WHEN materializing it, THEN a failure explains the limitation without modifying the context")
     public void unsupportedChainsLeaveContextUnchanged() throws IOException {
         var model = this.loadRedefinedFeaturesModel();
         var context = model.get(PartDefinition.class, "RedefinedFeatures::Inherited");
-        var source = model.get(AttributeUsage.class, BASE_X);
         var relationships = List.copyOf(context.getOwnedRelationship());
-
-        this.assertFailure(this.service.redefineFeatureChain(context, List.of(source, source)),
-                "Cannot redefine segment 2 'RedefinedFeatures::Base::x' in context 'RedefinedFeatures::Inherited': redefining nested feature chains is not supported yet.");
         var parameter = SysmlFactory.eINSTANCE.createAttributeUsage();
         parameter.setDirection(FeatureDirectionKind.IN);
         this.assertFailure(this.service.redefineFeatureChain(context, List.of(parameter)),
                 "Cannot redefine segment 1 unnamed AttributeUsage (id: %s) in context 'RedefinedFeatures::Inherited': redefining a parameter is not supported yet because the required parameter order must be preserved."
                         .formatted(parameter.getElementId()));
-        var part = SysmlFactory.eINSTANCE.createPartUsage();
-        this.assertFailure(this.service.redefineFeatureChain(context, List.of(part)),
-                "Cannot redefine segment 1 unnamed PartUsage (id: %s) in context 'RedefinedFeatures::Inherited': redefining a PartUsage is not supported yet. Only non-directed attributes can currently be redefined."
-                        .formatted(part.getElementId()));
+        var reference = SysmlFactory.eINSTANCE.createReferenceUsage();
+        this.assertFailure(this.service.redefineFeatureChain(context, List.of(reference)),
+                "Cannot redefine segment 1 unnamed ReferenceUsage (id: %s) in context 'RedefinedFeatures::Inherited': redefining a ReferenceUsage is not supported yet. Only non-directed parts and attributes can currently be redefined."
+                        .formatted(reference.getElementId()));
         assertThat(context.getOwnedRelationship()).containsExactlyElementsOf(relationships);
     }
 
@@ -208,6 +206,158 @@ public class RedefineFeatureChainTest {
     }
 
     /**
+     * Both inherited segments become local while the shared definitions and the other occurrence remain unchanged.
+     */
+    @Test
+    @DisplayName("GIVEN two occurrences sharing a definition, WHEN materializing child.value in one occurrence, THEN both segments become local only in that occurrence")
+    public void nestedInheritedFeatures() throws IOException {
+        var model = this.loadNestedFeatureRedefinitionsModel();
+        var context = model.get(PartUsage.class, "NestedFeatureRedefinitions::left");
+        var other = model.get(PartUsage.class, "NestedFeatureRedefinitions::right");
+        var root = model.get(PartDefinition.class, "NestedFeatureRedefinitions::Root");
+        var childType = model.get(PartDefinition.class, "NestedFeatureRedefinitions::Child");
+        var child = model.get(PartUsage.class, "NestedFeatureRedefinitions::Root::child");
+        var value = model.get(AttributeUsage.class, "NestedFeatureRedefinitions::Child::value");
+        var otherRelationships = List.copyOf(other.getOwnedRelationship());
+        var rootRelationships = List.copyOf(root.getOwnedRelationship());
+        var childRelationships = List.copyOf(child.getOwnedRelationship());
+        var childTypeRelationships = List.copyOf(childType.getOwnedRelationship());
+
+        var result = this.service.redefineFeatureChain(context, List.of(child, value));
+
+        assertThat(result.isSuccess()).isTrue();
+        assertThat(result.messages()).isEmpty();
+        assertThat(result.chain()).hasSize(2);
+        var localChild = result.chain().get(0);
+        var localValue = result.chain().get(1);
+        this.assertLocalRedefinition(localChild, context, child);
+        this.assertLocalRedefinition(localValue, localChild, value);
+        assertThat(localChild.isIsComposite()).isTrue();
+        assertThat(localValue.isIsComposite()).isFalse();
+        assertThat(context.getOwnedFeature()).containsExactly(localChild);
+        assertThat(localChild.getOwnedFeature()).containsExactly(localValue);
+        assertThat(localValue.getOwnedFeature()).isEmpty();
+        assertThat(localChild.getOwnedTyping()).isEmpty();
+        assertThat(localChild.getType()).contains(childType);
+        assertThat(other.getOwnedRelationship()).containsExactlyElementsOf(otherRelationships);
+        assertThat(other.getOwnedFeature()).isEmpty();
+        assertThat(root.getOwnedRelationship()).containsExactlyElementsOf(rootRelationships);
+        assertThat(child.getOwnedRelationship()).containsExactlyElementsOf(childRelationships);
+        assertThat(childType.getOwnedRelationship()).containsExactlyElementsOf(childTypeRelationships);
+        assertThat(value.getOwnedRedefinition()).isEmpty();
+    }
+
+    /**
+     * A specialized definition receives the same local hierarchy as an occurrence.
+     */
+    @Test
+    @DisplayName("GIVEN a specialized definition, WHEN materializing child.value, THEN each segment is owned by its preceding local context")
+    public void nestedFeaturesInDefinition() throws IOException {
+        var model = this.loadNestedFeatureRedefinitionsModel();
+        var context = model.get(PartDefinition.class, "NestedFeatureRedefinitions::Specialized");
+        var child = model.get(PartUsage.class, "NestedFeatureRedefinitions::Root::child");
+        var value = model.get(AttributeUsage.class, "NestedFeatureRedefinitions::Child::value");
+
+        var result = this.service.redefineFeatureChain(context, List.of(child, value));
+
+        assertThat(result.isSuccess()).isTrue();
+        assertThat(result.chain()).hasSize(2);
+        this.assertLocalRedefinition(result.chain().get(0), context, child);
+        this.assertLocalRedefinition(result.chain().get(1), result.chain().get(0), value);
+    }
+
+    /**
+     * Three inherited levels require three distinct local features, with no fixed-depth restriction.
+     */
+    @Test
+    @DisplayName("GIVEN a three-segment inherited chain, WHEN materializing child.deeper.z, THEN all three levels are created in order")
+    public void threeInheritedLevels() throws IOException {
+        var model = this.loadNestedFeatureRedefinitionsModel();
+        var context = model.get(PartUsage.class, "NestedFeatureRedefinitions::left");
+        var child = model.get(PartUsage.class, "NestedFeatureRedefinitions::Root::child");
+        var deeper = model.get(PartUsage.class, "NestedFeatureRedefinitions::Child::deeper");
+        var z = model.get(AttributeUsage.class, "NestedFeatureRedefinitions::Leaf::z");
+
+        var result = this.service.redefineFeatureChain(context, List.of(child, deeper, z));
+
+        assertThat(result.isSuccess()).isTrue();
+        assertThat(result.chain()).hasSize(3);
+        this.assertLocalRedefinition(result.chain().get(0), context, child);
+        this.assertLocalRedefinition(result.chain().get(1), result.chain().get(0), deeper);
+        this.assertLocalRedefinition(result.chain().get(2), result.chain().get(1), z);
+        assertThat(result.chain().get(0).getOwnedFeature()).containsExactly(result.chain().get(1));
+        assertThat(result.chain().get(1).getOwnedFeature()).containsExactly(result.chain().get(2));
+    }
+
+    /**
+     * A valid inherited prefix must not be attached when a later segment is inaccessible.
+     */
+    @Test
+    @DisplayName("GIVEN a valid inherited prefix followed by an inaccessible attribute, WHEN materializing the chain, THEN segment 2 is reported and no prefix is created")
+    public void inaccessibleTerminalLeavesNoPrefix() throws IOException {
+        var model = this.loadNestedFeatureRedefinitionsModel();
+        var context = model.get(PartUsage.class, "NestedFeatureRedefinitions::left");
+        var child = model.get(PartUsage.class, "NestedFeatureRedefinitions::Root::child");
+        var z = model.get(AttributeUsage.class, "NestedFeatureRedefinitions::Leaf::z");
+        var relationships = List.copyOf(context.getOwnedRelationship());
+        var sourceRelationships = List.copyOf(child.getOwnedRelationship());
+
+        var result = this.service.redefineFeatureChain(context, List.of(child, z));
+
+        this.assertFailure(result,
+                "Cannot redefine segment 2 'NestedFeatureRedefinitions::Leaf::z' in context 'NestedFeatureRedefinitions::left': the feature is not accessible from this context. Select an accessible feature chain again.");
+        assertThat(context.getOwnedRelationship()).containsExactlyElementsOf(relationships);
+        assertThat(context.getOwnedFeature()).isEmpty();
+        assertThat(child.getOwnedRelationship()).containsExactlyElementsOf(sourceRelationships);
+    }
+
+    /**
+     * A parameter encountered after a valid prefix is reported at its actual position without attaching the prefix.
+     */
+    @Test
+    @DisplayName("GIVEN a valid inherited prefix followed by a parameter, WHEN materializing the chain, THEN segment 2 is rejected without creating the prefix")
+    public void unsupportedParameterLeavesNoPrefix() throws IOException {
+        var model = this.loadNestedFeatureRedefinitionsModel();
+        var context = model.get(PartUsage.class, "NestedFeatureRedefinitions::left");
+        var child = model.get(PartUsage.class, "NestedFeatureRedefinitions::Root::child");
+        var value = model.get(AttributeUsage.class, "NestedFeatureRedefinitions::Child::value");
+        value.setDirection(FeatureDirectionKind.IN);
+        var relationships = List.copyOf(context.getOwnedRelationship());
+        var sourceRelationships = List.copyOf(child.getOwnedRelationship());
+
+        var result = this.service.redefineFeatureChain(context, List.of(child, value));
+
+        this.assertFailure(result,
+                "Cannot redefine segment 2 'NestedFeatureRedefinitions::Child::value' in context 'NestedFeatureRedefinitions::left': redefining a parameter is not supported yet because the required parameter order must be preserved.");
+        assertThat(context.getOwnedRelationship()).containsExactlyElementsOf(relationships);
+        assertThat(context.getOwnedFeature()).isEmpty();
+        assertThat(child.getOwnedRelationship()).containsExactlyElementsOf(sourceRelationships);
+    }
+
+    /**
+     * Checks semantic identity, ownership and anonymity independently of the feature category.
+     */
+    private void assertLocalRedefinition(Feature local, Type owner, Feature source) {
+        assertThat(local).isNotSameAs(source);
+        assertThat(local.eClass()).isSameAs(source.eClass());
+        assertThat(local.getOwningType()).isSameAs(owner);
+        assertThat(local.getDeclaredName()).isNull();
+        assertThat(local.getDeclaredShortName()).isNull();
+        assertThat(local.getOwnedRedefinition()).singleElement().satisfies(redefinition -> {
+            assertThat(redefinition.getRedefiningFeature()).isSameAs(local);
+            assertThat(redefinition.getRedefinedFeature()).isSameAs(source);
+            assertThat(redefinition.isIsImplied()).isFalse();
+        });
+    }
+
+    /**
+     * Loads the two-occurrence model; its XMI comment contains the original SysML model.
+     */
+    private SysMLTestModel loadNestedFeatureRedefinitionsModel() throws IOException {
+        return this.loadModel("nested-feature-redefinitions");
+    }
+
+    /**
      * Checks the failure contract and the complete expected user-facing message, including punctuation and element labels.
      */
     private void assertFailure(FeatureChainRedefinitionResult result, String expectedMessage) {
@@ -221,11 +371,15 @@ public class RedefineFeatureChainTest {
      * Loads the independent redefinition fixture; its XMI comment contains the original SysML model.
      */
     private SysMLTestModel loadRedefinedFeaturesModel() throws IOException {
+        return this.loadModel("redefined-features");
+    }
+
+    private SysMLTestModel loadModel(String name) throws IOException {
         var resourceSet = new ResourceSetImpl();
         resourceSet.getPackageRegistry().put(SysmlPackage.eNS_URI, SysmlPackage.eINSTANCE);
-        var resource = new XMIResourceImpl(URI.createURI("test:/redefined-features.xmi"));
+        var resource = new XMIResourceImpl(URI.createURI("test:/" + name + ".xmi"));
         resourceSet.getResources().add(resource);
-        try (var input = this.getClass().getResourceAsStream("/feature-chains/redefined-features.xmi")) {
+        try (var input = this.getClass().getResourceAsStream("/feature-chains/" + name + ".xmi")) {
             assertThat(input).isNotNull();
             resource.load(input, Map.of());
         }
