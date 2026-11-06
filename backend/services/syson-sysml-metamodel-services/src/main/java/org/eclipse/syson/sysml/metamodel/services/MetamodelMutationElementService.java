@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.metamodel.services;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,6 +21,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.syson.sysml.AllocationUsage;
+import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.Connector;
@@ -66,6 +68,102 @@ public class MetamodelMutationElementService {
         this.elementInitializerSwitch = new ElementInitializerSwitch();
     }
 
+
+    /**
+     * Materializes a selected feature chain in the given context. Currently supports a single non-directed
+     * AttributeUsage. Existing local features are reused; new features are anonymous and redefine the selected
+     * source. The caller must provide a writable context without concurrent model modifications.
+     *
+     * @param context
+     *            the context to configure
+     * @param chain
+     *            the selected relative feature chain
+     * @return the operation status, immutable local chain on success, or user-facing messages on failure
+     */
+    public FeatureChainRedefinitionResult redefineFeatureChain(Type context, List<Feature> chain) {
+        String error = this.validateRedefinitionChain(context, chain);
+        FeatureChainRedefinitionResult result;
+        if (error != null) {
+            result = FeatureChainRedefinitionResult.failure(error);
+        } else {
+            var source = chain.getFirst();
+            var localFeatures = context.getOwnedFeature().stream()
+                    .filter(feature -> feature == source || feature.redefines(source))
+                    .toList();
+            if (localFeatures.size() > 1) {
+                result = FeatureChainRedefinitionResult.failure(MessageFormat.format(
+                        "Cannot redefine segment 1 {0} in context {1}: Multiple local features redefine this feature: {2}. Resolve the conflicting redefinitions before trying again.",
+                        this.describeRedefinitionElement(source), this.describeRedefinitionElement(context),
+                        localFeatures.stream().map(this::describeRedefinitionElement).toList()));
+            } else if (!localFeatures.isEmpty()) {
+                result = FeatureChainRedefinitionResult.success(List.of(localFeatures.getFirst()));
+            } else if (context.getFeatureMembership().stream().noneMatch(membership -> membership.getOwnedMemberFeature() == source)) {
+                result = FeatureChainRedefinitionResult.failure(MessageFormat.format(
+                        "Cannot redefine segment 1 {0} in context {1}: the feature is not accessible from this context. Select an accessible feature chain again.",
+                        this.describeRedefinitionElement(source), this.describeRedefinitionElement(context)));
+            } else {
+                var local = (AttributeUsage) SysmlFactory.eINSTANCE.create(source.eClass());
+                local.setIsComposite(false);
+                var redefinition = SysmlFactory.eINSTANCE.createRedefinition();
+                redefinition.setRedefiningFeature(local);
+                redefinition.setRedefinedFeature(source);
+                local.getOwnedRelationship().add(redefinition);
+                this.addChildInParent(context, local);
+                result = FeatureChainRedefinitionResult.success(List.of(local));
+            }
+        }
+        return result;
+    }
+
+    private String validateRedefinitionChain(Type context, List<Feature> chain) {
+        if (context == null) {
+            return "No configuration context was provided. Select a context before redefining a feature.";
+        }
+        String error = null;
+        String contextLabel = this.describeRedefinitionElement(context);
+        if (chain == null) {
+            error = MessageFormat.format("Cannot redefine a feature in context {0}: No feature chain was provided. Select a feature to redefine.", contextLabel);
+        } else if (chain.isEmpty()) {
+            error = MessageFormat.format("Cannot redefine a feature in context {0}: the selected feature chain is empty. Select a feature to redefine.", contextLabel);
+        } else {
+            for (int index = 0; index < chain.size() && error == null; index++) {
+                if (chain.get(index) == null) {
+                    error = MessageFormat.format("Cannot redefine a feature in context {0}: segment {1} is missing. Select the feature chain again.", contextLabel, index + 1);
+                }
+            }
+            // shortcut: only a single non-directed attribute is supported, extend in the nested-chain and parameter lots.
+            if (error == null) {
+                if (chain.size() != 1) {
+                    error = MessageFormat.format(
+                            "Cannot redefine segment 2 {0} in context {1}: redefining nested feature chains is not supported yet.",
+                            this.describeRedefinitionElement(chain.get(1)), contextLabel);
+                } else {
+                    var source = chain.getFirst();
+                    if (source.getDirection() != null) {
+                        error = MessageFormat.format(
+                                "Cannot redefine segment 1 {0} in context {1}: redefining a parameter is not supported yet because the required parameter order must be preserved.",
+                                this.describeRedefinitionElement(source), contextLabel);
+                    } else if (!(source instanceof AttributeUsage)) {
+                        error = MessageFormat.format(
+                                "Cannot redefine segment 1 {0} in context {1}: redefining a {2} is not supported yet. Only non-directed attributes can currently be redefined.",
+                                this.describeRedefinitionElement(source), contextLabel, source.eClass().getName());
+                    }
+                }
+            }
+        }
+        return error;
+    }
+
+    private String describeRedefinitionElement(Element element) {
+        String name = element.getQualifiedName();
+        String label;
+        if (name == null || name.isBlank()) {
+            label = MessageFormat.format("unnamed {0} (id: {1})", element.eClass().getName(), element.getElementId());
+        } else {
+            label = MessageFormat.format("''{0}''", name);
+        }
+        return label;
+    }
 
     /**
      * Create the appropriate {@link Membership} child according to the given {@link Element}.
