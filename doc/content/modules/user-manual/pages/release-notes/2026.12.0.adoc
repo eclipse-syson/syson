@@ -4,6 +4,11 @@
 
 == New features
 
+* For application developers:
+
+** New metamodel query services expose nested feature paths from a `Type` context, including inherited features and effective redefinitions.
+Applications can filter branches and results, and consume paths lazily through a stream with bounded cycle traversal.
+
 == Bug fixes
 
 * In SysML models:
