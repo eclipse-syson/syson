@@ -4,6 +4,14 @@
 
 == New features
 
+* For application developers:
+
+** New metamodel query services expose nested feature paths from a `Type` context, including inherited features and effective redefinitions.
+Applications can filter branches and results, and consume paths lazily through a stream with bounded cycle traversal.
+Collecting paths into a list requires an explicit maximum number of results.
+A reusable traversal predicate excludes features declared in standard libraries while retaining model and business library features.
+Chain selection filters receive the root context and complete paths, with a reusable predicate to exclude paths that need no further local redefinition.
+
 == Bug fixes
 
 * In SysML models:

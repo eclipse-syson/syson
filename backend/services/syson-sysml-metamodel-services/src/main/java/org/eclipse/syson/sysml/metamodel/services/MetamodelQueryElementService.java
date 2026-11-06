@@ -17,7 +17,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.syson.sysml.ActorMembership;
@@ -59,6 +61,7 @@ import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.TransitionUsage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.metamodel.services.textual.SysMLElementSerializer;
 import org.eclipse.syson.sysml.metamodel.services.textual.SysMLSerializingOptions;
@@ -90,6 +93,86 @@ public class MetamodelQueryElementService {
      * Qualified name of the standard library {@code ConnectionDefinition} used to type a requirement derivation.
      */
     private static final String DERIVATION_CONNECTION_DEFINITION = "DerivationConnections::Derivation";
+
+    /**
+     * Collects at most {@code maxResults} chains selected by {@link #streamFeatureChains(Type, BiPredicate, BiPredicate)},
+     * stopping traversal as soon as the limit is reached. This bounds the result size, not the number of visited candidates
+     * or the computation time when predicates reject candidates.
+     *
+     * @param context
+     *            the non-null accessing context, excluded from the returned chains
+     * @param shouldTraverseFeature
+     *            receives the accessing type and candidate feature; returning false excludes the candidate and its branch before
+     *            terminal selection. A null predicate accepts every candidate. See
+     *            {@link #streamFeatureChains(Type, BiPredicate, BiPredicate)} for the contract and an example.
+     * @param shouldIncludeFeatureChain
+     *            receives the root context and a complete, unmodifiable chain; true retains that chain without pruning
+     *            descendants. Null retains every chain. See
+     *            {@link #streamFeatureChains(Type, BiPredicate, BiPredicate)} for the contract and an example.
+     * @param maxResults
+     *            the non-negative maximum number of selected chains; zero returns an empty list without traversing the model
+     * @return an unmodifiable list of unmodifiable feature chains, in traversal order, possibly truncated
+     * @throws NullPointerException
+     *            if the context is null
+     * @throws IllegalArgumentException
+     *            if maxResults is negative
+     */
+    public List<List<Feature>> getAllFeatureChains(Type context, BiPredicate<Type, Feature> shouldTraverseFeature, BiPredicate<Type, List<Feature>> shouldIncludeFeatureChain,
+            int maxResults) {
+        return this.streamFeatureChains(context, shouldTraverseFeature, shouldIncludeFeatureChain).limit(maxResults).toList();
+    }
+
+    /**
+     * Streams feature chains lazily in depth-first membership order, visiting each feature before its descendants.
+     * Chains exclude the root context and retain feature identities. Traversal follows owned and inherited feature
+     * memberships, including untyped usages. Effective redefinitions are applied before the predicates; excluding a
+     * replacement never restores its sources.
+     * <p>
+     * Cycles are tracked per branch by context and feature-type identity. The first repetition allows child discovery;
+     * subsequent repetitions are visited without expansion. New contexts remain traversable after a cycle, and
+     * sibling branches are independent.
+     * </p>
+     * <p>
+     * Traversal receives the current accessing type and candidate feature. Chain selection receives the root context
+     * and a complete, unmodifiable snapshot, including the candidate. For example:
+     * </p>
+     * <pre>{@code
+     * part def Child { attribute x; }
+     * part def Context {
+     *     part left : Child;
+     *     part right : Child;
+     * }
+     * }</pre>
+     * With {@code context} referring to {@code Context} and {@code right} to its second part:
+     * <pre>{@code
+     * streamFeatureChains(context,
+     *         (accessingType, feature) -> feature != right,
+     *         (root, chain) -> chain.getLast() instanceof AttributeUsage);
+     * }</pre>
+     * This emits only {@code [left, x]}: right's branch is pruned, while left is traversed without being selected.
+     * Traversal receives {@code Context} for left and right, and {@code left} for x, rather than {@code Child}.
+     * Selection always receives {@code Context}, with {@code [left]} then {@code [left, x]}. The accepted snapshot is
+     * also the emitted result and remains unchanged when traversal continues.
+     * <p>
+     * Consume the stream within the model's read-access lifetime, without model changes. Predicates run on consumption,
+     * must be deterministic and must not mutate the model. Invocation counts are unspecified and results are not cached.
+     * </p>
+     *
+     * @param context
+     *            the non-null accessing context, checked immediately and excluded from the returned chains
+     * @param shouldTraverseFeature
+     *            evaluated first with the accessing type and candidate; false excludes the candidate and its entire
+     *            branch without evaluating the chain predicate. Null accepts every candidate.
+     * @param shouldIncludeFeatureChain
+     *            receives the root context and the complete, non-empty, unmodifiable chain; true emits that chain.
+     *            False skips only the result and still explores descendants. Null includes every chain.
+     * @return a sequential, lazy stream of unmodifiable feature chains
+     * @throws NullPointerException
+     *            if the context is null
+     */
+    public Stream<List<Feature>> streamFeatureChains(Type context, BiPredicate<Type, Feature> shouldTraverseFeature, BiPredicate<Type, List<Feature>> shouldIncludeFeatureChain) {
+        return new AccessibleFeatureChainsComputer(context, shouldTraverseFeature, shouldIncludeFeatureChain).compute();
+    }
 
     /**
      * Return {@code true} if the provided {@code element} is an actor, {@code false} otherwise.
