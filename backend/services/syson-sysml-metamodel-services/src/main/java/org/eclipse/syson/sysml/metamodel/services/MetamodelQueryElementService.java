@@ -17,7 +17,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.syson.sysml.ActorMembership;
@@ -59,6 +61,7 @@ import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.TransitionUsage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.metamodel.services.textual.SysMLElementSerializer;
 import org.eclipse.syson.sysml.metamodel.services.textual.SysMLSerializingOptions;
@@ -90,6 +93,78 @@ public class MetamodelQueryElementService {
      * Qualified name of the standard library {@code ConnectionDefinition} used to type a requirement derivation.
      */
     private static final String DERIVATION_CONNECTION_DEFINITION = "DerivationConnections::Derivation";
+
+    /**
+     * Collects the chains selected by {@link #streamFeatureChains(Type, BiPredicate, BiPredicate)}.
+     *
+     * @param context
+     *            the non-null accessing context, excluded from the returned chains
+     * @param shouldTraverseFeature
+     *            receives the accessing type and candidate feature; returning false excludes the candidate and its branch before
+     *            terminal selection. A null predicate accepts every candidate. See
+     *            {@link #streamFeatureChains(Type, BiPredicate, BiPredicate)} for the contract and an example.
+     * @param shouldIncludeTerminalFeature
+     *            receives the accessing type and accepted candidate feature; returning true includes the chain ending
+     *            at that feature. A null predicate includes every accepted candidate. See
+     *            {@link #streamFeatureChains(Type, BiPredicate, BiPredicate)} for the contract and an example.
+     * @return an unmodifiable list of unmodifiable feature chains
+     * @throws NullPointerException
+     *            if the context is null
+     */
+    public List<List<Feature>> getAllFeatureChains(Type context, BiPredicate<Type, Feature> shouldTraverseFeature, BiPredicate<Type, Feature> shouldIncludeTerminalFeature) {
+        return this.streamFeatureChains(context, shouldTraverseFeature, shouldIncludeTerminalFeature).toList();
+    }
+
+    /**
+     * Streams feature chains lazily in depth-first membership order, visiting each feature before its descendants.
+     * Chains exclude the root context and retain feature identities. Traversal follows owned and inherited feature
+     * memberships, including untyped usages. Effective redefinitions are applied before the predicates; excluding a
+     * replacement never restores its sources.
+     * <p>
+     * Cycles are tracked per branch by context and feature-type identity. The first repetition allows child discovery;
+     * subsequent repetitions are visited without expansion. New contexts remain traversable after a cycle, and
+     * sibling branches are independent.
+     * </p>
+     * <p>
+     * Both predicates receive the accessing type and candidate feature. For inherited features, the accessing type
+     * is the usage through which they are reached, not their declaring owner or value type. For example:
+     * </p>
+     * <pre>{@code
+     * part def Child { attribute x; }
+     * part def Context {
+     *     part left : Child;
+     *     part right : Child;
+     * }
+     * }</pre>
+     * With {@code context} referring to {@code Context} and {@code right} to its second part:
+     * <pre>{@code
+     * streamFeatureChains(context,
+     *         (accessingType, feature) -> feature != right,
+     *         (accessingType, feature) -> feature instanceof AttributeUsage);
+     * }</pre>
+     * This emits only {@code [left, x]}: right's branch is pruned, while left is traversed without being selected.
+     * The accessing type is {@code Context} for left and right, and {@code left} for x, rather than {@code Child}.
+     * <p>
+     * Consume the stream within the model's read-access lifetime, without model changes. Predicates run on consumption,
+     * must be deterministic and must not mutate the model. Invocation counts are unspecified and results are not cached.
+     * </p>
+     *
+     * @param context
+     *            the non-null accessing context, checked immediately and excluded from the returned chains
+     * @param shouldTraverseFeature
+     *            evaluated first with the accessing type and candidate; false excludes the candidate and its entire
+     *            branch without evaluating the terminal predicate. Null accepts every candidate.
+     * @param shouldIncludeTerminalFeature
+     *            receives the accessing type and accepted candidate; true emits the chain ending at that feature.
+     *            False skips the result but still explores descendants. Terminal means the last chain segment, not
+     *            necessarily a leaf. Null includes every accepted candidate.
+     * @return a sequential, lazy stream of unmodifiable feature chains
+     * @throws NullPointerException
+     *            if the context is null
+     */
+    public Stream<List<Feature>> streamFeatureChains(Type context, BiPredicate<Type, Feature> shouldTraverseFeature, BiPredicate<Type, Feature> shouldIncludeTerminalFeature) {
+        return new AccessibleFeatureChainsComputer(context, shouldTraverseFeature, shouldIncludeTerminalFeature).compute();
+    }
 
     /**
      * Return {@code true} if the provided {@code element} is an actor, {@code false} otherwise.

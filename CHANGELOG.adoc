@@ -24,6 +24,10 @@ Downstream applications importing these classes must update their imports and de
 
 === New features
 
+- https://github.com/eclipse-syson/syson/issues/2589[#2589] [services] Add `getAllFeatureChains` and `streamFeatureChains` to `org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService`.
+These services return feature paths relative to a `Type` context, including nested owned and inherited features, while respecting effective redefinitions and bounding cycles per branch.
+Optional predicates control branch traversal and terminal selection; the stream API supports lazy consumption and pagination with `skip` and `limit`.
+
 == v2026.11.0
 
 === Pitches
