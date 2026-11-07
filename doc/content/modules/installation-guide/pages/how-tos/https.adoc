@@ -35,7 +35,7 @@ services:
     entrypoint:
       - java
       - -jar
-      - /{app-name}-YEAR.MONTH.0.jar
+      - /{app-name}.jar
       - --server.ssl.key-store=./keystore.jks
       - --server.ssl.key-store-password=PASSWORD_USED_IN_STEP_1
       - --server.ssl.key-store-type=JKS
