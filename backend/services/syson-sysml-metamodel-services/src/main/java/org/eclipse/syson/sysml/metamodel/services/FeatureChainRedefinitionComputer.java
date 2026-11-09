@@ -51,6 +51,7 @@ public class FeatureChainRedefinitionComputer {
     }
 
     private FeatureChainRedefinitionResult materializeFeatureChain(Type context, List<Feature> chain) {
+        var mutationService = new MetamodelMutationElementService();
         var localChain = new ArrayList<Feature>();
         var pending = new ArrayList<PendingFeature>();
         Type owner = context;
@@ -77,14 +78,19 @@ public class FeatureChainRedefinitionComputer {
                             index + 1, this.describeRedefinitionElement(source), this.describeRedefinitionElement(context));
                 } else {
                     var local = (Feature) SysmlFactory.eINSTANCE.create(source.eClass());
-                    local.setIsComposite(source.isIsComposite());
                     var redefinition = SysmlFactory.eINSTANCE.createRedefinition();
                     redefinition.setRedefiningFeature(local);
                     redefinition.setRedefinedFeature(source);
                     local.getOwnedRelationship().add(redefinition);
-                    pending.add(new PendingFeature(owner, local));
-                    localChain.add(local);
-                    owner = local;
+                    var status = mutationService.initializeRedefiningFeature(local, source, owner);
+                    if (status.isSuccess()) {
+                        pending.add(new PendingFeature(owner, local));
+                        localChain.add(local);
+                        owner = local;
+                    } else {
+                        error = MessageFormat.format("Cannot redefine segment {0} {1} in context {2}: {3}", index + 1,
+                                this.describeRedefinitionElement(source), this.describeRedefinitionElement(context), status.message());
+                    }
                 }
             }
         }

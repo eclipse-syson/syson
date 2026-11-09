@@ -23,6 +23,10 @@ package RedefinedFeatures {
         attribute rightValue redefines Base::x;
     }
     part def Diamond :> Left, Right;
+    part def OrderedBase {
+        attribute values[0..*] ordered;
+    }
+    part def OrderedInherited :> OrderedBase;
 }
 -->
 <sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="http://www.eclipse.org/syson/sysml" xmi:id="47cd8aad-17ac-4fdb-ad5d-f8f41c306efd" elementId="47cd8aad-17ac-4fdb-ad5d-f8f41c306efd">
@@ -102,6 +106,29 @@ package RedefinedFeatures {
         <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="ad0b38b2-b184-4966-8321-4414f4dabbaa" declaredName="Diamond" elementId="ad0b38b2-b184-4966-8321-4414f4dabbaa">
           <ownedRelationship xsi:type="sysml:Subclassification" xmi:id="8b89ba14-6790-4e92-a9ac-61c93fb89234" elementId="8b89ba14-6790-4e92-a9ac-61c93fb89234" subclassifier="ad0b38b2-b184-4966-8321-4414f4dabbaa" superclassifier="e9031d22-d2f8-47c6-bdd2-b0983dc49d70"/>
           <ownedRelationship xsi:type="sysml:Subclassification" xmi:id="932cc115-aa0d-4657-affc-eb4d356a1bb5" elementId="932cc115-aa0d-4657-affc-eb4d356a1bb5" subclassifier="ad0b38b2-b184-4966-8321-4414f4dabbaa" superclassifier="67f6606c-09fb-4a48-a0af-e53b7c211609"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="3200e37c-8a56-4701-8a21-10e24666d8ec" elementId="3200e37c-8a56-4701-8a21-10e24666d8ec">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="9578e81c-3a85-406e-a53c-8df5821d1230" declaredName="OrderedBase" elementId="9578e81c-3a85-406e-a53c-8df5821d1230">
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="c0997a3d-f21c-4454-92c0-7d6155fdf381" elementId="c0997a3d-f21c-4454-92c0-7d6155fdf381">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="c687a532-2ee7-4da4-9687-626bf8c42742" declaredName="values" elementId="c687a532-2ee7-4da4-9687-626bf8c42742" isOrdered="true">
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="a7da613a-2380-45cf-a5b4-a86e6edde00b" elementId="a7da613a-2380-45cf-a5b4-a86e6edde00b">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange" xmi:id="15a1d9d7-ffcc-4a28-9d0c-42e7a34a5509" elementId="15a1d9d7-ffcc-4a28-9d0c-42e7a34a5509">
+                  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="836a3edf-8f51-41c2-b79b-8b0637214b4f" elementId="836a3edf-8f51-41c2-b79b-8b0637214b4f">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" xmi:id="b6975598-469a-4cb7-970a-23f2f55d7da3" elementId="b6975598-469a-4cb7-970a-23f2f55d7da3"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="02631c13-9c84-4794-a76e-0dad95a6f187" elementId="02631c13-9c84-4794-a76e-0dad95a6f187">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity" xmi:id="e5d3b474-2863-4d45-8515-671c9063bb9c" elementId="e5d3b474-2863-4d45-8515-671c9063bb9c"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="dfdbfdcd-0272-4b9d-8559-c42c39fccaee" elementId="dfdbfdcd-0272-4b9d-8559-c42c39fccaee">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="d9613f54-5e53-4ff2-a54a-0bb1303de25b" declaredName="OrderedInherited" elementId="d9613f54-5e53-4ff2-a54a-0bb1303de25b">
+          <ownedRelationship xsi:type="sysml:Subclassification" xmi:id="5a658bbb-6530-4670-8af0-2843a5c7b46e" elementId="5a658bbb-6530-4670-8af0-2843a5c7b46e" subclassifier="d9613f54-5e53-4ff2-a54a-0bb1303de25b" superclassifier="9578e81c-3a85-406e-a53c-8df5821d1230"/>
         </ownedRelatedElement>
       </ownedRelationship>
     </ownedRelatedElement>

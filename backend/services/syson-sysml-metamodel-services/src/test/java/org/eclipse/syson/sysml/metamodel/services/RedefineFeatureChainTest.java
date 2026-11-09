@@ -26,6 +26,9 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
+import org.eclipse.syson.sysml.LiteralInfinity;
+import org.eclipse.syson.sysml.LiteralInteger;
+import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.Type;
@@ -332,6 +335,33 @@ public class RedefineFeatureChainTest {
         assertThat(context.getOwnedRelationship()).containsExactlyElementsOf(relationships);
         assertThat(context.getOwnedFeature()).isEmpty();
         assertThat(child.getOwnedRelationship()).containsExactlyElementsOf(sourceRelationships);
+    }
+
+    /**
+     * KerML 1.1 Beta 2, 7.3.4.4-5: a redefinition of an ordered feature must remain ordered.
+     * The fixture declares a multi-valued ordered attribute so the chain command exercises this requirement end to end.
+     */
+    @Test
+    @DisplayName("GIVEN an ordered inherited attribute, WHEN materializing its chain, THEN its local redefinition remains ordered")
+    public void inheritedOrderedAttribute() throws IOException {
+        var model = this.loadRedefinedFeaturesModel();
+        var context = model.get(PartDefinition.class, "RedefinedFeatures::OrderedInherited");
+        var source = model.get(AttributeUsage.class, "RedefinedFeatures::OrderedBase::values");
+        assertThat(source.isIsOrdered()).isTrue();
+        assertThat(source.getMultiplicity()).isInstanceOfSatisfying(MultiplicityRange.class, range -> {
+            assertThat(range.getBound()).hasSize(2);
+            assertThat(range.getBound().getFirst()).isInstanceOfSatisfying(LiteralInteger.class, lower -> assertThat(lower.getValue()).isZero());
+            assertThat(range.getBound().getLast()).isInstanceOf(LiteralInfinity.class);
+        });
+
+        var result = this.service.redefineFeatureChain(context, List.of(source));
+
+        assertThat(result.isSuccess()).isTrue();
+        assertThat(result.chain()).singleElement().satisfies(local -> {
+            this.assertLocalRedefinition(local, context, source);
+            assertThat(local.isIsOrdered()).isTrue();
+        });
+        assertThat(source.isIsOrdered()).isTrue();
     }
 
     /**

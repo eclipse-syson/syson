@@ -20,6 +20,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.syson.sysml.AllocationUsage;
+import org.eclipse.syson.sysml.Association;
+import org.eclipse.syson.sysml.AttributeDefinition;
+import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.Connector;
@@ -42,6 +45,7 @@ import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
@@ -81,6 +85,94 @@ public class MetamodelMutationElementService {
      */
     public FeatureChainRedefinitionResult redefineFeatureChain(Type context, List<Feature> chain) {
         return new FeatureChainRedefinitionComputer().compute(context, chain);
+    }
+
+    /**
+     * Initializes the properties of a newly created redefining feature without attaching it to its owner.
+     * The caller supplies its destination owner and establishes the Redefinition relationship separately.
+     *
+     * @param local
+     *            the new feature to initialize
+     * @param source
+     *            the feature being redefined
+     * @param owner
+     *            the intended owning type
+     * @return success, or an explanation of incompatible properties without changing the feature
+     */
+    public RedefinitionStatus initializeRedefiningFeature(Feature local, Feature source, Type owner) {
+        String error = null;
+        if (local == null) {
+            error = "No redefining feature was provided.";
+        } else if (source == null) {
+            error = "No redefined feature was provided.";
+        } else if (owner == null) {
+            error = "No destination owner was provided.";
+        }
+        RedefinitionStatus status;
+        if (error != null) {
+            status = RedefinitionStatus.failure(error);
+        } else {
+            status = this.initializeRedefiningFeatureProperties(local, source, owner);
+        }
+        return status;
+    }
+
+    private RedefinitionStatus initializeRedefiningFeatureProperties(Feature local, Feature source, Type owner) {
+        var direction = owner.directionOf(source);
+        if (direction == null) {
+            direction = local.getDirection();
+        }
+        boolean isEnd = local.isIsEnd() || source.isIsEnd() && (owner instanceof Association || owner instanceof Connector);
+        boolean isVariable = local.isIsVariable();
+        RedefinitionStatus status;
+        boolean invalidEnd = direction != null || local.isIsDerived() || local.isIsAbstract();
+        invalidEnd = invalidEnd || local.isIsPortion();
+        if (isEnd && invalidEnd) {
+            status = RedefinitionStatus.failure("The redefining end feature cannot be directed, derived, abstract or a portion (KerML 8.3.3.3.2).");
+        } else if (source.isIsVariable() && !isVariable) {
+            // KerML 1.1 Beta 2, 7.4.3 and 7.3.4.5: a non-variable feature cannot subset or redefine a variable feature, including a constant one.
+            status = RedefinitionStatus.failure("A non-variable feature cannot redefine a variable feature (KerML 7.4.3).");
+        } else if (local.isIsConstant() && !isVariable) {
+            status = RedefinitionStatus.failure("The redefining feature cannot be constant without being variable (KerML 8.3.3.3.2).");
+        } else {
+            // KerML 1.1 Beta 2, 8.3.3.3.8, validateRedefinitionDirectionConformance: use the direction relative to the destination type.
+            local.setDirection(direction);
+            // KerML 1.1 Beta 2, 8.3.3.3.8, validateRedefinitionEndConformance: association/connector ends must remain ends.
+            local.setIsEnd(isEnd);
+            // KerML 1.1 Beta 2, 7.3.4.4-5: a subsetting, including a redefinition, of an ordered feature must be ordered.
+            if (source.isIsOrdered()) {
+                local.setIsOrdered(true);
+            }
+            // KerML 1.1 Beta 2, 8.3.3.3.10, validateSubsettingUniquenessConformance: a unique source requires a unique target.
+            if (source.isIsUnique()) {
+                local.setIsUnique(true);
+            }
+            // KerML 1.1 Beta 2, 8.3.3.3.10/8.3.3.3.2: a variable target must be constant if its source is constant or it is an end.
+            if (isVariable && (source.isIsConstant() || isEnd)) {
+                local.setIsConstant(true);
+            }
+            // SysML 2.1 Beta 2, 8.2.2.6.2 and 8.3.6.4: preserve the source's ref/composite choice only where the destination permits it (policy, not a copy requirement).
+            local.setIsComposite(this.redefinitionIsComposite(local, source, owner, direction, isEnd));
+            status = RedefinitionStatus.success();
+        }
+        return status;
+    }
+
+    private boolean redefinitionIsComposite(Feature local, Feature source, Type owner, FeatureDirectionKind direction, boolean isEnd) {
+        // KerML 8.3.3.3.2; SysML 8.3.7.2-3: ends and features of attributes cannot be composite.
+        boolean isComposite = source.isIsComposite() && !isEnd && !(owner instanceof AttributeDefinition || owner instanceof AttributeUsage);
+        if (local instanceof Usage) {
+            // SysML 8.3.6.3-4/8.3.7.3: reference usages, attributes and directed usages must be referential.
+            isComposite = isComposite && direction == null && !(local instanceof ReferenceUsage || local instanceof AttributeUsage);
+            // SysML 8.3.12.5-6: ports are referential outside ports; non-port features within ports are non-composite.
+            boolean portOwner = owner instanceof PortDefinition || owner instanceof PortUsage;
+            if (local instanceof PortUsage) {
+                isComposite = isComposite && portOwner;
+            } else {
+                isComposite = isComposite && !portOwner;
+            }
+        }
+        return isComposite;
     }
 
     /**
