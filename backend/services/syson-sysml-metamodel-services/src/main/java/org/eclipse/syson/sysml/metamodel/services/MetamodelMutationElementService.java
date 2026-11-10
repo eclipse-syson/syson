@@ -72,8 +72,8 @@ public class MetamodelMutationElementService {
 
 
     /**
-     * Materializes a selected feature chain in the given context. Currently supports non-directed attribute, part,
-     * reference, port and action usages. Existing local features are reused; new features are anonymous and redefine the selected
+     * Materializes a selected chain of non-directed SysML usages in the given context. Parameters are not supported yet.
+     * Existing local features are reused; new features are anonymous, retain the source's exact metaclass and membership role, and redefine the selected
      * source. New features are attached only after the entire chain has been validated.
      * The caller must provide a writable context without concurrent model modifications.
      *

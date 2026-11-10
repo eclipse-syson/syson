@@ -165,7 +165,7 @@ public class RedefineFeatureChainTest {
     }
 
     /**
-     * Parameters and other feature categories are rejected explicitly until their implementation lots.
+     * Parameters await ordered redefinition support; plain KerML features remain outside the SysML usage contract.
      */
     @Test
     @DisplayName("GIVEN a chain outside the supported scope, WHEN materializing it, THEN a failure explains the limitation without modifying the context")
@@ -180,7 +180,7 @@ public class RedefineFeatureChainTest {
                         .formatted(parameter.getElementId()));
         var feature = SysmlFactory.eINSTANCE.createFeature();
         this.assertFailure(this.service.redefineFeatureChain(context, List.of(feature)),
-                "Cannot redefine segment 1 unnamed Feature (id: %s) in context 'RedefinedFeatures::Inherited': redefining a Feature is not supported yet. Only non-directed attribute, part, reference, port and action usages can currently be redefined."
+                "Cannot redefine segment 1 unnamed Feature (id: %s) in context 'RedefinedFeatures::Inherited': redefining a Feature is not supported. Select a non-directed SysML usage."
                         .formatted(feature.getElementId()));
         assertThat(context.getOwnedRelationship()).containsExactlyElementsOf(relationships);
     }

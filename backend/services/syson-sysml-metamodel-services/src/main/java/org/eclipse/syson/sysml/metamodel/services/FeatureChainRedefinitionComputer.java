@@ -16,17 +16,16 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.syson.sysml.ActionUsage;
-import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
-import org.eclipse.syson.sysml.PartUsage;
-import org.eclipse.syson.sysml.PortUsage;
-import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.ParameterMembership;
+import org.eclipse.syson.sysml.RequirementConstraintMembership;
+import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.TransitionFeatureMembership;
 import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.Usage;
 
 /**
  * Resolves and materializes a feature chain, deferring containment changes until every segment is valid.
@@ -89,7 +88,7 @@ public class FeatureChainRedefinitionComputer {
                     local.getOwnedRelationship().add(redefinition);
                     var status = mutationService.initializeRedefiningFeature(local, source, owner);
                     if (status.isSuccess()) {
-                        pending.add(new PendingFeature(owner, local, source.getOwningFeatureMembership() instanceof EndFeatureMembership));
+                        pending.add(new PendingFeature(owner, local, source.getOwningFeatureMembership()));
                         localChain.add(local);
                         owner = local;
                     } else {
@@ -102,13 +101,7 @@ public class FeatureChainRedefinitionComputer {
         FeatureChainRedefinitionResult result;
         if (error == null) {
             pending.forEach(feature -> {
-                FeatureMembership membership;
-                // KerML 1.1 Beta 2, 8.3.3.3.3: preserve the membership role identifying an owned connector end.
-                if (feature.endMembership()) {
-                    membership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
-                } else {
-                    membership = SysmlFactory.eINSTANCE.createFeatureMembership();
-                }
+                var membership = this.createRedefinitionMembership(feature.sourceMembership());
                 membership.getOwnedRelatedElement().add(feature.feature());
                 feature.owner().getOwnedRelationship().add(membership);
             });
@@ -141,18 +134,38 @@ public class FeatureChainRedefinitionComputer {
 
     private String validateRedefinitionSegment(Type context, Feature source, int position) {
         String error = null;
-        boolean supportedUsage = source instanceof AttributeUsage || source instanceof PartUsage || source instanceof ReferenceUsage;
-        // shortcut: parameters and other feature categories are rejected until their dedicated implementation lots.
-        if (source.getDirection() != null) {
+        // shortcut: parameters are rejected until ordered parameter redefinition is implemented in its dedicated lot.
+        if (source.getDirection() != null || source.getOwningFeatureMembership() instanceof ParameterMembership) {
             error = MessageFormat.format(
                     "Cannot redefine segment {0} {1} in context {2}: redefining a parameter is not supported yet because the required parameter order must be preserved.",
                     position, this.describeRedefinitionElement(source), this.describeRedefinitionElement(context));
-        } else if (!(supportedUsage || source instanceof PortUsage || source instanceof ActionUsage)) {
+        } else if (!(source instanceof Usage)) {
             error = MessageFormat.format(
-                    "Cannot redefine segment {0} {1} in context {2}: redefining a {3} is not supported yet. Only non-directed attribute, part, reference, port and action usages can currently be redefined.",
+                    "Cannot redefine segment {0} {1} in context {2}: redefining a {3} is not supported. Select a non-directed SysML usage.",
                     position, this.describeRedefinitionElement(source), this.describeRedefinitionElement(context), source.eClass().getName());
         }
         return error;
+    }
+
+    private FeatureMembership createRedefinitionMembership(FeatureMembership source) {
+        // Preserve the source's semantic membership role, including ends (KerML 1.1 Beta 2, 8.3.3.3.3), without copying its contents.
+        FeatureMembership local;
+        if (source == null) {
+            local = SysmlFactory.eINSTANCE.createFeatureMembership();
+        } else {
+            local = (FeatureMembership) SysmlFactory.eINSTANCE.create(source.eClass());
+        }
+        if (source instanceof StateSubactionMembership subaction) {
+            // SysML 2.1 Beta 2, 8.3.18.4: kind distinguishes entry, do and exit actions; retaining the role is service policy.
+            ((StateSubactionMembership) local).setKind(subaction.getKind());
+        } else if (source instanceof RequirementConstraintMembership constraint) {
+            // SysML 2.1 Beta 2, 8.3.21.7: kind distinguishes assumed and required constraints; retaining the role is service policy.
+            ((RequirementConstraintMembership) local).setKind(constraint.getKind());
+        } else if (source instanceof TransitionFeatureMembership transition) {
+            // SysML 2.1 Beta 2, 8.3.18.8: kind distinguishes transition triggers, guards and effects; retaining the role is service policy.
+            ((TransitionFeatureMembership) local).setKind(transition.getKind());
+        }
+        return local;
     }
 
     /**
@@ -160,7 +173,7 @@ public class FeatureChainRedefinitionComputer {
      *
      * @author Arthur Daussy
      */
-    private record PendingFeature(Type owner, Feature feature, boolean endMembership) {
+    private record PendingFeature(Type owner, Feature feature, FeatureMembership sourceMembership) {
     }
 
     private String describeRedefinitionElement(Element element) {
