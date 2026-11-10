@@ -16,10 +16,15 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.Type;
 
@@ -84,7 +89,7 @@ public class FeatureChainRedefinitionComputer {
                     local.getOwnedRelationship().add(redefinition);
                     var status = mutationService.initializeRedefiningFeature(local, source, owner);
                     if (status.isSuccess()) {
-                        pending.add(new PendingFeature(owner, local));
+                        pending.add(new PendingFeature(owner, local, source.getOwningFeatureMembership() instanceof EndFeatureMembership));
                         localChain.add(local);
                         owner = local;
                     } else {
@@ -97,7 +102,13 @@ public class FeatureChainRedefinitionComputer {
         FeatureChainRedefinitionResult result;
         if (error == null) {
             pending.forEach(feature -> {
-                var membership = SysmlFactory.eINSTANCE.createFeatureMembership();
+                FeatureMembership membership;
+                // KerML 1.1 Beta 2, 8.3.3.3.3: preserve the membership role identifying an owned connector end.
+                if (feature.endMembership()) {
+                    membership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
+                } else {
+                    membership = SysmlFactory.eINSTANCE.createFeatureMembership();
+                }
                 membership.getOwnedRelatedElement().add(feature.feature());
                 feature.owner().getOwnedRelationship().add(membership);
             });
@@ -130,14 +141,15 @@ public class FeatureChainRedefinitionComputer {
 
     private String validateRedefinitionSegment(Type context, Feature source, int position) {
         String error = null;
+        boolean supportedUsage = source instanceof AttributeUsage || source instanceof PartUsage || source instanceof ReferenceUsage;
         // shortcut: parameters and other feature categories are rejected until their dedicated implementation lots.
         if (source.getDirection() != null) {
             error = MessageFormat.format(
                     "Cannot redefine segment {0} {1} in context {2}: redefining a parameter is not supported yet because the required parameter order must be preserved.",
                     position, this.describeRedefinitionElement(source), this.describeRedefinitionElement(context));
-        } else if (!(source instanceof AttributeUsage || source instanceof PartUsage)) {
+        } else if (!(supportedUsage || source instanceof PortUsage || source instanceof ActionUsage)) {
             error = MessageFormat.format(
-                    "Cannot redefine segment {0} {1} in context {2}: redefining a {3} is not supported yet. Only non-directed parts and attributes can currently be redefined.",
+                    "Cannot redefine segment {0} {1} in context {2}: redefining a {3} is not supported yet. Only non-directed attribute, part, reference, port and action usages can currently be redefined.",
                     position, this.describeRedefinitionElement(source), this.describeRedefinitionElement(context), source.eClass().getName());
         }
         return error;
@@ -148,7 +160,7 @@ public class FeatureChainRedefinitionComputer {
      *
      * @author Arthur Daussy
      */
-    private record PendingFeature(Type owner, Feature feature) {
+    private record PendingFeature(Type owner, Feature feature, boolean endMembership) {
     }
 
     private String describeRedefinitionElement(Element element) {

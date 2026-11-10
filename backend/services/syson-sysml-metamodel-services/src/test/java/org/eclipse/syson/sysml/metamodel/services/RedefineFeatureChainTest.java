@@ -178,10 +178,10 @@ public class RedefineFeatureChainTest {
         this.assertFailure(this.service.redefineFeatureChain(context, List.of(parameter)),
                 "Cannot redefine segment 1 unnamed AttributeUsage (id: %s) in context 'RedefinedFeatures::Inherited': redefining a parameter is not supported yet because the required parameter order must be preserved."
                         .formatted(parameter.getElementId()));
-        var reference = SysmlFactory.eINSTANCE.createReferenceUsage();
-        this.assertFailure(this.service.redefineFeatureChain(context, List.of(reference)),
-                "Cannot redefine segment 1 unnamed ReferenceUsage (id: %s) in context 'RedefinedFeatures::Inherited': redefining a ReferenceUsage is not supported yet. Only non-directed parts and attributes can currently be redefined."
-                        .formatted(reference.getElementId()));
+        var feature = SysmlFactory.eINSTANCE.createFeature();
+        this.assertFailure(this.service.redefineFeatureChain(context, List.of(feature)),
+                "Cannot redefine segment 1 unnamed Feature (id: %s) in context 'RedefinedFeatures::Inherited': redefining a Feature is not supported yet. Only non-directed attribute, part, reference, port and action usages can currently be redefined."
+                        .formatted(feature.getElementId()));
         assertThat(context.getOwnedRelationship()).containsExactlyElementsOf(relationships);
     }
 
