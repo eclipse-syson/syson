@@ -70,6 +70,15 @@ public class MembershipComputer<T extends Element> {
         }
     }
 
+    /**
+     * Collects visible memberships, applying name hiding only to imported memberships.
+     *
+     * @param self the namespace to inspect
+     * @param isRecursive whether nested namespaces are included
+     * @param includeAll whether non-public memberships are included
+     * @param includeProtectedInherited whether protected inherited memberships are included
+     * @return the visible memberships, preserving semantic homonyms
+     */
     private EList<Membership> visibleMemberships(Namespace self, boolean isRecursive, boolean includeAll, boolean includeProtectedInherited) {
         if (this.visited.contains(self)) {
             return new BasicEList<>();
@@ -78,23 +87,24 @@ public class MembershipComputer<T extends Element> {
         // Protected against infinite loop while iterating on imported/inherited elements
         this.visited.add(self);
 
-        NameConflictingFilter nameConflictingFilter = new NameConflictingFilter();
         List<Membership> directMemberships = self.getOwnedMembership().stream()
                 .filter(m -> includeAll || m.getVisibility() == VisibilityKind.PUBLIC)
-                .filter(nameConflictingFilter)
                 .collect(toList());
-
-        self.getOwnedImport().stream()
-                .filter(m -> includeAll || m.getVisibility() == VisibilityKind.PUBLIC)
-                .flatMap(imp -> this.importedMemberships(imp).stream())
-                .filter(nameConflictingFilter)
-                .forEach(directMemberships::add);
+        var ownedImports = self.getOwnedImport();
+        if (!ownedImports.isEmpty()) {
+            NameConflictingFilter nameConflictingFilter = new NameConflictingFilter();
+            nameConflictingFilter.fillUsedNames(directMemberships);
+            ownedImports.stream()
+                    .filter(m -> includeAll || m.getVisibility() == VisibilityKind.PUBLIC)
+                    .flatMap(imp -> this.importedMemberships(imp).stream())
+                    .filter(nameConflictingFilter)
+                    .forEach(directMemberships::add);
+        }
 
         if (self instanceof Type type) {
 
             this.inheritedMemberships(type).stream()
                     .filter(rel -> includeAll || (includeProtectedInherited && rel.getVisibility() == VisibilityKind.PROTECTED) || rel.getVisibility() == VisibilityKind.PUBLIC)
-                    .filter(nameConflictingFilter)
                     .forEach(directMemberships::add);
 
         }
@@ -124,11 +134,14 @@ public class MembershipComputer<T extends Element> {
         }
     }
 
+    /**
+     * Collects inherited memberships, removing semantic redefinitions rather than same-name features.
+     *
+     * @param self the inheriting type
+     * @return the inherited memberships after redefinition removal
+     */
     private <T extends Namespace> EList<Membership> inheritedMemberships(Type self) {
         this.visited.add(self);
-
-        NameConflictingFilter namefilter = new NameConflictingFilter();
-        namefilter.fillUsedNames(self.getOwnedMembership());
         Conjugation conjugator = self.getOwnedConjugator();
         List<Membership> conjugatedMemberships = List.of();
         if (conjugator != null) {
@@ -151,10 +164,7 @@ public class MembershipComputer<T extends Element> {
                 // Also inherit protected memberships
                 .filter(rel -> rel.getVisibility() != VisibilityKind.PRIVATE)
                 .forEach(candidates::add);
-        // Resolve semantic replacements before name conflicts can discard a redefining candidate in a later branch.
-        Membership[] data = self.removeRedefinedFeatures(candidates).stream()
-                .filter(namefilter)
-                .toArray(Membership[]::new);
+        Membership[] data = self.removeRedefinedFeatures(candidates).toArray(Membership[]::new);
         return new EcoreEList.UnmodifiableEList<>((InternalEObject) self, SysmlPackage.eINSTANCE.getType_InheritedMembership(), data.length, data);
     }
 

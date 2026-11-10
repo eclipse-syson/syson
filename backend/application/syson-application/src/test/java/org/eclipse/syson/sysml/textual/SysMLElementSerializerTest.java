@@ -116,6 +116,8 @@ import org.eclipse.syson.sysml.util.ModelBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Test class for SysMLElementSerializer.
@@ -1531,6 +1533,31 @@ public class SysMLElementSerializerTest {
                     first a_1 then a_2;
                 }""", actionUsage);
 
+    }
+
+    /**
+     * A sequence reference cannot replace the preceding feature declaration when deciding whether a source can be implicit.
+     *
+     * @param matchingPreviousDefinition whether the preceding declaration is the succession's source
+     */
+    @DisplayName("GIVEN a succession preceded by a sequence reference, WHEN exporting it, THEN its source is implicit only if it matches the preceding feature declaration")
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void successionSourceAfterReferenceMembership(boolean matchingPreviousDefinition) {
+        var action = this.builder.createWithName(ActionDefinition.class, "Example");
+        var source = this.builder.createInWithName(ActionUsage.class, action, "source");
+        var target = this.builder.createInWithName(ActionUsage.class, action, "target");
+        String expected = "first source then target;";
+        if (matchingPreviousDefinition) {
+            action.getOwnedRelationship().move(1, source.getOwningMembership());
+            expected = "then target;";
+        }
+        var reference = this.builder.createIn(Membership.class, action);
+        reference.setMemberElement(source);
+        var succession = this.builder.createSuccessionAsUsage(SuccessionAsUsage.class, action, source, target);
+        succession.getFeatureMembership().getFirst().getOwnedMemberFeature().getOwnedReferenceSubsetting().setIsImplied(true);
+
+        this.assertTextualFormEquals(expected, succession);
     }
 
     @DisplayName("GIVEN a model with TransitionUsage between states, WHEN serializing this model, THEN the transition are properly serialized.")

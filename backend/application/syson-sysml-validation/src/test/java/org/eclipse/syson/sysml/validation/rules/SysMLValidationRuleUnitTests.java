@@ -44,6 +44,43 @@ public class SysMLValidationRuleUnitTests {
 
     private static List<SysMLValidationRule> allRules = Stream.of(SysMLValidationRule.values()).toList();
 
+    /**
+     * Owned/inherited homonyms are validation errors unless an explicit redefinition replaces the inherited feature.
+     */
+    @Test
+    public void namespaceInheritedHomonyms() {
+        var base = SysmlFactory.eINSTANCE.createPartDefinition();
+        var inherited = SysmlFactory.eINSTANCE.createAttributeUsage();
+        inherited.setDeclaredName("x");
+        var inheritedMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        inheritedMembership.getOwnedRelatedElement().add(inherited);
+        base.getOwnedRelationship().add(inheritedMembership);
+        var derived = SysmlFactory.eINSTANCE.createPartDefinition();
+        var specialization = SysmlFactory.eINSTANCE.createSubclassification();
+        specialization.setSubclassifier(derived);
+        specialization.setSuperclassifier(base);
+        derived.getOwnedRelationship().add(specialization);
+        var owned = SysmlFactory.eINSTANCE.createAttributeUsage();
+        owned.setDeclaredName("x");
+        var ownedMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        ownedMembership.getOwnedRelatedElement().add(owned);
+        derived.getOwnedRelationship().add(ownedMembership);
+
+        var interpreter = new AQLInterpreter(List.of(SysMLValidationRuleQueryServices.class), List.of(), List.of(SysmlPackage.eINSTANCE));
+        var rule = SysMLValidationRule.validateNamespaceDistinguishibility.expression();
+        var result = interpreter.evaluateExpression(Map.of("self", derived), rule);
+        assertThat(result.getStatus()).isEqualTo(Status.OK);
+        assertThat(result.asBoolean()).contains(false);
+
+        var redefinition = SysmlFactory.eINSTANCE.createRedefinition();
+        redefinition.setRedefinedFeature(inherited);
+        redefinition.setRedefiningFeature(owned);
+        owned.getOwnedRelationship().add(redefinition);
+        var redefinedResult = interpreter.evaluateExpression(Map.of("self", derived), rule);
+        assertThat(redefinedResult.getStatus()).isEqualTo(Status.OK);
+        assertThat(redefinedResult.asBoolean()).contains(true);
+    }
+
     @Test
     @DisplayName("Check number of implemented rules")
     public void testNumberOfImplementedRules() {

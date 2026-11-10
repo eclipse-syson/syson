@@ -14,6 +14,7 @@ package org.eclipse.syson.sysml.metamodel.services.textual;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.eclipse.syson.sysml.AttributeDefinition;
@@ -69,6 +70,30 @@ public class FileNameDeresolverTest {
         assertEquals(PART_DEF1, this.getDeresolvedName(partDef1, partDef1));
     }
 
+    /**
+     * A retained inherited homonym must not prevent using a resolvable relative name through its declaring type.
+     */
+    @Test
+    public void inheritedHomonymUsesResolvableQualification() {
+        var root = this.builder.createRootNamespace();
+        var pack = this.builder.createInWithName(Package.class, root, "Root");
+        var source = this.builder.createInWithName(Package.class, pack, "Source");
+        var base = this.builder.createInWithName(PartDefinition.class, source, "Base");
+        var inherited = this.builder.createInWithName(AttributeUsage.class, base, "value");
+        var context = this.builder.createInWithName(PartUsage.class, pack, "context");
+        this.builder.setType(context, base);
+        var owned = this.builder.createInWithName(AttributeUsage.class, context, "value");
+        this.builder.addSubsetting(owned, inherited);
+        String expected = "Source::Base::value";
+
+        assertEquals(expected, this.getDeresolvedName(inherited, owned.getOwnedSubsetting().getFirst()));
+        assertEquals(inherited, context.resolve(expected).getMemberElement());
+        assertEquals(List.of(inherited), context.getInheritedFeature());
+    }
+
+    /**
+     * Name conflicts require qualification, but a resolvable relative path does not need its root namespace prefix.
+     */
     @Test
     public void checkNameCollision() {
         /**
@@ -144,7 +169,8 @@ public class FileNameDeresolverTest {
         // Needs qualified name since the attribute p3::mass hides the imported element
         assertEquals("Lib2::mass", this.getDeresolvedName(massAttr, p3x1Mass));
         // Need qualified name cause name conflict
-        assertEquals("Root::p3::Part1", this.getDeresolvedName(part1Def, part1Usage));
+        assertEquals("p3::Part1", this.getDeresolvedName(part1Def, part1Usage));
+        assertEquals(part1Def, part1Usage.getOwningNamespace().resolve("p3::Part1").getMemberElement());
     }
 
     @Test

@@ -23,7 +23,9 @@ import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractReferenceUsageBorderNodeDescriptionProvider;
+import org.eclipse.syson.diagram.services.DiagramQueryCache;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -61,9 +63,15 @@ public class InheritedReferenceUsageBorderNodeDescriptionProvider extends Abstra
         return this.descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getReferenceUsage());
     }
 
+    /**
+     * Returns inherited parameter candidates using the cache of the current render.
+     *
+     * @return the semantic candidates expression
+     */
     @Override
     protected String getSemanticCandidatesExpression() {
-        return ServiceMethod.of1(DiagramQueryAQLService::getInheritedCompartmentItems).aqlSelf("'parameter'");
+        return ServiceMethod.of2(DiagramQueryAQLService.class, DiagramQueryAQLService::getInheritedCompartmentItems, Type.class, String.class, DiagramQueryCache.class)
+                .aqlSelf("'parameter'", DiagramQueryCache.VARIABLE_NAME);
     }
 
     @Override

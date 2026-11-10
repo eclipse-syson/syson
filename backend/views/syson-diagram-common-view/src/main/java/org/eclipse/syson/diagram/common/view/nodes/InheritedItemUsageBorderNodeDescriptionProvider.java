@@ -23,8 +23,10 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
+import org.eclipse.syson.diagram.services.DiagramQueryCache;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -41,9 +43,15 @@ public class InheritedItemUsageBorderNodeDescriptionProvider extends AbstractIte
         super(eReference, colorProvider, descriptionNameGenerator);
     }
 
+    /**
+     * Returns inherited item candidates using the cache of the current render.
+     *
+     * @return the semantic candidates expression
+     */
     @Override
     protected String getSemanticCandidatesExpression() {
-        return ServiceMethod.of1(DiagramQueryAQLService::getInheritedCompartmentItems).aqlSelf(AQLUtils.aqlString(this.eReference.getName()));
+        return ServiceMethod.of2(DiagramQueryAQLService.class, DiagramQueryAQLService::getInheritedCompartmentItems, Type.class, String.class, DiagramQueryCache.class)
+                .aqlSelf(AQLUtils.aqlString(this.eReference.getName()), DiagramQueryCache.VARIABLE_NAME);
     }
 
     @Override

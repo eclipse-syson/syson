@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -127,7 +126,7 @@ public class FileNameDeresolver implements INameDeresolver {
     }
 
     /**
-     * Deresolve the name of the given element.
+     * Deresolve the name of the given element, trying other visible paths and outer scopes when a local homonym hides a candidate.
      *
      * @param element
      *         the element to deresolve.
@@ -158,14 +157,18 @@ public class FileNameDeresolver implements INameDeresolver {
             } else {
                 stream = visibleMemberships.stream();
             }
-            Optional<Membership> importedContainer = stream.filter(ancestors::contains)
-                    // Get the membership the closest to the element to deresolve
-                    .sorted(Comparator.comparing(m -> this.getPathLength(element, m))).findFirst();
+            var importedContainers = stream.filter(ancestors::contains)
+                    .sorted(Comparator.comparing(m -> this.getPathLength(element, m))).toList();
+            String relativeName = null;
+            for (Membership importedContainer : importedContainers) {
+                relativeName = this.buildRelativeQualifiedName(element, importedContainer, sourceNamespace);
+                if (relativeName != null) {
+                    break;
+                }
+            }
 
-            if (importedContainer.isPresent()) {
-                // We found a visible membership that can reach the element
-                // Try to compute its qualified name
-                qualifiedName = this.buildRelativeQualifiedName(element, deresolvingNamespace, importedContainer.get(), sourceNamespace);
+            if (relativeName != null) {
+                qualifiedName = relativeName;
             } else {
                 // Query the parent namespace
                 qualifiedName = this.deresolve(element, sourceNamespace, deresolvingNamespace.getOwningNamespace(), ancestors);
@@ -214,7 +217,15 @@ public class FileNameDeresolver implements INameDeresolver {
         return memberships;
     }
 
-    private String buildRelativeQualifiedName(Element element, Namespace owningNamespace, Membership visibleMembership, Namespace sourceNamespace) {
+    /**
+     * Builds a relative name through a visible membership without accepting a path hidden by another member.
+     *
+     * @param element the referenced element
+     * @param visibleMembership the membership through which the element can be reached
+     * @param sourceNamespace the original resolution scope
+     * @return the relative name, or {@code null} when it resolves to a different element
+     */
+    private String buildRelativeQualifiedName(Element element, Membership visibleMembership, Namespace sourceNamespace) {
         String elementQn = this.getQualifiedName(element);
         if (elementQn.isEmpty()) {
             LOGGER.warn("No qualified name found for {}", element.getElementId());
@@ -225,11 +236,9 @@ public class FileNameDeresolver implements INameDeresolver {
         String relativeQualifiedName = this.getRelativeQualifiedName(elementQn, element, visibleMembership);
 
         Membership resolvedElement = sourceNamespace.resolve(relativeQualifiedName);
-        // If the name resolve against an element which is not the expected element it means that there is a name
-        // conflict.
-        // In that case keep we need a more detailed qualified name
+        // Reject hidden paths so the caller can try another visible ancestor before falling back to a global name.
         if (resolvedElement != null && !this.match(element, resolvedElement)) {
-            relativeQualifiedName = elementQn;
+            relativeQualifiedName = null;
         }
 
         return relativeQualifiedName;

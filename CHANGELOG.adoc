@@ -17,11 +17,13 @@ Downstream applications importing these classes must update their imports and de
 === Bug fixes
 
 - https://github.com/eclipse-syson/syson/issues/2588[#2588] [metamodel] Fix inherited feature memberships to exclude features replaced by local or inherited redefinitions, including renamed and transitive redefinitions and diamond inheritance.
+- https://github.com/eclipse-syson/syson/issues/2603[#2603] [metamodel] Preserve owned and inherited homonyms unless explicitly redefined, and report namespace distinguishability conflicts through validation.
 
 === Improvements
 
 - https://github.com/eclipse-syson/syson/issues/2582[#2582] [details] Extract the Details view providers into the new `syson-details-view` module.
 - https://github.com/eclipse-syson/syson/issues/2605[#2605] [metamodel] Reduce allocations in membership queries used during diagram refresh.
+- https://github.com/eclipse-syson/syson/issues/2606[#2606] [diagrams] Reuse inherited features across compartment and inherited border-node queries within each diagram render.
 
 === New features
 
