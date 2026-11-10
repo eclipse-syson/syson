@@ -17,7 +17,8 @@ Downstream applications importing these classes must update their imports and de
 === Bug fixes
 
 - https://github.com/eclipse-syson/syson/issues/2588[#2588] [metamodel] Fix inherited feature memberships to exclude features replaced by local or inherited redefinitions, including renamed and transitive redefinitions and diamond inheritance.
-- https://github.com/eclipse-syson/syson/issues/2603[#2603] [metamodel] Preserve owned and inherited homonyms unless explicitly redefined, and report namespace distinguishability conflicts through validation.
+- https://github.com/eclipse-syson/syson/issues/2603[#2603] [metamodel] Preserve owned and inherited homonyms unless explicitly redefined, and validate name and short-name conflicts in definitions and typed occurrences.
+Connector creation preserves unrelated homonyms when materializing inherited feature chains; flow-end redefinitions identify their owning reference as the redefining feature.
 
 === Improvements
 

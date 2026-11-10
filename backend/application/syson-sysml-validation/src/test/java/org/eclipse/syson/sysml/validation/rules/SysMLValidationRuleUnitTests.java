@@ -25,6 +25,8 @@ import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Status;
+import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
@@ -32,6 +34,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 /**
@@ -44,41 +47,163 @@ public class SysMLValidationRuleUnitTests {
 
     private static List<SysMLValidationRule> allRules = Stream.of(SysMLValidationRule.values()).toList();
 
-    /**
-     * Owned/inherited homonyms are validation errors unless an explicit redefinition replaces the inherited feature.
-     */
-    @Test
-    public void namespaceInheritedHomonyms() {
-        var base = SysmlFactory.eINSTANCE.createPartDefinition();
-        var inherited = SysmlFactory.eINSTANCE.createAttributeUsage();
-        inherited.setDeclaredName("x");
-        var inheritedMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        inheritedMembership.getOwnedRelatedElement().add(inherited);
-        base.getOwnedRelationship().add(inheritedMembership);
-        var derived = SysmlFactory.eINSTANCE.createPartDefinition();
-        var specialization = SysmlFactory.eINSTANCE.createSubclassification();
-        specialization.setSubclassifier(derived);
-        specialization.setSuperclassifier(base);
-        derived.getOwnedRelationship().add(specialization);
-        var owned = SysmlFactory.eINSTANCE.createAttributeUsage();
-        owned.setDeclaredName("x");
-        var ownedMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        ownedMembership.getOwnedRelatedElement().add(owned);
-        derived.getOwnedRelationship().add(ownedMembership);
+    private static final String HOMONYM = "x";
 
-        var interpreter = new AQLInterpreter(List.of(SysMLValidationRuleQueryServices.class), List.of(), List.of(SysmlPackage.eINSTANCE));
-        var rule = SysMLValidationRule.validateNamespaceDistinguishibility.expression();
-        var result = interpreter.evaluateExpression(Map.of("self", derived), rule);
-        assertThat(result.getStatus()).isEqualTo(Status.OK);
-        assertThat(result.asBoolean()).contains(false);
+    /**
+     * Owned/inherited name and short-name conflicts are validation errors in definitions and typed occurrences.
+     * Adding and removing an explicit redefinition updates both validation and effective memberships.
+     *
+     * @param occurrence whether to validate a typed occurrence instead of a definition
+     * @param inheritedShortName whether the inherited short name conflicts
+     * @param ownedShortName whether the owned short name conflicts
+     */
+    @ParameterizedTest
+    @CsvSource({"false, false, false", "false, false, true", "false, true, false", "false, true, true",
+        "true, false, false", "true, false, true", "true, true, false", "true, true, true"})
+    public void namespaceInheritedHomonyms(boolean occurrence, boolean inheritedShortName, boolean ownedShortName) {
+        var base = SysmlFactory.eINSTANCE.createPartDefinition();
+        var inherited = this.createAttribute(base, "inherited");
+        final Type context;
+        if (occurrence) {
+            var usage = SysmlFactory.eINSTANCE.createPartUsage();
+            var typing = SysmlFactory.eINSTANCE.createFeatureTyping();
+            typing.setTypedFeature(usage);
+            typing.setType(base);
+            usage.getOwnedRelationship().add(typing);
+            context = usage;
+        } else {
+            var derived = SysmlFactory.eINSTANCE.createPartDefinition();
+            this.addSubclassification(derived, base);
+            context = derived;
+        }
+        var owned = this.createAttribute(context, "owned");
+        this.assertNamespaceDistinguishability(context, true);
+        this.setConflictingName(inherited, inheritedShortName);
+        this.setConflictingName(owned, ownedShortName);
+        this.assertNamespaceDistinguishability(context, false);
+        assertThat(context.getInheritedMembership()).containsExactly(inherited.getOwningMembership());
+        assertThat(context.getFeatureMembership()).extracting(membership -> membership.getMemberElement()).containsExactlyInAnyOrder(owned, inherited);
+        assertThat(context.getFeature()).containsExactlyInAnyOrder(owned, inherited);
 
         var redefinition = SysmlFactory.eINSTANCE.createRedefinition();
         redefinition.setRedefinedFeature(inherited);
         redefinition.setRedefiningFeature(owned);
         owned.getOwnedRelationship().add(redefinition);
-        var redefinedResult = interpreter.evaluateExpression(Map.of("self", derived), rule);
-        assertThat(redefinedResult.getStatus()).isEqualTo(Status.OK);
-        assertThat(redefinedResult.asBoolean()).contains(true);
+        this.assertNamespaceDistinguishability(context, true);
+        assertThat(context.getInheritedMembership()).isEmpty();
+        assertThat(context.getFeature()).containsExactly(owned);
+
+        owned.getOwnedRelationship().remove(redefinition);
+        this.assertNamespaceDistinguishability(context, false);
+        assertThat(context.getFeatureMembership()).extracting(membership -> membership.getMemberElement()).containsExactlyInAnyOrder(owned, inherited);
+        assertThat(context.getFeature()).containsExactlyInAnyOrder(owned, inherited);
+    }
+
+    /**
+     * Conflicting memberships from two bases are reported in either specialization order and remain accessible.
+     *
+     * @param reverse whether to reverse the specialization order
+     * @param leftShortName whether the left inherited short name conflicts
+     * @param rightShortName whether the right inherited short name conflicts
+     */
+    @ParameterizedTest
+    @CsvSource({"false, false, false", "false, false, true", "false, true, false", "false, true, true",
+        "true, false, false", "true, false, true", "true, true, false", "true, true, true"})
+    public void namespaceConflictingInheritedMembers(boolean reverse, boolean leftShortName, boolean rightShortName) {
+        var left = SysmlFactory.eINSTANCE.createPartDefinition();
+        var right = SysmlFactory.eINSTANCE.createPartDefinition();
+        var leftFeature = this.createAttribute(left, "left");
+        var rightFeature = this.createAttribute(right, "right");
+        var derived = SysmlFactory.eINSTANCE.createPartDefinition();
+        if (reverse) {
+            this.addSubclassification(derived, right);
+            this.addSubclassification(derived, left);
+        } else {
+            this.addSubclassification(derived, left);
+            this.addSubclassification(derived, right);
+        }
+        this.assertNamespaceDistinguishability(derived, true);
+        this.setConflictingName(leftFeature, leftShortName);
+        this.setConflictingName(rightFeature, rightShortName);
+        this.assertNamespaceDistinguishability(derived, false);
+        assertThat(derived.getInheritedMembership()).containsExactlyInAnyOrder(leftFeature.getOwningMembership(), rightFeature.getOwningMembership());
+        assertThat(derived.getFeature()).containsExactlyInAnyOrder(leftFeature, rightFeature);
+    }
+
+    /**
+     * The same membership inherited through both branches of a diamond does not conflict with itself.
+     */
+    @Test
+    public void namespaceDiamondMembershipIsDistinguishable() {
+        var base = SysmlFactory.eINSTANCE.createPartDefinition();
+        var inherited = this.createAttribute(base, HOMONYM);
+        var left = SysmlFactory.eINSTANCE.createPartDefinition();
+        var right = SysmlFactory.eINSTANCE.createPartDefinition();
+        this.addSubclassification(left, base);
+        this.addSubclassification(right, base);
+        var derived = SysmlFactory.eINSTANCE.createPartDefinition();
+        this.addSubclassification(derived, left);
+        this.addSubclassification(derived, right);
+
+        this.assertNamespaceDistinguishability(derived, true);
+        assertThat(derived.getInheritedMembership()).containsExactly(inherited.getOwningMembership());
+        assertThat(derived.getFeature()).containsExactly(inherited);
+    }
+
+    /**
+     * Evaluates the real namespace rule, checking that a false result is not caused by an AQL diagnostic.
+     *
+     * @param context the namespace to validate
+     * @param expected whether its memberships are distinguishable
+     */
+    private void assertNamespaceDistinguishability(Type context, boolean expected) {
+        var interpreter = new AQLInterpreter(List.of(SysMLValidationRuleQueryServices.class), List.of(), List.of(SysmlPackage.eINSTANCE));
+        var result = interpreter.evaluateExpression(Map.of("self", context), SysMLValidationRule.validateNamespaceDistinguishibility.expression());
+        assertThat(result.getStatus()).isEqualTo(Status.OK);
+        assertThat(result.asBoolean()).contains(expected);
+    }
+
+    /**
+     * Creates an owned attribute with its semantic feature membership.
+     *
+     * @param owner the owning type
+     * @param name the initial distinct name
+     * @return the owned attribute
+     */
+    private AttributeUsage createAttribute(Type owner, String name) {
+        var attribute = SysmlFactory.eINSTANCE.createAttributeUsage();
+        attribute.setDeclaredName(name);
+        var membership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        membership.getOwnedRelatedElement().add(attribute);
+        owner.getOwnedRelationship().add(membership);
+        return attribute;
+    }
+
+    /**
+     * Adds a real subclassification between the definitions being validated.
+     *
+     * @param specific the specializing definition
+     * @param general the general definition
+     */
+    private void addSubclassification(PartDefinition specific, PartDefinition general) {
+        var specialization = SysmlFactory.eINSTANCE.createSubclassification();
+        specialization.setSubclassifier(specific);
+        specialization.setSuperclassifier(general);
+        specific.getOwnedRelationship().add(specialization);
+    }
+
+    /**
+     * Sets the conflicting identifier while keeping the other identifier unchanged.
+     *
+     * @param attribute the attribute to rename
+     * @param shortName whether to use its short name instead of its name
+     */
+    private void setConflictingName(AttributeUsage attribute, boolean shortName) {
+        if (shortName) {
+            attribute.setDeclaredShortName(HOMONYM);
+        } else {
+            attribute.setDeclaredName(HOMONYM);
+        }
     }
 
     @Test
