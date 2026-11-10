@@ -738,17 +738,22 @@ public class FeatureImpl extends TypeImpl implements Feature {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc -->
+     *
+     * Returns an unmodifiable snapshot of owned redefinitions in relationship order.
+     *
+     * <!-- end-user-doc -->
      *
      * @generated NOT
      */
     @Override
     public EList<Redefinition> getOwnedRedefinition() {
         List<Redefinition> ownedRedefinitions = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(Redefinition.class::isInstance)
-                .map(Redefinition.class::cast)
-                .forEach(ownedRedefinitions::add);
+        for (var relationship : this.getOwnedRelationship()) {
+            if (relationship instanceof Redefinition redefinition) {
+                ownedRedefinitions.add(redefinition);
+            }
+        }
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_OwnedRedefinition(), ownedRedefinitions.size(), ownedRedefinitions.toArray());
     }
 

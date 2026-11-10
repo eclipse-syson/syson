@@ -21,6 +21,7 @@ Downstream applications importing these classes must update their imports and de
 === Improvements
 
 - https://github.com/eclipse-syson/syson/issues/2582[#2582] [details] Extract the Details view providers into the new `syson-details-view` module.
+- https://github.com/eclipse-syson/syson/issues/2605[#2605] [metamodel] Reduce allocations in membership queries used during diagram refresh.
 
 === New features
 
