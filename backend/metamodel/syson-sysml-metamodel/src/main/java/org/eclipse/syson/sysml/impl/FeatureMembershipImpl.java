@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2025 Obeo.
+* Copyright (c) 2023, 2026 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -70,17 +70,23 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
     }
 
     /**
-     * <!-- begin-user-doc --> The Feature that this FeatureMembership relates to its owningType, making it an
-     * ownedFeature of the owningType. <!-- end-user-doc -->
+     * <!-- begin-user-doc -->
+     *
+     * The Feature that this FeatureMembership relates to its owningType, making it an ownedFeature of the owningType.
+     *
+     * Returns the first owned Feature without resolving proxies.
+     *
+     * <!-- end-user-doc -->
      *
      * @generated NOT
      */
     public Feature basicGetOwnedMemberFeature() {
-        return this.getOwnedRelatedElement().stream()
-                .filter(Feature.class::isInstance)
-                .map(Feature.class::cast)
-                .findFirst()
-                .orElse(null);
+        for (var element : this.getOwnedRelatedElement()) {
+            if (element instanceof Feature feature) {
+                return feature;
+            }
+        }
+        return null;
     }
 
     /**

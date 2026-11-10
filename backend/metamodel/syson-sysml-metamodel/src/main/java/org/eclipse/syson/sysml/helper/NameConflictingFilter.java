@@ -40,16 +40,22 @@ public class NameConflictingFilter implements Predicate<Membership> {
 
     private final Set<String> usedNames = new HashSet<>();
 
+    /**
+     * Checks the membership's alias or effective names, reading its name and member element only once.
+     *
+     * @param member
+     *            the membership to check, which may be {@code null}
+     * @return whether the membership has no conflicting name
+     */
     @Override
     public boolean test(Membership member) {
         boolean test = true;
         if (member != null) {
-            if (member.getMemberName() != null
-                    && member.getMemberElement() != null
-                    && member.getMemberName() != member.getMemberElement().getName()) {
-                test = this.checkConflictingNames(member.getMemberName());
+            String memberName = member.getMemberName();
+            Element memberElement = member.getMemberElement();
+            if (memberName != null && memberElement != null && memberName != memberElement.getName()) {
+                test = this.checkConflictingNames(memberName);
             } else {
-                Element memberElement = member.getMemberElement();
                 if (memberElement != null) {
                     test = this.checkConflictingElement(memberElement);
                 }
