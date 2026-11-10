@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.syson.services.ContextualFeatureChain;
 import org.eclipse.syson.sysml.AllocationDefinition;
 import org.eclipse.syson.sysml.ConnectionDefinition;
 import org.eclipse.syson.sysml.ConstraintDefinition;
@@ -34,6 +35,9 @@ import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
+import org.eclipse.syson.sysml.metamodel.services.NonStandardLibraryFeaturePredicate;
+import org.eclipse.syson.sysml.metamodel.services.RequiresRedefinitionFeatureChainPredicate;
 import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterConstants;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFragment;
@@ -65,6 +69,12 @@ public class TreeQuerySelectionDialogService {
 
     private final ISysONExplorerFilterService filterService;
 
+    private final MetamodelQueryElementService metamodelQueryElementService = new MetamodelQueryElementService();
+
+    private final NonStandardLibraryFeaturePredicate nonStandardLibraryFeaturePredicate = new NonStandardLibraryFeaturePredicate();
+
+    private final RequiresRedefinitionFeatureChainPredicate requiresRedefinitionFeatureChainPredicate = new RequiresRedefinitionFeatureChainPredicate();
+
     /**
      * Creates a new selection dialog query service.
      *
@@ -76,6 +86,21 @@ public class TreeQuerySelectionDialogService {
     public TreeQuerySelectionDialogService(ISysONExplorerService sysONExplorerService, ISysONExplorerFilterService filterService) {
         this.sysONExplorerService = Objects.requireNonNull(sysONExplorerService);
         this.filterService = Objects.requireNonNull(filterService);
+    }
+
+    /**
+     * Returns accessible chains requiring a local redefinition, excluding standard library features.
+     *
+     * @param self
+     *            the type on which the tool was invoked
+     * @return the selectable feature chains
+     */
+    public List<ContextualFeatureChain> getFeatureChainSelectionDialogElements(Type self) {
+        return this.metamodelQueryElementService.streamFeatureChains(self,
+                this.nonStandardLibraryFeaturePredicate,
+                this.requiresRedefinitionFeatureChainPredicate)
+                .map(features -> new ContextualFeatureChain(self, features))
+                .toList();
     }
 
     /**

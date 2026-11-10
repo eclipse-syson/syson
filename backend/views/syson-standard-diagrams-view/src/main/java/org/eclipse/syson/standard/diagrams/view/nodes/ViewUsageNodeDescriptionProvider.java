@@ -51,6 +51,7 @@ import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ExhibitStateNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.RedefineNestedFeatureToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsViewToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.services.DiagramQueryCache;
@@ -285,6 +286,9 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
 
     private Collection<? extends NodeTool> addCustomTools(IViewDiagramElementFinder cache, String toolSectionName) {
         var nodeTools = new ArrayList<NodeTool>();
+        if (ToolConstants.STRUCTURE.equals(toolSectionName)) {
+            nodeTools.add(new RedefineNestedFeatureToolProvider().create(cache));
+        }
         if (SDVDiagramDescriptionProvider.BEHAVIOR_TOOL_SECTION.name().equals(toolSectionName)) {
             nodeTools.add(new ExhibitStateNodeToolProvider(false).create(cache));
             nodeTools.add(new ExhibitStateNodeToolProvider(true).create(cache));

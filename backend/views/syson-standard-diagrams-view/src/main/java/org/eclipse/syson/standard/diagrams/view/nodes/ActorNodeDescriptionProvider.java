@@ -31,6 +31,8 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
+import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
+import org.eclipse.syson.diagram.common.view.tools.RedefineNestedFeatureToolProvider;
 import org.eclipse.syson.diagram.services.DiagramQueryCache;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.model.services.aql.ModelQueryAQLService;
@@ -142,8 +144,11 @@ public class ActorNodeDescriptionProvider extends UsageNodeDescriptionProvider {
 
     @Override
     protected List<NodeToolSection> getToolSections(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
-        // No tool section to avoid the creation of graphical elements inside the image node.
-        return List.of();
+        // Only offer redefinition to avoid creating graphical elements inside the image node.
+        return List.of(this.diagramBuilderHelper.newNodeToolSection()
+                .name(ToolConstants.STRUCTURE)
+                .nodeTools(new RedefineNestedFeatureToolProvider().create(cache))
+                .build());
     }
 
 }
