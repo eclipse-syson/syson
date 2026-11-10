@@ -836,15 +836,21 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
+     * <!-- begin-user-doc -->
+     *
+     * Collects owned and inherited memberships without hiding semantic homonyms. Import-name hiding is preserved.
+     *
+     * <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
     protected EList<Membership> getMembership(EList<Namespace> excluded) {
         List<Element> memberships = new ArrayList<>();
         NameConflictingFilter filter = new NameConflictingFilter();
-        this.getOwnedMembership().stream()
-                .filter(filter)
-                .forEach(memberships::add);
+        var ownedMemberships = this.getOwnedMembership();
+        memberships.addAll(ownedMemberships);
+        filter.fillUsedNames(ownedMemberships);
         this.importedMemberships(excluded).stream()
                 .filter(filter)
                 .forEach(memberships::add);
@@ -853,7 +859,6 @@ public class TypeImpl extends NamespaceImpl implements Type {
                 .map(Type.class::cast)
                 .collect(toCollection(UniqueEList::new)), false)
                 .stream()
-                .filter(filter)
                 .forEach(memberships::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_Membership(), memberships.size(), memberships.toArray());
     }

@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.syson.diagram.services.DiagramQueryAnnotatingService;
+import org.eclipse.syson.diagram.services.DiagramQueryCache;
 import org.eclipse.syson.diagram.services.DiagramQueryElementService;
 import org.eclipse.syson.diagram.services.DiagramQueryExposeService;
 import org.eclipse.syson.diagram.services.DiagramQueryGraphicalService;
@@ -213,6 +214,13 @@ public class DiagramQueryAQLService {
      */
     public List<Feature> getInheritedCompartmentItems(Type type, String eReferenceName) {
         return this.diagramQueryToolService.getInheritedCompartmentItems(type, eReferenceName);
+    }
+
+    /**
+     * {@link DiagramQueryToolService#getInheritedCompartmentItems(Type, String, DiagramQueryCache)}.
+     */
+    public List<Feature> getInheritedCompartmentItems(Type type, String eReferenceName, DiagramQueryCache cache) {
+        return this.diagramQueryToolService.getInheritedCompartmentItems(type, eReferenceName, cache);
     }
 
     /**

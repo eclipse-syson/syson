@@ -191,6 +191,21 @@ public class DiagramQueryToolService {
      * @return the inherited features to display
      */
     public List<Feature> getInheritedCompartmentItems(Type type, String eReferenceName) {
+        return this.getInheritedCompartmentItems(type, eReferenceName, null);
+    }
+
+    /**
+     * Returns compartment candidates, sharing inherited-feature computation across this render's compartments.
+     *
+     * @param type
+     *            the type owning the compartment
+     * @param eReferenceName
+     *            the compartment reference name
+     * @param cache
+     *            the current render's cache, or {@code null} outside rendering
+     * @return a separate, mutable list of inherited features matching the compartment and display options
+     */
+    public List<Feature> getInheritedCompartmentItems(Type type, String eReferenceName, DiagramQueryCache cache) {
         boolean showInheritedMembers = this.showDiagramsInheritedMembersService.getShowInheritedMembers();
         boolean showInheritedMembersFromStandardLibraries = this.showDiagramsInheritedMembersService.getShowInheritedMembersFromStandardLibraries();
 
@@ -201,7 +216,13 @@ public class DiagramQueryToolService {
         List<Feature> inheritedElements = new ArrayList<>();
         var eStructuralFeature = type.eClass().getEStructuralFeature(eReferenceName);
         if (eStructuralFeature instanceof EReference eReference) {
-            type.getInheritedFeature().stream()
+            final List<Feature> inheritedFeatures;
+            if (cache == null) {
+                inheritedFeatures = type.getInheritedFeature();
+            } else {
+                inheritedFeatures = cache.getInheritedFeatures(type);
+            }
+            inheritedFeatures.stream()
                     .filter(feature -> new InheritedCompartmentItemFilterSwitch(eReference).doSwitch(feature))
                     .forEach(inheritedElements::add);
         }

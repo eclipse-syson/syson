@@ -29,8 +29,10 @@ import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
+import org.eclipse.syson.diagram.services.DiagramQueryCache;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.diagram.services.utils.CompartmentItemPreconditionSwitch;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -58,6 +60,11 @@ public class InheritedCompartmentItemNodeDescriptionProvider extends AbstractNod
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
+    /**
+     * Builds an inherited compartment node whose candidate queries share the current render's cache.
+     *
+     * @return the inherited compartment node description
+     */
     @Override
     public NodeDescription create() {
         return this.diagramBuilderHelper.newNodeDescription()
@@ -67,7 +74,8 @@ public class InheritedCompartmentItemNodeDescriptionProvider extends AbstractNod
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.descriptionNameGenerator.getInheritedCompartmentItemName(this.eClass, this.eReference))
                 .preconditionExpression(new CompartmentItemPreconditionSwitch(this.eReference).doSwitch(this.eClass))
-                .semanticCandidatesExpression(ServiceMethod.of1(DiagramQueryAQLService::getInheritedCompartmentItems).aqlSelf(AQLUtils.aqlString(this.eReference.getName())))
+                .semanticCandidatesExpression(ServiceMethod.of2(DiagramQueryAQLService.class, DiagramQueryAQLService::getInheritedCompartmentItems, Type.class, String.class, DiagramQueryCache.class)
+                        .aqlSelf(AQLUtils.aqlString(this.eReference.getName()), DiagramQueryCache.VARIABLE_NAME))
                 .style(this.createCompartmentItemNodeStyle())
                 .userResizable(UserResizableDirection.NONE)
                 .palette(this.createInheritedCompartmentItemNodePalette())

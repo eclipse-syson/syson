@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -127,25 +127,30 @@ public class TypeImplTest {
     }
 
 
-    @DisplayName("Check name collision with super type memberships")
+    /**
+     * Same-name owned features retain inherited homonyms until a semantic redefinition replaces them.
+     */
+    @DisplayName("Check that owned names do not hide inherited memberships without redefinition")
     @Test
     public void nameCollisionWithInheritedMemberships() {
         var testModel = new TestModel();
 
         assertContentEquals(testModel.subDef.visibleMemberships(new BasicEList<>(), false, false), testModel.attr1.getOwningMembership(), testModel.attr0.getOwningMembership());
 
-        // Then create an attribute named attr0 in subDef to hide the super SuperSuperDef::attr0 attribute
+        // A homonym introduces a validation conflict rather than a semantic replacement.
         AttributeUsage subDefAttr0 = testModel.getBuilder().createInWithName(AttributeUsage.class, testModel.subDef, "attr0");
 
-        // SuperSuperDef::attr0 should not be visible anymore
         assertContentEquals(testModel.subDef.visibleMemberships(new BasicEList<>(), false, false),
-                testModel.attr1.getOwningMembership(), subDefAttr0.getOwningMembership());
-        assertContentEquals(testModel.subDef.getInheritedMembership(), testModel.attr1.getOwningMembership(), testModel.protectedAttr.getOwningMembership());
+                testModel.attr1.getOwningMembership(), testModel.attr0.getOwningMembership(), subDefAttr0.getOwningMembership());
+        assertContentEquals(testModel.subDef.getInheritedMembership(), testModel.attr1.getOwningMembership(), testModel.attr0.getOwningMembership(), testModel.protectedAttr.getOwningMembership());
 
         AttributeUsage subDefAttr1 = testModel.getBuilder().createInWithName(AttributeUsage.class, testModel.subDef, "attr1");
-        // SuperDef::attr1 should not be visible anymore
         assertContentEquals(testModel.subDef.visibleMemberships(new BasicEList<>(), false, false),
-                subDefAttr1.getOwningMembership(), subDefAttr0.getOwningMembership());
+                subDefAttr1.getOwningMembership(), subDefAttr0.getOwningMembership(), testModel.attr1.getOwningMembership(), testModel.attr0.getOwningMembership());
+
+        testModel.getBuilder().addRedefinition(subDefAttr0, testModel.attr0);
+        testModel.getBuilder().addRedefinition(subDefAttr1, testModel.attr1);
+        assertContentEquals(testModel.subDef.visibleMemberships(new BasicEList<>(), false, false), subDefAttr0.getOwningMembership(), subDefAttr1.getOwningMembership());
 
     }
 

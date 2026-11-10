@@ -2480,8 +2480,8 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     /**
-     * Checks if the previous defined feature of the owning type of the source element is the expected feature. The
-     * candidates {@link FeatureMembership} are filtered using a given predicate
+     * Checks whether the preceding feature declaration is the expected feature. Non-owning sequence references such
+     * as {@code first action;} are skipped because they do not declare a feature. Candidates are filtered using the given predicate.
      *
      * @param expectedFeature
      *         the expected feature
@@ -2500,8 +2500,8 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             ListIterator<Membership> iterator = memberships.listIterator(index);
             while (iterator.hasPrevious()) {
                 Membership previousMembership = iterator.previous();
-                if (candidatePredicate == null || candidatePredicate.test(previousMembership)) {
-                    return previousMembership instanceof FeatureMembership featureMembership && featureMembership.getOwnedMemberFeature() == expectedFeature;
+                if (previousMembership instanceof FeatureMembership featureMembership && (candidatePredicate == null || candidatePredicate.test(previousMembership))) {
+                    return featureMembership.getOwnedMemberFeature() == expectedFeature;
                 }
             }
         }

@@ -1589,7 +1589,7 @@ public enum SysMLValidationRule implements IValidationRule {
     validateNamespaceDistinguishibility(
             SysmlPackage.eINSTANCE.getNamespace(),
             "validateNamespaceDistinguishibility",
-            "aql:self.ownedMembership->forAll(m1 | self.ownedMembership->forAll(m2 | m1 <> m2 implies m1.isDistinguishableFrom(m2)))",
+            "aql:let memberships : OrderedSet(sysml::Membership) = self.ownedMembership->union(self.membership)->asSet() in memberships->forAll(m1 | memberships->forAll(m2 | m1 <> m2 implies m1.isDistinguishableFrom(m2)))",
             "All memberships of a Namespace must be distinguishable from each other."),
     validateObjectiveMembershipIsComposite(
             SysmlPackage.eINSTANCE.getObjectiveMembership(),
