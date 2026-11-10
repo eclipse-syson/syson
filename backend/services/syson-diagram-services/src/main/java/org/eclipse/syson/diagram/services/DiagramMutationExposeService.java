@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.services;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -102,7 +103,7 @@ public class DiagramMutationExposeService {
         this.metamodelQueryElementService = new MetamodelQueryElementService();
         this.deleteService = new DeleteService();
         this.utilService = new UtilService();
-        this.nodeDescriptionService = new NodeDescriptionService(siriusWebCoreServices.objectSearchService());
+        this.nodeDescriptionService = new NodeDescriptionService(siriusWebCoreServices.objectSearchService(), Collections.singletonMap(DiagramQueryCache.VARIABLE_NAME, null));
     }
 
     /**

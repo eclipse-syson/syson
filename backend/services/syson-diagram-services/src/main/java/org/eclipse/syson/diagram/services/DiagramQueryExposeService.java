@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.syson.diagram.services.utils.ViewFilterSwitch;
 import org.eclipse.syson.model.services.ModelQueryElementService;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.services.api.ViewDefinitionKind;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expose;
 import org.eclipse.syson.sysml.LibraryPackage;
@@ -58,16 +59,30 @@ public class DiagramQueryExposeService {
     }
 
     /**
-     * Get the list of elements to expose for a given {@link Element}.
+     * Get the list of elements to expose for a given {@link Element}. Uses uncached resolution outside rendering.
      */
     public List<Element> getExposedElements(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
-        return this.getExposedElements(element, null, domainType, ancestors, editingContext, diagramContext);
+        return this.getExposedElements(element, domainType, ancestors, editingContext, diagramContext, null);
     }
 
     /**
-     * Get the list of elements to expose for a given {@link Element}.
+     * Get the list of elements to expose for a given {@link Element}. Reuses view kinds from the given render cache when present.
+     */
+    public List<Element> getExposedElements(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext, DiagramQueryCache cache) {
+        return this.getExposedElements(element, null, domainType, ancestors, editingContext, diagramContext, cache);
+    }
+
+    /**
+     * Get the list of elements to expose for a given {@link Element}. Uses uncached resolution outside rendering.
      */
     public List<Element> getExposedElements(Element element, Element parent, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
+        return this.getExposedElements(element, parent, domainType, ancestors, editingContext, diagramContext, null);
+    }
+
+    /**
+     * Get the list of elements to expose for a given {@link Element}. Reuses view kinds from the given render cache when present.
+     */
+    public List<Element> getExposedElements(Element element, Element parent, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext, DiagramQueryCache cache) {
         List<Element> elementsToExpose = new ArrayList<>();
         if (element instanceof ViewUsage viewUsage) {
             var exposedElements = new ArrayList<Element>();
@@ -80,7 +95,12 @@ public class DiagramQueryExposeService {
                     .filter(elt -> this.isTypeOf(elt, domainType) && (parent == null || (!Objects.equals(parent, elt) && EMFUtils.isAncestor(parent, elt))))
                     .toList();
             elementsToExpose.addAll(filteredExposedElements);
-            var viewDefKind = this.utilService.getViewDefinitionKind(viewUsage, ancestors, editingContext);
+            final ViewDefinitionKind viewDefKind;
+            if (cache == null) {
+                viewDefKind = this.utilService.getViewDefinitionKind(viewUsage, ancestors, editingContext);
+            } else {
+                viewDefKind = cache.getViewDefinitionKind(viewUsage, editingContext);
+            }
             for (Element filteredExposedElement : filteredExposedElements) {
                 boolean canBeDisplayed = new ViewFilterSwitch(viewDefKind, exposedElements, parent, this.metamodelQueryElementService).doSwitch(filteredExposedElement);
                 if (!canBeDisplayed) {
@@ -93,7 +113,7 @@ public class DiagramQueryExposeService {
                     .map(ViewUsage.class::cast)
                     .findFirst();
             if (viewUsageContainingElement.isPresent()) {
-                elementsToExpose.addAll(this.getExposedElements(viewUsageContainingElement.get(), element, domainType, ancestors, editingContext, diagramContext));
+                elementsToExpose.addAll(this.getExposedElements(viewUsageContainingElement.get(), element, domainType, ancestors, editingContext, diagramContext, cache));
             }
         }
         return elementsToExpose;
@@ -125,10 +145,17 @@ public class DiagramQueryExposeService {
     }
 
     /**
-     * Get all Actors ({@link PartUsage}) in {@link ViewUsage}'s exposed elements.
+     * Get all Actors ({@link PartUsage}) in {@link ViewUsage}'s exposed elements. Uses uncached resolution outside rendering.
      */
     public List<PartUsage> getExposedActors(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
-        return this.getExposedElements(element, domainType, ancestors, editingContext, diagramContext).stream()
+        return this.getExposedActors(element, domainType, ancestors, editingContext, diagramContext, null);
+    }
+
+    /**
+     * Get all Actors ({@link PartUsage}) in {@link ViewUsage}'s exposed elements. Reuses view kinds from the given render cache when present.
+     */
+    public List<PartUsage> getExposedActors(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext, DiagramQueryCache cache) {
+        return this.getExposedElements(element, domainType, ancestors, editingContext, diagramContext, cache).stream()
                 .filter(PartUsage.class::isInstance)
                 .map(PartUsage.class::cast)
                 .filter(this.metamodelQueryElementService::isActor)
@@ -136,10 +163,17 @@ public class DiagramQueryExposeService {
     }
 
     /**
-     * Get all Stakeholders ({@link PartUsage}) in {@link ViewUsage}'s exposed elements.
+     * Get all Stakeholders ({@link PartUsage}) in {@link ViewUsage}'s exposed elements. Uses uncached resolution outside rendering.
      */
     public List<PartUsage> getExposedStakeholders(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
-        return this.getExposedElements(element, domainType, ancestors, editingContext, diagramContext).stream()
+        return this.getExposedStakeholders(element, domainType, ancestors, editingContext, diagramContext, null);
+    }
+
+    /**
+     * Get all Stakeholders ({@link PartUsage}) in {@link ViewUsage}'s exposed elements. Reuses view kinds from the given render cache when present.
+     */
+    public List<PartUsage> getExposedStakeholders(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext, DiagramQueryCache cache) {
+        return this.getExposedElements(element, domainType, ancestors, editingContext, diagramContext, cache).stream()
                 .filter(PartUsage.class::isInstance)
                 .map(PartUsage.class::cast)
                 .filter(this.metamodelQueryElementService::isStakeholder)
@@ -147,10 +181,17 @@ public class DiagramQueryExposeService {
     }
 
     /**
-     * Get all Subjects ({@link ReferenceUsage}) in {@link ViewUsage}'s exposed elements.
+     * Get all Subjects ({@link ReferenceUsage}) in {@link ViewUsage}'s exposed elements. Uses uncached resolution outside rendering.
      */
     public List<ReferenceUsage> getExposedSubjects(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
-        return this.getExposedElements(element, domainType, ancestors, editingContext, diagramContext).stream()
+        return this.getExposedSubjects(element, domainType, ancestors, editingContext, diagramContext, null);
+    }
+
+    /**
+     * Get all Subjects ({@link ReferenceUsage}) in {@link ViewUsage}'s exposed elements. Reuses view kinds from the given render cache when present.
+     */
+    public List<ReferenceUsage> getExposedSubjects(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext, DiagramQueryCache cache) {
+        return this.getExposedElements(element, domainType, ancestors, editingContext, diagramContext, cache).stream()
                 .filter(ReferenceUsage.class::isInstance)
                 .map(ReferenceUsage.class::cast)
                 .filter(this.metamodelQueryElementService::isSubject)

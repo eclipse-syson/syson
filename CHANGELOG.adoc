@@ -24,6 +24,7 @@ Downstream applications importing these classes must update their imports and de
 - https://github.com/eclipse-syson/syson/issues/2582[#2582] [details] Extract the Details view providers into the new `syson-details-view` module.
 - https://github.com/eclipse-syson/syson/issues/2605[#2605] [metamodel] Reduce allocations in membership queries used during diagram refresh.
 - https://github.com/eclipse-syson/syson/issues/2606[#2606] [diagrams] Reuse inherited features across compartment and inherited border-node queries within each diagram render.
+- https://github.com/eclipse-syson/syson/issues/2607[#2607] [diagrams] Resolve each view's kind once per diagram render and share the result across exposed-element, actor, subject and stakeholder queries.
 
 === New features
 

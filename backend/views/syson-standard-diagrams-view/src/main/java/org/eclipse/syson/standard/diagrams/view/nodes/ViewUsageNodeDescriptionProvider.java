@@ -53,6 +53,7 @@ import org.eclipse.syson.diagram.common.view.tools.ExhibitStateNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsViewToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
+import org.eclipse.syson.diagram.services.DiagramQueryCache;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
@@ -86,6 +87,9 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
         this.toolDescriptionService = new ToolDescriptionService(descriptionNameGenerator);
     }
 
+    /**
+     * Creates the node description with semantic candidates sharing the current render cache.
+     */
     @Override
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getViewUsage());
@@ -95,10 +99,10 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.getNodeDescriptionName())
-                .semanticCandidatesExpression(ServiceMethod.of4(DiagramQueryAQLService.class,
+                .semanticCandidatesExpression(ServiceMethod.of5(DiagramQueryAQLService.class,
                         DiagramQueryAQLService::getExposedElements, Element.class, EClass.class, List.class,
-                        IEditingContext.class, DiagramContext.class)
-                        .aqlSelf(domainType, ANCESTORS, CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT))
+                        IEditingContext.class, DiagramContext.class, DiagramQueryCache.class)
+                        .aqlSelf(domainType, ANCESTORS, CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, DiagramQueryCache.VARIABLE_NAME))
                 .style(this.createViewFrameNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)

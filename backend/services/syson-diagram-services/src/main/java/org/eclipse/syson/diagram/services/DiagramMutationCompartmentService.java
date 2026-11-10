@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.services;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -78,7 +79,7 @@ public class DiagramMutationCompartmentService {
                 .orElse(List.of());
 
         var parentObject = this.objectSearchService.getObject(editingContext, node.getTargetObjectId()).orElse(null);
-        NodeDescriptionService nodeDescriptionService = new NodeDescriptionService(this.objectSearchService);
+        NodeDescriptionService nodeDescriptionService = new NodeDescriptionService(this.objectSearchService, Collections.singletonMap(DiagramQueryCache.VARIABLE_NAME, null));
 
         var compartmentDescriptionCandidates = nodeDescriptionService.getNodeDescriptionsForRenderingElementAsChild(targetElement, parentObject, allChildNodeDescriptions,
                 convertedNodes, editingContext, diagramContext).stream()
