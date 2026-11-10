@@ -2,6 +2,8 @@
 
 == Key highlights
 
+* Standard diagrams are now faster and more responsive.
+
 == New features
 
 == Bug fixes
@@ -11,6 +13,10 @@
 ** Redefined features now replace their originals in the features available on a `Definition` or `Usage`, including when a redefinition changes the feature name or is inherited through multiple specialization paths.
 
 == Improvements
+
+* In diagrams:
+
+** Creating elements in standard diagrams is faster, especially when inherited elements are displayed.
 
 == Technical details
 

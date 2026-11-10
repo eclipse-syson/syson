@@ -472,9 +472,19 @@ public class MetamodelMutationElementService {
         }
     }
 
+    /**
+     * Creates a connector end and its feature chain using the requested feature's identity. For flows, the reference
+     * inside the flow end is the redefining feature, independently of any homonyms in the endpoint's container.
+     *
+     * @param connector the connector receiving the end
+     * @param end the requested endpoint feature
+     * @param endContainer the semantic element represented by the endpoint's graphical container
+     * @param connectorContainer the container from which the feature chain is computed
+     * @param defaultDirection the direction to assign when the endpoint has none
+     * @return the new connector end
+     */
     private Feature addConnectorEnd(Connector connector, Feature end, Element endContainer, Element connectorContainer, FeatureDirectionKind defaultDirection) {
         List<Feature> sourceFeaturePath = List.of();
-        // This code will not work to connect inherited non redefined feature.
         FeatureChainComputer cmp = new FeatureChainComputer();
         sourceFeaturePath = cmp.computeShortestPath(connectorContainer, end, endContainer).orElse(List.of());
 
@@ -526,7 +536,7 @@ public class MetamodelMutationElementService {
                 // Since the 'end' already has a direction, use the 'end' for the redefinition.
                 var redefinition = SysmlFactory.eINSTANCE.createRedefinition();
                 flowReferenceUsage.getOwnedRelationship().add(redefinition);
-                redefinition.setRedefiningFeature(connector);
+                redefinition.setRedefiningFeature(flowReferenceUsage);
                 redefinition.setRedefinedFeature(end);
                 this.elementInitializerSwitch.doSwitch(redefinition);
             } else {
@@ -540,7 +550,7 @@ public class MetamodelMutationElementService {
 
                 var redefinition = SysmlFactory.eINSTANCE.createRedefinition();
                 flowReferenceUsage.getOwnedRelationship().add(redefinition);
-                redefinition.setRedefiningFeature(connector);
+                redefinition.setRedefiningFeature(flowReferenceUsage);
                 redefinition.setRedefinedFeature(endReferenceUsage);
                 this.elementInitializerSwitch.doSwitch(redefinition);
             }
