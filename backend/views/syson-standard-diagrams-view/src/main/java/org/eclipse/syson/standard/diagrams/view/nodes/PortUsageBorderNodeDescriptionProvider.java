@@ -24,6 +24,8 @@ import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractPortUsageBorderNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
+import org.eclipse.syson.diagram.common.view.tools.RedefineNestedFeatureToolProvider;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.services.DeleteService;
@@ -82,7 +84,11 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractPortUsageBor
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
-                .toolSections(this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection())
+                .toolSections(this.diagramBuilderHelper.newNodeToolSection()
+                        .name(ToolConstants.STRUCTURE)
+                        .nodeTools(new RedefineNestedFeatureToolProvider().create(cache))
+                        .build(),
+                        this.diagramDefaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .quickAccessTools(this.getDuplicateElementAndNodeTool())
                 .build();
     }

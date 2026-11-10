@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.syson.services.ContextualFeatureChain;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerService;
 import org.eclipse.syson.tree.services.TreeQuerySelectionDialogService;
@@ -105,6 +106,13 @@ public class TreeQueryAQLService {
 
     public String getType(Object self) {
         return this.sysonExplorerService.getType(self);
+    }
+
+    /**
+     * {@link TreeQuerySelectionDialogService#getFeatureChainSelectionDialogElements(Type)}.
+     */
+    public List<ContextualFeatureChain> getFeatureChainSelectionDialogElements(Type self) {
+        return this.treeQuerySelectionDialogService.getFeatureChainSelectionDialogElements(self);
     }
 
     public boolean hasChildren(Object self, IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds) {

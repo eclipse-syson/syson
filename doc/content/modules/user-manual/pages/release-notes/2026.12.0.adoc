@@ -8,6 +8,13 @@
 
 * In the Explorer, `Collapse all` collapses an item and its descendants.
 
+* In diagrams:
+
+** A new _Redefine a nested feature_ tool is available in the _Structure_ section of diagram palettes for `Usage` and `Definition` graphical nodes.
+This initial implementation opens a selection dialog listing configurable feature paths.
+Confirming a selection closes the dialog without modifying the model.
+Actual feature redefinition will be added in a subsequent change.
+
 * For application developers:
 
 ** New metamodel query services expose nested feature paths from a `Type` context, including inherited features and effective redefinitions.

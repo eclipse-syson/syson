@@ -52,6 +52,7 @@ import org.eclipse.syson.diagram.common.view.tools.PartUsageFlowConnectionNodeTo
 import org.eclipse.syson.diagram.common.view.tools.PartUsageInterfaceNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.PartUsageSubsettingNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.PerformActionNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.RedefineNestedFeatureToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ReferenceUsageCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.RequireConstraintNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SatisfyNodeToolProvider;
@@ -125,6 +126,22 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
         this.cache = Objects.requireNonNull(cache);
         this.allNodeDescriptions = Objects.requireNonNull(allNodeDescriptions);
         this.utilService = new UtilService();
+    }
+
+    @Override
+    public List<NodeToolSection> doSwitch(EClass eClass) {
+        var sections = super.doSwitch(eClass);
+        // Specialized cases such as casePartDefinition return non-null sections, so EMF skips caseDefinition.
+        // Add the common tool after dispatch to cover every Usage and Definition subtype.
+        if (SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(eClass) || SysmlPackage.eINSTANCE.getDefinition().isSuperTypeOf(eClass)) {
+            var structureSection = this.toolDescriptionService.getNodeToolSection(sections, ToolConstants.STRUCTURE).orElseGet(() -> {
+                var section = this.toolDescriptionService.buildStructureSection();
+                sections.addFirst(section);
+                return section;
+            });
+            structureSection.getNodeTools().add(new RedefineNestedFeatureToolProvider().create(this.cache));
+        }
+        return sections;
     }
 
     @Override
