@@ -14,6 +14,7 @@ package org.eclipse.syson.diagram.services;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -138,7 +139,7 @@ public class DiagramMutationElementService {
         this.metamodelMutationElementService = new MetamodelMutationElementService();
         this.metamodelQueryElementService = new MetamodelQueryElementService();
         this.utilService = new UtilService();
-        this.nodeDescriptionService = new NodeDescriptionService(this.objectSearchService);
+        this.nodeDescriptionService = new NodeDescriptionService(this.objectSearchService, Collections.singletonMap(DiagramQueryCache.VARIABLE_NAME, null));
     }
 
     /**

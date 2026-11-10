@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
+import org.eclipse.syson.diagram.services.DiagramQueryCache;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.services.DeleteService;
@@ -91,6 +92,9 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
 
     protected abstract UserResizableDirection isNodeResizable();
 
+    /**
+     * Creates the node description with semantic candidates sharing the current render cache.
+     */
     @Override
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(this.getDomainType());
@@ -102,10 +106,10 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
                 .isHiddenByDefaultExpression(ServiceMethod.of1(DiagramQueryAQLService.class, DiagramQueryAQLService::isHiddenControlNodeByDefault, Element.class, List.class).aqlSelf(ANCESTORS))
                 .outsideLabels(this.createOutsideLabelDescription())
                 .name(this.descriptionNameGenerator.getNodeName(this.getNodeDescriptionName()))
-                .semanticCandidatesExpression(ServiceMethod.of4(DiagramQueryAQLService.class,
+                .semanticCandidatesExpression(ServiceMethod.of5(DiagramQueryAQLService.class,
                         DiagramQueryAQLService::getExposedElements, Element.class, EClass.class, List.class,
-                        IEditingContext.class, DiagramContext.class)
-                        .aqlSelf(domainType, ANCESTORS, CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT))
+                        IEditingContext.class, DiagramContext.class, DiagramQueryCache.class)
+                        .aqlSelf(domainType, ANCESTORS, CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, DiagramQueryCache.VARIABLE_NAME))
                 .style(this.createNodeStyleDescription())
                 .userResizable(this.isNodeResizable())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)

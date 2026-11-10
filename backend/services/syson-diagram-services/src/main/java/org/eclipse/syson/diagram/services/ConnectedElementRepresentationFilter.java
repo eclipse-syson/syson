@@ -13,6 +13,7 @@
 package org.eclipse.syson.diagram.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +62,7 @@ public class ConnectedElementRepresentationFilter {
     public ConnectedElementRepresentationFilter(IObjectSearchService objectSearchService, IEditingContext editingContext, DiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         this.objectSearchService = objectSearchService;
-        this.nodeDescriptionService = new NodeDescriptionService(objectSearchService);
+        this.nodeDescriptionService = new NodeDescriptionService(objectSearchService, Collections.singletonMap(DiagramQueryCache.VARIABLE_NAME, null));
         this.editingContext = editingContext;
         this.diagramContext = diagramContext;
         this.convertedNodes = convertedNodes;

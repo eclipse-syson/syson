@@ -37,8 +37,29 @@ public class NodeDescriptionService {
 
     private final IObjectSearchService objectSearchService;
 
+    private final Map<String, Object> expressionVariables;
+
+    /**
+     * Creates an eligibility service with the default expression variables.
+     *
+     * @param objectSearchService
+     *            the semantic object search service
+     */
     public NodeDescriptionService(IObjectSearchService objectSearchService) {
+        this(objectSearchService, Map.of());
+    }
+
+    /**
+     * Creates an eligibility service with additional variables for expressions evaluated outside rendering.
+     *
+     * @param objectSearchService
+     *            the semantic object search service
+     * @param expressionVariables
+     *            additional variables, including explicit null values for optional render-only state
+     */
+    public NodeDescriptionService(IObjectSearchService objectSearchService, Map<String, Object> expressionVariables) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
+        this.expressionVariables = Objects.requireNonNull(expressionVariables);
     }
 
     /**
@@ -154,6 +175,7 @@ public class NodeDescriptionService {
     /**
      * Check whether the node will be used to render 'element'. This is the case if the semanticElementProvider returns
      * 'element' when applied to its parent, and the shouldRenderPredicate (i.e. the node's precondition) returns true.
+     * Both expressions receive the additional variables configured for evaluations outside rendering.
      *
      * @param nodeDescription
      *            the node description to evaluate
@@ -171,6 +193,7 @@ public class NodeDescriptionService {
     public boolean canNodeDescriptionRenderElement(NodeDescription nodeDescription, Element element, Object ownerObject, IEditingContext editingContext, DiagramContext diagramContext) {
         boolean canNodeDescriptionRenderElement = false;
         VariableManager semanticElementsProviderVariableManager = new VariableManager();
+        this.expressionVariables.forEach(semanticElementsProviderVariableManager::put);
         semanticElementsProviderVariableManager.put(RepresentationVariables.SELF.name(), ownerObject);
         semanticElementsProviderVariableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
         semanticElementsProviderVariableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
@@ -185,6 +208,7 @@ public class NodeDescriptionService {
 
         if (candidatesList.contains(element)) {
             VariableManager shouldRenderPredicateVariableManager = new VariableManager();
+            this.expressionVariables.forEach(shouldRenderPredicateVariableManager::put);
             shouldRenderPredicateVariableManager.put(RepresentationVariables.SELF.name(), element);
             shouldRenderPredicateVariableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
             shouldRenderPredicateVariableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
@@ -196,7 +220,8 @@ public class NodeDescriptionService {
     }
 
     /**
-     * Check semantic membership and rendering eligibility with the actual graphical ancestors.
+     * Check semantic membership and rendering eligibility with the actual graphical ancestors and the additional
+     * variables configured for evaluations outside rendering.
      *
      * @param description
      *            the candidate description
@@ -215,6 +240,7 @@ public class NodeDescriptionService {
     public boolean canNodeDescriptionRenderElement(NodeDescription description, Element element, Object owner, IEditingContext editingContext,
             DiagramContext diagramContext, List<Object> ancestors) {
         var variables = new VariableManager();
+        this.expressionVariables.forEach(variables::put);
         variables.put(RepresentationVariables.SELF.name(), owner);
         variables.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
         variables.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);

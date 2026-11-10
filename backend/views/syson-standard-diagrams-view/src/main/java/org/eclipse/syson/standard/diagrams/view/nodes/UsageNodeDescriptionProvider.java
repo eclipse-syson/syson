@@ -37,6 +37,7 @@ import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProv
 import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartStateNodeDescriptionProvider;
+import org.eclipse.syson.diagram.services.DiagramQueryCache;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.standard.diagrams.view.SDVDiagramDescriptionProvider;
@@ -58,10 +59,14 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
         super(eClass, colorProvider, new SDVDescriptionNameGenerator());
     }
 
+    /**
+     * Builds semantic candidates using the current render cache.
+     */
     @Override
     protected String getSemanticCandidatesExpression(String domainType) {
-        return ServiceMethod.of4(DiagramQueryAQLService.class, DiagramQueryAQLService::getExposedElements, Element.class, EClass.class, List.class, IEditingContext.class, DiagramContext.class)
-                .aqlSelf(domainType, ANCESTORS, CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT);
+        return ServiceMethod.of5(DiagramQueryAQLService.class, DiagramQueryAQLService::getExposedElements, Element.class, EClass.class, List.class,
+                IEditingContext.class, DiagramContext.class, DiagramQueryCache.class)
+                .aqlSelf(domainType, ANCESTORS, CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, DiagramQueryCache.VARIABLE_NAME);
     }
 
     @Override

@@ -12,12 +12,18 @@
  *******************************************************************************/
 package org.eclipse.syson.standard.diagrams.view.nodes;
 
+import java.util.List;
+
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.syson.diagram.services.DiagramQueryCache;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.model.services.aql.ModelQueryAQLService;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.ServiceMethod;
@@ -45,10 +51,15 @@ public class StakeholderNodeDescriptionProvider extends UsageNodeDescriptionProv
         return NAME;
     }
 
+    /**
+     * Builds semantic candidates using the current render cache.
+     */
     @Override
     protected String getSemanticCandidatesExpression(String domainType) {
-        return ServiceMethod.of4(DiagramQueryAQLService::getExposedStakeholders).aqlSelf(domainType, org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS,
+        return ServiceMethod.of5(DiagramQueryAQLService.class, DiagramQueryAQLService::getExposedStakeholders, Element.class, EClass.class, List.class,
+                IEditingContext.class, DiagramContext.class, DiagramQueryCache.class)
+                .aqlSelf(domainType, org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS,
                 CoreVariables.EDITING_CONTEXT.name(),
-                DiagramContext.DIAGRAM_CONTEXT);
+                DiagramContext.DIAGRAM_CONTEXT, DiagramQueryCache.VARIABLE_NAME);
     }
 }

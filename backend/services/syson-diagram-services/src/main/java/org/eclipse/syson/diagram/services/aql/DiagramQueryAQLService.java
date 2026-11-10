@@ -196,6 +196,13 @@ public class DiagramQueryAQLService {
     }
 
     /**
+     * {@link DiagramQueryExposeService#getExposedActors(Element, EClass, List, IEditingContext, DiagramContext, DiagramQueryCache)}.
+     */
+    public List<PartUsage> getExposedActors(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext, DiagramQueryCache cache) {
+        return this.diagramQueryExposeService.getExposedActors(element, domainType, ancestors, editingContext, diagramContext, cache);
+    }
+
+    /**
      * {@link DiagramQueryExposeService#getExposedElements(Element, EClass, List, IEditingContext, DiagramContext)}.
      */
     public List<Element> getExposedElements(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
@@ -203,10 +210,24 @@ public class DiagramQueryAQLService {
     }
 
     /**
+     * {@link DiagramQueryExposeService#getExposedElements(Element, EClass, List, IEditingContext, DiagramContext, DiagramQueryCache)}.
+     */
+    public List<Element> getExposedElements(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext, DiagramQueryCache cache) {
+        return this.diagramQueryExposeService.getExposedElements(element, domainType, ancestors, editingContext, diagramContext, cache);
+    }
+
+    /**
      * {@link DiagramQueryExposeService#getExposedElements(Element, Element, EClass, List, IEditingContext, DiagramContext)}.
      */
     public List<Element> getExposedElements(Element element, Element parent, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
         return this.diagramQueryExposeService.getExposedElements(element, parent, domainType, ancestors, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramQueryExposeService#getExposedElements(Element, Element, EClass, List, IEditingContext, DiagramContext, DiagramQueryCache)}.
+     */
+    public List<Element> getExposedElements(Element element, Element parent, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext, DiagramQueryCache cache) {
+        return this.diagramQueryExposeService.getExposedElements(element, parent, domainType, ancestors, editingContext, diagramContext, cache);
     }
 
     /**
@@ -231,10 +252,24 @@ public class DiagramQueryAQLService {
     }
 
     /**
+     * {@link DiagramQueryExposeService#getExposedStakeholders(Element, EClass, List, IEditingContext, DiagramContext, DiagramQueryCache)}.
+     */
+    public List<PartUsage> getExposedStakeholders(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext, DiagramQueryCache cache) {
+        return this.diagramQueryExposeService.getExposedStakeholders(element, domainType, ancestors, editingContext, diagramContext, cache);
+    }
+
+    /**
      * {@link DiagramQueryExposeService#getExposedSubjects(Element, EClass, List, IEditingContext, DiagramContext)}.
      */
     public List<ReferenceUsage> getExposedSubjects(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
         return this.diagramQueryExposeService.getExposedSubjects(element, domainType, ancestors, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramQueryExposeService#getExposedSubjects(Element, EClass, List, IEditingContext, DiagramContext, DiagramQueryCache)}.
+     */
+    public List<ReferenceUsage> getExposedSubjects(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext, DiagramQueryCache cache) {
+        return this.diagramQueryExposeService.getExposedSubjects(element, domainType, ancestors, editingContext, diagramContext, cache);
     }
 
     /**

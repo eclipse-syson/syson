@@ -49,6 +49,7 @@ import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
+import org.eclipse.syson.diagram.services.DiagramQueryCache;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
@@ -130,6 +131,9 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
         return List.of();
     }
 
+    /**
+     * Builds semantic candidates using the current render cache.
+     */
     @Override
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPackage());
@@ -139,10 +143,10 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()))
-                .semanticCandidatesExpression(ServiceMethod.of4(DiagramQueryAQLService.class,
+                .semanticCandidatesExpression(ServiceMethod.of5(DiagramQueryAQLService.class,
                         DiagramQueryAQLService::getExposedElements, Element.class, EClass.class, List.class,
-                        IEditingContext.class, DiagramContext.class)
-                        .aqlSelf(domainType, ANCESTORS, CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT))
+                        IEditingContext.class, DiagramContext.class, DiagramQueryCache.class)
+                        .aqlSelf(domainType, ANCESTORS, CoreVariables.EDITING_CONTEXT.name(), DiagramContext.DIAGRAM_CONTEXT, DiagramQueryCache.VARIABLE_NAME))
                 .style(this.createPackageNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
