@@ -20,6 +20,7 @@ Downstream applications importing these classes must update their imports and de
 - https://github.com/eclipse-syson/syson/issues/2603[#2603] [metamodel] Preserve owned and inherited homonyms unless explicitly redefined, and validate name and short-name conflicts in definitions and typed occurrences.
 Connector creation preserves unrelated homonyms when materializing inherited feature chains; flow-end redefinitions identify their owning reference as the redefining feature.
 - https://github.com/eclipse-syson/syson/issues/2602[#2602] [metamodel] Fix owned or inherited multiplicity queries through specialization, including transitive redefinitions, diamond inheritance and cycles.
+- https://github.com/eclipse-syson/syson/issues/2614[#2614] [services] Fix studio color palette loading independently of View metamodel initialization order.
 
 === Improvements
 

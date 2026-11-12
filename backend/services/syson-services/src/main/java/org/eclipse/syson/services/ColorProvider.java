@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,9 +48,16 @@ public class ColorProvider implements IColorProvider {
 
     private final Optional<View> studioColorPalettesView;
 
+    /**
+     * Creates a color provider, registering the View metamodel before loading the studio color palettes.
+     *
+     * @param view
+     *            the view containing fallback color palettes
+     */
     public ColorProvider(View view) {
         this.view = Objects.requireNonNull(view);
         ResourceSet resourceSet = new ResourceSetImpl();
+        resourceSet.getPackageRegistry().put(ViewPackage.eNS_URI, ViewPackage.eINSTANCE);
         this.studioColorPalettesView = this.loadStudioColorPalettes(resourceSet);
     }
 
