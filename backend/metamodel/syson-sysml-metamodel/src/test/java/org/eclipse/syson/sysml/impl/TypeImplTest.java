@@ -13,7 +13,11 @@
 package org.eclipse.syson.sysml.impl;
 
 import static org.eclipse.syson.sysml.util.TestUtils.assertContentEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.syson.sysml.AttributeDefinition;
@@ -22,6 +26,7 @@ import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
+import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.util.ModelBuilder;
 import org.junit.jupiter.api.DisplayName;
@@ -33,6 +38,114 @@ import org.junit.jupiter.api.Test;
  * @author Arthur Daussy
  */
 public class TypeImplTest {
+
+    /**
+     * Direct and transitive redefinitions inherit the original multiplicity without owning it.
+     */
+    @Test
+    public void multiplicitiesThroughRedefinition() {
+        var builder = new ModelBuilder();
+        var root = builder.createRootNamespace();
+        var base = builder.createInWithName(PartDefinition.class, root, "Base");
+        var configured = builder.createInWithName(PartDefinition.class, root, "Configured");
+        builder.addSubclassification(configured, base);
+        var values = builder.createInWithName(AttributeUsage.class, base, "values");
+        var multiplicity = builder.addIntMutiplicityRange(values, 2);
+        var local = builder.createInWithName(AttributeUsage.class, configured, "values");
+        builder.addRedefinition(local, values);
+        var transitive = builder.create(AttributeUsage.class);
+        builder.addRedefinition(transitive, local);
+
+        assertNull(local.getMultiplicity());
+        assertNull(transitive.getMultiplicity());
+        assertContentEquals(local.multiplicities(), multiplicity);
+        assertContentEquals(transitive.multiplicities(), multiplicity);
+    }
+
+    /**
+     * An owned multiplicity takes precedence both locally and for further redefinitions.
+     */
+    @Test
+    public void multiplicitiesStopAtOwnedMultiplicity() {
+        var builder = new ModelBuilder();
+        var base = builder.create(AttributeUsage.class);
+        builder.addIntMutiplicityRange(base, 2);
+        var intermediate = builder.create(AttributeUsage.class);
+        builder.addRedefinition(intermediate, base);
+        var multiplicity = builder.addIntMutiplicityRange(intermediate, 1);
+        var local = builder.create(AttributeUsage.class);
+        builder.addRedefinition(local, intermediate);
+
+        assertContentEquals(intermediate.multiplicities(), multiplicity);
+        assertContentEquals(local.multiplicities(), multiplicity);
+        var localMultiplicity = builder.addIntMutiplicityRange(local, 3);
+        assertContentEquals(local.multiplicities(), localMultiplicity);
+    }
+
+    /**
+     * Diamonds deduplicate shared declarations and retain distinct declarations in encounter order.
+     */
+    @Test
+    public void multiplicitiesThroughMultipleAndDiamondInheritance() {
+        var builder = new ModelBuilder();
+        var base = builder.create(AttributeUsage.class);
+        var baseMultiplicity = builder.addIntMutiplicityRange(base, 2);
+        var left = builder.create(AttributeUsage.class);
+        builder.addRedefinition(left, base);
+        var right = builder.create(AttributeUsage.class);
+        builder.addRedefinition(right, base);
+        var local = builder.create(AttributeUsage.class);
+        builder.addRedefinition(local, left);
+        builder.addRedefinition(local, right);
+
+        assertContentEquals(local.multiplicities(), baseMultiplicity);
+        var leftMultiplicity = builder.addIntMutiplicityRange(left, 2);
+        assertEquals(List.of(leftMultiplicity, baseMultiplicity), local.multiplicities());
+        var rightMultiplicity = builder.addIntMutiplicityRange(right, 2);
+        assertEquals(List.of(leftMultiplicity, rightMultiplicity), local.multiplicities());
+    }
+
+    /**
+     * A missing multiplicity or incomplete specialization produces an empty result.
+     */
+    @Test
+    public void multiplicitiesWithoutDeclaration() {
+        var builder = new ModelBuilder();
+        var local = builder.create(AttributeUsage.class);
+        assertContentEquals(local.multiplicities());
+
+        var incomplete = builder.create(Specialization.class);
+        incomplete.setSpecific(local);
+        local.getOwnedRelationship().add(incomplete);
+        assertContentEquals(local.multiplicities());
+
+        var base = builder.create(AttributeUsage.class);
+        builder.addRedefinition(local, base);
+        assertContentEquals(local.multiplicities());
+    }
+
+    /**
+     * Cycles terminate without hiding multiplicities reachable through another branch.
+     */
+    @Test
+    public void multiplicitiesWithCycles() {
+        var builder = new ModelBuilder();
+        var local = builder.create(AttributeUsage.class);
+        builder.addRedefinition(local, local);
+        assertContentEquals(local.multiplicities());
+
+        var other = builder.create(AttributeUsage.class);
+        builder.addRedefinition(local, other);
+        builder.addRedefinition(other, local);
+        assertContentEquals(local.multiplicities());
+        assertContentEquals(other.multiplicities());
+
+        var base = builder.create(AttributeUsage.class);
+        var multiplicity = builder.addIntMutiplicityRange(base, 2);
+        builder.addRedefinition(other, base);
+        assertContentEquals(local.multiplicities(), multiplicity);
+        assertContentEquals(other.multiplicities(), multiplicity);
+    }
 
     /**
      * Test model

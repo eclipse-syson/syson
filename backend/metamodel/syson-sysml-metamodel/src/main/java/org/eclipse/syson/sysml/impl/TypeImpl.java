@@ -731,36 +731,42 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc --> Returns the owned multiplicity, or the inherited multiplicities when none is owned.
+     * <!-- end-user-doc -->
      *
+     * @return the unique owned or inherited multiplicities in encounter order
      * @generated NOT
      */
     @Override
     public EList<Multiplicity> multiplicities() {
-        EList<Multiplicity> multiplicities = new BasicEList<>();
-        if (this.getMultiplicity() != null) {
-            multiplicities.add(this.getMultiplicity());
-        } else {
-            List<Type> specializationsWithMultiplicities = new ArrayList<>();
-            this.multiplicitiesClosure(this, specializationsWithMultiplicities);
-            specializationsWithMultiplicities.stream()
-                    .filter(t -> t.getMultiplicity() != null)
-                    .map(Type::multiplicities)
-                    .flatMap(Collection::stream)
-                    .forEach(multiplicities::add);
-        }
+        EList<Multiplicity> multiplicities = new UniqueEList<>();
+        this.multiplicitiesClosure(this, new HashSet<>(), multiplicities);
         return multiplicities;
     }
 
     /**
+     * Collects multiplicities, stopping each specialization branch at its first owned multiplicity.
+     *
+     * @param currentType
+     *            the type to visit
+     * @param visited
+     *            the types already visited during this query
+     * @param multiplicities
+     *            the collected multiplicities
      * @generated NOT
      */
-    private void multiplicitiesClosure(Type currentType, List<Type> accu) {
-        var ownedSpecialization = currentType.getOwnedSpecialization();
-        for (var specialization : ownedSpecialization) {
-            var general = specialization.getGeneral();
-            if (general != null && general.getMultiplicity() == null && !accu.contains(general)) {
-                this.multiplicitiesClosure(general, accu);
+    private void multiplicitiesClosure(Type currentType, Set<Type> visited, EList<Multiplicity> multiplicities) {
+        if (visited.add(currentType)) {
+            var multiplicity = currentType.getMultiplicity();
+            if (multiplicity != null) {
+                multiplicities.add(multiplicity);
+            } else {
+                for (var specialization : currentType.getOwnedSpecialization()) {
+                    var general = specialization.getGeneral();
+                    if (general != null) {
+                        this.multiplicitiesClosure(general, visited, multiplicities);
+                    }
+                }
             }
         }
     }
