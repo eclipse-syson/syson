@@ -12,9 +12,9 @@ on:
 env:
   JAVA_VERSION: "21"
   JAVA_DISTRO: "temurin"
-  PRODUCT_PATH: "backend/application"
-  PLUGIN_VERSION: "2.7.8"
-  SBOM_TYPE: "makeAggregateBom"
+  PRODUCT_PATH: "backend/application/syson-application"
+  PLUGIN_VERSION: "2.9.3"
+  SBOM_TYPE: "makeBom"
   GITHUB_REF: ${{ github.ref }}
   INPUTS_VERSION: ${{ inputs.version }}
 
@@ -46,7 +46,7 @@ jobs:
         env:
           PASSWORD: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          mvn org.cyclonedx:cyclonedx-maven-plugin:$PLUGIN_VERSION:$SBOM_TYPE -f "$PRODUCT_PATH/pom.xml" --settings settings.xml
+          mvn org.cyclonedx:cyclonedx-maven-plugin:$PLUGIN_VERSION:$SBOM_TYPE -f pom.xml -pl "$PRODUCT_PATH" -am -DprojectType=application --settings settings.xml
 
       - name: Extract product version
         id: version
