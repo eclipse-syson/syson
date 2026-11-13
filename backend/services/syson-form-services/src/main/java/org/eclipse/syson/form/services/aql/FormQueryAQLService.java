@@ -145,10 +145,10 @@ public class FormQueryAQLService {
     }
 
     /**
-     * {@link FormQueryElementService#getFeatureValue(Element)}.
+     * {@link MetamodelQueryElementService#getFeatureValue(Element)}.
      */
     public FeatureValue getFeatureValue(Element element) {
-        return this.formQueryElementService.getFeatureValue(element);
+        return this.metamodelQueryElementService.getFeatureValue(element);
     }
 
     /**

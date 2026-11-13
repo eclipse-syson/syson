@@ -52,8 +52,7 @@ import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescri
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetSet;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.eclipse.syson.form.services.FormMutationElementService;
-import org.eclipse.syson.form.services.FormQueryElementService;
+import org.eclipse.syson.form.services.aql.FormMutationAQLService;
 import org.eclipse.syson.form.services.aql.FormQueryAQLService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -187,8 +186,8 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
      * @return a {@link GroupDescription}
      */
     private GroupDescription createExpressionPropertiesGroup() {
-        return this.createExpressionPropertiesGroup(ServiceMethod.of0(FormQueryElementService::getExpression).aqlSelf(),
-                ServiceMethod.of0(FormQueryElementService::getExpressionTextualRepresentation).aqlSelf());
+        return this.createExpressionPropertiesGroup(ServiceMethod.of0(FormQueryAQLService::getExpression).aqlSelf(),
+                ServiceMethod.of0(FormQueryAQLService::getExpressionTextualRepresentation).aqlSelf());
     }
 
     /**
@@ -197,8 +196,8 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
      * @return a {@link GroupDescription}
      */
     private GroupDescription createFeatureValuePropertiesGroup() {
-        return this.createExpressionPropertiesGroup(ServiceMethod.of0(FormQueryElementService::getFeatureValue).aqlSelf(),
-                ServiceMethod.of0(FormQueryElementService::getValueExpressionTextualRepresentation).aqlSelf());
+        return this.createExpressionPropertiesGroup(ServiceMethod.of0(FormQueryAQLService::getFeatureValue).aqlSelf(),
+                ServiceMethod.of0(FormQueryAQLService::getValueExpressionTextualRepresentation).aqlSelf());
     }
 
     /**
@@ -207,8 +206,8 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
      * @return a {@link GroupDescription}
      */
     private GroupDescription createResultExpressionPropertiesGroup() {
-        return this.createExpressionPropertiesGroup(ServiceMethod.of0(FormQueryElementService::getResultExpression).aqlSelf(),
-                ServiceMethod.of0(FormQueryElementService::getResultExpressionTextualRepresentation).aqlSelf());
+        return this.createExpressionPropertiesGroup(ServiceMethod.of0(FormQueryAQLService::getResultExpression).aqlSelf(),
+                ServiceMethod.of0(FormQueryAQLService::getResultExpressionTextualRepresentation).aqlSelf());
     }
 
     /**
@@ -217,8 +216,8 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
      * @return a {@link GroupDescription}
      */
     private GroupDescription createGuardExpressionPropertiesGroup() {
-        return this.createExpressionPropertiesGroup(ServiceMethod.of0(FormQueryElementService::getGuardExpression).aqlSelf(),
-                ServiceMethod.of0(FormQueryElementService::getExpressionTextualRepresentation).aqlSelf());
+        return this.createExpressionPropertiesGroup(ServiceMethod.of0(FormQueryAQLService::getGuardExpression).aqlSelf(),
+                ServiceMethod.of0(FormQueryAQLService::getExpressionTextualRepresentation).aqlSelf());
     }
 
     /**
@@ -260,7 +259,7 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName("Expression Value");
         group.setLabelExpression("");
-        group.setSemanticCandidatesExpression(ServiceMethod.of0(FormQueryElementService::getPotentialExpressionOwner).aqlSelf());
+        group.setSemanticCandidatesExpression(ServiceMethod.of0(FormQueryAQLService::getPotentialExpressionOwner).aqlSelf());
 
         LabelDescription expressionWidget = FormFactory.eINSTANCE.createLabelDescription();
         expressionWidget.setName("Expression");
@@ -319,7 +318,7 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         refWidget.setSet(referenceWidgetSet);
 
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
-        setRefWidget.setExpression(ServiceMethod.of2(FormMutationElementService::handleReferenceWidgetNewValue)
+        setRefWidget.setExpression(ServiceMethod.of2(FormMutationAQLService::handleReferenceWidgetNewValue)
                 .aqlSelf(AQLUtils.aqlString(SysmlPackage.eINSTANCE.getRedefinition_RedefinedFeature().getName()), ViewFormDescriptionConverter.NEW_VALUE));
         referenceWidgetSet.getBody().add(setRefWidget);
 
@@ -349,7 +348,7 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         refWidget.setSet(referenceWidgetSet);
 
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
-        setRefWidget.setExpression(ServiceMethod.of2(FormMutationElementService::handleReferenceWidgetNewValue)
+        setRefWidget.setExpression(ServiceMethod.of2(FormMutationAQLService::handleReferenceWidgetNewValue)
                 .aqlSelf(AQLUtils.aqlString(SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature().getName()), ViewFormDescriptionConverter.NEW_VALUE));
         referenceWidgetSet.getBody().add(setRefWidget);
 
@@ -368,14 +367,14 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         RadioDescription radio = FormFactory.eINSTANCE.createRadioDescription();
         radio.setName("ExtraRadioKindWidget");
         radio.setLabelExpression("Kind");
-        radio.setCandidatesExpression(ServiceMethod.of1(FormQueryElementService.class, FormQueryElementService::getEnumCandidates, Element.class, String.class)
+        radio.setCandidatesExpression(ServiceMethod.of1(FormQueryAQLService.class, FormQueryAQLService::getEnumCandidates, Element.class, String.class)
                 .aqlSelf(AQLUtils.aqlString(SysmlPackage.eINSTANCE.getStateSubactionMembership_Kind().getName())));
         radio.setCandidateLabelExpression("aql:candidate.name");
-        radio.setValueExpression(ServiceMethod.of1(FormQueryElementService.class, FormQueryElementService::getEnumValue, Element.class, String.class)
+        radio.setValueExpression(ServiceMethod.of1(FormQueryAQLService.class, FormQueryAQLService::getEnumValue, Element.class, String.class)
                 .aqlSelf(AQLUtils.aqlString(SysmlPackage.eINSTANCE.getStateSubactionMembership_Kind().getName())));
         radio.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
-        setNewValueOperation.setExpression(ServiceMethod.of2(FormMutationElementService.class, FormMutationElementService::setNewValue, Element.class, String.class, Object.class)
+        setNewValueOperation.setExpression(ServiceMethod.of2(FormMutationAQLService.class, FormMutationAQLService::setNewValue, Element.class, String.class, Object.class)
                 .aqlSelf(AQLUtils.aqlString(SysmlPackage.eINSTANCE.getStateSubactionMembership_Kind().getName()), "newValue.instance"));
         radio.getBody().add(setNewValueOperation);
 
@@ -405,7 +404,7 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         refWidget.setSet(referenceWidgetSet);
 
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
-        setRefWidget.setExpression(ServiceMethod.of2(FormMutationElementService::handleReferenceWidgetNewValue)
+        setRefWidget.setExpression(ServiceMethod.of2(FormMutationAQLService::handleReferenceWidgetNewValue)
                 .aqlSelf(AQLUtils.aqlString(SysmlPackage.eINSTANCE.getSubclassification_Superclassifier().getName()), ViewFormDescriptionConverter.NEW_VALUE));
         referenceWidgetSet.getBody().add(setRefWidget);
 
@@ -435,7 +434,7 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         refWidget.setSet(referenceWidgetSet);
 
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
-        setRefWidget.setExpression(ServiceMethod.of2(FormMutationElementService::handleReferenceWidgetNewValue)
+        setRefWidget.setExpression(ServiceMethod.of2(FormMutationAQLService::handleReferenceWidgetNewValue)
                 .aqlSelf(AQLUtils.aqlString(SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().getName()), ViewFormDescriptionConverter.NEW_VALUE));
         referenceWidgetSet.getBody().add(setRefWidget);
 
@@ -458,7 +457,7 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         ReferenceWidgetDescription refWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
         refWidget.setName("ExtraReferenceWidget");
         refWidget.setLabelExpression("Typed by");
-        refWidget.setReferenceNameExpression(ServiceMethod.of0(FormQueryElementService::getTypedByReferenceName).aqlSelf());
+        refWidget.setReferenceNameExpression(ServiceMethod.of0(FormQueryAQLService::getTypedByReferenceName).aqlSelf());
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         refWidget.setCreateButton(null);
@@ -466,13 +465,13 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         ReferenceWidgetClearButtonDescription referenceWidgetClearButtonDescription = ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription();
         refWidget.setClearButton(referenceWidgetClearButtonDescription);
         ChangeContext clearRefWidget = ViewFactory.eINSTANCE.createChangeContext();
-        clearRefWidget.setExpression(ServiceMethod.of0(FormMutationElementService::clearTypedByReferenceWidget).aqlSelf());
+        clearRefWidget.setExpression(ServiceMethod.of0(FormMutationAQLService::clearTypedByReferenceWidget).aqlSelf());
         referenceWidgetClearButtonDescription.getBody().add(clearRefWidget);
 
         ReferenceWidgetAdd referenceWidgetAdd = ReferenceFactory.eINSTANCE.createReferenceWidgetAdd();
         refWidget.setAdd(referenceWidgetAdd);
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
-        setRefWidget.setExpression(ServiceMethod.of1(FormMutationElementService::handleFeatureTypingNewValue).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
+        setRefWidget.setExpression(ServiceMethod.of1(FormMutationAQLService::handleFeatureTypingNewValue).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
         referenceWidgetAdd.getBody().add(setRefWidget);
 
         group.getChildren().add(refWidget);
@@ -508,17 +507,17 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(MEMBERSHIP_PROPERTIES);
         group.setLabelExpression("");
-        group.setSemanticCandidatesExpression(ServiceMethod.of0(FormQueryElementService::getVisibilityPropertyOwner).aqlSelf());
+        group.setSemanticCandidatesExpression(ServiceMethod.of0(FormQueryAQLService::getVisibilityPropertyOwner).aqlSelf());
 
         RadioDescription radio = FormFactory.eINSTANCE.createRadioDescription();
         radio.setName("ExtraRadioVisibilityWidget");
         radio.setLabelExpression("Visibility");
-        radio.setCandidatesExpression(ServiceMethod.of0(FormQueryElementService::getVisibilityEnumLiterals).aqlSelf());
+        radio.setCandidatesExpression(ServiceMethod.of0(FormQueryAQLService::getVisibilityEnumLiterals).aqlSelf());
         radio.setCandidateLabelExpression("aql:candidate.name");
-        radio.setValueExpression(ServiceMethod.of0(FormQueryElementService::getVisibilityValue).aqlSelf());
+        radio.setValueExpression(ServiceMethod.of0(FormQueryAQLService::getVisibilityValue).aqlSelf());
         radio.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
-        setNewValueOperation.setExpression(ServiceMethod.of1(FormMutationElementService::setVisibilityValue).aqlSelf("newValue.instance"));
+        setNewValueOperation.setExpression(ServiceMethod.of1(FormMutationAQLService::setVisibilityValue).aqlSelf("newValue.instance"));
         radio.getBody().add(setNewValueOperation);
 
         group.getChildren().add(radio);
@@ -531,13 +530,13 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(ACCEPT_ACTION_USAGE_PROPERTIES);
         group.setLabelExpression("");
-        group.setSemanticCandidatesExpression(ServiceMethod.of0(FormQueryElementService::getAcceptActionUsage).aqlSelf());
+        group.setSemanticCandidatesExpression(ServiceMethod.of0(FormQueryAQLService::getAcceptActionUsage).aqlSelf());
 
         ReferenceWidgetDescription payloadRefWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
         payloadRefWidget.setName("ExtraPayloadWidget");
         payloadRefWidget.setLabelExpression("Payload");
         payloadRefWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName());
-        payloadRefWidget.setReferenceOwnerExpression(ServiceMethod.of0(FormMutationElementService::getOrCreateAcceptActionUsagePayloadFeatureTyping).aqlSelf());
+        payloadRefWidget.setReferenceOwnerExpression(ServiceMethod.of0(FormMutationAQLService::getOrCreateAcceptActionUsagePayloadFeatureTyping).aqlSelf());
         payloadRefWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         payloadRefWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
         payloadRefWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
@@ -546,14 +545,14 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         payloadRefWidget.setSet(payloadReferenceWidgetSet);
 
         ChangeContext setPayloadRefWidget = ViewFactory.eINSTANCE.createChangeContext();
-        setPayloadRefWidget.setExpression(ServiceMethod.of1(FormMutationElementService::setAcceptActionUsagePayloadParameter).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
+        setPayloadRefWidget.setExpression(ServiceMethod.of1(FormMutationAQLService::setAcceptActionUsagePayloadParameter).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
         payloadReferenceWidgetSet.getBody().add(setPayloadRefWidget);
 
         ReferenceWidgetDescription receiverRefWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
         receiverRefWidget.setName("ExtraReceiverWidget");
         receiverRefWidget.setLabelExpression("Receiver");
         receiverRefWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getMembership_MemberElement().getName());
-        receiverRefWidget.setReferenceOwnerExpression(ServiceMethod.of0(FormMutationElementService::getOrCreateAcceptActionUsageReceiverMembership).aqlSelf());
+        receiverRefWidget.setReferenceOwnerExpression(ServiceMethod.of0(FormMutationAQLService::getOrCreateAcceptActionUsageReceiverMembership).aqlSelf());
         receiverRefWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         receiverRefWidget.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
         receiverRefWidget.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
@@ -562,7 +561,7 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         receiverRefWidget.setSet(receiverReferenceWidgetSet);
 
         ChangeContext setReceiverRefWidget = ViewFactory.eINSTANCE.createChangeContext();
-        setReceiverRefWidget.setExpression(ServiceMethod.of1(FormMutationElementService::setAcceptActionUsageReceiverArgument).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
+        setReceiverRefWidget.setExpression(ServiceMethod.of1(FormMutationAQLService::setAcceptActionUsageReceiverArgument).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
         receiverReferenceWidgetSet.getBody().add(setReceiverRefWidget);
 
         group.getChildren().add(payloadRefWidget);
@@ -576,7 +575,7 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(TRANSITION_SOURCETARGET_PROPERTIES);
         group.setLabelExpression("");
-        group.setSemanticCandidatesExpression(ServiceMethod.of0(FormQueryElementService::getTransitionUsage).aqlSelf());
+        group.setSemanticCandidatesExpression(ServiceMethod.of0(FormQueryAQLService::getTransitionUsage).aqlSelf());
 
         ReferenceWidgetDescription sourceRefWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
         sourceRefWidget.setName("ExtraSourceWidget");
@@ -591,7 +590,7 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         sourceRefWidget.setSet(sourceReferenceWidgetSet);
 
         ChangeContext setSourceRefWidget = ViewFactory.eINSTANCE.createChangeContext();
-        setSourceRefWidget.setExpression(ServiceMethod.of1(FormMutationElementService::setTransitionSourceParameter).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
+        setSourceRefWidget.setExpression(ServiceMethod.of1(FormMutationAQLService::setTransitionSourceParameter).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
         sourceReferenceWidgetSet.getBody().add(setSourceRefWidget);
 
         ReferenceWidgetDescription targetRefWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
@@ -607,7 +606,7 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         targetRefWidget.setSet(targetReferenceWidgetSet);
 
         ChangeContext setTargetRefWidget = ViewFactory.eINSTANCE.createChangeContext();
-        setTargetRefWidget.setExpression(ServiceMethod.of1(FormMutationElementService::setTransitionTargetParameter).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
+        setTargetRefWidget.setExpression(ServiceMethod.of1(FormMutationAQLService::setTransitionTargetParameter).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
         targetReferenceWidgetSet.getBody().add(setTargetRefWidget);
 
         group.getChildren().add(sourceRefWidget);
@@ -620,7 +619,7 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         FormElementFor forElt = FormFactory.eINSTANCE.createFormElementFor();
         forElt.setName("Widgets for Core Group");
         forElt.setIterator(E_STRUCTURAL_FEATURE);
-        forElt.setIterableExpression(ServiceMethod.of0(FormQueryElementService::getCoreFeatures).aqlSelf());
+        forElt.setIterableExpression(ServiceMethod.of0(FormQueryAQLService::getCoreFeatures).aqlSelf());
         forElt.getChildren().addAll(this.createWidgets());
         return forElt;
     }
@@ -629,7 +628,7 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         FormElementFor forElt = FormFactory.eINSTANCE.createFormElementFor();
         forElt.setName("Widgets for Advanced Group");
         forElt.setIterator(E_STRUCTURAL_FEATURE);
-        forElt.setIterableExpression(ServiceMethod.of0(FormQueryElementService::getAdvancedFeatures).aqlSelf());
+        forElt.setIterableExpression(ServiceMethod.of0(FormQueryAQLService::getAdvancedFeatures).aqlSelf());
         forElt.getChildren().addAll(this.createWidgets());
         return forElt;
     }
@@ -639,43 +638,43 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
 
         FormElementIf label = FormFactory.eINSTANCE.createFormElementIf();
         label.setName("Read-only String Attributes");
-        label.setPredicateExpression(ServiceMethod.of1(FormQueryElementService::isReadOnlyStringAttribute).aqlSelf(E_STRUCTURAL_FEATURE));
+        label.setPredicateExpression(ServiceMethod.of1(FormQueryAQLService::isReadOnlyStringAttribute).aqlSelf(E_STRUCTURAL_FEATURE));
         label.getChildren().add(this.createLabelWidget());
         widgets.add(label);
 
         FormElementIf textfield = FormFactory.eINSTANCE.createFormElementIf();
         textfield.setName("String Attributes");
-        textfield.setPredicateExpression(ServiceMethod.of1(FormQueryElementService::isStringAttribute).aqlSelf(E_STRUCTURAL_FEATURE));
+        textfield.setPredicateExpression(ServiceMethod.of1(FormQueryAQLService::isStringAttribute).aqlSelf(E_STRUCTURAL_FEATURE));
         textfield.getChildren().add(this.createTextfieldWidget());
         widgets.add(textfield);
 
         FormElementIf textArea = FormFactory.eINSTANCE.createFormElementIf();
         textArea.setName("Multiline String Attributes");
-        textArea.setPredicateExpression(ServiceMethod.of1(FormQueryElementService::isMultilineStringAttribute).aqlSelf(E_STRUCTURAL_FEATURE));
+        textArea.setPredicateExpression(ServiceMethod.of1(FormQueryAQLService::isMultilineStringAttribute).aqlSelf(E_STRUCTURAL_FEATURE));
         textArea.getChildren().add(this.createTextAreaFieldWidget());
         widgets.add(textArea);
 
         FormElementIf checkbox = FormFactory.eINSTANCE.createFormElementIf();
         checkbox.setName("Boolean Attributes");
-        checkbox.setPredicateExpression(ServiceMethod.of0(FormQueryElementService::isBooleanAttribute).aql(E_STRUCTURAL_FEATURE));
+        checkbox.setPredicateExpression(ServiceMethod.of0(FormQueryAQLService::isBooleanAttribute).aql(E_STRUCTURAL_FEATURE));
         checkbox.getChildren().add(this.createCheckboxWidget());
         widgets.add(checkbox);
 
         FormElementIf radio = FormFactory.eINSTANCE.createFormElementIf();
         radio.setName("Radio Attributes");
-        radio.setPredicateExpression(ServiceMethod.of0(FormQueryElementService::isEnumAttribute).aql(E_STRUCTURAL_FEATURE));
+        radio.setPredicateExpression(ServiceMethod.of0(FormQueryAQLService::isEnumAttribute).aql(E_STRUCTURAL_FEATURE));
         radio.getChildren().add(this.createRadioWidget());
         widgets.add(radio);
 
         FormElementIf refWidget = FormFactory.eINSTANCE.createFormElementIf();
         refWidget.setName("ReferenceWidget References");
-        refWidget.setPredicateExpression(ServiceMethod.of0(FormQueryElementService::isReference).aql(E_STRUCTURAL_FEATURE));
+        refWidget.setPredicateExpression(ServiceMethod.of0(FormQueryAQLService::isReference).aql(E_STRUCTURAL_FEATURE));
         refWidget.getChildren().add(this.createReferenceWidget());
         widgets.add(refWidget);
 
         FormElementIf number = FormFactory.eINSTANCE.createFormElementIf();
         number.setName("Number Attributes");
-        number.setPredicateExpression(ServiceMethod.of0(FormQueryElementService::isNumberAttribute).aql(E_STRUCTURAL_FEATURE));
+        number.setPredicateExpression(ServiceMethod.of0(FormQueryAQLService::isNumberAttribute).aql(E_STRUCTURAL_FEATURE));
         number.getChildren().add(this.createTextfieldWidget());
         widgets.add(number);
 
@@ -685,8 +684,8 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
     private WidgetDescription createLabelWidget() {
         LabelDescription label = FormFactory.eINSTANCE.createLabelDescription();
         label.setName("LabelWidget");
-        label.setLabelExpression(ServiceMethod.of1(FormQueryElementService::getDetailsViewLabel).aqlSelf(E_STRUCTURAL_FEATURE));
-        label.setHelpExpression(ServiceMethod.of1(FormQueryElementService::getDetailsViewHelpText).aqlSelf(E_STRUCTURAL_FEATURE));
+        label.setLabelExpression(ServiceMethod.of1(FormQueryAQLService::getDetailsViewLabel).aqlSelf(E_STRUCTURAL_FEATURE));
+        label.setHelpExpression(ServiceMethod.of1(FormQueryAQLService::getDetailsViewHelpText).aqlSelf(E_STRUCTURAL_FEATURE));
         label.setValueExpression(ServiceMethod.of1(EObjectServices.class, EObjectServices::eGet, EObject.class, EStructuralFeature.class).aqlSelf(E_STRUCTURAL_FEATURE));
         return label;
     }
@@ -694,12 +693,12 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
     private WidgetDescription createTextAreaFieldWidget() {
         TextAreaDescription textArea = FormFactory.eINSTANCE.createTextAreaDescription();
         textArea.setName("TextAreaWidget");
-        textArea.setLabelExpression(ServiceMethod.of1(FormQueryElementService::getDetailsViewLabel).aqlSelf(E_STRUCTURAL_FEATURE));
-        textArea.setHelpExpression(ServiceMethod.of1(FormQueryElementService::getDetailsViewHelpText).aqlSelf(E_STRUCTURAL_FEATURE));
+        textArea.setLabelExpression(ServiceMethod.of1(FormQueryAQLService::getDetailsViewLabel).aqlSelf(E_STRUCTURAL_FEATURE));
+        textArea.setHelpExpression(ServiceMethod.of1(FormQueryAQLService::getDetailsViewHelpText).aqlSelf(E_STRUCTURAL_FEATURE));
         textArea.setValueExpression(ServiceMethod.of1(EObjectServices.class, EObjectServices::eGet, EObject.class, EStructuralFeature.class).aqlSelf(E_STRUCTURAL_FEATURE));
         textArea.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY_E_STRUCTURAL_FEATURE);
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
-        setNewValueOperation.setExpression(ServiceMethod.of2(FormMutationElementService.class, FormMutationElementService::setNewValue, Element.class, EStructuralFeature.class, Object.class)
+        setNewValueOperation.setExpression(ServiceMethod.of2(FormMutationAQLService.class, FormMutationAQLService::setNewValue, Element.class, EStructuralFeature.class, Object.class)
                 .aqlSelf(E_STRUCTURAL_FEATURE, ViewFormDescriptionConverter.NEW_VALUE));
         textArea.getBody().add(setNewValueOperation);
         return textArea;
@@ -708,12 +707,12 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
     private WidgetDescription createTextfieldWidget() {
         TextfieldDescription textfield = FormFactory.eINSTANCE.createTextfieldDescription();
         textfield.setName("TextfieldWidget");
-        textfield.setLabelExpression(ServiceMethod.of1(FormQueryElementService::getDetailsViewLabel).aqlSelf(E_STRUCTURAL_FEATURE));
-        textfield.setHelpExpression(ServiceMethod.of1(FormQueryElementService::getDetailsViewHelpText).aqlSelf(E_STRUCTURAL_FEATURE));
+        textfield.setLabelExpression(ServiceMethod.of1(FormQueryAQLService::getDetailsViewLabel).aqlSelf(E_STRUCTURAL_FEATURE));
+        textfield.setHelpExpression(ServiceMethod.of1(FormQueryAQLService::getDetailsViewHelpText).aqlSelf(E_STRUCTURAL_FEATURE));
         textfield.setValueExpression(ServiceMethod.of1(EObjectServices.class, EObjectServices::eGet, EObject.class, EStructuralFeature.class).aqlSelf(E_STRUCTURAL_FEATURE));
         textfield.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY_E_STRUCTURAL_FEATURE);
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
-        setNewValueOperation.setExpression(ServiceMethod.of2(FormMutationElementService.class, FormMutationElementService::setNewValue, Element.class, EStructuralFeature.class, Object.class)
+        setNewValueOperation.setExpression(ServiceMethod.of2(FormMutationAQLService.class, FormMutationAQLService::setNewValue, Element.class, EStructuralFeature.class, Object.class)
                 .aqlSelf(E_STRUCTURAL_FEATURE, ViewFormDescriptionConverter.NEW_VALUE));
         textfield.getBody().add(setNewValueOperation);
         return textfield;
@@ -722,12 +721,12 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
     private WidgetDescription createCheckboxWidget() {
         CheckboxDescription checkbox = FormFactory.eINSTANCE.createCheckboxDescription();
         checkbox.setName("CheckboxWidget");
-        checkbox.setLabelExpression(ServiceMethod.of1(FormQueryElementService::getDetailsViewLabel).aqlSelf(E_STRUCTURAL_FEATURE));
+        checkbox.setLabelExpression(ServiceMethod.of1(FormQueryAQLService::getDetailsViewLabel).aqlSelf(E_STRUCTURAL_FEATURE));
         checkbox.setValueExpression(ServiceMethod.of1(EObjectServices.class, EObjectServices::eGet, EObject.class, EStructuralFeature.class).aqlSelf(E_STRUCTURAL_FEATURE));
-        checkbox.setHelpExpression(ServiceMethod.of1(FormQueryElementService::getDetailsViewHelpText).aqlSelf(E_STRUCTURAL_FEATURE));
+        checkbox.setHelpExpression(ServiceMethod.of1(FormQueryAQLService::getDetailsViewHelpText).aqlSelf(E_STRUCTURAL_FEATURE));
         checkbox.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY_E_STRUCTURAL_FEATURE);
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
-        setNewValueOperation.setExpression(ServiceMethod.of2(FormMutationElementService.class, FormMutationElementService::setNewValue, Element.class, EStructuralFeature.class, Object.class)
+        setNewValueOperation.setExpression(ServiceMethod.of2(FormMutationAQLService.class, FormMutationAQLService::setNewValue, Element.class, EStructuralFeature.class, Object.class)
                 .aqlSelf(E_STRUCTURAL_FEATURE, ViewFormDescriptionConverter.NEW_VALUE));
         checkbox.getBody().add(setNewValueOperation);
         return checkbox;
@@ -736,15 +735,16 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
     private WidgetDescription createRadioWidget() {
         RadioDescription radio = FormFactory.eINSTANCE.createRadioDescription();
         radio.setName("RadioWidget");
-        radio.setLabelExpression(ServiceMethod.of1(FormQueryElementService::getDetailsViewLabel).aqlSelf(E_STRUCTURAL_FEATURE));
-        radio.setHelpExpression(ServiceMethod.of1(FormQueryElementService::getDetailsViewHelpText).aqlSelf(E_STRUCTURAL_FEATURE));
-        radio.setCandidatesExpression(ServiceMethod.of1(FormQueryElementService.class, FormQueryElementService::getEnumCandidates, Element.class, EAttribute.class).aqlSelf(E_STRUCTURAL_FEATURE));
+        radio.setLabelExpression(ServiceMethod.of1(FormQueryAQLService::getDetailsViewLabel).aqlSelf(E_STRUCTURAL_FEATURE));
+        radio.setHelpExpression(ServiceMethod.of1(FormQueryAQLService::getDetailsViewHelpText).aqlSelf(E_STRUCTURAL_FEATURE));
+        radio.setCandidatesExpression(ServiceMethod.of1(FormQueryAQLService.class, FormQueryAQLService::getEnumCandidates, Element.class, EAttribute.class).aqlSelf(E_STRUCTURAL_FEATURE));
         radio.setCandidateLabelExpression("aql:candidate.name");
-        radio.setValueExpression(ServiceMethod.of1(FormQueryElementService.class, FormQueryElementService::getEnumValue, Element.class, EAttribute.class).aqlSelf(E_STRUCTURAL_FEATURE));
+        radio.setValueExpression(ServiceMethod.of1(FormQueryAQLService.class, FormQueryAQLService::getEnumValue, Element.class, EAttribute.class).aqlSelf(E_STRUCTURAL_FEATURE));
         radio.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY_E_STRUCTURAL_FEATURE);
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
         setNewValueOperation.setExpression(
-                ServiceMethod.of2(FormMutationElementService.class, FormMutationElementService::setNewValue, Element.class, EStructuralFeature.class, Object.class).aqlSelf(E_STRUCTURAL_FEATURE, "newValue.instance"));
+                ServiceMethod.of2(FormMutationAQLService.class, FormMutationAQLService::setNewValue, Element.class, EStructuralFeature.class, Object.class).aqlSelf(E_STRUCTURAL_FEATURE,
+                        "newValue.instance"));
         radio.getBody().add(setNewValueOperation);
         return radio;
     }
@@ -752,8 +752,8 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
     private WidgetDescription createReferenceWidget() {
         ReferenceWidgetDescription refWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
         refWidget.setName("ReferenceWidget");
-        refWidget.setLabelExpression(ServiceMethod.of1(FormQueryElementService::getDetailsViewLabel).aqlSelf(E_STRUCTURAL_FEATURE));
-        refWidget.setHelpExpression(ServiceMethod.of1(FormQueryElementService::getDetailsViewHelpText).aqlSelf(E_STRUCTURAL_FEATURE));
+        refWidget.setLabelExpression(ServiceMethod.of1(FormQueryAQLService::getDetailsViewLabel).aqlSelf(E_STRUCTURAL_FEATURE));
+        refWidget.setHelpExpression(ServiceMethod.of1(FormQueryAQLService::getDetailsViewHelpText).aqlSelf(E_STRUCTURAL_FEATURE));
         refWidget.setReferenceNameExpression(AQLConstants.AQL + E_STRUCTURAL_FEATURE + ".name");
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY_E_STRUCTURAL_FEATURE);
@@ -763,7 +763,7 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         ReferenceWidgetSet referenceWidgetSet = ReferenceFactory.eINSTANCE.createReferenceWidgetSet();
         refWidget.setSet(referenceWidgetSet);
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
-        setRefWidget.setExpression(ServiceMethod.of2(FormMutationElementService::handleReferenceWidgetNewValue)
+        setRefWidget.setExpression(ServiceMethod.of2(FormMutationAQLService::handleReferenceWidgetNewValue)
                 .aqlSelf(ReferenceWidgetVariables.REFERENCE.name() + ".name", ViewFormDescriptionConverter.NEW_VALUE));
         referenceWidgetSet.getBody().add(setRefWidget);
 
@@ -778,7 +778,7 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         textarea.setHelpExpression("Use 'shift + enter' to add new lines");
         textarea.setIsEnabledExpression("aql:not(self.isReadOnly())");
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
-        setNewValueOperation.setExpression(ServiceMethod.of1(FormMutationElementService::setNewDocumentationValue).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
+        setNewValueOperation.setExpression(ServiceMethod.of1(FormMutationAQLService::setNewDocumentationValue).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
         textarea.getBody().add(setNewValueOperation);
         FormElementIf precondition = FormFactory.eINSTANCE.createFormElementIf();
         precondition.getChildren().add(textarea);
@@ -795,7 +795,7 @@ public class SysONDetailsViewDescriptionProvider implements IEditingContextProce
         textarea.setHelpExpression("Use 'shift + enter' to add new lines");
         textarea.setIsEnabledExpression("aql:not(self.isReadOnly())");
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
-        setNewValueOperation.setExpression(ServiceMethod.of1(FormMutationElementService::setNewCommentValue).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
+        setNewValueOperation.setExpression(ServiceMethod.of1(FormMutationAQLService::setNewCommentValue).aqlSelf(ViewFormDescriptionConverter.NEW_VALUE));
         textarea.getBody().add(setNewValueOperation);
         FormElementIf precondition = FormFactory.eINSTANCE.createFormElementIf();
         precondition.getChildren().add(textarea);
