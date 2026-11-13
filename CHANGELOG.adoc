@@ -11,6 +11,7 @@
 - https://github.com/eclipse-syson/syson/issues/2582[#2582] [details] Extract the Details view providers into the new `syson-details-view` module.
 `SysONDetailsViewDescriptionProvider`, `SysONDetailsViewJavaServiceProvider`, `SysONDetailsViewProvider`, and `SysONReferenceWidgetRootCandidateSearchProvider` have moved from `org.eclipse.syson.application.configuration` to `org.eclipse.syson.details.view`.
 Downstream applications importing these classes must update their imports and depend on `syson-details-view`, which is included by `syson-starter`.
+- [services] Move `FormQueryElementService#getFeatureValue` to `MetamodelQueryElementService`.
 
 === Dependency update
 

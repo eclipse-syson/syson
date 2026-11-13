@@ -262,27 +262,6 @@ public class FormQueryElementService {
     }
 
     /**
-     * Gets the {@link FeatureValue} from a {@link Feature} or a {@link FeatureValue}.
-     *
-     * @param self
-     *            a {@link FeatureValue} or {@link Feature}
-     * @return a {@link FeatureValue} or <code>null</code>
-     */
-    public FeatureValue getFeatureValue(Element self) {
-        FeatureValue result = null;
-        if (self instanceof FeatureValue featureValue && featureValue.getValue() != null) {
-            result = featureValue;
-        } else if (self instanceof Feature feature) {
-            result = feature.getOwnedRelationship().stream()
-                    .filter(FeatureValue.class::isInstance)
-                    .map(FeatureValue.class::cast)
-                    .findFirst()
-                    .orElse(null);
-        }
-        return result;
-    }
-
-    /**
      * Gets the guard expression from a {@link TransitionUsage} or {@link TransitionFeatureMembership}.
      *
      * @param self
