@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="UMDO_Quadratic_Surrogate_Example">
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Documentation" body="Quadratic mono-disciplinary UMDO problem with surrogate-based&#xA;statistic estimation, following:&#xA;&#xA;https://gemseo.gitlab.io/dev/gemseo-umdo/latest/generated/examples/umdo/surrogate/plot_surrogate/&#xA;&#xA;Problem:&#xA;minimize   E[(x+U)^2]&#xA;over       x in [-1, 1]&#xA;with       U ~ Normal(0,1)&#xA;&#xA;Implemented as:&#xA;- one analytic discipline y = (x+u)^2&#xA;- design variable x&#xA;- uncertain variable u&#xA;- statistic: Mean(y)&#xA;- estimator: surrogate-based with n_samples = 20 (Surrogate_Settings)&#xA;- optimizer: COBYLA (gradient-free)&#xA;&#xA;Copyright: (c) 2026, The Contributors to the ODE4HERA SysML v2 Libraries.&#xA;"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:PartUsage" declaredName="QuadraticUMDO" isComposite="true">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:MetadataUsage" isComposite="true">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:PartUsage" declaredName="quadraticProblem" isComposite="true">
+              <ownedRelationship xsi:type="sysml:Redefinition"/>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                      <ownedRelationship xsi:type="sysml:OwningMembership">
+                        <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:FeatureValue">
+                    <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                      <ownedRelationship xsi:type="sysml:Membership"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="x">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:MetadataUsage" isComposite="true">
+                      <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                  <ownedRelationship xsi:type="sysml:FeatureValue" isDefault="true">
+                    <ownedRelatedElement xsi:type="sysml:LiteralRational" value="0.5"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:Documentation" body="Design variable x in [-1,1], initial value 0.5. "/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:FeatureMembership">
+                    <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                      <ownedRelationship xsi:type="sysml:Redefinition"/>
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:OperatorExpression" operator="-">
+                          <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                            <ownedRelatedElement xsi:type="sysml:Feature">
+                              <ownedRelationship xsi:type="sysml:FeatureValue">
+                                <ownedRelatedElement xsi:type="sysml:LiteralRational" value="1.0"/>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:FeatureMembership">
+                    <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                      <ownedRelationship xsi:type="sysml:Redefinition"/>
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:LiteralRational" value="1.0"/>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                      <ownedRelationship xsi:type="sysml:OwningMembership">
+                        <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:FeatureValue">
+                    <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                      <ownedRelationship xsi:type="sysml:Membership"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="u">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:MetadataUsage" isComposite="true">
+                      <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:Documentation" body="Standard Gaussian random variable U ~ N(0,1). "/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:FeatureMembership">
+                    <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                      <ownedRelationship xsi:type="sysml:Redefinition"/>
+                      <ownedRelationship xsi:type="sysml:Subsetting"/>
+                      <ownedRelationship xsi:type="sysml:FeatureMembership">
+                        <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                          <ownedRelationship xsi:type="sysml:Redefinition"/>
+                          <ownedRelationship xsi:type="sysml:FeatureValue">
+                            <ownedRelatedElement xsi:type="sysml:LiteralRational"/>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                      <ownedRelationship xsi:type="sysml:FeatureMembership">
+                        <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                          <ownedRelationship xsi:type="sysml:Redefinition"/>
+                          <ownedRelationship xsi:type="sysml:FeatureValue">
+                            <ownedRelatedElement xsi:type="sysml:LiteralRational" value="1.0"/>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                      <ownedRelationship xsi:type="sysml:OwningMembership">
+                        <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:FeatureValue">
+                    <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                      <ownedRelationship xsi:type="sysml:Membership"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="quadraticObjective">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:MetadataUsage" isComposite="true">
+                      <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:Documentation" body="Objective: minimize the mean of y = (x+U)^2. "/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:PartUsage" declaredName="quadraticStrategy" isComposite="true">
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                      <ownedRelationship xsi:type="sysml:OwningMembership">
+                        <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:FeatureValue">
+                    <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                      <ownedRelationship xsi:type="sysml:Membership"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:PartUsage" declaredName="QuadraticDiscipline" isComposite="true">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:MetadataUsage" isComposite="true">
+                      <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:FeatureMembership">
+                    <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="x" direction="in">
+                      <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:FeatureMembership">
+                    <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="u" direction="in">
+                      <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:FeatureMembership">
+                    <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="y" direction="out">
+                      <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:FeatureMembership">
+                    <ownedRelatedElement xsi:type="sysml:PartUsage" declaredName="analyticalModel" isComposite="true">
+                      <ownedRelationship xsi:type="sysml:OwningMembership">
+                        <ownedRelatedElement xsi:type="sysml:MetadataUsage" isComposite="true">
+                          <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                      <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                      <ownedRelationship xsi:type="sysml:OwningMembership">
+                        <ownedRelatedElement xsi:type="sysml:Documentation" body="Analytic discipline f:&#xA;  y = (x + u)**2&#xA;&#xA;Inputs:&#xA;  x: design variable&#xA;  u: uncertain variable ~ N(0,1)&#xA;"/>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:FeatureValue">
+                    <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                      <ownedRelationship xsi:type="sysml:Membership"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:PartUsage" declaredName="quadraticOptimizer" isComposite="true">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:FeatureMembership">
+                    <ownedRelatedElement xsi:type="sysml:PerformActionUsage" declaredName="quadraticOptimizationAlgorithm">
+                      <ownedRelationship xsi:type="sysml:Redefinition"/>
+                      <ownedRelationship xsi:type="sysml:FeatureMembership">
+                        <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                          <ownedRelationship xsi:type="sysml:Redefinition"/>
+                          <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                          <ownedRelationship xsi:type="sysml:FeatureValue">
+                            <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                              <ownedRelationship xsi:type="sysml:Membership"/>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                      <ownedRelationship xsi:type="sysml:FeatureMembership">
+                        <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                          <ownedRelationship xsi:type="sysml:Redefinition"/>
+                          <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                          <ownedRelationship xsi:type="sysml:FeatureValue">
+                            <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                              <ownedRelationship xsi:type="sysml:Membership"/>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                      <ownedRelationship xsi:type="sysml:FeatureMembership">
+                        <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                          <ownedRelationship xsi:type="sysml:Redefinition"/>
+                          <ownedRelationship xsi:type="sysml:FeatureValue">
+                            <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="100"/>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:PartUsage" declaredName="dummyConverger" isComposite="true">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:FeatureMembership">
+                    <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                      <ownedRelationship xsi:type="sysml:Redefinition"/>
+                      <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                          <ownedRelationship xsi:type="sysml:Membership"/>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:PerformActionUsage" declaredName="quadraticStatistics">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:Documentation" body="Statistic of interest:&#xA;Mean(y), estimated via a surrogate model.&#xA;&#xA;statistic_name = &quot;Mean&quot;&#xA;statistic_estimation_settings = Surrogate_Settings(n_samples=20)&#xA;&#xA;which means:&#xA;- train a surrogate of y(x,u)&#xA;- use 20 samples per iteration to estimate E[y] from the surrogate.&#xA;"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:FeatureMembership">
+                    <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                      <ownedRelationship xsi:type="sysml:Redefinition"/>
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                          <ownedRelationship xsi:type="sysml:Membership"/>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:FeatureMembership">
+                    <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                      <ownedRelationship xsi:type="sysml:Redefinition"/>
+                      <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                      <ownedRelationship xsi:type="sysml:FeatureMembership">
+                        <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                          <ownedRelationship xsi:type="sysml:Redefinition"/>
+                          <ownedRelationship xsi:type="sysml:FeatureValue">
+                            <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="20"/>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:PartUsage" declaredName="quadraticSolution" isComposite="true">
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                      <ownedRelationship xsi:type="sysml:OwningMembership">
+                        <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:FeatureValue">
+                    <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                      <ownedRelationship xsi:type="sysml:Membership"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                  <ownedRelationship xsi:type="sysml:FeatureValue">
+                    <ownedRelatedElement xsi:type="sysml:LiteralRational"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:Documentation" body="Optimal x*, expected to be close to 0.0. "/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                      <ownedRelationship xsi:type="sysml:OwningMembership">
+                        <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:FeatureValue">
+                    <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                      <ownedRelationship xsi:type="sysml:Membership"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                  <ownedRelationship xsi:type="sysml:FeatureValue">
+                    <ownedRelatedElement xsi:type="sysml:LiteralRational" value="1.0"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:Documentation" body="Optimal mean objective value E[(x*+U)^2], close to 1.0. "/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

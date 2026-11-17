@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="Individuals and Time Slices">
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="Alice" isIndividual="true">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Multiplicity"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="Bob" isIndividual="true">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Multiplicity"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:OccurrenceUsage" isComposite="true" isIndividual="true">
+          <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:OccurrenceUsage" declaredName="aliceDriving" isComposite="true" portionKind="timeslice">
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ItemUsage" isIndividual="true">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:OccurrenceUsage" isComposite="true" portionKind="snapshot">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:FeatureMembership">
+                    <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                      <ownedRelationship xsi:type="sysml:Redefinition"/>
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:LiteralRational" value="2000.0"/>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:OccurrenceUsage" isComposite="true" portionKind="snapshot">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:FeatureMembership">
+                    <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                      <ownedRelationship xsi:type="sysml:Redefinition"/>
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:LiteralRational" value="1500.0"/>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:SuccessionAsUsage">
+              <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:OccurrenceUsage" declaredName="bobDriving" isComposite="true" portionKind="timeslice">
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ItemUsage" isIndividual="true">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

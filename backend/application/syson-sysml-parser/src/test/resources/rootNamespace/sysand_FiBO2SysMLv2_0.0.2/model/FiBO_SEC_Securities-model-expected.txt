@@ -1,0 +1,2613 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="FIBO_SEC_Securities">
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Documentation" body="Configuration Item (CI) package for FIBO_SEC_Securities and its exported model elements. "/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:NamespaceImport" visibility="public"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport" visibility="public"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport" visibility="public"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport" visibility="public"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport" visibility="public"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport" visibility="public"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport" visibility="public"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport" visibility="public"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport" visibility="public"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport" visibility="public"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport" visibility="public"/>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="SecuritiesCore">
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:EnumerationDefinition" declaredName="SecurityLifecycleStatus">
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Proposed"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Active"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Suspended"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Matured"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Redeemed"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Cancelled"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Defaulted"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Delisted"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="Security">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="fungible financial instrument representing ownership, credit, entitlement, or reference exposure "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="securityId">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="title">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="issuer">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="currency">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="issueDate">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="firstTradeDate">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="status">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="nominalAmount">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="description">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="classification">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="listing">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="restriction">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="EquitySecurity">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="DebtSecurityCore">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundSecurity">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="DerivativeSecurity">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="SecuritiesIdentification">
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="SecurityIdentifier">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="identifier value for a security under a named scheme "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="schemeName">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="value">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="assignmentAuthority">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="assignedSecurity">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="assignedIssuer">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="assignedOn">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="ISIN">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="CUSIP">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="SEDOL">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FIGI">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="TickerIdentifier">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="LEIIdentifier">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="SecuritiesIdentificationIndividuals">
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="ExampleIssuer">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="ExampleSecurity">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage">
+              <ownedRelationship xsi:type="sysml:Redefinition"/>
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureValue">
+                <ownedRelatedElement xsi:type="sysml:LiteralString" value="Example Security"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="ExampleISIN">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage">
+              <ownedRelationship xsi:type="sysml:Redefinition"/>
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureValue">
+                <ownedRelatedElement xsi:type="sysml:LiteralString" value="ISIN"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage">
+              <ownedRelationship xsi:type="sysml:Redefinition"/>
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureValue">
+                <ownedRelatedElement xsi:type="sysml:LiteralString" value="US0000000001"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage">
+              <ownedRelationship xsi:type="sysml:Redefinition"/>
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="ExampleFIGI">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage">
+              <ownedRelationship xsi:type="sysml:Redefinition"/>
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureValue">
+                <ownedRelatedElement xsi:type="sysml:LiteralString" value="FIGI"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage">
+              <ownedRelationship xsi:type="sysml:Redefinition"/>
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureValue">
+                <ownedRelatedElement xsi:type="sysml:LiteralString" value="BBG000BLNNH6"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage">
+              <ownedRelationship xsi:type="sysml:Redefinition"/>
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="SecuritiesClassification">
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:EnumerationDefinition" declaredName="AssetClass">
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Equity"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Debt"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Fund"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Derivative"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="FX"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Commodity"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Other"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:EnumerationDefinition" declaredName="ExposureKind">
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Ownership"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Credit"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Reference"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Basket"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Index"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Commodity"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Currency"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Rate"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Volatility"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Other"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="CFI">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="ISO 10962 CFI code describing category/attributes of a security "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="code">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="shortDescription">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="SecurityClassification">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="classification record for a security "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="assetClass">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="exposureKind">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="cfi">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="notes">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="forSecurity">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="SecuritiesIssuance">
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:EnumerationDefinition" declaredName="OfferingType">
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Public"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="PrivatePlacement"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Shelf"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Programmatic"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Rights"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Other"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:EnumerationDefinition" declaredName="AllotmentMethod">
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="ProRata"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="BookBuild"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Auction"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="FixedPrice"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Other"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="OfferingDocument">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="legal/marketing document for a securities offering (e.g., prospectus, offering memorandum) "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="title">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="publicationDate">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="issuer">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="summaryText">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="SecuritiesOffering">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="process/event by which new securities are created and sold "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="issuer">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="offeringType">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="offeredSecurityTemplate">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="currency">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="plannedSize">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="issueDate">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="bookBuildWindow">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="allotmentMethod">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="document">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="underwriter">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="Series">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="set of securities issued under common terms "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="seriesName">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="baseSecurity">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="firstIssueDate">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="finalIssueDate">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="TrancheRecord">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="issuance slice with its own size/price/time "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="series">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="trancheName">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="issueDate">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="size">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="price">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="SecuritiesListings">
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:EnumerationDefinition" declaredName="ListingStatus">
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Applied"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Listed"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Suspended"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Delisted"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="NotListed"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:EnumerationDefinition" declaredName="QuoteCurrencyPolicy">
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="SecurityCurrency"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="VenueCurrency"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Other"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="Listing">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="the registration and maintenance of a securityâ€™s presence on a trading venue "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="security">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="venue">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="ticker">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="micCode">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="status">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="listedOn">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="delistedOn">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="quoteCurrencyPolicy">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="notes">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="SecuritiesRestrictions">
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:EnumerationDefinition" declaredName="RestrictionKind">
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="TransferRestriction"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="HoldingRestriction"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Lockup"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Legend"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="CountryBlock"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="SanctionsBlock"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Other"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="SecurityRestriction">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="constraint on sale, transfer, holding, or offering of a security "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="appliesTo">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="kind">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="jurisdiction">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="legalBasis">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="eligibleInvestorDescription">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="lockupEndDate">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="legendText">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="notes">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="SecurityAssets">
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="UnderlyingAssetLink">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="linkage from a security to an underlying single asset, basket, or index "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="security">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="underlyingSecurity">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="underlyingBasket">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="underlyingPool">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="weightPercent">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="notes">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="CollateralAssetLink">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="identifies collateral posted or pledged in relation to a security "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="security">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="collateralSecurity">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="collateralDescription">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="haircutPercent">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="Pools">
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="SecurityPool">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="collection of assets that back one or more securities "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="poolId">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="member">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="currentBalance">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="cutOffDate">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="notes">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="Baskets">
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="Basket">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="defined set of constituents with associated weights or quantities "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="basketId">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="label">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="creationDate">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="notes">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="constituent">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="BasketConstituent">
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="security">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="weightPercent">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="quantityUnits">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="startDate">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="endDate">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="ParametricSchedules">
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="ParametricSchedule">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="schedule defined by a rule or series of dated parameters (e.g., step-up, call dates) "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="name">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="ruleText">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="schedulePoint">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="SchedulePoint">
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="effectiveDate">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="valueText">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="StepUpSchedule">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="StepDownSchedule">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="CallDateSchedule">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="PutDateSchedule">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="EUSecuritiesRestrictions">
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:EnumerationDefinition" declaredName="EURestrictionBasis">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="principal EU frameworks that commonly drive sell/hold/offer restrictions "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="ProspectusRegulation"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="MiFIDII_TargetMarket"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="PRIIPs_KID"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="UCITS_Rules"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="AIFMD"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="MarketAbuse"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Sanctions"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Other"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:EnumerationDefinition" declaredName="SFDRCategory">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="high-level SFDR product classification "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Article6"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Article8"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Article9"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="NotApplicable"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:EnumerationDefinition" declaredName="EUSellingRestrictionFlag">
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="RetailInvestorQualifiedOnly"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="ProfessionalClientsOnly"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="EligibleCounterpartiesOnly"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="QualifiedInvestorsOnly"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="EUSecurityRestriction">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="EU-specific restriction record capturing regime basis, investor categorisation, and documentation conditions "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="basis">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="sellingFlags">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="qualifiedInvestorDefinitionText">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="kidRequired">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="kidLanguageNote">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="sfdrCategory">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="targetMarketText">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="negativeTargetMarketText">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="passportingNote">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="inJurisdiction">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="effectiveFrom">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="effectiveTo">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="sellingLegend">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="USSecuritiesRestrictions">
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:EnumerationDefinition" declaredName="USRestrictionBasis">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="principal U.S. offering/resale frameworks used for restrictions "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="SecuritiesAct_Registration"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="RegD_506b"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="RegD_506c"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="RegS"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Rule144"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Rule144A"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="RegA_Tier1"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="RegA_Tier2"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="RegCF"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Section4a2"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="BlueSky"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Sanctions"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Other"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:EnumerationDefinition" declaredName="InvestorEligibilityFlag">
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="AccreditedInvestorOnly"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="QIBOnly"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="InstitutionalOnly"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="RetailPermitted"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="USSecurityRestriction">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="U.S.-specific restriction record capturing basis (â€™33 Act exemptions/conditions), eligibility, and resale limits "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="basis">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="investorEligibility">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="holdingPeriodMonths">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="legendRequired">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="cedeEligibleOnly">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="restrictedCUSIP">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="generalSolicitationAllowed">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="verificationRequired">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="inJurisdiction">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="effectiveFrom">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="effectiveTo">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="sellingLegend">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="resaleConditionsText">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

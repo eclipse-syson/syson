@@ -1,0 +1,267 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /* The Rights and Warrants ontology covers a range of financial instruments providing the holder with the privilege to subscribe to or receive specific assets on terms specified. These include rights (privileges) extended to existing security holders to make new securities available to them at reduced prices or for free, and warrants whereby the holder can purchase or sell back a given quantity of the instrument, commodity or currency during a specified period at a pre-defined price. (source: dct:abstract, RightsAndWarrants.rdf) */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /*\n  * Copyright (c) 2013-2025 EDM Council, Inc.\n  * Copyright (c) 2013-2025 Object Management Group, Inc.\n  *\n  * Permission is hereby granted, free of charge, to any person obtaining a copy\n  * of this software and associated documentation files (the 'Software'), to deal\n  * in the Software without restriction, including without limitation the rights\n  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  * copies of the Software, and to permit persons to whom the Software is\n  * furnished to do so, subject to the following conditions:\n  *\n  * The above copyright notice and this permission notice shall be included in all\n  * copies or substantial portions of the Software.\n  *\n  * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n  * THE SOFTWARE.\n  *\n  * See https://opensource.org/licenses/MIT. */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* rule applied to calculate the number of securities for an allotment right, typically based on the number of these instruments that the holder holds */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /* privileges allotted to existing security holders, entitling them to receive new securities free of charge */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* mini-future certificate that immediately expires if the barrier instrument trading price level is breached during product lifetime */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* mini-future certificate that immediately expires if the barrier underlying level is breached during product lifetime */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* warrant that permits the holder to acquire a package or group of assets at a specified price during a specified period */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* purchase right that gives a prospective acquiree&apos;s bondholders the right to buy bonds of the firm or bonds of anyone who acquires the firm at a deep discount to their fair market value */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* subscription right entitling existing bond holders to subscribe to new securities at a price normally lower than the prevailing market price */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* bond that is issued together with one or more warrant(s) attached as part of the offer, the warrant(s) granting the holder the right to purchase a designated security, often the common stock of the issuer of the debt, at a specified price */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /* warrant that either does not specify call or put features, or that explicitly includes both a call and put feature */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* warrant giving the buyer (holder) the right, but not the obligation, to acquire specific underlying assets during a specified period at a specified price */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* purchase right that gives a prospective acquiree&apos;s holders of multiple securities the right to buy securities of the firm or securities of anyone who acquires the firm at a deep discount to their fair market value */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* subscription right entitling existing holders of multiple securities to subscribe to new securities at a price normally lower than the prevailing market price */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.14/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /* warrant that permits the holder to acquire a specified amount of a commodity during a specified period at a specified price */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.14/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.15/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* purchase right that gives a prospective acquiree&apos;s common, convertible shareholders the right to buy common, convertible shares of the firm or common, convertible shares of anyone who acquires the firm at a deep discount to their fair market value */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.15/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.16/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* subscription right entitling existing common convertible shareholders to subscribe to new securities at a price normally lower than the prevailing market price */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.16/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.17/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* purchase right that gives a prospective acquiree&apos;s common shareholders the right to buy common shares of the firm or common shares of anyone who acquires the firm at a deep discount to their fair market value */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.17/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.18/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* subscription right entitling existing common shareholders to subscribe to new securities at a price normally lower than the prevailing market price */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.18/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.19/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+comment body /* entitlement that combines the structure of an open-end certificate with a leverage option with no fixed term, making leverage available without a term restriction, without a knock-out barrier dependency */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.19/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.20/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* warrant that gives the holder the right, but not the obligation, to buy (call warrant) or to sell (put warrant) an underlying asset at a specified price (the strike or exercise price) by a predetermined date, issued without an accompanying security by a third party that holds as many securities as would be required if all the warrants are exercised */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.20/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.21/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /* warrant that permits the holder to acquire a specified amount in a certain currency at a specified exchange rate during a specified period */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.21/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.22/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /* warrant that permits the holder to acquire a specified amount of a debt instrument or related debt observable a specified period at a specified price */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.22/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.23/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* financial instrument that provides the holder an interest in, or the privilege to subscribe to, or to receive specific assets under terms specified */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.23/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.24/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+comment body /* warrant that permits the holder to acquire a specified amount of an equity instrument during a specified period at a specified price */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.24/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.25/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /* warrant that is listed on a securities exchange */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.25/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.26/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* warrant that gives the holder the right (but not the obligation) to buy (or sometimes sell) an underlying asset under non-standard or complex conditions, often involving additional features not found in a plain vanilla (standard) warrant */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.26/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.27/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* warrant that permits the holder to acquire a specified amount based on the performance of an index during a specified period at a specified price */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.27/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.28/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* mini-future certificate that typically entitles the holder to acquire specific underlying assets during a specified period at a specified price */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.28/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.29/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+comment body /* entitlement that combines the structure of an open-end certificate with a leverage option with no fixed term, making leverage available without a term restriction, and whose payoff depends on whether or not the underlying asset has reached or exceeded a predetermined price */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.29/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.30/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* warrant that gives the holder the right, but not the obligation, to buy (call warrant) or to sell (put warrant) an underlying asset at a specified price (the strike or exercise price) by a predetermined date, issued without an accompanying security by a third party that does not hold as many securities as would be required if all the warrants are exercised */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.30/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.31/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* purchase right that gives a prospective acquiree&apos;s preferred, convertible shareholders the right to buy preferred, convertible shares of the firm or preferred, convertible shares of anyone who acquires the firm at a deep discount to their fair market value */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.31/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.32/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* purchase right that gives a prospective acquiree's preferred, convertible shareholders the right to buy preferred, convertible shares of the firm or preferred, convertible shares of anyone who acquires the firm at a deep discount to their fair market value */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.32/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.33/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* subscription right entitling existing preferred, convertible shareholders to subscribe to new securities at a price normally lower than the prevailing market price */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.33/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.34/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* purchase right that gives a prospective acquiree&apos;s preferred shareholders the right to buy preferred shares of the firm or preferred shares of anyone who acquires the firm at a deep discount to their fair market value */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.34/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.35/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* subscription right entitling existing preferred shareholders to subscribe to new securities at a price normally lower than the prevailing market price */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.35/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.36/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /* anti-takeover device that gives a prospective acquiree&apos;s shareholders the right to buy shares of the firm or shares of anyone who acquires the firm at a deep discount to their fair market value */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.36/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.37/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /* warrant that may be traded over the counter (OTC) or through an exchange */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.37/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.38/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* anti-takeover device that gives a prospective acquiree's shareholders the right to buy shares of the firm or shares of anyone who acquires the firm at a deep discount to their fair market value */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.38/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.39/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* warrant giving the buyer (holder) the right, but not the obligation, to sell the assets specified (i.e., acquire cash in exchange for the underlying assets, such as stock) back to the issuer at a fixed price or formula, on or before a specified date */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.39/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.40/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* mini-future certificate that entitles the holder to acquire cash in exchange for specific underlying assets */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.40/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.41/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* warrant that is listed on an exchange, offering investors a way to participate in the price performance of an underlying asset without buying it directly */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.41/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.42/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* privileges allotted to existing security holders, entitling them to subscribe to new securities at a price normally lower than the prevailing market price */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.42/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.43/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* warrant that gives the holder the right, but not the obligation, to buy (call warrant) or to sell (put warrant) an underlying asset at a specified price (the strike or exercise price) by a predetermined date, issued by the issuer of the underlying instrument */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.43/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.44/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* entitlement that permits the holder to purchase a specified amount of a financial instrument, commodity, currency or other asset during a specified period at a specified price */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.44/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.45/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}

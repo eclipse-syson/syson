@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="Collective_Investment_Vehicles">
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Documentation" body="Reference data terms and non time dependent facts about funds and CIVs. (source: dct:abstract, CollectiveInvestmentVehicles.rdf) "/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Comment" declaredName="license" body="Copyright (c) 2013-2025 EDM Council, Inc.&#xA;Copyright (c) 2013-2025 Object Management Group, Inc.&#xA;&#xA;Permission is hereby granted, free of charge, to any person obtaining a copy&#xA;of this software and associated documentation files (the 'Software'), to deal&#xA;in the Software without restriction, including without limitation the rights&#xA;to use, copy, modify, merge, publish, distribute, sublicense, and/or sell&#xA;copies of the Software, and to permit persons to whom the Software is&#xA;furnished to do so, subject to the following conditions:&#xA;&#xA;The above copyright notice and this permission notice shall be included in all&#xA;copies or substantial portions of the Software.&#xA;&#xA;THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&#xA;IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&#xA;FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE&#xA;AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER&#xA;LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,&#xA;OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN&#xA;THE SOFTWARE.&#xA;&#xA;See https://opensource.org/licenses/MIT. "/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="AccumulatingShareClass" declaredShortName="accumulating share class">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="A share class in which there is no option to reinvest. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="AssetClassStrategy" declaredShortName="asset class strategy">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Strategy which is asset class based. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="CollectiveInvestmentVehicle" declaredShortName="collective investment vehicle">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="assets pooled by investors whose share capital remains separate from the assets of the vehicle "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="CommonShareInFund" declaredShortName="common share in fund">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="A share unit in a fund, which is classified as a Common Share class. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="CurrencyStrategy" declaredShortName="currency strategy">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Strategy which is currency based. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="DistributingShareClass" declaredShortName="distributing share class">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="A fund which invests in at least 85% shares. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="EquityFund" declaredShortName="equity fund">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="A fund which invests in at least 85% shares. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="EquityPortfolio" declaredShortName="equity portfolio">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="A portfolio which has at least 85% exposure to shares. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FondsCommunDePlacement" declaredShortName="fonds commun de placement">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="open-ended collective investment fund, which is a contractual form set up between the fund manager and investors and not a separate legal entity "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundAccountant" declaredShortName="fund accountant">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="The party that keeps accounting records of the available assets and liabilities of the Fund. It calculates dealing prices, the Net Asset Value (NAV) of the Fund, and may provide fund performance and tax data. Can be subcontracted by the FundAdministrator. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundBondClassUnit" declaredShortName="fund bond class unit">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="A fund unit which takes the form of debt in that fund. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundBondUnitCoupon" declaredShortName="fund bond unit coupon">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="A fixed coupon paid out to holders of the Fund Bond Unit. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundCashDistributionPolicy" declaredShortName="fund cash distribution policy">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Policy for distribution of cash dividends or notes in the event that the fund units have a distribution policy of &amp;quot;Cash&amp;quot; rather than &amp;quot;Reinvestment&amp;quot;. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundClassification" declaredShortName="fund classification">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="The category of the fund according to the asset class. This is a published code by which the Fund is classified. Further notes: Could be EFCF codes. This is the way in which &amp;quot;Type of fund&amp;quot; is articulated. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundClassificationScheme" declaredShortName="fund classification scheme">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="A published scheme for the category of a fund according to the asset class. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundContract" declaredShortName="fund contract">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="contract that embodies and defines the fund legal form in cases where there is no independent organization "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundCouponPolicy" declaredShortName="fund coupon policy">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Terms for the expected distribution of bond unit coupons. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundDepositary" declaredShortName="fund depositary">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="The party that holds and safeguards holdings owned by a fund. It is also responsible for compliance of the portfolio with legal ratios etc. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundDistributionPolicy" declaredShortName="fund distribution policy">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="policy indicating the overall strategy or limitations on distribution for the fund "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundDistributor" declaredShortName="fund distributor">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="an entity through which a fund may be bought by or for an investor. This may be on a discretionary or advisory basis, or as an execution-only service. Definition origin:EFAMA DD "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundDividendPolicy" declaredShortName="fund dividend policy">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Terms for the expected distributions of dividends. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundInvestmentObjective" declaredShortName="fund investment objective">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="The aim of a Fund e.g outperfom a given benchmark. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundInvestmentPolicy" declaredShortName="fund investment policy">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="policy that the fund implements in order to achieve the stated fund objectives "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundLegalFormDocumentation" declaredShortName="fund legal form documentation">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="For a fund which is constituted under the law of contract, the constitution or articles that define the fund. These are embodied in a Contract. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundOrderDesk" declaredShortName="fund order desk">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="The Fund Order Desk is a party to the Fund Order Desk Account. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundPortfolio" declaredShortName="fund portfolio">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="An account containing a number of financial instruments along with cash positions in one or more currencies and belonging to a Fund "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundPortfolioInvestmentLimitations" declaredShortName="fund portfolio investment limitations">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Detailed Policy on approximately how the portfolio is to be allocated to achieve the stated investment goals. This underpins the detailed strategy of how to achieve this. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundPortfolioInvestmentPolicy" declaredShortName="fund portfolio investment policy">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="policy with respect to allocation of the portfolio that is designed to meet the stated investment strategy and goals "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundProcessingGeneralTerms" declaredShortName="fund processing general terms">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Formal terms for general processing of the fund. These set out what the investor and the fund may or may not do. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundProcessingTerms" declaredShortName="fund processing terms">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Formal terms for processing of the fund. These set out what the investor and the fund may or may not do. These include terms for redemption and subscription processing as well as general processing terms. ISO FIBIM definition: Processing characteristics linked to the instrument, ie, not to the market. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundRedemptionRestriction" declaredShortName="fund redemption restriction">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Formal terms for redemption of units in the fund. These set out what the investor and the fund may or may not do. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundRedemptionTerms" declaredShortName="fund redemption terms">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Formal terms for redemption of units in the fund. These set out what the investor and the fund may or may not do. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundReinvestmentPolicy" declaredShortName="fund reinvestment policy">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Terms for the expected reinvestment of profits on fund units. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundsCashDistribution" declaredShortName="funds cash distribution">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Accrued income is distributed periodically to the investor. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundShareClassUnit" declaredShortName="fund share class unit">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="The legal structure in which you can purchase part of an investment pool, defined by a variety of characteristics like investor type, minimum size of investment, distribution type, fee and currency. A fund unit which gives the holder an equity stake in the fund. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundsProcessing" declaredShortName="funds processing">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="The context of managing and processing funds, issuing funds units etc. This is the context in which the different parties involved in a fund are defined as parties. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundsProcessingAccount" declaredShortName="funds processing account">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="An account used specifically in the processing of funds. Like all accounts this is (per FIBIM definition) a business relationship between two entities; one entity is the account owner, the other entity is the account servicer. Please refer to Financial global model for treatment of accounts relationships in this model. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundsProcessingParty" declaredShortName="funds processing party">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="party involved in the processing of funds "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundSubscriptionTerms" declaredShortName="fund subscription terms">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Subscription terms for the fund. Further notes: ISO FIBIM, EFAMA DD and FPP combine terms for subscription, redemption and general holding requirements. These have been separated here as they are different kinds of term, but this can be reviewed. Subscription Terms are identified as terms of the fund and not the fund unit, since terms for how you might subscribe can&amp;apos;t be binding one someone who has not yet subscribed. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundSupervisoryAuthority" declaredShortName="fund supervisory authority">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="party that supervises the fund or fund industry "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundTransferAgent" declaredShortName="fund transfer agent">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="An entity that undertakes the execution of subscription, redemption and switch orders on behalf of a fund. Definition origin:EFAMA DD "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundUnit" declaredShortName="fund unit">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="investment fund that pursues a total return and is usually open to qualified investors only "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundUnitDistributionMethod" declaredShortName="fund unit distribution method">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="The normal distribution policy for funds. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FundUnitDistributionPolicy" declaredShortName="fund unit distribution policy">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="policy relating to the unit, e.g. if income is paid out or retained in the fund and how this is treated, including distribution policy details for dividends and coupons. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="IncomeAccumulation" declaredShortName="income accumulation">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Accrued income is not distributed and instead remains reflected within the unit/share price. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="InvestmentRestriction" declaredShortName="fund investment restrictions set">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Limitations that apply to the fund as a whole, such as risk factors. these are used to determine whether the fund is appropriate for a given type of investor to invest in. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="InvestmentStrategy" declaredShortName="investment strategy">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="plan, method, or series of maneuvers or stratagems for obtaining a specific investment goal "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="JurisdictionStrategy" declaredShortName="jurisdiction strategy">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Strategy which is jurisdiction based. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="KeyInvestorInformationDocument" declaredShortName="key investor information document">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Parameters for the calculation of the net asset value for an investment fund/fund class. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="NetAssetValueCalculationMethod" declaredShortName="net asset value calculation method">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Parameters for the calculation of the net asset value for an investment fund/fund class. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="NoteFund" declaredShortName="note fund">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Strategy which is organization based. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="NoteFundShare" declaredShortName="note fund share">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="investment interest in a fund that issues notes rather than traditional equity, in cases where the fund is structured as a company "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="NoteFundUnit" declaredShortName="note fund unit">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="investment interest in a fund that issues notes rather than traditional equity, in cases where the fund is structured as a trust, partnership, or unitized fund "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="OrganizationStrategy" declaredShortName="organization strategy">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Strategy which is organization based. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="OtherInvestmentFundInformation" declaredShortName="other investment fund information">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Things which are not part of the prospectus but are important if you want to understand the fund. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="PortfolioBenchmark" declaredShortName="portfolio benchmark">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Security or other price against which the performance of the portfolio is evaluated. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="PortfolioInvestmentStrategy" declaredShortName="portfolio investment strategy">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="The manner in which the portfolio manager tries to reach the funds objectives. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="PreferredShareInFund" declaredShortName="preferred share in fund">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="A holding of private equity. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="PrivateEquityHolding" declaredShortName="private equity holding">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="A holding of private equity. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="Prospectus" declaredShortName="prospectus">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="formal, written offering document to sell securities that provides the facts an investor needs to make an informed investment decision "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="RealEstateHolding" declaredShortName="real estate holding">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="tangible asset consisting of real estate that is owned or controlled by an individual, organization, or entity for investment, operational, or strategic purposes "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="ReferToFundOrderDesk" declaredShortName="refer to fund order desk">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Restriction requiring an investor to refer to the fund order desk prior to redeeming a fund. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="RiskLevel" declaredShortName="risk level">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="A French fund vehicle type. Designation and definition needed. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="SectorStrategy" declaredShortName="sector strategy">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Strategy which is sector based. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="SICAF" declaredShortName="s i c a f">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="A French fund vehicle type. Designation and definition needed. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="SICAV" declaredShortName="s i c a v">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Societe Collective a Capital Variable "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="UnitIssuer" declaredShortName="unit issuer">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="The party which issues the Fund Unit. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

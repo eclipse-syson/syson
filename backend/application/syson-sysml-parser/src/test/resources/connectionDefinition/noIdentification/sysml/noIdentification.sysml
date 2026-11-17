@@ -1,0 +1,1 @@
+#c connection def :> namespace1::namespace2;

@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="FIBO_IND_MarketIndices">
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Documentation" body="Configuration Item (CI) package for FIBO_IND_MarketIndices and its exported model elements. "/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:NamespaceImport" visibility="public"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport" visibility="public"/>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="BasketIndices">
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:EnumerationDefinition" declaredName="BasketType">
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Equity"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="FixedIncome"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Commodity"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Currency"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="MultiAsset"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="ESG"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Thematic"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Other"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:EnumerationDefinition" declaredName="BasketPurpose">
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Benchmark"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Strategy"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Custom"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Hedge"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Research"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" declaredName="Derived"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="BasketIndex">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="index that tracks a defined basket of instruments or assets under a weighting methodology "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="basketType">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="purpose">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="sponsor">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="region">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="BasketConstituent">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="constituent in a basket index; may include non-listed or custom assets "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="identifierText">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="sourceMarket">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="BasketMethodology">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="methodology specific to a basket index (selection, weighting, rebalancing) "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="inclusionCriteriaText">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="exclusionCriteriaText">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="weightingRuleText">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="reviewFrequencyText">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="BasketIndexBasket">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="basket composition of a basket index as of an effective date "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="basketIndex">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="methodology">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="BasketRebalance">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="event representing the reconstitution or rebalancing of a basket index "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="basketIndex">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="notes">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="BasketIndexSeries">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="published time series of basket index levels "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="basketIndex">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="BasketIndexObservation">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="observation of a basket index level "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="basketIndex">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="BasketFamily">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="group of related basket indices under a common methodology "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="familyName">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="parentOrganization">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="baseMethodology">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="basketIndices">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="EquityIndexExampleIndividuals">
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="SAndP500">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="S&amp;P 500 Index â€“ U.S. large-cap equity market benchmark "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="NASDAQComposite">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="NASDAQ Composite Index â€“ U.S. tech-weighted equity benchmark "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="DowJonesIndustrialAverage">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Dow Jones Industrial Average â€“ U.S. blue-chip price-weighted index "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="MSCIWorld">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="MSCI World Index â€“ global developed markets equity benchmark "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="MSCIEM">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="MSCI Emerging Markets Index â€“ global emerging markets equity benchmark "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="FTSE100">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="FTSE 100 Index â€“ U.K. large-cap equity benchmark "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="Nikkei225">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Nikkei 225 Index â€“ Japan equity benchmark "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="EuroStoxx50">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Euro Stoxx 50 Index â€“ Eurozone large-cap equity benchmark "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="Series_SP500_Price">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="canonical price index series for S&amp;P 500 "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="Series_SP500_TotalReturn">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="canonical total return series for S&amp;P 500 "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" declaredName="Series_MSciWorld_Price">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="canonical price index series for MSCI World "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

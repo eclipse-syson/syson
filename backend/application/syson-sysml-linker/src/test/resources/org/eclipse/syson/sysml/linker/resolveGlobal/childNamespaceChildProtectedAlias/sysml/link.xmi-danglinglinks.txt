@@ -1,0 +1,5 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1;memberElement;0;part1
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1;memberElement;0;part2
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.1;memberElement;0;part3
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.1;memberElement;0;part4
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0;type;0;$::grandfather::father::current::child::part4alias

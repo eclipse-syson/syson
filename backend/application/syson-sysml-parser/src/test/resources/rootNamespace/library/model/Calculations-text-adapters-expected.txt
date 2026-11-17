@@ -1,0 +1,33 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /*\n\t * This package defines the base types for calculations and related behavioral elements in the\n\t * SysML language.\n\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /*\n\t\t * Calculation is the most general class of evaluations of CalculationDefinitions in a\n\t\t * system or part of a system. Calculation is the base class of all CalculationDefinitions.\n\t\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+late nonunique
+:>>
+ref
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+comment body /*\n\t\t\t * The subactions of this Calculation that are Calculations.\n\t\t\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+{...}
+late nonunique
+:>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+{...}
+:>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 0
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /*\n\t\t * calculations is the base Feature for all CalculationUsages.\n\t\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+{...}
+:>
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:LibraryPackage" declaredName="Cases" isStandard="true">
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Documentation" body="This package defines the base types for cases and related behavioral elements &#xA;in the SysML language.&#xA;"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:MembershipImport"/>
+      <ownedRelationship xsi:type="sysml:MembershipImport"/>
+      <ownedRelationship xsi:type="sysml:MembershipImport"/>
+      <ownedRelationship xsi:type="sysml:MembershipImport"/>
+      <ownedRelationship xsi:type="sysml:MembershipImport"/>
+      <ownedRelationship xsi:type="sysml:MembershipImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:CaseDefinition" declaredName="Case" isAbstract="true">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Case is the most general class of performances of CaseDefinitions. &#xA;Case is the base class of all CaseDefinitions.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:CaseUsage" declaredName="self">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:Redefinition"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:SubjectMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="subj">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Documentation" body="The subject that was investigated by this Case.&#xA;"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:PartUsage" declaredName="actors">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Documentation" body="The Parts that fill the role of actors for this Case.&#xA;(Note: This is not itself an actor parameter, because specific actor&#xA;parameters will be added for specific Cases.)&#xA;"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:ObjectiveMembership">
+            <ownedRelatedElement xsi:type="sysml:RequirementUsage" declaredName="obj" isComposite="true">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Documentation" body="A check of whether the objective RequirementUsage was satisfied for this Case.&#xA;"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:SubjectMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="subj">
+                  <ownedRelationship xsi:type="sysml:FeatureValue" isDefault="true">
+                    <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                      <ownedRelationship xsi:type="sysml:Membership"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:ReturnParameterMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="result">
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Documentation" body="The result determined by the case, which should satisfy the case objective.&#xA;"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:CaseUsage" declaredName="subcases" isAbstract="true" isComposite="true">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Documentation" body="Other Cases carried out as part of the performance of this Case.&#xA;"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:CaseUsage" declaredName="cases" isAbstract="true" isComposite="true" isUnique="false">
+          <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:Subsetting"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="cases is the base Feature of all CaseUsages.&#xA;"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

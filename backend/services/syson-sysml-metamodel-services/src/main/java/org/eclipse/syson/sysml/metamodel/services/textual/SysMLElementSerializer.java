@@ -536,12 +536,19 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return builder.toString();
     }
 
+    /**
+     * Serializes the input expression and accessed member without treating a result parameter as an argument.
+     *
+     * @param feature the feature chain expression
+     * @return its textual representation
+     */
     @Override
     public String caseFeatureChainExpression(FeatureChainExpression feature) {
         Appender builder = this.newAppender();
 
         feature.getOwnedRelationship().stream()
                 .filter(ParameterMembership.class::isInstance)
+                .filter(Predicate.not(ReturnParameterMembership.class::isInstance))
                 .map(ParameterMembership.class::cast)
                 .findFirst()
                 .map(ParameterMembership::getOwnedMemberParameter)
@@ -844,15 +851,21 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return builder.toString();
     }
 
+    /**
+     * Serializes an occurrence with a single portion keyword, including legacy models with an unset portion flag.
+     *
+     * @param occurrenceUsage the occurrence to serialize
+     * @return its textual representation
+     */
     @Override
     public String caseOccurrenceUsage(OccurrenceUsage occurrenceUsage) {
         Appender builder = new Appender(this.lineSeparator, this.indentation);
         this.appendOccurrenceUsagePrefix(builder, occurrenceUsage);
-        if (PortionKind.SNAPSHOT.equals(occurrenceUsage.getPortionKind())) {
+        if (!occurrenceUsage.isIsPortion() && PortionKind.SNAPSHOT.equals(occurrenceUsage.getPortionKind())) {
             builder.appendWithSpaceIfNeeded("snapshot");
-        } else if (PortionKind.TIMESLICE.equals(occurrenceUsage.getPortionKind())) {
+        } else if (!occurrenceUsage.isIsPortion() && PortionKind.TIMESLICE.equals(occurrenceUsage.getPortionKind())) {
             builder.appendWithSpaceIfNeeded("timeslice");
-        } else {
+        } else if (occurrenceUsage.getPortionKind() == null) {
             builder.appendWithSpaceIfNeeded("occurrence");
         }
         this.appendOccurrenceUsageDeclaration(builder, occurrenceUsage);
@@ -1096,6 +1109,12 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return builder.toString();
     }
 
+    /**
+     * Serializes a send action using its input parameters, excluding any generated result parameter.
+     *
+     * @param sendActionUsage the send action
+     * @return its textual representation
+     */
     @Override
     public String caseSendActionUsage(SendActionUsage sendActionUsage) {
         var builder = this.newAppender();
@@ -1109,6 +1128,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         List<ReferenceUsage> parameters = sendActionUsage.getOwnedRelationship().stream()
                 .filter(ParameterMembership.class::isInstance)
+                .filter(Predicate.not(ReturnParameterMembership.class::isInstance))
                 .map(ParameterMembership.class::cast)
                 .map(ParameterMembership::getOwnedMemberParameter)
                 .filter(ReferenceUsage.class::isInstance)
@@ -1629,9 +1649,16 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
     }
 
+    /**
+     * Serializes a conditional operator using input parameters only.
+     *
+     * @param builder the destination appender
+     * @param op the conditional operator expression
+     */
     private void appendConditionalBinaryOperatorExpression(Appender builder, OperatorExpression op) {
         op.getOwnedRelationship().stream()
                 .filter(ParameterMembership.class::isInstance)
+                .filter(Predicate.not(ReturnParameterMembership.class::isInstance))
                 .map(ParameterMembership.class::cast)
                 .findFirst()
                 .ifPresent(param -> this.appendArgumentMember(builder, param));
@@ -1640,6 +1667,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         op.getOwnedRelationship().stream()
                 .filter(ParameterMembership.class::isInstance)
+                .filter(Predicate.not(ReturnParameterMembership.class::isInstance))
                 .map(ParameterMembership.class::cast)
                 .skip(1)
                 .findFirst()
@@ -1657,10 +1685,17 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
     }
 
+    /**
+     * Serializes metadata classification, keeping its result separate from its input argument.
+     *
+     * @param builder the destination appender
+     * @param op the metadata classification expression
+     */
     private void appendMetaClassificationExpression(Appender builder, OperatorExpression op) {
         // MetadataArgumentMember
         op.getOwnedRelationship().stream()
                 .filter(ParameterMembership.class::isInstance)
+                .filter(Predicate.not(ReturnParameterMembership.class::isInstance))
                 .map(ParameterMembership.class::cast)
                 .flatMap(param -> param.getOwnedRelatedElement().stream())
                 .filter(Feature.class::isInstance)
@@ -2077,9 +2112,16 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         builder.append(LabelConstants.CLOSE_PARENTHESIS);
     }
 
+    /**
+     * Serializes sequence inputs without including a generated result parameter.
+     *
+     * @param builder the destination appender
+     * @param expression the sequence expression
+     */
     private void appendSequenceOperatorExpression(Appender builder, OperatorExpression expression) {
         List<ParameterMembership> features = expression.getOwnedRelationship().stream()
                 .filter(ParameterMembership.class::isInstance)
+                .filter(Predicate.not(ReturnParameterMembership.class::isInstance))
                 .map(ParameterMembership.class::cast)
                 .toList();
 
@@ -2160,9 +2202,16 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
     }
 
+    /**
+     * Serializes bracket operands without including a generated result parameter.
+     *
+     * @param builder the destination appender
+     * @param expression the bracket expression
+     */
     private void appendBracketExpression(Appender builder, OperatorExpression expression) {
         List<ParameterMembership> features = expression.getOwnedRelationship().stream()
                 .filter(ParameterMembership.class::isInstance)
+                .filter(Predicate.not(ReturnParameterMembership.class::isInstance))
                 .map(ParameterMembership.class::cast)
                 .toList();
 
@@ -2203,12 +2252,19 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
     }
 
+    /**
+     * Serializes a prefix operator and its input operand, excluding result parameters.
+     *
+     * @param builder the destination appender
+     * @param expression the unary expression
+     */
     private void appendUnaryOperatorExpression(Appender builder, OperatorExpression expression) {
 
         builder.appendSpaceIfNeeded().append(expression.getOperator());
 
         expression.getOwnedRelationship().stream()
                 .filter(ParameterMembership.class::isInstance)
+                .filter(Predicate.not(ReturnParameterMembership.class::isInstance))
                 .map(ParameterMembership.class::cast)
                 .findFirst()
                 .ifPresent(param -> {
@@ -2225,9 +2281,16 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 });
     }
 
+    /**
+     * Serializes a binary operator between its input operands, excluding result parameters.
+     *
+     * @param builder the destination appender
+     * @param expression the binary expression
+     */
     private void appendBinaryOperatorExpression(Appender builder, OperatorExpression expression) {
         Iterator<ParameterMembership> iterator = expression.getOwnedRelationship().stream()
                 .filter(ParameterMembership.class::isInstance)
+                .filter(Predicate.not(ReturnParameterMembership.class::isInstance))
                 .map(ParameterMembership.class::cast).toList().iterator();
 
         if (iterator.hasNext()) {
@@ -2239,9 +2302,16 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
     }
 
+    /**
+     * Chooses unary or binary syntax from the number of input operands, excluding result parameters.
+     *
+     * @param builder the destination appender
+     * @param expression the operator expression
+     */
     private void appendBinaryOrUnaryOperatorExpression(Appender builder, OperatorExpression expression) {
         List<ParameterMembership> ownedRelationships = expression.getOwnedRelationship().stream()
                 .filter(ParameterMembership.class::isInstance)
+                .filter(Predicate.not(ReturnParameterMembership.class::isInstance))
                 .map(ParameterMembership.class::cast)
                 .toList();
 
@@ -2281,9 +2351,16 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         builder.append(LabelConstants.CLOSE_PARENTHESIS);
     }
 
+    /**
+     * Serializes positional input arguments without including a generated result parameter.
+     *
+     * @param builder the destination appender
+     * @param expression the invocation expression
+     */
     private void appendPositionalArgumentList(Appender builder, InvocationExpression expression) {
         List<ParameterMembership> parameterMemberships = expression.getOwnedRelationship().stream()
                 .filter(ParameterMembership.class::isInstance)
+                .filter(Predicate.not(ReturnParameterMembership.class::isInstance))
                 .map(ParameterMembership.class::cast)
                 .filter(param -> {
                     if (param.getOwnedMemberParameter() != null) {
@@ -2308,11 +2385,15 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     /**
      * The EBNF stipulates a ResultParameterMembership but this type does not exists so we assumed it was referring to
-     * ReturnParameterMembership
+     * ReturnParameterMembership. This result is serialized separately from the input operand.
+     *
+     * @param builder the destination appender
+     * @param expression the classification expression
      */
     private void appendClassificationExpression(Appender builder, OperatorExpression expression) {
         expression.getOwnedRelationship().stream()
                 .filter(ParameterMembership.class::isInstance)
+                .filter(Predicate.not(ReturnParameterMembership.class::isInstance))
                 .map(ParameterMembership.class::cast)
                 .filter(param -> param.getOwnedMemberParameter() != null)
                 .findFirst()
@@ -2833,14 +2914,24 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
      *
      * @param usage
      *         a non null usage
-     * @return {@code true} if the "ref" keyword can be omitted
+     * @return {@code true} if the "ref" keyword is required
      */
     private boolean requireReferentialKeyword(Usage usage) {
         // In some case the ref keyword can be omitted if the referential nature of the usage is implicit
         return !this.isReferentialByNature(usage) && !this.isReferentialByFeature(usage) && !this.isReferentialByConstruct(usage);
     }
 
+    /**
+     * Tests whether a usage's kind or port ownership makes its reference modifier implicit.
+     *
+     * @param usage the usage being serialized
+     * @return whether its referential nature is implicit
+     */
     private boolean isReferentialByNature(Usage usage) {
+        if (usage instanceof PortUsage) {
+            // SysML 8.4.8.2: ports outside ports are referential, with an optional ref keyword.
+            return !(usage.getOwningType() instanceof PortDefinition || usage.getOwningType() instanceof PortUsage);
+        }
         // If is an AttributeUsage see SysML V2 specification :
         // "AttributeUsages are also syntactically restricted by the validateAttributeUsageIsReference to be referential (non-composite)"
         return usage instanceof AttributeUsage

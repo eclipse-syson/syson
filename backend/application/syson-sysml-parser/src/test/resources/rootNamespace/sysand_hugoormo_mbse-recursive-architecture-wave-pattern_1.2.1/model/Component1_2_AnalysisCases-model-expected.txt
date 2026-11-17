@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="Component1_2_AnalysisCases">
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Comment" declaredName="component1_2AnalysisPolicyModelerComment" body="Policy: L3 analysis cases are intentionally omitted in this reference pattern.&#xA;Rationale: leaf-level _bb parts do not expose recursive constituent behavior;&#xA;analysis focus remains at _gb. Exception showcase remains at L2 Subsystem2 (_bb)&#xA;for controlled, documented use.&#xA;" locale="en_US">
+          <ownedRelationship xsi:type="sysml:Annotation"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

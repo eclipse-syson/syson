@@ -1,0 +1,244 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* Credits for the MBSE RecursiveArchitecture Weave Pattern example model. */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /* Licensing note for original authored content in this model:\n         *\n         * Copyright (c) 2026 hugoormo.\n         * Original composition and integration work in this model is licensed under\n         * Creative Commons Attribution 4.0 International (CC BY 4.0):\n         * https://creativecommons.org/licenses/by/4.0/\n         *\n         * This licensing statement applies to original model composition, architecture\n         * synthesis and integration performed in this repository. Third-party material,\n         * including quoted text and externally sourced modeling patterns, remains under\n         * its respective original license and attribution terms.\n         */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* The recursive pattern described in this model is based on\n         * "A SysML V2 Modeling Pattern for Recursive System Decomposition"\n         * by Sanford Friedenthal and Andrew B. Muxen.\n         */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+comment body /* The layered interface pattern described in this model is based on\n         * "A Representative Application of a Layered Interface Modeling Pattern"\n         * Peter M. Shames, Marc A. Sarrel, and Sanford Friedenthal.\n         */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0:
+comment body /* The use-case pattern used in this model follows chapter `33.1` of\n         * "The SysML v2 Book"\n         * by Tim Weilkiens and Vince Molnar.\n         */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0:
+comment body /* The connector/interface/ports/flow container concept used in this model is\n         * based on "Advent of SysML v2 - Lesson 13: Ports, Interfaces, Items and Flows"\n         * by Vince Molnar and Kestutis Jankevicius:\n         * https://sensmetry.com/advent-of-sysml-v2-lesson-13-ports-interfaces-items-and-flows/\n         */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0:
+comment body /* Unified Architecture Framework Modeling Language (UAFML)\n         * Version 1.3\n         * Copyright © 2017-2021, IBM\n         * Copyright © 2017-2019, KDM Analytics\n         * Copyright © 2017-2025, Mega\n         * Copyright © 2017-2025, Object Management Group, Inc.\n         * Copyright © 2017-2025, No Magic Inc. a Dassault Systemes Company\n         * Copyright © 2017-2019, PTC\n         * Copyright © 2017-2025, Sparx Systems\n         *\n         * Subject to all of the terms and conditions below, the owners of the copyright in this specification hereby grant\n         * you a fully-paid up, non-exclusive, nontransferable, perpetual, worldwide license (without the right to\n         * sublicense), to use this specification to create and distribute software and special purpose specifications that are\n         * based upon this specification, and to use, copy, and distribute this specification as provided under the Copyright\n         * Act; provided that: (1) both the copyright notice identified above and this permission notice appear on any\n         * copies of this specification; (2) the use of the specifications is for informational purposes and will not be copied\n         * or posted on any network computer or broadcast in any media and will not be otherwise resold or transferred for\n         * commercial purposes; and (3) no modifications are made to this specification. This limited permission\n         * automatically terminates without notice if you breach any of these terms or conditions. Upon termination, you\n         * will destroy immediately any copies of the specifications in your possession or control.\n         */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+comment body /* The author gratefully acknowledges Sanford Friedenthal for his insights\n         * and comments on this recursive architecture pattern model.\n         */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* The author gratefully acknowledges Schristian Lalitsch-Schnieder for his revision\n         * and insights on the import to Dassault's Cameo of this recursive architecture pattern model.\n         */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}

@@ -1,0 +1,127 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1:
+quoted name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2:
+quoted name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0:
+:>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /*\n\t\t\t * The objective of this analysis is to determine whether the\n\t\t\t * subject vehicle can satisfy the fuel economy requirement.\n\t\t\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 33
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0:
+quoted name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 0.4
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+{...}
+constraint
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 30
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+{...}
+constraint
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /*\n\t\t\t * Solve for the required engine power as a function of time\n\t\t\t * to support the scenario.\n\t\t\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 1
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 1
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+parenthesized expression
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 1
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 1
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 1
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 1
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /*\n\t\t\t * Solve the engine equations to determine how much fuel is\n\t\t\t * consumed.\n\t\t\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}
+quoted name

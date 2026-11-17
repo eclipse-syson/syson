@@ -1,0 +1,159 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /* This ontology defines high-level legal concepts related to legal responsibilities. The ontology defines things which are conferred upon some entity by some legal instrument, and elaborates this into a number of specific capacities, responsibilities and powers, each of which forms the basis for many of the concepts used elsewhere in FIBO in defining legal personhood, executive powers and the like. (source: dct:abstract, LegalCapacity.rdf) */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /*\n  * Copyright (c) 2013-2025 EDM Council, Inc.\n  * Copyright (c) 2013-2025 Object Management Group, Inc.\n  *\n  * Permission is hereby granted, free of charge, to any person obtaining a copy\n  * of this software and associated documentation files (the 'Software'), to deal\n  * in the Software without restriction, including without limitation the rights\n  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  * copies of the Software, and to permit persons to whom the Software is\n  * furnished to do so, subject to the following conditions:\n  *\n  * The above copyright notice and this permission notice shall be included in all\n  * copies or substantial portions of the Software.\n  *\n  * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n  * THE SOFTWARE.\n  *\n  * See https://opensource.org/licenses/MIT. */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* legally enforceable benefit or entitlement arising from a contract, agreement, or instrument, in which an entity holds specified rights or obligations related to the performance, use, or benefit of something, without necessarily holding ownership */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* demand or assertion made by one party on another, based on facts that, taken together, give rise to a legally enforceable right or judicial action */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* contractual right that may be exercised at some point in the future, such as an option to extend a contract, or other available but not obligatory rights as defined in the contract */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* legally enforceable benefit or entitlement granted to a party within a binding agreement */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* institutionalized and legal power inherent in a particular job, function, or position that is meant to enable its holder to successfully carry out his or her responsibilities, where such power has been delegated through some formal means */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /* obligation to deliver something in order to satisfy a claim or debt */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* requirement for one party to formally inform another party (or parties) about specific events, actions, or changes as outlined in the agreement */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* the capability to carry out certain actions or to have certain rights together with the resources to do so */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* personal right, privilege, or benefit that a government, contract, or law provides or protects, making an individual or entity eligible to receive something */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* an identifier associated with a license */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* a party to whom a license has been granted */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* a party who grants a license */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.14/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* the legal capacity to pursue a litigation action in law */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.14/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.15/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* an obligation or duty that is enforceable by a court */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.15/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.16/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* policy specifying principles, rules and/or guidelines regarding some aspect of reporting */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.16/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.17/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* entitlement to perform certain actions (or not), or to be in certain states (or not); or entitlement that requires others to perform certain actions or be in certain states (or not) */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.17/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.18/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* the capacity of some natural person to sign agreements on the part of some organization or legal person */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.18/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.19/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* demand or assertion made by one party on another, based on facts that, taken together, give rise to a legally enforceable right or judicial action */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.19/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.20/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* obligation that depends on a future event or the performance of an action */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.20/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.21/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* right that depends on a future event or the performance of an action */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.21/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.22/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* the capacity to enter into legally binding contracts */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.22/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.23/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /* something which is conferred by way of law or contract, such as a right */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.23/@ownedRelatedElement.0:
+{...}
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.24/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* an obligation or duty that is enforceable by a court */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.24/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.25/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* the ability to be sued at law */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.25/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.26/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* grant of permission needed to do something */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.26/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.27/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /* requirement for one party to formally inform another party (or parties) about specific events, actions, or changes as outlined in the agreement */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.27/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.28/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /* system of principles, rules and guidelines, adopted by an organization to guide decision making with respect to particular situations and implemented via procedures or protocols to achieve stated goals */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.28/@ownedRelatedElement.0:
+{...}
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}

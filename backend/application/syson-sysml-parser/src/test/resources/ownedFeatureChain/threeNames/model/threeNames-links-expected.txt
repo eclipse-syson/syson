@@ -1,0 +1,3 @@
+/@ownedRelationship.0;chainingFeature;Feature;0;a
+/@ownedRelationship.1;chainingFeature;Feature;0;b
+/@ownedRelationship.2;chainingFeature;Feature;0;c

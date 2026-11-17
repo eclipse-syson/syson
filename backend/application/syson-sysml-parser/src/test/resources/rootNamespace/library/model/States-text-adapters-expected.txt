@@ -1,0 +1,132 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /*\n\t * This package defines the base types for states and related behavioral elements in the\n\t * SysML language.\n\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /*\n\t\t * A StateAction is a kind of Action that is also a StatePerformance. It is the base type for all\n\t\t * StateDefinitions.\n\t\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0:
+quoted name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+late nonunique
+:>>
+action
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1:
+quoted name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+late nonunique
+:>>
+action
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.1:
+quoted name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+late nonunique
+:>>
+action
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+late nonunique
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+late nonunique
+:>>
+ref
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0:
+late nonunique
+:>>
+ref
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0:
+late nonunique
+:>>
+ref
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /*\n\t\t\t * The subperformances of this StateAction that are Actions, other than the entry and exit Actions. \n\t\t\t * These subactions all take place in the "middle" of the StatePerformance, that is, after the \n\t\t\t * entry Action and before the exit Action. \n\t\t\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0:
+{...}
+late nonunique
+:>
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 0
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /*\n\t\t\t * The subactions of this state that are states.\n\t\t\t * \n\t\t\t * NOTE: This feature is declared as an ActionUsage, not a StateUsage, so that the constraint \n \t\t\t * checkStateUsageExclusiveStateSpecialization does not apply to it, since this constraint \n\t\t\t * would otherwise incorrectly require that "substates" subset "exclusiveStates".\n\t\t\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0:
+{...}
+:>
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 0
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+comment body /*\n\t\t\t * The substates of this state that are mutually exclusive, that is, whose performances do not\n\t\t\t * overlap in time.\n\t\t\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0:
+{...}
+:>
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 0
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+comment body /*\n\t\t\t * The transitions of this state that are state transitions.\n\t\t\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0:
+{...}
+:>
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.14/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 0
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.14/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+numeric literal 1
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.14/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 0
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.14/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+numeric literal 1
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.14/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /*\n\t\t\t * Exclusive states cannot overlap, so it must be possible to strictly sequence them in time.\n\t\t\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.14/@ownedRelatedElement.0:
+{...}
+succession
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.15/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 1
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.15/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0:
+{...}
+:>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /*\n\t\t * A StateTransitionAction is a TransitionAction and a StateTransitionPerformance whose transitionLinkSource \n\t\t * is a State. It is the base type of TransitionUsages used transitions in state models.\n\t\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 1
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 0
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+late nonunique
+:>>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0:
+{...}
+:>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0/@ownedRelationship.0:
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 0
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+comment body /*\n\t\t * stateActions is the base feature for all StateUsages.\n\t\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0:
+{...}
+:>
+late nonunique
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}

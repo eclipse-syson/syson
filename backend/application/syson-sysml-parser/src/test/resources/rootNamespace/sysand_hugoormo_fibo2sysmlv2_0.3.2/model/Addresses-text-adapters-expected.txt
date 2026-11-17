@@ -1,0 +1,170 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /* This ontology provides high level definitions for addresses and address components including elements that are common to addressing standards. (source: dct:abstract, Addresses.rdf) */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /*\n  * Copyright (c) 2013-2025 EDM Council, Inc.\n  * Copyright (c) 2013-2025 Object Management Group, Inc.\n  *\n  * Permission is hereby granted, free of charge, to any person obtaining a copy\n  * of this software and associated documentation files (the 'Software'), to deal\n  * in the Software without restriction, including without limitation the rights\n  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  * copies of the Software, and to permit persons to whom the Software is\n  * furnished to do so, subject to the following conditions:\n  *\n  * The above copyright notice and this permission notice shall be included in all\n  * copies or substantial portions of the Software.\n  *\n  * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n  * THE SOFTWARE.\n  *\n  * See https://opensource.org/licenses/MIT. */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* index to a location to which communications may be delivered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* aspect of an address */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* system for allocating addresses to objects */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* physical address that identifies a location on a street to which communications may be delivered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* code element that gives directional information for postal delivery */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* physical address where communications can be addressed, papers served or representatives located for any kind of organization or person */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /* unique identifier for a physical address */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* scheme for specifying physical addresses according to a country specific standard */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* physical area uniquely identified by some postal code */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* post office box associated with an address */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* physical address used to deliver communications to a designated container at a local post office or the local equivalent for the jurisdiction, where mail is held until the recipient collects it, rather than to a given house, building, or other location */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* designator used, together with an identifier, for a post office box */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.14/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /* sequence of characters used to assist in the sorting of mail */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.14/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.15/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* geographic directional symbol that follows the street name and street suffix in a street address */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.15/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.16/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* geographic directional symbol that occurs after the primary street number but before the street name in a street address */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.16/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.17/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* address component that identifies a location with respect to a given street */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.17/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.18/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* geographic region or subdivision identifier used internally by a country or other region */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.18/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.19/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* address component that identifies an individual unit within a larger structure, such as an apartment, office, hangar, slip, mailbox, and so forth, at a given street address */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.19/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.20/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* classifier for a smaller structure or component within a larger facility, such as an apartment, office, mail stop, or other similar designation */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.20/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.21/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* index to the specific unit within a secondary unit, such as a building or apartment, at a particular street address */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.21/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.22/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* index to a location that consists of a primary address number, predirectional, street name, suffix, postdirectional, and an optional secondary unit */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.22/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.23/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /* identifier for a street in some context (e.g., city, municipality, geographic region) */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.23/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.24/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /* classifier for a street or other delivery location, such as a dwelling located along a waterway */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.24/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.25/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /* name for a building, house, office complex, shopping center, or other structure or group of structures */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.25/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.26/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* address component that provides additional information that is important to ensuring proper delivery of communications */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.26/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.27/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* classifier for supplemental address information, such as a highway contract route, rural route, building complex, shopping center, condominium complex, mail box, or other similar designation */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.27/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.28/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* address component that includes a specific route, box, apartment, condominium or other indicator or unit associated with a specific address */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.28/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.29/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* address identifying a virtual, i.e. non-physical, location */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.29/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}

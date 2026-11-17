@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="36a2f813-9f5d-3c58-903d-895bae5d4d50" elementId="36a2f813-9f5d-3c58-903d-895bae5d4d50">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="6a0be335-b1a6-395d-a43b-202d778b70e2" elementId="6a0be335-b1a6-395d-a43b-202d778b70e2">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="f21104d3-11c4-3c77-876a-124ddba09aea" declaredName="other" elementId="f21104d3-11c4-3c77-876a-124ddba09aea">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="a277593a-cd47-3a4f-94f3-0e37feb1112d" elementId="a277593a-cd47-3a4f-94f3-0e37feb1112d" visibility="protected">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="ba1192fa-e705-3fcc-9496-4a09c0416282" declaredName="part1" elementId="ba1192fa-e705-3fcc-9496-4a09c0416282"/>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="4598d41c-31ad-3568-9c12-198e85ed3672" elementId="4598d41c-31ad-3568-9c12-198e85ed3672">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="c30fc1ef-007e-344b-b397-1ff8fc7456de" declaredName="current" elementId="c30fc1ef-007e-344b-b397-1ff8fc7456de">
+      <ownedRelationship xsi:type="sysml:MembershipImport" xmi:id="69063a77-2b74-360f-bff4-738d952a8b10" elementId="69063a77-2b74-360f-bff4-738d952a8b10"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="8ade931d-3d63-3709-97ac-d7f07922ccc1" elementId="8ade931d-3d63-3709-97ac-d7f07922ccc1">
+        <ownedRelatedElement xsi:type="sysml:PartUsage" xmi:id="f6b5e020-a043-36e8-a766-465ebeb31f36" declaredName="part2" elementId="f6b5e020-a043-36e8-a766-465ebeb31f36">
+          <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="02f3af66-3cc9-3220-9d91-5c5f73289654" elementId="02f3af66-3cc9-3220-9d91-5c5f73289654" typedFeature="f6b5e020-a043-36e8-a766-465ebeb31f36"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

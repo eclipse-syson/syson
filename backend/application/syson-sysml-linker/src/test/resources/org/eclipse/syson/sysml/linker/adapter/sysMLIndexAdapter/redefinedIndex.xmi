@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ASCII"?>
+<!--
+Original model : 
+part def part2 :> part1 {
+  attribute redefined :>> attribute1;
+}
+
+part def part1 {
+  public attribute attribute1;
+  public attribute attribute2;
+}
+
+
+-->
+
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" elementId="4c1affd7-9544-320b-bd99-38731b11336e">
+  <ownedRelationship xsi:type="sysml:OwningMembership" elementId="4f24bba2-c794-39c9-85be-1090a7eea70f">
+    <ownedRelatedElement xsi:type="sysml:PartDefinition" declaredName="part2" elementId="33db99dc-25ab-3d05-b166-e73f2af73e04">
+      <ownedRelationship xsi:type="sysml:Subclassification" elementId="ff95962c-2469-39bd-80b3-610337bdbb0d" subclassifier="//@ownedRelationship.0/@ownedRelatedElement.0" superclassifier="//@ownedRelationship.1/@ownedRelatedElement.0"/>
+      <ownedRelationship xsi:type="sysml:FeatureMembership" elementId="33e203dc-23e4-39ae-b7cc-704c65310fb8">
+        <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="redefined" elementId="3b34774e-64f2-30ac-ab51-d6a9fd3c10c0">
+          <ownedRelationship xsi:type="sysml:Redefinition" elementId="a83b26f3-ee9b-35bd-bfb1-6ed910bce2a0" redefinedFeature="//@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0" redefiningFeature="//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership" elementId="2ada3972-33ad-3c13-8747-85b30b2062c6">
+    <ownedRelatedElement xsi:type="sysml:PartDefinition" declaredName="part1" elementId="556ae4c3-9bf5-3de6-9119-d13d03ed094a">
+      <ownedRelationship xsi:type="sysml:FeatureMembership" elementId="ddcc07fe-6355-3dc3-95ec-4cf152116033">
+        <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="attribute1" elementId="40e711f5-cd58-35cf-b737-a540255aeddd">
+          <ownedRelationship xsi:type="sysml:OwningMembership" elementId="e3170231-5e75-3c2e-8a93-8a83b94bfa0b">
+            <ownedRelatedElement xsi:type="sysml:Multiplicity" elementId="536eb487-9c40-356d-a138-0e0d24b93465"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership" elementId="60816831-8202-3003-ad30-ad2521145ba5">
+        <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="attribute2" elementId="c4f1404f-a753-3b96-9f0d-3b9000940d22">
+          <ownedRelationship xsi:type="sysml:OwningMembership" elementId="b8029688-7334-3cdb-a1dc-88a0f38e3530">
+            <ownedRelatedElement xsi:type="sysml:Multiplicity" elementId="e86b7faf-cb2b-38fb-84b0-6329cabbdf76"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

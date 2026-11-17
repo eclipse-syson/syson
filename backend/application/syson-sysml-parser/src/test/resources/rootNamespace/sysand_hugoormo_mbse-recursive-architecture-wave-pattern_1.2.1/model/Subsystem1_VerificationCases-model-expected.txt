@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="Subsystem1_VerificationCases">
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Comment" declaredName="subsystem1VerificationStrategyDefsModelerComment" body="L2 Subsystem1 verification strategy defs (inherit from Framework). " locale="en_US">
+          <ownedRelationship xsi:type="sysml:Annotation"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Comment" declaredName="subsystem1VerificationRolePolicyLinkModelerComment" body="Verification evidence intent and claim limits are defined in&#xA;MyFramework::MyFrameworkVerificationMetaPatterns.&#xA;See also MyFramework::MyFrameworkAnalysisMetaPatterns::analysisRolePolicy&#xA;for the analysis-vs-empirical claim boundary.&#xA;" locale="en_US">
+          <ownedRelationship xsi:type="sysml:Annotation"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:VerificationCaseDefinition" declaredName="Subsystem1EvidenceVerification">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="L2 SUBSYSTEM1 (PAYLOADBUILDER) EVIDENCE VERIFICATION STRATEGY&#xA;&#xA;Specializes the 8-stage evidence pipeline for component composition.&#xA;Subject: payloadBuilder (L2 graybox - composed of L3 components)&#xA;Objective: Verify payload quality gain through component composition&#xA;Stimulus: Execute full interacting component chain&#xA;Method: analyze for executable model evidence; repeat as test/demo evidence when&#xA;implemented payload-builder hardware/software exists.&#xA;HINT: Scope is verified through configuration wiring: subsystem connections in&#xA;Subsystem1_Configuration bind prebuilder and finisher action handoff, so the final&#xA;finisher result validates interaction across the whole decomposed branch.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:SubjectMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="payloadBuilder">
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:ObjectiveMembership">
+            <ownedRelatedElement xsi:type="sysml:RequirementUsage" declaredName="subsystem1Objective" isComposite="true">
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Documentation" body="Verify payloadQualityGainPayloadBuilderDerived is satisfied.&#xA;- Requirement: payload quality gain through L2 component composition, as specified&#xA;  by Subsystem1_Requirements::payloadQualityGainPayloadBuilderDerived.&#xA;- Scenario: L2 graybox context with payloadPrebuilder and payloadFinisher.&#xA;- Evidence strategy: Execute component actions, collect quality contributions.&#xA;- Verdict note: inherited verdict computation is a scaffold; concrete projects&#xA;  shall specialize evidence collection and acceptance logic.&#xA;"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:RequirementVerificationMembership">
+                <ownedRelatedElement xsi:type="sysml:RequirementUsage" isComposite="true">
+                  <ownedRelationship xsi:type="sysml:ReferenceSubsetting"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MetadataUsage" isComposite="true">
+                  <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                  <ownedRelationship xsi:type="sysml:FeatureMembership">
+                    <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                      <ownedRelationship xsi:type="sysml:Redefinition"/>
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                          <ownedRelationship xsi:type="sysml:Membership"/>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ActionUsage" isComposite="true">
+              <ownedRelationship xsi:type="sysml:Redefinition"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Documentation" body="L2 Subsystem1-specific: execute prebuilder then finisher endpoints that own&#xA;executable behavior; L3 components are bb-only in this reference pattern.&#xA;"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ItemUsage" declaredName="preparedContext" direction="in" isComposite="true"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ItemUsage" declaredName="stimulusExecution" direction="out" isComposite="true"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:PerformActionUsage">
+                  <ownedRelationship xsi:type="sysml:ReferenceSubsetting">
+                    <ownedRelatedElement xsi:type="sysml:Feature">
+                      <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+                      <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+                      <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:SuccessionAsUsage">
+                  <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+                    <ownedRelatedElement xsi:type="sysml:ReferenceUsage"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+                    <ownedRelatedElement xsi:type="sysml:ReferenceUsage"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:PerformActionUsage">
+                  <ownedRelationship xsi:type="sysml:ReferenceSubsetting">
+                    <ownedRelatedElement xsi:type="sysml:Feature">
+                      <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+                      <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+                      <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Comment" declaredName="subsystem1VerificationScenarioUsagesModelerComment" body="L2 Subsystem1 verification scenario usages. " locale="en_US">
+          <ownedRelationship xsi:type="sysml:Annotation"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:VerificationCaseUsage" declaredName="payloadQualityGainPayloadBuilderVerification" isComposite="true">
+          <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="SCENARIO 1: Nominal PayloadBuilder component composition.&#xA;Inherits L2 Subsystem1 evidence strategy.&#xA;"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:VerificationCaseUsage" declaredName="subsystem1CompliancetoMyStandardVerification" isComposite="true">
+          <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="SCENARIO: PayloadBuilder compliance inspection.&#xA;One-off manual inspection verification at L2 Subsystem1.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:SubjectMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="payloadBuilder">
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:ObjectiveMembership">
+            <ownedRelatedElement xsi:type="sysml:RequirementUsage" declaredName="subsystem1InspectionObjective" isComposite="true">
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Documentation" body="INSPECTION CRITERIA FOR L2 SUBSYSTEM1: Verify component architecture complies. "/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

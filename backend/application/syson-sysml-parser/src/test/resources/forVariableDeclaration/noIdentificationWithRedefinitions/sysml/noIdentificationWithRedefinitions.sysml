@@ -1,0 +1,1 @@
+:>> TranslationOrRotation[1..*] ordered nonunique

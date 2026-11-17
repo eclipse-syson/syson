@@ -1,0 +1,443 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /*\n  * Copyright (c) 2013-2025 EDM Council, Inc.\n  * Copyright (c) 2013-2025 Object Management Group, Inc.\n  *\n  * Permission is hereby granted, free of charge, to any person obtaining a copy\n  * of this software and associated documentation files (the 'Software'), to deal\n  * in the Software without restriction, including without limitation the rights\n  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  * copies of the Software, and to permit persons to whom the Software is\n  * furnished to do so, subject to the following conditions:\n  *\n  * The above copyright notice and this permission notice shall be included in all\n  * copies or substantial portions of the Software.\n  *\n  * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n  * THE SOFTWARE.\n  *\n  * See https://opensource.org/licenses/MIT. */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers exactly one vote per share, is unrestricted from a sales perspective, is fully paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers exactly one vote per share, is unrestricted from a sales perspective, is nil paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers exactly one vote per share, is unrestricted from a sales perspective, is partially paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers exactly one vote per share, is restricted from a sales / transfer perspective, is fully paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers exactly one vote per share, is restricted from a sales / transfer perspective, is nil paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers exactly one vote per share, is restricted from a sales / transfer perspective, is partially paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers exactly 0 votes per share, is unrestricted from a sales perspective, is fully paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers exactly 0 votes per share, is unrestricted from a sales perspective, is nil paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers exactly 0 votes per share, is unrestricted from a sales perspective, is partially paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers exactly 0 votes per share, is restricted from a sales / transfer perspective, is fully paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers exactly 0 votes per share, is restricted from a sales / transfer perspective, is nil paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers exactly 0 votes per share, is restricted from a sales / transfer perspective, is partially paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers less than one vote per share, is unrestricted from a sales / transfer perspective, is fully paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.14/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers less than one vote per share, is unrestricted from a sales / transfer perspective, is nil paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.14/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.15/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers less than one vote per share, is unrestricted from a sales / transfer perspective, is partially paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.15/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.16/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers less than one vote per share, is restricted from a sales / transfer perspective, is fully paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.16/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.17/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers less than one vote per share, is restricted from a sales / transfer perspective, is nil paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.17/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.18/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers less than one vote per share, is restricted from a sales / transfer perspective, is partially paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.18/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.19/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers multiple votes per share, is not restricted from a sales / transfer perspective, is fully paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.19/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.20/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers multiple votes per share, is not restricted from a sales / transfer perspective, is nil paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.20/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.21/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers multiple votes per share, is not restricted from a sales / transfer perspective, is partially paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.21/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.22/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers multiple votes per share, is restricted from a sales / transfer perspective, is fully paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.22/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.23/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers multiple votes per share, is restricted from a sales / transfer perspective, is nil paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.23/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.24/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* common share that confers multiple votes per share, is restricted from a sales / transfer perspective, is partially paid and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.24/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.25/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, has no fixed maturity date, provides a periodic stated income, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.25/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.26/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, has no fixed maturity date, provides a periodic income whose dividend rate is set periodically, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.26/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.27/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, has no fixed maturity date, provides a periodic income whose dividend rate is adjusted through an auction, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.27/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.28/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, has no fixed maturity date, provides the same dividends as common/ordinary shareholders, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.28/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.29/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, has no fixed maturity date, provides a periodic stated income and dividends not paid in any year accumulate, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.29/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.30/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, has no fixed maturity date, provides a periodic stated income, dividends not paid in any year accumulate, and participates with common shareholders in further dividend and capital distributions, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.30/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.31/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, has no fixed maturity date, provides a periodic stated income and participates with common shareholders in further dividend and capital distributions, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.31/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.32/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be redeemed at the option of the issuer and/or of the shareholder, provides a periodic stated income, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.32/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.33/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be redeemed at the option of the issuer and/or of the shareholder, provides a periodic income whose dividend rate is set periodically, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.33/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.34/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be redeemed at the option of the issuer and/or of the shareholder, provides a periodic income whose dividend rate is adjusted through an auction, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.34/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.35/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be redeemed at the option of the issuer and/or of the shareholder, provides the same dividends as common/ordinary shareholders, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.35/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.36/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be redeemed at the option of the issuer and/or of the shareholder, provides a periodic stated income and dividends not paid in any year accumulate, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.36/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.37/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be redeemed at the option of the issuer and/or of the shareholder, provides a periodic stated income, dividends not paid in any year accumulate, and participates with common shareholders in further dividend and capital distributions, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.37/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.38/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be redeemed at the option of the issuer and/or of the shareholder, provides a periodic stated income and participates with common shareholders in further dividend and capital distributions, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.38/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.39/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be exchanged for securities of another issuer, may be redeemed at the option of the issuer and/or of the shareholder, provides a periodic stated income, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.39/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.40/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be redeemed at the option of the issuer and/or of the shareholder, provides a periodic income whose dividend rate is set periodically, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.40/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.41/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be redeemed at the option of the issuer and/or of the shareholder, provides a periodic income whose dividend rate is adjusted through an auction, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.41/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.42/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be exchanged for securities of another issuer, may be redeemed at the option of the issuer and/or of the shareholder, provides the same dividends as common/ordinary shareholders, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.42/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.43/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be exchanged for securities of another issuer, may be redeemed at the option of the issuer and/or of the shareholder, provides a periodic stated income and dividends not paid in any year accumulate, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.43/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.44/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be exchanged for securities of another issuer, may be redeemed at the option of the issuer and/or of the shareholder, provides a periodic stated income, dividends not paid in any year accumulate, and participates with common shareholders in further dividend and capital distributions, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.44/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.45/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one per share, may be exchanged for securities of another issuer, may be redeemed at the option of the issuer and/or of the shareholder, provides a periodic stated income and participates with common shareholders in further dividend and capital distributions, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.45/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.46/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be exchanged for securities of another issuer, whose issuer and/or shareholders have the option to extend the maturity date, that provides a periodic stated income, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.46/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.47/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be exchanged for securities of another issuer, whose issuer and/or shareholders have the option to extend the maturity date, that provides a periodic income whose dividend rate is set periodically, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.47/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.48/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be exchanged for securities of another issuer, whose issuer and/or shareholders have the option to extend the maturity date, that provides a periodic income whose dividend rate is adjusted through an auction, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.48/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.49/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be exchanged for securities of another issuer, whose issuer and/or shareholders have the option to extend the maturity date, that provides the same dividends as common/ordinary shareholders, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.49/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.50/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be exchanged for securities of another issuer, whose issuer and/or shareholders have the option to extend the maturity date, that provides a periodic stated income and dividends not paid in any year accumulate, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.50/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.51/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be exchanged for securities of another issuer, whose issuer and/or shareholders have the option to extend the maturity date, that provides a periodic stated income, dividends not paid in any year accumulate, and participates with common shareholders in further dividend and capital distributions, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.51/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.52/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be exchanged for securities of another issuer, whose issuer and/or shareholders have the option to extend the maturity date, that provides a periodic stated income and participates with common shareholders in further dividend and capital distributions, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.52/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.53/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, whose issuer and/or shareholders have the option to extend the maturity date, that provides a periodic stated income, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.53/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.54/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, whose issuer and/or shareholders have the option to extend the maturity date, that provides a periodic income whose dividend rate is set periodically, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.54/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.55/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, whose issuer and/or shareholders have the option to extend the maturity date, that provides a periodic income whose dividend rate is adjusted through an auction, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.55/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.56/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, whose issuer and/or shareholders have the option to extend the maturity date, that provides the same dividends as common/ordinary shareholders, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.56/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.57/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, whose issuer and/or shareholders have the option to extend the maturity date, that provides a periodic stated income and dividends not paid in any year accumulate, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.57/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.58/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, whose issuer and/or shareholders have the option to extend the maturity date, that provides a periodic stated income, dividends not paid in any year accumulate, and participates with common shareholders in further dividend and capital distributions, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.58/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.59/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, whose issuer and/or shareholders have the option to extend the maturity date, that provides a periodic stated income and participates with common shareholders in further dividend and capital distributions, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.59/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.60/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be exchanged for securities of another issuer, provides a periodic stated income, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.60/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.61/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be exchanged for securities of another issuer, provides a periodic income whose dividend rate is set periodically, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.61/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.62/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be exchanged for securities of another issuer, provides a periodic income whose dividend rate is adjusted through an auction, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.62/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.63/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be exchanged for securities of another issuer, provides the same dividends as common/ordinary shareholders, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.63/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.64/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be exchanged for securities of another issuer, provides a periodic stated income and dividends not paid in any year accumulate, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.64/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.65/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be exchanged for securities of another issuer, provides a periodic stated income, dividends not paid in any year accumulate, and participates with common shareholders in further dividend and capital distributions, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.65/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.66/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be exchanged for securities of another issuer, provides a periodic stated income and participates with common shareholders in further dividend and capital distributions, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.66/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.67/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be redeemed at the option of the issuer and/or of the shareholder with an extendable redemption date, provides a periodic stated income, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.67/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.68/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be redeemed at the option of the issuer and/or of the shareholder with an extendable redemption date, provides a periodic income whose dividend rate is set periodically, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.68/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.69/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be redeemed at the option of the issuer and/or of the shareholder with an extendable redemption date, provides a periodic income whose dividend rate is adjusted through an auction, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.69/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.70/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be redeemed at the option of the issuer and/or of the shareholder with an extendable redemption date, provides the same dividends as common/ordinary shareholders, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.70/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.71/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be redeemed at the option of the issuer and/or of the shareholder with an extendable redemption date, provides a periodic stated income and dividends not paid in any year accumulate, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.71/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.72/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be redeemed at the option of the issuer and/or of the shareholder with an extendable redemption date, provides a periodic stated income, dividends not paid in any year accumulate, and participates with common shareholders in further dividend and capital distributions, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.72/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.73/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* preferred share that confers exactly one vote per share, may be redeemed at the option of the issuer and/or of the shareholder with an extendable redemption date, provides a periodic stated income and participates with common shareholders in further dividend and capital distributions, and is registered */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.73/@ownedRelatedElement.0:
+{...}
+specializes
+quoted short name
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}

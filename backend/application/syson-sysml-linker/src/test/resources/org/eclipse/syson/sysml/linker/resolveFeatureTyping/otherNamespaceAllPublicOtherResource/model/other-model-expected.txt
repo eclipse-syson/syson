@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="407cd9e6-0ea8-3803-85bd-9959c9c8965e" elementId="407cd9e6-0ea8-3803-85bd-9959c9c8965e">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="7a0be181-5f9c-3639-81f7-5bfeb71c0e58" elementId="7a0be181-5f9c-3639-81f7-5bfeb71c0e58">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="a7a527f9-4b84-3ad2-840c-cdb4e568649b" declaredName="other" elementId="a7a527f9-4b84-3ad2-840c-cdb4e568649b">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="30276750-7d30-3dbe-913f-d25ef2ccaab5" elementId="30276750-7d30-3dbe-913f-d25ef2ccaab5">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="745a7805-f015-38b3-a5f9-9ea76863b261" declaredName="part1" elementId="745a7805-f015-38b3-a5f9-9ea76863b261"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:Membership" xmi:id="feb75832-7c7a-3b48-a49d-3d8937ba1f82" elementId="feb75832-7c7a-3b48-a49d-3d8937ba1f82" memberElement="745a7805-f015-38b3-a5f9-9ea76863b261" memberName="part1alias"/>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

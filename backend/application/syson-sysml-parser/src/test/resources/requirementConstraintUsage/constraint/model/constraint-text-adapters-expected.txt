@@ -1,0 +1,5 @@
+/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 4
+/:
+{...}
+constraint

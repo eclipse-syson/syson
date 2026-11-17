@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="9a7d4d84-bf95-33b7-9e76-4e0dc65c5c2b" elementId="9a7d4d84-bf95-33b7-9e76-4e0dc65c5c2b">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="4abc4e67-580e-3009-99b2-e0a240f33a12" elementId="4abc4e67-580e-3009-99b2-e0a240f33a12">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="3c6829d4-f8de-3e1f-b226-31a2e9daeb3f" declaredName="Test" elementId="3c6829d4-f8de-3e1f-b226-31a2e9daeb3f">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="09ab667a-f60f-3bd0-b20f-5811bcad5a72" elementId="09ab667a-f60f-3bd0-b20f-5811bcad5a72">
+        <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="be43cd96-94fb-3596-9c46-f2d071213947" declaredName="value" elementId="be43cd96-94fb-3596-9c46-f2d071213947">
+          <ownedRelationship xsi:type="sysml:Redefinition" xmi:id="8021150c-ce2b-3c7f-a843-c565a213baaa" elementId="8021150c-ce2b-3c7f-a843-c565a213baaa" redefiningFeature="be43cd96-94fb-3596-9c46-f2d071213947"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

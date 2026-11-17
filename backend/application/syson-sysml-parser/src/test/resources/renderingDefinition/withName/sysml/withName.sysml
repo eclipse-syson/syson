@@ -1,0 +1,1 @@
+#c rendering def a specializes namespace1::namespace2;

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:LibraryPackage" declaredName="LCA">
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Documentation" body="defines the elements corresponding to LCA Objects&#xA;LCA                     | SysML 2&#xA;-------------------------------------              &#xA;unit group              | MeasurementUnit &#xA;flow property           | attribute definition specializing ScalarQuantityValue&#xA;flow                    | attribute being typed by a flow property &#xA;exchange, input, output | attribute subsetting a flow&#xA;"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:MembershipImport"/>
+      <ownedRelationship xsi:type="sysml:MembershipImport"/>
+      <ownedRelationship xsi:type="sysml:MembershipImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="lcaFlows">
+          <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="lcaExchanges">
+          <ownedRelationship xsi:type="sysml:Subsetting"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:MetadataDefinition" declaredName="ExternalRef">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="this declares an element as a reference to an external object, identified by a uuid "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="uuid">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:MetadataDefinition" declaredName="LCA-Flow" declaredShortName="lcaflow">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="this declares an attribute as an lca-flow, to be subsetted by &#xA;exchange-attributes of parts and part definitions.&#xA;Must be defined at the package level (i.e. as attribute of Anything) "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+              <ownedRelationship xsi:type="sysml:FeatureValue">
+                <ownedRelatedElement xsi:type="sysml:OperatorExpression" operator="meta">
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature">
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:MetadataAccessExpression">
+                          <ownedRelationship xsi:type="sysml:Membership"/>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:ReturnParameterMembership">
+                    <ownedRelatedElement xsi:type="sysml:Feature">
+                      <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:MetadataDefinition" declaredName="LCA-Exchange" declaredShortName="exchg">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="this declares an attribute as quantifing an exchange with the &#xA;environment during the production of the element. &#xA;A positive value is output, a negative value is input.&#xA;Must be owned by a part or part def.&#xA;Must subset an lcaflow. (I don't know how to enforce this)"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+              <ownedRelationship xsi:type="sysml:FeatureValue">
+                <ownedRelatedElement xsi:type="sysml:OperatorExpression" operator="meta">
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature">
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:MetadataAccessExpression">
+                          <ownedRelationship xsi:type="sysml:Membership"/>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:ReturnParameterMembership">
+                    <ownedRelatedElement xsi:type="sysml:Feature">
+                      <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:MetadataDefinition" declaredName="LCA-Part" declaredShortName="lca">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="this declares a part (definition) as something that will have a process in an lca-tool, &#xA;whose impact can be analyzed. &#xA;In a first step, the process can be generated in the lca-tool and the id will be recorded. &#xA;The result of the calculation will then be added as an attribute, so that the impact can &#xA;guide the system design activities. "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:MetadataDefinition" declaredName="LCA-Impact" declaredShortName="impact">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="this marks the attributes that contain the impacts calculated by the life cycle assessement "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

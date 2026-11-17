@@ -1,0 +1,1 @@
+public alias <a> for namespace1;

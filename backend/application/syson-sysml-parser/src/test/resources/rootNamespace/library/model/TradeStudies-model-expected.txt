@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:LibraryPackage" declaredName="TradeStudies" isStandard="true">
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Documentation" body="This package provides a simple framework for defining trade-off study analysis cases.&#xA;"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:MembershipImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:CalculationDefinition" declaredName="EvaluationFunction" isAbstract="true">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="An EvaluationFunction is a calculation that evaluates a TradeStudy alternative,&#xA;producing a ScalarValue that can be comparted with the evaluation of other&#xA;alternatives.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="alternative" direction="in">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Documentation" body="The alternative to be evaluated.&#xA;"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:ReturnParameterMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="result">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Documentation" body="A ScalarValue representing the evaluation of the given alternative.&#xA;"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:RequirementDefinition" declaredName="TradeStudyObjective" isAbstract="true">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="A TradeStudyObjective is the base definition for the objective of a TradeStudy.&#xA;The requirement is to choose from a given set of alternatives the selectedAlternative&#xA;for that has the best evaluation according to a given EvaluationFunction. What&#xA;value is considered &quot;best&quot; is not defined in the abstract base definition but must be&#xA;computed in any concrete specialization.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:SubjectMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="selectedAlternative">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Documentation" body="The alternative that should be selected, as evaluated using the given &#xA;ObjectiveFunction.&#xA;"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="alternatives" direction="in">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Documentation" body="The alternatives being considered in the TradeStudy for which this TradeStudyObjective &#xA;is the objective.&#xA;"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:CalculationUsage" declaredName="eval" direction="in" isComposite="true">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Documentation" body="The EvaluationFunction to be used in evaluating the given alternatives.&#xA;"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="best">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Documentation" body="Out of the evaluation results of all the given alternatives, the one that is considered &#xA;&quot;best&quot;, in the sense that it is the value the selectedAlternative should have. This &#xA;value must be computed in any concrete specialization of TradeStudyObjective.&#xA;"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:RequirementConstraintMembership" kind="requirement">
+            <ownedRelatedElement xsi:type="sysml:ConstraintUsage" isComposite="true">
+              <ownedRelationship xsi:type="sysml:ResultExpressionMembership">
+                <ownedRelatedElement xsi:type="sysml:OperatorExpression" operator="==">
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:InvocationExpression">
+                          <ownedRelationship xsi:type="sysml:Membership"/>
+                          <ownedRelationship xsi:type="sysml:ParameterMembership">
+                            <ownedRelatedElement xsi:type="sysml:Feature">
+                              <ownedRelationship xsi:type="sysml:FeatureValue">
+                                <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                                  <ownedRelationship xsi:type="sysml:Membership"/>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature">
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                          <ownedRelationship xsi:type="sysml:Membership"/>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:RequirementDefinition" declaredName="MinimizeObjective">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="A MinimizeObjective is a TradeStudyObjective that requires that the &#xA;selectedAlternative have the minimum ObjectiveFunction value of all the&#xA;given alternatives.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage">
+              <ownedRelationship xsi:type="sysml:Redefinition"/>
+              <ownedRelationship xsi:type="sysml:FeatureValue">
+                <ownedRelatedElement xsi:type="sysml:InvocationExpression">
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                          <ownedRelationship xsi:type="sysml:Membership"/>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:Membership"/>
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature">
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                          <ownedRelationship xsi:type="sysml:FeatureMembership">
+                            <ownedRelatedElement xsi:type="sysml:Expression">
+                              <ownedRelationship xsi:type="sysml:OwningMembership">
+                                <ownedRelatedElement xsi:type="sysml:Documentation" body="For a MinimizeObjective, the best value is the minimum one.&#xA;"/>
+                              </ownedRelationship>
+                              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                                <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="x" direction="in"/>
+                              </ownedRelationship>
+                              <ownedRelationship xsi:type="sysml:ResultExpressionMembership">
+                                <ownedRelatedElement xsi:type="sysml:InvocationExpression">
+                                  <ownedRelationship xsi:type="sysml:Membership"/>
+                                  <ownedRelationship xsi:type="sysml:ParameterMembership">
+                                    <ownedRelatedElement xsi:type="sysml:Feature">
+                                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                                        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                                          <ownedRelationship xsi:type="sysml:Membership"/>
+                                        </ownedRelatedElement>
+                                      </ownedRelationship>
+                                    </ownedRelatedElement>
+                                  </ownedRelationship>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:RequirementDefinition" declaredName="MaximizeObjective">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="A MaximizeObjective is a TradeStudyObjective that requires that the &#xA;selectedAlternative have the maximum ObjectiveFunction value of all the&#xA;given alternatives.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage">
+              <ownedRelationship xsi:type="sysml:Redefinition"/>
+              <ownedRelationship xsi:type="sysml:FeatureValue">
+                <ownedRelatedElement xsi:type="sysml:InvocationExpression">
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                          <ownedRelationship xsi:type="sysml:Membership"/>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:Membership"/>
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature">
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                          <ownedRelationship xsi:type="sysml:FeatureMembership">
+                            <ownedRelatedElement xsi:type="sysml:Expression">
+                              <ownedRelationship xsi:type="sysml:OwningMembership">
+                                <ownedRelatedElement xsi:type="sysml:Documentation" body="For a MinimizeObjective, the best value is the maximum one.&#xA;"/>
+                              </ownedRelationship>
+                              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                                <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="x" direction="in"/>
+                              </ownedRelationship>
+                              <ownedRelationship xsi:type="sysml:ResultExpressionMembership">
+                                <ownedRelatedElement xsi:type="sysml:InvocationExpression">
+                                  <ownedRelationship xsi:type="sysml:Membership"/>
+                                  <ownedRelationship xsi:type="sysml:ParameterMembership">
+                                    <ownedRelatedElement xsi:type="sysml:Feature">
+                                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                                        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                                          <ownedRelationship xsi:type="sysml:Membership"/>
+                                        </ownedRelatedElement>
+                                      </ownedRelationship>
+                                    </ownedRelatedElement>
+                                  </ownedRelationship>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:AnalysisCaseDefinition" declaredName="TradeStudy" isAbstract="true">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="A TradeStudy is an analysis case whose subject is a set of alternatives&#xA;(at least one) and whose result is a selection of one of those alternatives.&#xA;The alternatives are evaluated based on a given ObjectiveFunction and the&#xA;selection is made such that it satisfies the objective of the TradeStudy&#xA;(which must be a TradeStudyObjective).&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:SubjectMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="studyAlternatives">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Documentation" body="The set of alternatives being considered in this TradeStudy. &#xA;&#xA;In a TradeStudy usage, bind this feature to the actual collection of&#xA;alternatives to be considered.&#xA;"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:CalculationUsage" declaredName="evaluationFunction" isAbstract="true" isComposite="true">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Documentation" body="The EvaluationFunction to be used to evaluate the alternatives.&#xA;&#xA;In a TradeStudy usage, redefine this feature to provide the desired&#xA;calculation (or bind it to a calculation usage that does so).&#xA;"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:ObjectiveMembership">
+            <ownedRelatedElement xsi:type="sysml:RequirementUsage" declaredName="tradeStudyObjective" isComposite="true">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Documentation" body="The objective of this TradeStudy.&#xA;&#xA;Redefine this feature to give it a definition that is a concrete&#xA;specialization of TradeStudyObjective. That can either be one of the&#xA;specializations provided in this package, or a more specific user-&#xA;defined one.&#xA;"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:SubjectMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage" direction="in">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:FeatureValue">
+                    <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                      <ownedRelationship xsi:type="sysml:Membership"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:CalculationUsage" direction="in" isComposite="true">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:FeatureValue">
+                    <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                      <ownedRelationship xsi:type="sysml:Membership"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:ReturnParameterMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="selectedAlternative">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:FeatureValue">
+                <ownedRelatedElement xsi:type="sysml:InvocationExpression">
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                          <ownedRelationship xsi:type="sysml:Membership"/>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:Membership"/>
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature">
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                          <ownedRelationship xsi:type="sysml:FeatureMembership">
+                            <ownedRelatedElement xsi:type="sysml:Expression">
+                              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                                <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="a" direction="in">
+                                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                                    <ownedRelatedElement xsi:type="sysml:Documentation" body="The alternative selected by this TradeStudy, which is the one that meets the&#xA;requirement of the tradeStudyObjective.&#xA;"/>
+                                  </ownedRelationship>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                              <ownedRelationship xsi:type="sysml:ResultExpressionMembership">
+                                <ownedRelatedElement xsi:type="sysml:InvocationExpression">
+                                  <ownedRelationship xsi:type="sysml:Membership"/>
+                                  <ownedRelationship xsi:type="sysml:ParameterMembership">
+                                    <ownedRelatedElement xsi:type="sysml:Feature">
+                                      <ownedRelationship xsi:type="sysml:Redefinition"/>
+                                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                                        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                                          <ownedRelationship xsi:type="sysml:Membership"/>
+                                        </ownedRelatedElement>
+                                      </ownedRelationship>
+                                    </ownedRelatedElement>
+                                  </ownedRelationship>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

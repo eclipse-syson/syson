@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="Documentation Example">
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Documentation" body="This is documentation of the owning &#xA;package.&#xA;"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" declaredName="Automobile">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" declaredName="Document1" body="This documentation of Automobile. "/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:Membership" memberName="Car">
+        <ownedRelationship xsi:type="sysml:Annotation">
+          <ownedRelatedElement xsi:type="sysml:Documentation" body="This is documentation of the alias. "/>
+        </ownedRelationship>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:Membership" memberName="Torque"/>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

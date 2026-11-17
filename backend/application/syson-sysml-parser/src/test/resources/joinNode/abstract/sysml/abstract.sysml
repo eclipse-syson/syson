@@ -1,0 +1,1 @@
+abstract join a;

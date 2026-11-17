@@ -1,0 +1,1 @@
+viewpoint a = 1;

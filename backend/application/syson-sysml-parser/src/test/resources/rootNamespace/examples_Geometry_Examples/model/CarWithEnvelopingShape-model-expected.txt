@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="CarWithEnvelopingShape">
+      <ownedRelationship xsi:type="sysml:MembershipImport"/>
+      <ownedRelationship xsi:type="sysml:MembershipImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" declaredName="Car">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Example car with simple enveloping shape that is a solid box&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ItemUsage" declaredName="boundingBox" isComposite="true">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:FeatureValue">
+                    <ownedRelatedElement xsi:type="sysml:OperatorExpression" operator="[">
+                      <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                        <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                          <ownedRelationship xsi:type="sysml:FeatureValue">
+                            <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="4800"/>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                      <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                        <ownedRelatedElement xsi:type="sysml:Feature">
+                          <ownedRelationship xsi:type="sysml:FeatureValue">
+                            <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                              <ownedRelationship xsi:type="sysml:Membership"/>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:FeatureValue">
+                    <ownedRelatedElement xsi:type="sysml:OperatorExpression" operator="[">
+                      <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                        <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                          <ownedRelationship xsi:type="sysml:FeatureValue">
+                            <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1840"/>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                      <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                        <ownedRelatedElement xsi:type="sysml:Feature">
+                          <ownedRelationship xsi:type="sysml:FeatureValue">
+                            <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                              <ownedRelationship xsi:type="sysml:Membership"/>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:FeatureValue">
+                    <ownedRelatedElement xsi:type="sysml:OperatorExpression" operator="[">
+                      <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                        <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                          <ownedRelationship xsi:type="sysml:FeatureValue">
+                            <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1350"/>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                      <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                        <ownedRelatedElement xsi:type="sysml:Feature">
+                          <ownedRelationship xsi:type="sysml:FeatureValue">
+                            <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                              <ownedRelationship xsi:type="sysml:Membership"/>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

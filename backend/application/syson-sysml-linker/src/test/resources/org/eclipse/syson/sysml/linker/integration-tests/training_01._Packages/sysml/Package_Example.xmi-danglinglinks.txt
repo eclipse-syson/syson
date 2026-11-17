@@ -1,0 +1,4 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0;importedMembership;0;ISQ::TorqueValue
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1;importedNamespace;0;ScalarValues
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3;memberElement;0;Automobile
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4;memberElement;0;ISQ::TorqueValue

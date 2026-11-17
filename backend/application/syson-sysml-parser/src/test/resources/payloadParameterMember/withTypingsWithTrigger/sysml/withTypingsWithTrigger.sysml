@@ -1,0 +1,1 @@
+<a> b : elements : TranslationOrRotation[1..*] ordered nonunique after 3

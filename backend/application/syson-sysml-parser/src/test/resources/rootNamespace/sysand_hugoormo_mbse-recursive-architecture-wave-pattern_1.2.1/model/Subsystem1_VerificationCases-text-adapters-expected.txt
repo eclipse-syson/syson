@@ -1,0 +1,58 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+comment body /* L2 Subsystem1 verification strategy defs (inherit from Framework). */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* Verification evidence intent and claim limits are defined in\n     * MyFramework::MyFrameworkVerificationMetaPatterns.\n     * See also MyFramework::MyFrameworkAnalysisMetaPatterns::analysisRolePolicy\n     * for the analysis-vs-empirical claim boundary.\n     */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* L2 SUBSYSTEM1 (PAYLOADBUILDER) EVIDENCE VERIFICATION STRATEGY\n         * \n         * Specializes the 8-stage evidence pipeline for component composition.\n         * Subject: payloadBuilder (L2 graybox - composed of L3 components)\n         * Objective: Verify payload quality gain through component composition\n         * Stimulus: Execute full interacting component chain\n         * Method: analyze for executable model evidence; repeat as test/demo evidence when\n         * implemented payload-builder hardware/software exists.\n         * HINT: Scope is verified through configuration wiring: subsystem connections in\n         * Subsystem1_Configuration bind prebuilder and finisher action handoff, so the final\n         * finisher result validates interaction across the whole decomposed branch.\n         */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+subsets
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /* Verify payloadQualityGainPayloadBuilderDerived is satisfied.\n             * - Requirement: payload quality gain through L2 component composition, as specified\n             *   by Subsystem1_Requirements::payloadQualityGainPayloadBuilderDerived.\n             * - Scenario: L2 graybox context with payloadPrebuilder and payloadFinisher.\n             * - Evidence strategy: Execute component actions, collect quality contributions.\n             * - Verdict note: inherited verdict computation is a scaffold; concrete projects\n             *   shall specialize evidence collection and acceptance logic.\n             */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+declaration keyword omitted
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* L2 Subsystem1-specific: execute prebuilder then finisher endpoints that own\n             * executable behavior; L3 components are bb-only in this reference pattern.\n             */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+{...}
+late nonunique
+redefines
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* L2 Subsystem1 verification scenario usages. */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* SCENARIO 1: Nominal PayloadBuilder component composition.\n         * Inherits L2 Subsystem1 evidence strategy.\n         */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+{...}
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* SCENARIO: PayloadBuilder compliance inspection.\n         * One-off manual inspection verification at L2 Subsystem1.\n         */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+subsets
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /* INSPECTION CRITERIA FOR L2 SUBSYSTEM1: Verify component architecture complies. */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0:
+{...}
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}

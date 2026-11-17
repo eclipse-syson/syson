@@ -1,0 +1,3 @@
+/@ownedRelationship.0;chainingFeature;Feature;0;namespace1::namespace2
+/@ownedRelationship.1;chainingFeature;Feature;0;namespace3::namespace4
+/@ownedRelationship.2;chainingFeature;Feature;0;namespace5::namespace6

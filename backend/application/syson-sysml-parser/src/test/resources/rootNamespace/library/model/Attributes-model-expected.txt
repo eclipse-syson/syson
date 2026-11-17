@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:LibraryPackage" declaredName="Attributes" isStandard="true">
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Documentation" body="This package defines the base types for attributes and related structural elements &#xA;in the SysML language.&#xA;"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:MembershipImport"/>
+      <ownedRelationship xsi:type="sysml:MembershipImport"/>
+      <ownedRelationship xsi:type="sysml:Membership" memberName="AttributeValue">
+        <ownedRelationship xsi:type="sysml:Annotation">
+          <ownedRelatedElement xsi:type="sysml:Documentation" body="AttributeValue is the most general type of data values that represent qualities or characteristics &#xA;of a system or part of a system. AttributeValue is the base type of all AttributeDefinitions.&#xA;"/>
+        </ownedRelationship>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:Membership" memberName="attributeValues">
+        <ownedRelationship xsi:type="sysml:Annotation">
+          <ownedRelatedElement xsi:type="sysml:Documentation" body="attributeValues is the base feature for all AttributeUsages.&#xA;"/>
+        </ownedRelationship>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

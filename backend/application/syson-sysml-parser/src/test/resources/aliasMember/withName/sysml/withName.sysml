@@ -1,0 +1,1 @@
+protected alias a for namespace1;

@@ -1,0 +1,17 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Financial_Instruments::CurrencyInstrument
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.1;superclassifier;Classifier;0;Derivatives_Basics::DerivativeInstrument
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;CurrencyForward
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;CurrencyDerivative
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1;superclassifier;Classifier;0;Futures_and_Forwards::Forward
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;CurrencyDerivative
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.1;superclassifier;Classifier;0;Futures_and_Forwards::FinancialFuture
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;CurrencyDerivative
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.1;superclassifier;Classifier;0;Options::VanillaOption
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Financial_Instruments::CurrencyInstrument
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.1;superclassifier;Classifier;0;Financial_Instruments::SpotContract
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;CurrencySwap
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;CurrencyDerivative
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.1;superclassifier;Classifier;0;Swaps::Swap
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;CurrencyOption
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Contracts::MasterAgreement
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Contracts::SettlementNettingProvision

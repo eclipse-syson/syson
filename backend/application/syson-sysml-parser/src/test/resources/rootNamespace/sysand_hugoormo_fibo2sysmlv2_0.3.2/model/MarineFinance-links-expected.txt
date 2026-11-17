@@ -1,0 +1,1 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Loans::Loan

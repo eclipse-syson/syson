@@ -1,0 +1,1 @@
+message :>> elements : TranslationOrRotation[1..*] ordered nonunique;

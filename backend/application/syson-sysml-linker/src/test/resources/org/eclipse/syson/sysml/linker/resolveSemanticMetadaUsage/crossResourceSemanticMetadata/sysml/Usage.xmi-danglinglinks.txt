@@ -1,0 +1,3 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0;importedNamespace;0;Profile
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0;type;0;cause
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0;redefinedFeature;0;occurs

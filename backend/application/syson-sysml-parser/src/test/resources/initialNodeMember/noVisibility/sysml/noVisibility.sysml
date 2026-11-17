@@ -1,0 +1,1 @@
+first namespace1::namesapce2;

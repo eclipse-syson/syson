@@ -1,0 +1,3 @@
+protected import all namespace {
+
+}

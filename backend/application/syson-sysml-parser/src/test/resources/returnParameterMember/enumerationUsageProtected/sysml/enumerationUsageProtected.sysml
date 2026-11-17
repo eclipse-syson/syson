@@ -1,0 +1,1 @@
+protected return abstract enum a;

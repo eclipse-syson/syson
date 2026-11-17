@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="Subsystem2_StakeholdersAndConcerns">
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Documentation" body="Subsystem2 (Payload Verifier) is a terminal leaf subsystem at L2.&#xA;This package formalizes the stakeholder concerns that define the design contract.&#xA;Subsystem2 is not decomposed further; the verifier is a leaf component.&#xA;"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:PartUsage" declaredName="Subsystem2Designer" isComposite="true">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="The Subsystem2Designer is a stakeholder responsible for the design&#xA;and integration of the Payload Verifier subsystem.&#xA;"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ConcernUsage" declaredName="subsystem2QualityAllocation" isComposite="true">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Subsystem2 (Payload Verifier) shall contribute a minimum quality gain of 7.0 units&#xA;to enable optimal system of interest integration.&#xA;This mirrors the requirement subsetting from L1.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="Subsystem2 (Payload Verifier) shall contribute a minimum quality gain of 7.0 units&#xA;to enable optimal system of interest integration.&#xA;This is the design contract that defines the scope and success criteria for the verifier.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:SubjectMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="payloadVerifier">
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:StakeholderMembership">
+            <ownedRelatedElement xsi:type="sysml:PartUsage" declaredName="designer" isComposite="true">
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:RequirementConstraintMembership" kind="requirement">
+            <ownedRelatedElement xsi:type="sysml:ConstraintUsage" isComposite="true">
+              <ownedRelationship xsi:type="sysml:ResultExpressionMembership">
+                <ownedRelatedElement xsi:type="sysml:OperatorExpression" operator=">=">
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:FeatureChainExpression">
+                          <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                            <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                              <ownedRelationship xsi:type="sysml:FeatureValue">
+                                <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                                  <ownedRelationship xsi:type="sysml:Membership"/>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                          <ownedRelationship xsi:type="sysml:Membership"/>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature">
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:LiteralRational" value="7.0"/>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="Subsystem2_ViewpointsAndViews">
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Documentation" body="Viewpoints and Views for Subsystem2 (Payload Verifier) at L2.&#xA;Since Subsystem2 is a terminal leaf, the viewpoint is simple: the quality allocation requirement.&#xA;"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ViewpointUsage" declaredName="qualityAllocationLeaf" isComposite="true">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="The quality allocation viewpoint for Subsystem2 (terminal leaf).&#xA;This addresses the concern that the verifier must meet its quality allocation target.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FramedConcernMembership">
+            <ownedRelatedElement xsi:type="sysml:ConcernUsage" isComposite="true">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ViewUsage" declaredName="qualityAllocationL2Subsystem2" isComposite="true">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="The quality allocation view at L2 for Subsystem2 exposes the verifier component&#xA;and its quality contribution requirement of 7.0 units.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ViewpointUsage" declaredName="qualityAllocationLeaf" isComposite="true"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:MembershipExpose" visibility="protected"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

@@ -114,11 +114,22 @@ public class GeneralPurposeTests {
     private static final List<String> GENERATED_MODULE_PATHS = List.of(
             "/syson-siriusweb-customnodes-metamodel",
             "/syson-sysml-metamodel",
-            "/org/eclipse/syson/direct/edit/grammars"
+            "/org/eclipse/syson/direct/edit/grammars",
+            "/org/eclipse/syson/sysml/parser/internal/SysMLLexer.java",
+            "/org/eclipse/syson/sysml/parser/internal/SysMLParser.java",
+            "/org.omg.sysml.model",
+            "/org.omg.sysml.logic"
     );
 
     private static final List<String> CHECKSTYLE_HIDDEN_FIELD_WHITELIST_CLASSNAME = List.of(
             "GraphicalInheritanceTestRunner"
+    );
+
+    private static final List<String> THROW_NEW_EXCEPTION_WHITELIST_CLASSNAME = List.of(
+            "ParserUtils",
+            "SysMLParser",
+            "NumericLiteralFormatAdapter",
+            "RootNamespaceRecoveryTests"
     );
 
     /**
@@ -177,7 +188,7 @@ public class GeneralPurposeTests {
     public void checkJavaCode() {
         File rootFolder = this.getRootFolder();
         Path backendFolderPath = Paths.get(rootFolder.getAbsolutePath(), BACKEND_FOLDER_PATH);
-        List<Path> javaFilePathsWithGenerated = this.findFilePaths(backendFolderPath, JAVA_FILE_EXTENSION, false);
+        List<Path> javaFilePathsWithGenerated = this.findFilePaths(backendFolderPath, JAVA_FILE_EXTENSION, true);
         for (Path javaFilePath : javaFilePathsWithGenerated) {
             if (!javaFilePath.endsWith(GeneralPurposeTests.class.getSimpleName() + "." + JAVA_FILE_EXTENSION)) {
                 try {
@@ -254,7 +265,8 @@ public class GeneralPurposeTests {
         var whitelist = Stream.of(
                 Path.of("ServiceMethod.java")
         );
-        if (whitelist.filter(javaFilePath::endsWith).findFirst().isEmpty()) {
+        if (whitelist.filter(javaFilePath::endsWith).findFirst().isEmpty()
+                && THROW_NEW_EXCEPTION_WHITELIST_CLASSNAME.stream().noneMatch(whiteListClassName -> javaFilePath.endsWith(whiteListClassName + ".java"))) {
             if (line.contains(THROW_NEW)) {
                 var isRecord = lines.stream().anyMatch(l -> l.contains("public record"));
                 if (!isRecord) {

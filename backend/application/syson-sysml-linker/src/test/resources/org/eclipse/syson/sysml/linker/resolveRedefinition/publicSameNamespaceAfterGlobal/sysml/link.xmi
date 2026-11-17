@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="8921d024-bcb8-3bbc-a917-14f00fc40e8b" elementId="8921d024-bcb8-3bbc-a917-14f00fc40e8b">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="c0c3659d-3a9b-3085-ba9c-1c009299f23e" elementId="c0c3659d-3a9b-3085-ba9c-1c009299f23e">
+    <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="5acf8463-4bc6-37ab-b508-60fb877af0ce" declaredName="a" elementId="5acf8463-4bc6-37ab-b508-60fb877af0ce"/>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="49b9ea2a-3064-3680-a78d-17ef405647b3" elementId="49b9ea2a-3064-3680-a78d-17ef405647b3">
+    <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="e84bc241-b4b4-343f-acf5-10a20d42ed62" declaredName="part2" elementId="e84bc241-b4b4-343f-acf5-10a20d42ed62">
+      <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="68910e49-4d82-3f1b-b869-c8f0598fcf16" elementId="68910e49-4d82-3f1b-b869-c8f0598fcf16">
+        <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="b4d552d1-9705-3820-bdf1-78ba8c531a52" declaredName="redefinedAttr1" elementId="b4d552d1-9705-3820-bdf1-78ba8c531a52">
+          <ownedRelationship xsi:type="sysml:Redefinition" xmi:id="9a715543-dbc4-371a-9aee-f9cc867b8bf4" elementId="9a715543-dbc4-371a-9aee-f9cc867b8bf4" redefiningFeature="b4d552d1-9705-3820-bdf1-78ba8c531a52"/>
+          <ownedRelationship xsi:type="sysml:Subsetting" xmi:id="f0c46e57-7178-315f-a4df-d0c43f9452f0" elementId="f0c46e57-7178-315f-a4df-d0c43f9452f0" subsettingFeature="b4d552d1-9705-3820-bdf1-78ba8c531a52"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="e3cd1df3-5b83-3e01-b206-89d139950e4c" elementId="e3cd1df3-5b83-3e01-b206-89d139950e4c">
+        <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="3f1b9d27-5f15-3165-a780-469ae407f935" declaredName="attribute1" elementId="3f1b9d27-5f15-3165-a780-469ae407f935">
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="77c8bbca-872f-3678-ba1e-2ff416d6a5e5" elementId="77c8bbca-872f-3678-ba1e-2ff416d6a5e5">
+            <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="38a780fa-3df0-31f8-a9b5-18f01f19fc95" elementId="38a780fa-3df0-31f8-a9b5-18f01f19fc95"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

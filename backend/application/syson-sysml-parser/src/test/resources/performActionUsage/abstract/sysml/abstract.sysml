@@ -1,0 +1,1 @@
+abstract perform action a;

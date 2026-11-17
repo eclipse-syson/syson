@@ -1,0 +1,4 @@
+/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 1
+/:
+ref

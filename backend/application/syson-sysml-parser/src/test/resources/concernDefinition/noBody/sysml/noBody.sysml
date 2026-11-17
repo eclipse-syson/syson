@@ -1,0 +1,1 @@
+concern def a;

@@ -1,0 +1,1 @@
+send new S() to b;

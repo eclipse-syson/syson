@@ -1,0 +1,3 @@
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0;memberElement;0;$::other::part1
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.1;importedNamespace;0;importAlias
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0;type;0;importAlias

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="cf355f0d-702e-3d5f-888e-2560853b3256" elementId="cf355f0d-702e-3d5f-888e-2560853b3256">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="58682c3c-e7f5-3db1-b229-a08774b9ae4b" elementId="58682c3c-e7f5-3db1-b229-a08774b9ae4b">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="596e1dce-b4c2-3dea-8adc-0fa532625495" declaredName="Comment Example" elementId="596e1dce-b4c2-3dea-8adc-0fa532625495">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="83d8da2a-0c2b-302a-a98e-df090dfd6086" elementId="83d8da2a-0c2b-302a-a98e-df090dfd6086">
+        <ownedRelatedElement xsi:type="sysml:Comment" xmi:id="d51e9e0d-efc6-372d-b982-50ae13115698" elementId="d51e9e0d-efc6-372d-b982-50ae13115698" body="This is a comment, which is a part of the model, &#xA;annotating (by default) it's owning namespace. "/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="4779a70a-2e4b-38bc-95c3-220eee8355e2" elementId="4779a70a-2e4b-38bc-95c3-220eee8355e2">
+        <ownedRelatedElement xsi:type="sysml:Comment" xmi:id="079878f2-c34f-384e-9c1c-46d630341165" declaredName="Comment1" elementId="079878f2-c34f-384e-9c1c-46d630341165" body="This is a named comment. "/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="6220d409-53a5-3a2f-aecb-09ba5385871b" elementId="6220d409-53a5-3a2f-aecb-09ba5385871b">
+        <ownedRelatedElement xsi:type="sysml:Comment" xmi:id="722df1b0-a772-33a7-85bc-3d784fd4f228" elementId="722df1b0-a772-33a7-85bc-3d784fd4f228" body="This is an unnamed comment, annotating an &#xA;explicitly specified element. &#xA;">
+          <ownedRelationship xsi:type="sysml:Annotation" xmi:id="b2db598c-0b62-3d7c-bb3c-acdb471a7e2c" elementId="b2db598c-0b62-3d7c-bb3c-acdb471a7e2c" annotatedElement="62b32c1a-fdd5-3f14-b50c-7fb612627f7a"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="bad2e56c-5bb9-3f23-942a-9149d5df72cf" elementId="bad2e56c-5bb9-3f23-942a-9149d5df72cf">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="62b32c1a-fdd5-3f14-b50c-7fb612627f7a" declaredName="Automobile" elementId="62b32c1a-fdd5-3f14-b50c-7fb612627f7a"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:Membership" xmi:id="d6ba1e80-c046-3af0-9ca7-d1c09232d56f" elementId="d6ba1e80-c046-3af0-9ca7-d1c09232d56f" memberElement="62b32c1a-fdd5-3f14-b50c-7fb612627f7a" memberName="Car">
+        <ownedRelationship xsi:type="sysml:Annotation" xmi:id="4503106f-dfb2-3216-aed0-55b79372596a" elementId="4503106f-dfb2-3216-aed0-55b79372596a" annotatedElement="d6ba1e80-c046-3af0-9ca7-d1c09232d56f">
+          <ownedRelatedElement xsi:type="sysml:Comment" xmi:id="c3b782d6-c36d-3f06-9106-2c492d71d71e" elementId="c3b782d6-c36d-3f06-9106-2c492d71d71e" body="This is a comment annotating its owning&#xA;element.&#xA;"/>
+        </ownedRelationship>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:Membership" xmi:id="404e719a-7926-3e80-8d99-034c6ff5dff6" elementId="404e719a-7926-3e80-8d99-034c6ff5dff6" memberName="Torque">
+        <memberElement xsi:type="sysml:AttributeDefinition" href="../../../../../../../../sysml.library.xmi.implied/Domain%20Libraries/Quantities%20and%20Units/ISQMechanics.sysmlx#065547c5-30af-5eae-8779-c9647656fe8f"/>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

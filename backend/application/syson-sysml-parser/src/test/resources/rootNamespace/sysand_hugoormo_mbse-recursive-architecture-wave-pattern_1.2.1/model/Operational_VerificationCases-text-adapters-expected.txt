@@ -1,0 +1,64 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+comment body /* L0 verification strategy defs (inherit from Framework meta-patterns). */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* Verification evidence intent and claim limits are defined in\n     * MyFramework::MyFrameworkVerificationMetaPatterns.\n     * See also MyFramework::MyFrameworkAnalysisMetaPatterns::analysisRolePolicy\n     * for the analysis-vs-empirical claim boundary.\n     */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* L0 OPERATIONAL EVIDENCE VERIFICATION STRATEGY\n         * \n         * Specializes the 8-stage evidence pipeline for operational context.\n         * Subject: operationalContext (L0 whitebox integration)\n         * Objective: Verify payload quality gain through system interaction\n         * Stimulus: Execute full interacting chain in wb context (allocated behavior)\n         * Method: analyze, because this reference pattern verifies executable model behavior.\n         * A realized operational system would require corresponding test or demonstration\n         * evidence in the real operational context.\n         * HINT: Scope is verified through configuration wiring: action inputs/outputs are\n         * bound via connectors/interfaces/ports in Operational_Configuration, so end-to-end\n         * success validates the full interaction path rather than isolated action fragments.\n         * \n         * This def captures the L0-specific verification strategy once.\n         * Scenario usages inherit from this def and bind prepareContext parameters\n         * for different operational conditions (nominal, high-load, contingency, etc.).\n         */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+subsets
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /* Verify payloadQualityGainOperationalDerived is satisfied.\n             * - Requirement: payload quality gain through the L0 decomposition, as specified\n             *   by Operational_Requirements::payloadQualityGainOperationalDerived.\n             * - Scenario: L0 operational whitebox context (bound by prepareContext).\n             * - Evidence strategy: Execute exchangePayload action, collect quality values.\n             * - Verdict note: inherited verdict computation is a scaffold; concrete projects\n             *   shall specialize evidence collection and acceptance logic.\n             */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+declaration keyword omitted
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* L0-specific: execute the lowest integrated starter and endpoint actions that own\n             * executable behavior. The whitebox context action is retained for traceability;\n             * executable behavior is delegated to connected constituent actions.\n             */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+{...}
+late nonunique
+redefines
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* All other 8 actions inherited from meta-pattern;\n         * can be specialized if needed.\n         */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* L0 verification scenario usages (inherit from L0 defs). */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* SCENARIO 1: Nominal Operational Context\n         * \n         * Standard payload exchange under nominal system conditions.\n         * Inherits L0 evidence strategy; subject binding and prepareContext\n         * can be specialized for this scenario without duplicating the pipeline.\n         */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+{...}
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* SCENARIO: Operational Systems Compliance\n         * \n         * One-off manual inspection verification at L0.\n         * Verify that systems in operational context comply with MyStandard.\n         */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+subsets
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /* INSPECTION CRITERIA (5-point checklist):\n             * 1) Verify subsetting chain traces to MyStandard roots\n             * 2) Confirm relevant parts subset MyStandard::myStandardComplyingPart where compliance is claimed\n             * 3) Validate satisfy relations link bb/gb to requirements\n             * 4) Check boundary parts reference standard-compliant ontology\n             * 5) Ensure compliance annotations present and traceable\n             */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0:
+{...}
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0:
+comment body /* Additional scenario usages can be added by inheriting from the defs,\n     * for example high-load and contingency operational contexts.\n     */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}

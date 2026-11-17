@@ -1,0 +1,1 @@
+private import namespace1::namespace2

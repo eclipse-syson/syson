@@ -1,0 +1,4 @@
+/@ownedRelatedElement.0:
+ref
+/:
+public

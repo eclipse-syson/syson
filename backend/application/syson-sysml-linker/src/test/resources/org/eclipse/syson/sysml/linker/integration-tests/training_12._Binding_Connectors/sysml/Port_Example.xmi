@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="1ea9823f-aa0d-30d6-882a-f3c24d1948a8" elementId="1ea9823f-aa0d-30d6-882a-f3c24d1948a8">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="ee0b9ab8-e666-3fa1-a6d9-2cd84d4a3f67" elementId="ee0b9ab8-e666-3fa1-a6d9-2cd84d4a3f67">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="c7a741ba-c70f-38cd-8a95-44efe4f2c653" declaredName="Port Example" elementId="c7a741ba-c70f-38cd-8a95-44efe4f2c653">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="0d33a638-1732-3677-98b5-dd23a76b6efe" elementId="0d33a638-1732-3677-98b5-dd23a76b6efe">
+        <ownedRelatedElement xsi:type="sysml:AttributeDefinition" xmi:id="1620a790-a834-3033-a56d-6e99e7b8829e" declaredName="Temp" elementId="1620a790-a834-3033-a56d-6e99e7b8829e"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="e08d341e-fa1a-3ec6-acb9-7e5702725ef7" elementId="e08d341e-fa1a-3ec6-acb9-7e5702725ef7">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="35047d18-917a-33c5-b256-b820ece78178" declaredName="Fuel" elementId="35047d18-917a-33c5-b256-b820ece78178"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="38bd0c26-ae59-31ed-9753-274becf359ee" elementId="38bd0c26-ae59-31ed-9753-274becf359ee">
+        <ownedRelatedElement xsi:type="sysml:PortDefinition" xmi:id="4c9b45d2-e2b2-3f25-8e14-2f494ce70f6c" declaredName="FuelOutPort" elementId="4c9b45d2-e2b2-3f25-8e14-2f494ce70f6c">
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="e54d7e67-3845-30c1-ba76-7dd45d298324" elementId="e54d7e67-3845-30c1-ba76-7dd45d298324">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="ea4929eb-7485-3849-bdae-ef155270f24a" declaredName="temperature" elementId="ea4929eb-7485-3849-bdae-ef155270f24a">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="d02888e0-ba32-3ca1-9dfb-6eeb83fc66ab" elementId="d02888e0-ba32-3ca1-9dfb-6eeb83fc66ab" typedFeature="ea4929eb-7485-3849-bdae-ef155270f24a"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="69dcadd9-6b21-3aa8-9b5b-102ce7eeb579" elementId="69dcadd9-6b21-3aa8-9b5b-102ce7eeb579">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="b8bc3762-11cb-32b5-99ae-919ddc0da5c7" elementId="b8bc3762-11cb-32b5-99ae-919ddc0da5c7"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="2d2edd20-4405-314b-99e8-53c0f7c5674b" elementId="2d2edd20-4405-314b-99e8-53c0f7c5674b">
+            <ownedRelatedElement xsi:type="sysml:ItemUsage" xmi:id="e1e3531f-600f-3cef-90a8-7dfb83757b9e" declaredName="fuelSupply" elementId="e1e3531f-600f-3cef-90a8-7dfb83757b9e" direction="out">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="1ac39058-ff85-3e80-a2b1-79db7b7e0cd2" elementId="1ac39058-ff85-3e80-a2b1-79db7b7e0cd2" typedFeature="e1e3531f-600f-3cef-90a8-7dfb83757b9e"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="00681d19-cb6f-340f-aaae-d9204629ef33" elementId="00681d19-cb6f-340f-aaae-d9204629ef33">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="f69b1951-4584-31d6-8689-68c5b1e0be78" elementId="f69b1951-4584-31d6-8689-68c5b1e0be78"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="3bfb743c-742a-34dd-bbce-01ee634b5e78" elementId="3bfb743c-742a-34dd-bbce-01ee634b5e78">
+            <ownedRelatedElement xsi:type="sysml:ItemUsage" xmi:id="bd4fa2a3-704b-3ffb-805d-e64a445db6e0" declaredName="fuelReturn" elementId="bd4fa2a3-704b-3ffb-805d-e64a445db6e0" direction="in">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="bb309f08-1d59-3e3e-90e4-f7646e6d5261" elementId="bb309f08-1d59-3e3e-90e4-f7646e6d5261" typedFeature="bd4fa2a3-704b-3ffb-805d-e64a445db6e0"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="8863cad1-801f-346d-9100-8e018073d5a7" elementId="8863cad1-801f-346d-9100-8e018073d5a7">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="ec1e3ba7-6ea6-3107-a686-8f3270a1f18a" elementId="ec1e3ba7-6ea6-3107-a686-8f3270a1f18a"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="836ea67c-a373-314d-b76a-ab3dee00b923" elementId="836ea67c-a373-314d-b76a-ab3dee00b923">
+            <ownedRelatedElement xsi:type="sysml:ConjugatedPortDefinition" xmi:id="2c7230b3-d235-3489-9c7f-04c272ee8a0e" elementId="2c7230b3-d235-3489-9c7f-04c272ee8a0e">
+              <ownedRelationship xsi:type="sysml:PortConjugation" xmi:id="f69d2b4c-e829-327b-839d-02b186a7b5d2" elementId="f69d2b4c-e829-327b-839d-02b186a7b5d2" conjugatedType="2c7230b3-d235-3489-9c7f-04c272ee8a0e" originalPortDefinition="4c9b45d2-e2b2-3f25-8e14-2f494ce70f6c"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="f5052b6b-a61c-3d1f-9723-cab95456b666" elementId="f5052b6b-a61c-3d1f-9723-cab95456b666">
+        <ownedRelatedElement xsi:type="sysml:PortDefinition" xmi:id="e966ef3c-a92f-3c6d-90d1-e52793801aab" declaredName="FuelInPort" elementId="e966ef3c-a92f-3c6d-90d1-e52793801aab">
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="d853dd54-bd87-3db3-ba64-83a597424eb9" elementId="d853dd54-bd87-3db3-ba64-83a597424eb9">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="869c3c05-39aa-323d-b2ac-52343e226f42" declaredName="temperature" elementId="869c3c05-39aa-323d-b2ac-52343e226f42">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="1debec9e-3d65-3ef4-b45f-1438a3b72196" elementId="1debec9e-3d65-3ef4-b45f-1438a3b72196" typedFeature="869c3c05-39aa-323d-b2ac-52343e226f42"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="3b575a2f-d915-33be-9f43-67adc7b42fa1" elementId="3b575a2f-d915-33be-9f43-67adc7b42fa1">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="26a11527-ebdc-329f-9266-31d6f658a962" elementId="26a11527-ebdc-329f-9266-31d6f658a962"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="755b20fd-1c6f-3e49-bc8e-4949118451a8" elementId="755b20fd-1c6f-3e49-bc8e-4949118451a8">
+            <ownedRelatedElement xsi:type="sysml:ItemUsage" xmi:id="b3449384-dc6d-3dc9-afb8-b476dd400a5f" declaredName="fuelSupply" elementId="b3449384-dc6d-3dc9-afb8-b476dd400a5f" direction="in">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="d9524e24-7b1c-3571-a072-59ba98faf6da" elementId="d9524e24-7b1c-3571-a072-59ba98faf6da" typedFeature="b3449384-dc6d-3dc9-afb8-b476dd400a5f"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="11480a12-0cc2-333f-8e7c-d95f6a4af027" elementId="11480a12-0cc2-333f-8e7c-d95f6a4af027">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="95ce9222-d9ff-3ef2-b6fa-605683470ff3" elementId="95ce9222-d9ff-3ef2-b6fa-605683470ff3"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="1279c957-91ad-38d7-89f5-f8484d0360cd" elementId="1279c957-91ad-38d7-89f5-f8484d0360cd">
+            <ownedRelatedElement xsi:type="sysml:ItemUsage" xmi:id="e23d88bd-b487-39a1-b6a2-284e11e99904" declaredName="fuelReturn" elementId="e23d88bd-b487-39a1-b6a2-284e11e99904" direction="out">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="aea8ad08-69d1-3b17-b019-c1b8176893e8" elementId="aea8ad08-69d1-3b17-b019-c1b8176893e8" typedFeature="e23d88bd-b487-39a1-b6a2-284e11e99904"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="b13de1e4-7d3e-3fc9-8413-049e2dfd71f7" elementId="b13de1e4-7d3e-3fc9-8413-049e2dfd71f7">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="0b1f7405-c84f-36aa-aa6b-05ecf1ae8ea0" elementId="0b1f7405-c84f-36aa-aa6b-05ecf1ae8ea0"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="4d191917-319d-39f8-8d47-1ea7521e4b1e" elementId="4d191917-319d-39f8-8d47-1ea7521e4b1e">
+            <ownedRelatedElement xsi:type="sysml:ConjugatedPortDefinition" xmi:id="ab41690d-6e08-3989-87ef-64c588f73480" elementId="ab41690d-6e08-3989-87ef-64c588f73480">
+              <ownedRelationship xsi:type="sysml:PortConjugation" xmi:id="6e90a5dd-4560-37c3-88c9-869c52d9d50e" elementId="6e90a5dd-4560-37c3-88c9-869c52d9d50e" conjugatedType="ab41690d-6e08-3989-87ef-64c588f73480" originalPortDefinition="e966ef3c-a92f-3c6d-90d1-e52793801aab"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="54b1e5f2-0287-3838-a4e9-4c3080d7780b" elementId="54b1e5f2-0287-3838-a4e9-4c3080d7780b">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="b584d9aa-6078-3fa1-a9ad-6467f109abd5" declaredName="FuelTankAssembly" elementId="b584d9aa-6078-3fa1-a9ad-6467f109abd5">
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="4f0decf4-15e4-392b-a1bd-97542b774114" elementId="4f0decf4-15e4-392b-a1bd-97542b774114">
+            <ownedRelatedElement xsi:type="sysml:PortUsage" xmi:id="6b2c7100-f385-380e-ae07-e45262853f9e" declaredName="fuelTankPort" elementId="6b2c7100-f385-380e-ae07-e45262853f9e">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="6beadd9e-b8ce-34eb-9607-d285ec23a4a0" elementId="6beadd9e-b8ce-34eb-9607-d285ec23a4a0" typedFeature="6b2c7100-f385-380e-ae07-e45262853f9e"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="c1975196-9778-3e1e-9584-a5d4961e6d4e" elementId="c1975196-9778-3e1e-9584-a5d4961e6d4e">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="3c05affa-0ca0-35a0-b22d-b34c353bfe2d" elementId="3c05affa-0ca0-35a0-b22d-b34c353bfe2d"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="c1a6c6a6-e6fc-3a7c-90b9-9774d14e8ee6" elementId="c1a6c6a6-e6fc-3a7c-90b9-9774d14e8ee6">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="a38aaaaf-ec2b-3468-8833-de0844511d85" declaredName="Engine" elementId="a38aaaaf-ec2b-3468-8833-de0844511d85">
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="b81b19dd-4740-35ed-b401-20690d8a3dd5" elementId="b81b19dd-4740-35ed-b401-20690d8a3dd5">
+            <ownedRelatedElement xsi:type="sysml:PortUsage" xmi:id="71c53b38-4363-3882-9f6f-481119240f74" declaredName="engineFuelPort" elementId="71c53b38-4363-3882-9f6f-481119240f74">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="2e7be835-2b24-314c-b65a-fb840e4aca14" elementId="2e7be835-2b24-314c-b65a-fb840e4aca14" typedFeature="71c53b38-4363-3882-9f6f-481119240f74"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="3beb7766-c698-373d-b33c-81992df9c021" elementId="3beb7766-c698-373d-b33c-81992df9c021">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="7c0a4567-0e65-36da-939a-c8e18e8b08d7" elementId="7c0a4567-0e65-36da-939a-c8e18e8b08d7"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

@@ -1,0 +1,1 @@
+#c metadata def :> namespace1::namespace2;

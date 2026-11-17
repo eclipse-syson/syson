@@ -1,0 +1,1 @@
+/;memberElement;Type;0;namespace1::namespace2

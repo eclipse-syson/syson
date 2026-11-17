@@ -1,0 +1,1 @@
+individual def :> namespace1::namespace2;

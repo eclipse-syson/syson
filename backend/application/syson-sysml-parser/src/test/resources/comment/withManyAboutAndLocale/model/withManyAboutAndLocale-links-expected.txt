@@ -1,0 +1,3 @@
+/@ownedRelationship.0;annotatedElement;Element;0;annotation1
+/@ownedRelationship.1;annotatedElement;Element;0;'annotation 2'
+/@ownedRelationship.2;annotatedElement;Element;0;$::namespace1::namespace2::annotation3

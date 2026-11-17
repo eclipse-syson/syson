@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:OperatorExpression xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" operator="xor">
+  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+    <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+      <ownedRelationship xsi:type="sysml:FeatureValue">
+        <ownedRelatedElement xsi:type="sysml:LiteralBoolean"/>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+    <ownedRelatedElement xsi:type="sysml:Feature">
+      <ownedRelationship xsi:type="sysml:FeatureValue">
+        <ownedRelatedElement xsi:type="sysml:LiteralBoolean" value="true"/>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:OperatorExpression>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="ASCII"?>
+<!--
+Original model : 
+package 'Package 1' {
+
+  // referinition
+  part def Part1 {
+    protected attribute attribute1;
+  }
+
+  part def Part2 :> Part1 {
+    attribute :>> attribute1 = 3;
+  }
+
+  // chainingFeature
+  action def Action1;
+  action def Action2;
+  action def Action3;
+
+  action action1 : Action1 {
+    action action2 : Action2;
+    action action2 : Action3;
+  }
+
+  part Part3 {
+    perform action1.action2;
+  }
+}
+
+
+-->
+
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" elementId="285e496a-8be2-309c-b718-a31e4fbc3373">
+  <ownedRelationship xsi:type="sysml:OwningMembership" elementId="1129c31f-e87e-3915-a73c-084412d7c91f">
+    <ownedRelatedElement xsi:type="sysml:Package" elementId="6673e5fa-8fa8-358f-a8e5-1bc9f6036d25" declaredName="Package 1">
+      <ownedRelationship xsi:type="sysml:OwningMembership" elementId="20fa8de3-7f11-3d1a-b7d2-c01d1559ee18">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" elementId="4846d8e0-0c09-30d5-b04c-498bfd9ffeef" declaredName="Part1">
+          <ownedRelationship xsi:type="sysml:FeatureMembership" elementId="56bd2309-414f-3074-9ce5-74e493ffbb9f" visibility="protected">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" elementId="7f61a5c4-5854-3c8c-a4ed-7e042d71b4be" declaredName="attribute1">
+              <ownedRelationship xsi:type="sysml:OwningMembership" elementId="1473a625-9ec9-3e4f-a02f-09645300feb9">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" elementId="dbd62bee-6d10-3425-874f-8cd6eb686542"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" elementId="dd521964-2c90-3df2-a062-bdb4d792d117">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" elementId="e761ec34-0583-35f4-a6d1-d51a06a24727" declaredName="Part2">
+          <ownedRelationship xsi:type="sysml:Subclassification" elementId="bc1b934d-a7f4-3582-8407-254062d44810" superclassifier="//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0" subclassifier="//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0"/>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" elementId="8dfe6c9d-4485-360f-97b2-cbce21e0796b">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" elementId="7ec51227-bf66-3224-8f42-e7f2e1bb1ac7">
+              <ownedRelationship xsi:type="sysml:Redefinition" elementId="b3e94c1d-d888-3dbc-a61a-0fcd9eb87c51" redefiningFeature="//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0" redefinedFeature="//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0"/>
+              <ownedRelationship xsi:type="sysml:FeatureValue" elementId="d0a68afd-b244-3d9c-9fbc-110e0db51e09">
+                <ownedRelatedElement xsi:type="sysml:LiteralInteger" elementId="c64a154e-a636-3405-8577-ac8befc2d700" value="3"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" elementId="ffe3090e-dceb-3932-8dd3-adf92e4df169">
+        <ownedRelatedElement xsi:type="sysml:ActionDefinition" elementId="0ddb94cc-58d6-3f79-a8fb-02a528329e7f" declaredName="Action1"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" elementId="13a13655-cd5b-3f1a-97e2-8638b630aceb">
+        <ownedRelatedElement xsi:type="sysml:ActionDefinition" elementId="bf590130-ccc8-316b-84ae-b7d3146ded3f" declaredName="Action2"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" elementId="c6e2e90f-a587-335a-8354-b0c06c34818a">
+        <ownedRelatedElement xsi:type="sysml:ActionDefinition" elementId="cd58254a-e91b-3276-9f19-417b2ad3448a" declaredName="Action3"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" elementId="a6f8087e-812e-32af-aa86-835e2e6f1159">
+        <ownedRelatedElement xsi:type="sysml:ActionUsage" elementId="9829c291-d037-32cb-879d-6714d45454e8" declaredName="action1" isComposite="true">
+          <ownedRelationship xsi:type="sysml:FeatureTyping" elementId="79cb1105-6519-3545-a32e-0515f78abcad" typedFeature="//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0" type="//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0"/>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" elementId="85cfa44d-6b96-3a3a-9aeb-6483cc61eb22">
+            <ownedRelatedElement xsi:type="sysml:ActionUsage" elementId="262873eb-1564-3547-9a7b-e695f5cb9920" declaredName="action2" isComposite="true">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" elementId="4e86b28b-e062-3861-a30f-f5544e5d4793" typedFeature="//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0" type="//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" elementId="9b397014-994f-3806-81ed-673a3a9c403e">
+            <ownedRelatedElement xsi:type="sysml:ActionUsage" elementId="ddd45ae5-6d2f-3654-bc29-050aec69bac4" declaredName="action2" isComposite="true">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" elementId="721a3076-d83c-322f-898c-9e4a91f41e00" typedFeature="//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0" type="//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" elementId="9ead08b9-6f03-3e2a-84c6-2d67d2250508">
+        <ownedRelatedElement xsi:type="sysml:PartUsage" elementId="44728584-6345-32c8-88df-40a046198d7f" declaredName="Part3" isComposite="true">
+          <ownedRelationship xsi:type="sysml:FeatureMembership" elementId="7afd94d2-e8ef-366e-abaf-5acee3221867">
+            <ownedRelatedElement xsi:type="sysml:PerformActionUsage" elementId="04166b07-3dbe-310a-8c12-fdc0b44a73a5">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting" elementId="ee415625-782f-303d-bb3d-f1d7373cfdea" referencedFeature="//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0">
+                <ownedRelatedElement xsi:type="sysml:Feature" elementId="658d3653-b25c-3bc0-94a0-ee52fc7de799">
+                  <ownedRelationship xsi:type="sysml:FeatureChaining" elementId="ea46d0cc-c712-3926-808f-6b92619b461a" chainingFeature="//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0"/>
+                  <ownedRelationship xsi:type="sysml:FeatureChaining" elementId="3e24258e-ad58-30c5-bd3d-e2a061117f8b" chainingFeature="//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

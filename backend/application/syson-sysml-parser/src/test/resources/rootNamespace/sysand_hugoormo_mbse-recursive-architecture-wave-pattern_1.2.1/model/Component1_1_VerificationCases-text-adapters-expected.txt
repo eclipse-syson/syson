@@ -1,0 +1,61 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+comment body /* L3 Component1_1 verification strategy defs (terminal leaf, no decomposition). */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* Verification evidence intent and claim limits are defined in\n     * MyFramework::MyFrameworkVerificationMetaPatterns.\n     * See also MyFramework::MyFrameworkAnalysisMetaPatterns::analysisRolePolicy\n     * for the analysis-vs-empirical claim boundary.\n     */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* L3 COMPONENT1_1 (PAYLOADPREBUILDER) EVIDENCE VERIFICATION STRATEGY\n         * \n         * Terminal leaf component (no further decomposition).\n         * Specializes the 8-stage evidence pipeline for component verification.\n         * Subject: payloadPrebuilder (L3 blackbox - terminal)\n         * Objective: Verify payload prebuilding capability\n         * Stimulus: Execute prebuilding behavioral action\n         * Method: analyze for executable model evidence. A realized component would require\n         * corresponding test or demonstration evidence.\n         */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+subsets
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /* Verify payloadQualityGainComponent1_1 is satisfied.\n             * - Requirement: terminal payload prebuilding capability, as specified by\n             *   Component1_1_Requirements::payloadQualityGainComponent1_1.\n             * - Scenario: L3 terminal blackbox context.\n             * - Evidence strategy: Execute prebuilding action, measure output quality.\n             * - Verdict note: inherited verdict computation is a scaffold; concrete projects\n             *   shall specialize evidence collection and acceptance logic.\n             */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+declaration keyword omitted
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* L3 COMPONENT1_1-specific: Execute component behavioral actions through the blackbox context. */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+{...}
+late nonunique
+redefines
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* All other 8 actions inherited from meta-pattern. */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* L3 Component1_1 verification scenario usages. */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* SCENARIO 1: Nominal PayloadPrebuilder component composition.\n         * Inherits L3 Component1_1 evidence strategy.\n         */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+{...}
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* SCENARIO: PayloadPrebuilder compliance inspection.\n         * One-off manual inspection verification at L3 Component1_1.\n         */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+subsets
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /* INSPECTION CRITERIA FOR L3 COMPONENT1_1: Verify component architecture complies. */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0:
+{...}
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}

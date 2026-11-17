@@ -1,0 +1,1 @@
+#c allocation def :> namespace1::namespace2, namespace3::namespace4, namespace3::namespace4;

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:ViewUsage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" isComposite="true" isOrdered="true" isUnique="false">
+  <ownedRelationship xsi:type="sysml:ReferenceSubsetting"/>
+  <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:LiteralInfinity"/>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:ViewUsage>

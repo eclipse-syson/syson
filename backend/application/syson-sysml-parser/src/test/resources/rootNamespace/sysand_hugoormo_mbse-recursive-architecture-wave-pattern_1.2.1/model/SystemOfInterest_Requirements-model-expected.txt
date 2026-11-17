@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="SystemOfInterest_Requirements">
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Comment" body="PATTERN RULES FOR SYSTEMOFINTEREST_REQUIREMENTS:&#xA;&#xA;1. ORIGINAL REQUIREMENTS (no binding):&#xA;- Decontextualize parent need at this level's blackbox context&#xA;- Inherit constraint from parent via subsetting (no hardcoding)&#xA;- Subject MUST reference _bb (blackbox) configuration&#xA;- Frame/assume gates capture stakeholder concerns and assumptions&#xA;- No attribute binding at requirement level (binding lives in configuration)&#xA;&#xA;2. DERIVED REQUIREMENTS (with binding and allocation):&#xA;- Decompose original requirement into child needs via budget allocation&#xA;- Subject MUST reference _gb (graybox) configuration&#xA;- Attribute binding MUST define sum: qualityContribution = budget1 + budget2&#xA;- Budget attributes MUST have explicit values with design rationale comments&#xA;- Nested child needs MUST reference budget attributes (not hardcoded values)&#xA;- Constraint MUST reference budget attributes (validates allocation closure)&#xA;&#xA;3. CONSTRAINT INHERITANCE:&#xA;- Original requirement constraints are inherited via subsetting (automatic)&#xA;- DO NOT hardcode inherited constraints in child requirements (DRY violation)&#xA;- Child requirement constraints MUST reference budget attributes (not literal values)&#xA;&#xA;4. CONFIGURATION BINDING STRATEGY:&#xA;- Blackbox configuration (Config_bb): attribute binding to action output&#xA;- Graybox configuration (Config_gb): MUST remain abstract (no binding override)&#xA;- Whitebox configuration (Config_wb): integration level for verification&#xA;- Binding is set once at blackbox level; inherited, never overridden&#xA;&#xA;5. SUBJECT REDEFINITION:&#xA;- Original requirement subject: redefines parent context (narrows focus)&#xA;- Derived requirement subject: redefines parent context (same narrowing)&#xA;- Nested child needs subject: redefine derived requirement's subject&#xA;- Redefinition chain implements context decomposition L0→L1→L2→L3&#xA;&#xA;6. RECURSIVE CLOSURE SEMANTICS:&#xA;- A nested child need is validated when a lower-level requirement subsets it.&#xA;- The transformed lower-level requirement is verified when architecture satisfies it.&#xA;- See MyFramework::MyFrameworkRecursiveClosureSemantics for the reusable rule.&#xA;"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Comment" declaredName="patternRules" body="This package implements the MBSE RecursiveArchitecture Weave Pattern at L1 (System of Interest level).&#xA;All requirements MUST follow the rules above. Violations detected by:&#xA;- Syside syntax/semantic validation&#xA;- Constraint evaluation on live behavioral outputs&#xA;- Cross-level consistency verification&#xA;"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Comment" declaredName="payloadQualityGainSystemOfInterestModelerComment" body="L1 original requirement: transforms the L0 derived need into an&#xA;L1 blackbox requirement.&#xA;" locale="en_US">
+          <ownedRelationship xsi:type="sysml:Annotation"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:RequirementUsage" declaredName="payloadQualityGainSystemOfInterest" isComposite="true">
+          <ownedRelationship xsi:type="sysml:Subsetting">
+            <ownedRelatedElement xsi:type="sysml:Feature">
+              <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+              <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Comment" declaredName="transformedRequirementClosureSemantics" body="NEED VALIDATION: By subsetting the L0 child need, this L1 requirement validates&#xA;the transformation of the operational need into the system-of-interest context.&#xA;&#xA;REQUIREMENT VERIFICATION: This transformed L1 requirement is verified by&#xA;SystemOfInterest_Configuration::systemOfInterest_bb and the associated evidence&#xA;defined at the L1 level.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:SubjectMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="mySystemOfInterest">
+              <ownedRelationship xsi:type="sysml:Redefinition"/>
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="The payload shall achieve a gain of quality through the systemOfInterest&#xA;of at least 20 units. (Here we decontextualize the requirement from L0)&#xA;This requirement is derived from the subsetted operational derived requirement.&#xA;With this we ensure that the system of interest will perform as needed in the &#xA;operational context by inheriting the constraint from the operational requirements &#xA;and redefining the subject. However, the System of Interest could impose &#xA;stringent requirements that could make it suitable for different operational contexts.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Comment" declaredName="payloadQualityGainSystemOfInterestConstraintModelerComment" body="Constraint inherited from parent requirement through subsetting. " locale="en_US">
+              <ownedRelationship xsi:type="sysml:Annotation"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Comment" declaredName="payloadQualityGainSystemOfInterestDerivedModelerComment" body="L1 derived requirement: allocates the L1 requirement to L2 constituents. " locale="en_US">
+          <ownedRelationship xsi:type="sysml:Annotation"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:RequirementUsage" declaredName="payloadQualityGainSystemOfInterestDerived" isComposite="true">
+          <ownedRelationship xsi:type="sysml:Subsetting">
+            <ownedRelatedElement xsi:type="sysml:Feature">
+              <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+              <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:SubjectMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="mySystemOfInterest">
+              <ownedRelationship xsi:type="sysml:Redefinition"/>
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="The payload shall achieve a gain of quality through the systemOfInterest&#xA;of at least 20 units.&#xA;The systemOfInterest shall operate at an optimum effort by ensuring that&#xA;the payloadBuilder outputs twice as much gain as the payloadVerifier.&#xA;This requirement is decomposed into needs for the constituent parts&#xA;(payloadBuilder and payloadVerifier).&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Comment" declaredName="systemOfInterestRequirementDecompositionModelerComment" body="Requirement decomposition predicates. " locale="en_US">
+              <ownedRelationship xsi:type="sysml:Annotation"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:RequirementConstraintMembership" kind="requirement">
+            <ownedRelatedElement xsi:type="sysml:ConstraintUsage" declaredName="qualityGainThroughput" isComposite="true">
+              <ownedRelationship xsi:type="sysml:ResultExpressionMembership">
+                <ownedRelatedElement xsi:type="sysml:OperatorExpression" operator="&lt;=">
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:FeatureChainExpression">
+                          <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                            <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                              <ownedRelationship xsi:type="sysml:FeatureValue">
+                                <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                                  <ownedRelationship xsi:type="sysml:Membership"/>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                          <ownedRelationship xsi:type="sysml:Membership"/>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature">
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:OperatorExpression" operator="+">
+                          <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                            <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                              <ownedRelationship xsi:type="sysml:FeatureValue">
+                                <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                                  <ownedRelationship xsi:type="sysml:Membership"/>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                          <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                            <ownedRelatedElement xsi:type="sysml:Feature">
+                              <ownedRelationship xsi:type="sysml:FeatureValue">
+                                <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                                  <ownedRelationship xsi:type="sysml:Membership"/>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:RequirementConstraintMembership" kind="requirement">
+            <ownedRelatedElement xsi:type="sysml:ConstraintUsage" declaredName="qualityGainOptimumEffortBalance" isComposite="true">
+              <ownedRelationship xsi:type="sysml:ResultExpressionMembership">
+                <ownedRelatedElement xsi:type="sysml:OperatorExpression" operator=">=">
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                          <ownedRelationship xsi:type="sysml:Membership"/>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature">
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:OperatorExpression" operator="*">
+                          <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                            <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                              <ownedRelationship xsi:type="sysml:FeatureValue">
+                                <ownedRelatedElement xsi:type="sysml:FeatureChainExpression">
+                                  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                                    <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                                        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                                          <ownedRelationship xsi:type="sysml:Membership"/>
+                                        </ownedRelatedElement>
+                                      </ownedRelationship>
+                                    </ownedRelatedElement>
+                                  </ownedRelationship>
+                                  <ownedRelationship xsi:type="sysml:Membership"/>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                          <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                            <ownedRelatedElement xsi:type="sysml:Feature">
+                              <ownedRelationship xsi:type="sysml:FeatureValue">
+                                <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                                  <ownedRelationship xsi:type="sysml:Membership"/>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="systemPayloadThroughPayloadVerifierGain">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureValue">
+                <ownedRelatedElement xsi:type="sysml:FeatureChainExpression">
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                          <ownedRelationship xsi:type="sysml:Membership"/>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:Membership"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="systemPayloadThroughPayloadBuilderGain">
+              <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange">
+                  <ownedRelationship xsi:type="sysml:OwningMembership">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureValue">
+                <ownedRelatedElement xsi:type="sysml:OperatorExpression" operator="*">
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:FeatureChainExpression">
+                          <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                            <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                              <ownedRelationship xsi:type="sysml:FeatureValue">
+                                <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                                  <ownedRelationship xsi:type="sysml:Membership"/>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                          <ownedRelationship xsi:type="sysml:Membership"/>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature">
+                      <ownedRelationship xsi:type="sysml:FeatureValue">
+                        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                          <ownedRelationship xsi:type="sysml:Membership"/>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Comment" declaredName="builderAllocationRationale" body="DESIGN DECISION: PayloadBuilder allocated 14.0 units (70% of system of interest capacity).&#xA;RATIONALE: Primary processing subsystem; carries main payload transformation responsibility.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Comment" declaredName="verifierAllocationRationale" body="DESIGN DECISION: PayloadVerifier allocated 7.0 units (30% of system of interest capacity).&#xA;RATIONALE: Quality assurance subsystem; secondary but mandatory; 2:1 builder:verifier ratio ensures payload integrity.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Comment" declaredName="systemOfInterestFramedConcernModelerComment" body="Framed concern is a required subrequirement once assumptions hold. " locale="en_US">
+              <ownedRelationship xsi:type="sysml:Annotation"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FramedConcernMembership">
+            <ownedRelatedElement xsi:type="sysml:ConcernUsage" isComposite="true">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting"/>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:FeatureValue">
+                    <ownedRelatedElement xsi:type="sysml:FeatureChainExpression">
+                      <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                        <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                          <ownedRelationship xsi:type="sysml:FeatureValue">
+                            <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                              <ownedRelationship xsi:type="sysml:Membership"/>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                      <ownedRelationship xsi:type="sysml:OwningMembership">
+                        <ownedRelatedElement xsi:type="sysml:Feature">
+                          <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+                          <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+                          <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                  <ownedRelationship xsi:type="sysml:FeatureValue">
+                    <ownedRelatedElement xsi:type="sysml:FeatureChainExpression">
+                      <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                        <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                          <ownedRelationship xsi:type="sysml:FeatureValue">
+                            <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                              <ownedRelationship xsi:type="sysml:Membership"/>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                      <ownedRelationship xsi:type="sysml:OwningMembership">
+                        <ownedRelatedElement xsi:type="sysml:Feature">
+                          <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+                          <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+                          <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Comment" declaredName="systemOfInterestConstraintInheritanceModelerComment" body="Constraint inherited from parent requirement;&#xA;validated through attribute binding.&#xA;" locale="en_US">
+              <ownedRelationship xsi:type="sysml:Annotation"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Comment" declaredName="payloadQualityGainPayloadBuilderNeedModelerComment" body="Child need handed over to L2 Subsystem1. " locale="en_US">
+              <ownedRelationship xsi:type="sysml:Annotation"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:RequirementUsage" declaredName="payloadQualityGainPayloadBuilderNeed" isComposite="true">
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Comment" declaredName="recursiveClosureSemantics" body="NEED VALIDATION: This L1 child need is validated by&#xA;Subsystem1_Requirements::payloadQualityGainPayloadBuilder, which subsets this&#xA;requirement and redefines the subject in the L2 payloadBuilder context.&#xA;&#xA;REQUIREMENT VERIFICATION: The transformed L2 requirement is verified by the&#xA;Subsystem1 configuration and its verification cases.&#xA;"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Documentation" body="The payload shall achieve a gain of quality through the payloadBuilder&#xA;in the context of the system of interest of at least 14 units.&#xA;This is a derived need that shall be satisfied by the payloadBuilder&#xA;(Subsystem1) at level L2.&#xA;"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:SubjectMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:RequirementConstraintMembership" kind="requirement">
+                <ownedRelatedElement xsi:type="sysml:ConstraintUsage" isComposite="true">
+                  <ownedRelationship xsi:type="sysml:ResultExpressionMembership">
+                    <ownedRelatedElement xsi:type="sysml:OperatorExpression" operator=">=">
+                      <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                        <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                          <ownedRelationship xsi:type="sysml:FeatureValue">
+                            <ownedRelatedElement xsi:type="sysml:FeatureChainExpression">
+                              <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                                <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                                  <ownedRelationship xsi:type="sysml:FeatureValue">
+                                    <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                                      <ownedRelationship xsi:type="sysml:Membership"/>
+                                    </ownedRelatedElement>
+                                  </ownedRelationship>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                              <ownedRelationship xsi:type="sysml:OwningMembership">
+                                <ownedRelatedElement xsi:type="sysml:Feature">
+                                  <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+                                  <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                      <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                        <ownedRelatedElement xsi:type="sysml:Feature">
+                          <ownedRelationship xsi:type="sysml:FeatureValue">
+                            <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                              <ownedRelationship xsi:type="sysml:Membership"/>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Comment" declaredName="payloadQualityGainPayloadVerifierNeedModelerComment" body="Child need handed over to L2 Subsystem2. " locale="en_US">
+              <ownedRelationship xsi:type="sysml:Annotation"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:RequirementUsage" declaredName="payloadQualityGainPayloadVerifierNeed" isComposite="true">
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Comment" declaredName="recursiveClosureSemantics" body="NEED VALIDATION: This L1 child need is validated by&#xA;Subsystem2_Requirements::payloadQualityGainPayloadVerifier, which subsets this&#xA;requirement and redefines the subject in the L2 payloadVerifier context.&#xA;&#xA;REQUIREMENT VERIFICATION: The transformed L2 requirement is verified by the&#xA;Subsystem2 blackbox configuration and its terminal verification cases.&#xA;"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Documentation" body="The payload shall achieve a gain of quality through the payloadVerifier&#xA;in the context of the system of interest of at least 7 units.&#xA;This is a derived need that shall be satisfied by the payloadVerifier&#xA;(Subsystem2) at level L2.&#xA;"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:SubjectMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:RequirementConstraintMembership" kind="requirement">
+                <ownedRelatedElement xsi:type="sysml:ConstraintUsage" isComposite="true">
+                  <ownedRelationship xsi:type="sysml:ResultExpressionMembership">
+                    <ownedRelatedElement xsi:type="sysml:OperatorExpression" operator=">=">
+                      <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                        <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                          <ownedRelationship xsi:type="sysml:FeatureValue">
+                            <ownedRelatedElement xsi:type="sysml:FeatureChainExpression">
+                              <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                                <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+                                  <ownedRelationship xsi:type="sysml:FeatureValue">
+                                    <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                                      <ownedRelationship xsi:type="sysml:Membership"/>
+                                    </ownedRelatedElement>
+                                  </ownedRelationship>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                              <ownedRelationship xsi:type="sysml:OwningMembership">
+                                <ownedRelatedElement xsi:type="sysml:Feature">
+                                  <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+                                  <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                      <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+                        <ownedRelatedElement xsi:type="sysml:Feature">
+                          <ownedRelationship xsi:type="sysml:FeatureValue">
+                            <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                              <ownedRelationship xsi:type="sysml:Membership"/>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

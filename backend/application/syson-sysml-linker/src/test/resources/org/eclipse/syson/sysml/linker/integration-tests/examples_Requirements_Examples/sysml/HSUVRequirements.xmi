@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="810c6fb7-47c7-3ced-91eb-e69566af96fa" elementId="810c6fb7-47c7-3ced-91eb-e69566af96fa">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="46e14ad7-382f-3951-8798-b6867974f022" elementId="46e14ad7-382f-3951-8798-b6867974f022">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="1637b934-8e90-3e55-be4f-27f454f538e6" declaredName="HSUVRequirements" elementId="1637b934-8e90-3e55-be4f-27f454f538e6">
+      <ownedRelationship xsi:type="sysml:NamespaceImport" xmi:id="721c4742-97da-3ca6-87be-cbb2fd4287c1" elementId="721c4742-97da-3ca6-87be-cbb2fd4287c1"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="711977fa-c64c-38bf-911d-2c5b5cb8de00" elementId="711977fa-c64c-38bf-911d-2c5b5cb8de00">
+        <ownedRelatedElement xsi:type="sysml:RequirementUsage" xmi:id="58188b7b-0b73-3350-9c70-58221b21c19a" declaredName="Load" elementId="58188b7b-0b73-3350-9c70-58221b21c19a" reqId="UR1.1">
+          <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="2231b5a9-6858-37ea-ac8f-01ecd92ed091" elementId="2231b5a9-6858-37ea-ac8f-01ecd92ed091" typedFeature="58188b7b-0b73-3350-9c70-58221b21c19a"/>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="6508585e-649e-3015-b391-b4ba27a30181" elementId="6508585e-649e-3015-b391-b4ba27a30181">
+            <ownedRelatedElement xsi:type="sysml:RequirementUsage" xmi:id="2c952e5c-77e8-36bf-9c69-474b3504d85e" declaredName="Passengers" elementId="2c952e5c-77e8-36bf-9c69-474b3504d85e" isComposite="true"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="6808e6f3-19ef-37da-99fb-e317fe8e5f5b" elementId="6808e6f3-19ef-37da-99fb-e317fe8e5f5b">
+            <ownedRelatedElement xsi:type="sysml:RequirementUsage" xmi:id="25e25e1b-2513-3f24-b8a4-a0eb07ad2e1c" declaredName="FuelCapacity" elementId="25e25e1b-2513-3f24-b8a4-a0eb07ad2e1c" isComposite="true"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="f025ebc7-62ae-30ac-ab10-dbffb9315b33" elementId="f025ebc7-62ae-30ac-ab10-dbffb9315b33">
+            <ownedRelatedElement xsi:type="sysml:RequirementUsage" xmi:id="b3f8824e-7046-3242-b14f-c572e1451e13" declaredName="Cargo" elementId="b3f8824e-7046-3242-b14f-c572e1451e13" isComposite="true"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="33d285f8-bc95-3e56-8d8b-c970d77699b8" elementId="33d285f8-bc95-3e56-8d8b-c970d77699b8">
+        <ownedRelatedElement xsi:type="sysml:RequirementUsage" xmi:id="1d1f0bb9-bd8e-3b23-8154-ce0a4eeaab19" declaredName="EcoFriendliness" elementId="1d1f0bb9-bd8e-3b23-8154-ce0a4eeaab19" reqId="UR1.2">
+          <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="4765d2bb-02e0-336f-abf6-75fc613fcaa6" elementId="4765d2bb-02e0-336f-abf6-75fc613fcaa6" typedFeature="1d1f0bb9-bd8e-3b23-8154-ce0a4eeaab19"/>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="9043bcc7-a976-34fe-8547-d7c327b771d7" elementId="9043bcc7-a976-34fe-8547-d7c327b771d7">
+            <ownedRelatedElement xsi:type="sysml:RequirementUsage" xmi:id="df947588-8f9d-3a8f-8634-114bae943107" declaredName="Emissions" elementId="df947588-8f9d-3a8f-8634-114bae943107" isComposite="true" reqId="URI1.2.1">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="97179cd0-3e79-3849-934e-06ccdf97ee78" elementId="97179cd0-3e79-3849-934e-06ccdf97ee78" typedFeature="df947588-8f9d-3a8f-8634-114bae943107"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="66930444-2f0d-36f6-adf2-21346e1aa9a1" elementId="66930444-2f0d-36f6-adf2-21346e1aa9a1">
+                <ownedRelatedElement xsi:type="sysml:Comment" xmi:id="b4c958b1-716a-3602-8e9e-c1f54a75d7b8" elementId="b4c958b1-716a-3602-8e9e-c1f54a75d7b8" body="The car shall meet 2010 Kyoto Accord emissions standards. "/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="8083096b-38ae-3cff-9f93-86af96f4df36" elementId="8083096b-38ae-3cff-9f93-86af96f4df36">
+        <ownedRelatedElement xsi:type="sysml:RequirementUsage" xmi:id="00b1747a-aeba-3d7f-b2f2-52d7db09a7b0" declaredName="Performance" elementId="00b1747a-aeba-3d7f-b2f2-52d7db09a7b0" reqId="UR1.3">
+          <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="bf9d54e5-c15c-30d6-8d71-74873982dda8" elementId="bf9d54e5-c15c-30d6-8d71-74873982dda8" typedFeature="00b1747a-aeba-3d7f-b2f2-52d7db09a7b0"/>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="4cdc6775-b39d-33ea-bb5b-d827b28998d0" elementId="4cdc6775-b39d-33ea-bb5b-d827b28998d0">
+            <ownedRelatedElement xsi:type="sysml:RequirementUsage" xmi:id="0eb9144d-1475-379a-ae1b-029d9878548d" declaredName="Acceleration" elementId="0eb9144d-1475-379a-ae1b-029d9878548d" isComposite="true"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="b49ec503-c92c-3279-9cd8-8ddffce8b954" elementId="b49ec503-c92c-3279-9cd8-8ddffce8b954">
+            <ownedRelatedElement xsi:type="sysml:RequirementUsage" xmi:id="0092cda4-52a0-3eb3-b732-5624be0ec2f3" declaredName="FuelEconomy" elementId="0092cda4-52a0-3eb3-b732-5624be0ec2f3" isComposite="true" reqId="UR1.3.1">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="432f3d9f-5629-3f12-a1f4-2a956a3b6951" elementId="432f3d9f-5629-3f12-a1f4-2a956a3b6951" typedFeature="0092cda4-52a0-3eb3-b732-5624be0ec2f3"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="0ef32be5-1350-3801-862f-d3bd2729697d" elementId="0ef32be5-1350-3801-862f-d3bd2729697d">
+                <ownedRelatedElement xsi:type="sysml:Comment" xmi:id="977d8d2b-1acd-3133-9e61-7a759cbed2f5" elementId="977d8d2b-1acd-3133-9e61-7a759cbed2f5" body="User shall obtain fuel economy better than that provided by&#xA;95% of cars built in 2004.&#xA;"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="bbc50c40-aed8-3ece-9327-996f20037d96" elementId="bbc50c40-aed8-3ece-9327-996f20037d96">
+            <ownedRelatedElement xsi:type="sysml:RequirementUsage" xmi:id="c473af92-3c81-35e8-861c-3237a8cde316" declaredName="Braking" elementId="c473af92-3c81-35e8-861c-3237a8cde316" isComposite="true"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="60b89964-cef1-31b4-82d3-387fcf01fb09" elementId="60b89964-cef1-31b4-82d3-387fcf01fb09">
+            <ownedRelatedElement xsi:type="sysml:RequirementUsage" xmi:id="cc7f2c74-6b3e-3f80-85a5-70c96658ca24" declaredName="Range" elementId="cc7f2c74-6b3e-3f80-85a5-70c96658ca24" isComposite="true"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="2c11d00d-b757-3f05-b5c0-23c1079e2f35" elementId="2c11d00d-b757-3f05-b5c0-23c1079e2f35">
+            <ownedRelatedElement xsi:type="sysml:RequirementUsage" xmi:id="03822ffb-8590-32d0-9293-f779f475cf26" declaredName="Power" elementId="03822ffb-8590-32d0-9293-f779f475cf26" isComposite="true"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="cd2e1532-5ba2-3a66-9602-5714ef6a95ac" elementId="cd2e1532-5ba2-3a66-9602-5714ef6a95ac">
+        <ownedRelatedElement xsi:type="sysml:RequirementUsage" xmi:id="8979fdb0-7eea-3658-9266-b979ae9ad63f" declaredName="Ergonomics" elementId="8979fdb0-7eea-3658-9266-b979ae9ad63f" reqId="UR1.4"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="2c4e35de-4f27-31fa-a684-b07187a79c73" elementId="2c4e35de-4f27-31fa-a684-b07187a79c73">
+        <ownedRelatedElement xsi:type="sysml:RequirementUsage" xmi:id="283f031a-25ae-3449-b82f-3301e1a913f2" declaredName="HybridSUVSpec" elementId="283f031a-25ae-3449-b82f-3301e1a913f2">
+          <ownedRelationship xsi:type="sysml:RequirementConstraintMembership" xmi:id="428bbfda-bd9a-34f7-9308-841d0ca048eb" elementId="428bbfda-bd9a-34f7-9308-841d0ca048eb" kind="requirement">
+            <ownedRelatedElement xsi:type="sysml:ConstraintUsage" xmi:id="556b1e40-624d-3557-9ffc-805c5bed12ce" elementId="556b1e40-624d-3557-9ffc-805c5bed12ce" isComposite="true">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting" xmi:id="29b0285e-0207-3fd6-bd2e-5e7e36f471d0" elementId="29b0285e-0207-3fd6-bd2e-5e7e36f471d0"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:RequirementConstraintMembership" xmi:id="22679608-13a3-3c7e-a43e-91849a9d53fd" elementId="22679608-13a3-3c7e-a43e-91849a9d53fd" kind="requirement">
+            <ownedRelatedElement xsi:type="sysml:ConstraintUsage" xmi:id="ef8befca-a0a2-3628-bea7-59b06309bd87" elementId="ef8befca-a0a2-3628-bea7-59b06309bd87" isComposite="true">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting" xmi:id="e3f21a9d-d52b-3244-a89f-2b12090b8006" elementId="e3f21a9d-d52b-3244-a89f-2b12090b8006"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:RequirementConstraintMembership" xmi:id="d0d159e1-0e78-323d-99d0-3dc01abf6588" elementId="d0d159e1-0e78-323d-99d0-3dc01abf6588" kind="requirement">
+            <ownedRelatedElement xsi:type="sysml:ConstraintUsage" xmi:id="2c99fbb8-db15-3ed4-8018-dd2d6c43f7d5" elementId="2c99fbb8-db15-3ed4-8018-dd2d6c43f7d5" isComposite="true">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting" xmi:id="47ee82c8-a905-370a-811d-0dfb62d70b67" elementId="47ee82c8-a905-370a-811d-0dfb62d70b67"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:RequirementConstraintMembership" xmi:id="9f60f4e2-074a-3774-ac21-3d1a29dc5df6" elementId="9f60f4e2-074a-3774-ac21-3d1a29dc5df6" kind="requirement">
+            <ownedRelatedElement xsi:type="sysml:ConstraintUsage" xmi:id="b10b62b2-369a-378f-b9f2-549c1198d000" elementId="b10b62b2-369a-378f-b9f2-549c1198d000" isComposite="true">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting" xmi:id="b585eced-737a-39bf-a5c8-b5dc620d2c67" elementId="b585eced-737a-39bf-a5c8-b5dc620d2c67"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

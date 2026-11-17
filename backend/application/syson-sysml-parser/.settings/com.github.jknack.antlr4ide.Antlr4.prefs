@@ -1,0 +1,11 @@
+antlr4.encoding=UTF-8
+antlr4.listener=false
+antlr4.visitor=false
+antlr4.vmArgs=
+antlr4ide.is_project_specific=true
+autobuilding=false
+eclipse.preferences.version=1
+is_project_specific=true
+outlet.DEFAULT_OUTPUT.cleanupDerived=false
+outlet.DEFAULT_OUTPUT.derived=false
+outlet.DEFAULT_OUTPUT.directory=./src/main/java

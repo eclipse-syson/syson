@@ -1,0 +1,1 @@
+abstract succession flow a;

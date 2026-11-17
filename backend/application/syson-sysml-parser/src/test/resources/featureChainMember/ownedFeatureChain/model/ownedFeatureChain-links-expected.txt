@@ -1,0 +1,3 @@
+/@ownedRelatedElement.0/@ownedRelationship.0;chainingFeature;Feature;0;a
+/@ownedRelatedElement.0/@ownedRelationship.1;chainingFeature;Feature;0;b
+/@ownedRelatedElement.0/@ownedRelationship.2;chainingFeature;Feature;0;c

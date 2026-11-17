@@ -1,0 +1,1 @@
+assign index := index + 1

@@ -1,0 +1,4 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Mortgage_Origination::LoanSecuredByRealEstate
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.1;superclassifier;Classifier;0;Debt::CreditFacility
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.2;superclassifier;Classifier;0;Contracts::MasterAgreement
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.3;superclassifier;Classifier;0;Loans::CollateralizedLoan

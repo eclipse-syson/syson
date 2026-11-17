@@ -1,0 +1,1 @@
+require namespace1::namespace2.namespace3::namespace4.namespace5::namespace6 : elements : TranslationOrRotation;

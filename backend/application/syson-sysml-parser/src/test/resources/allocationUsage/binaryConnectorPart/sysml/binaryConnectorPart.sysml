@@ -1,0 +1,1 @@
+allocation allocation1 : Logical_to_Physical allocate l to p;

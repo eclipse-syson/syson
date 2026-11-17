@@ -1,0 +1,1 @@
+:>> elements : TranslationOrRotation[1..*] ordered nonunique first [1 .. a::b] a ::> namespace1::namespace2 then [1 .. a::b] a ::> namespace1::namespace2;

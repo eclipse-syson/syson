@@ -1,0 +1,5 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0;type;Type;0;Publish
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0;chainingFeature;Feature;0;producer
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1;chainingFeature;Feature;0;publish_source_event
+/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0;chainingFeature;Feature;0;server
+/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1;chainingFeature;Feature;0;publish_target_event

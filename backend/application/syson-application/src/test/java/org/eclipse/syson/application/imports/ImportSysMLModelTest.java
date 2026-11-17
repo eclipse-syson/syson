@@ -17,7 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -27,12 +30,16 @@ import java.util.UUID;
 
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
@@ -114,6 +121,9 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     private SysMLExternalResourceLoaderService sysmlResourceLoader;
 
     @Autowired
+    private IResourceLoader resourceLoader;
+
+    @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
@@ -164,6 +174,43 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
         TestTransaction.start();
     }
 
+    /**
+     * Imported text must retain references to existing documents and libraries across JSON persistence.
+     *
+     * @throws IOException if the source or persisted model cannot be loaded
+     */
+    @Test
+    @DisplayName("GIVEN an existing document and libraries, WHEN importing and reloading references, THEN they target the original SysON objects")
+    public void resolvesExistingDocumentAndLibrariesAfterReload() throws IOException {
+        String editingContextId = this.projectToEditingContext.getEditingContextId(this.projectId).orElseThrow();
+        var editingContext = (IEMFEditingContext) this.editingContextSearchService.findById(editingContextId).orElseThrow();
+        var context = editingContext.getDomain().getResourceSet();
+        List<Resource> originalLibraries = List.copyOf(context.getResources());
+        var first = this.sysmlResourceLoader.getResource(new ByteArrayInputStream("package Existing { part def T; }".getBytes(StandardCharsets.UTF_8)),
+                URI.createURI("upload:/existing.sysml"), context, false).orElseThrow().resource();
+        // The upload flow assigns document URIs after sanitizing each temporary resource.
+        first.setURI(URI.createURI("sirius:///" + UUID.randomUUID()));
+        PartDefinition originalType = this.getByName(PartDefinition.class, first, "T");
+        String source = "package Imported { import Existing::*; part p : T; attribute x : ScalarValues::Real; }";
+        Resource imported = this.sysmlResourceLoader.getResource(new ByteArrayInputStream(source.getBytes(StandardCharsets.UTF_8)),
+                URI.createURI("upload:/imported.sysml"), context, false).orElseThrow().resource();
+        imported.setURI(URI.createURI("sirius:///" + UUID.randomUUID()));
+        assertThat(this.getByName(PartUsage.class, imported, "p").getType()).containsExactly(originalType);
+        Type originalReal = this.getByName(AttributeUsage.class, imported, "x").getType().getFirst();
+        assertThat(originalLibraries).contains(originalReal.eResource());
+
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        imported.save(bytes, Map.of());
+        context.getResources().remove(imported);
+        Resource reloaded = this.resourceLoader.toResource(context, imported.getURI().lastSegment(), "imported.sysml",
+                bytes.toString(StandardCharsets.UTF_8), false, false).orElseThrow();
+
+        assertThat(this.getByName(PartUsage.class, reloaded, "p").getType()).containsExactly(originalType);
+        assertThat(this.getByName(AttributeUsage.class, reloaded, "x").getType()).containsExactly(originalReal);
+        assertThat(context.getResources()).hasSize(originalLibraries.size() + 2);
+        assertThat(originalType.eResource()).isSameAs(first);
+    }
+
     @DisplayName("GIVEN unnamed redefinition used in a FeatureChain, WHEN importing the model, THEN chain should reference the redefined feature instead of the inherited one.")
     @Test
     public void unnamedRedefinedReferenceFeature() throws IOException {
@@ -188,9 +235,9 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
         }).check(input);
     }
 
-    @DisplayName("GIVEN LiteralString with escaped characters, WHEN importing the model, THEN the extra backlash is removed")
+    @DisplayName("GIVEN escaped string literals, WHEN importing the model, THEN their semantic values are decoded")
     @Test
-    public void removeExtraBacklash() throws IOException {
+    public void removeExtraBackslash() throws IOException {
         var input = """
                 package pk1 {
                       part part1 {
@@ -203,8 +250,8 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
         this.checker.checkImportedModel(resource -> {
 
             this.assertLiteralStringValue("A \\ B", this.getByName(AttributeUsage.class, resource, "a1"));
-            this.assertLiteralStringValue("A \\n a", this.getByName(AttributeUsage.class, resource, "a2"));
-            this.assertLiteralStringValue("A \\t a", this.getByName(AttributeUsage.class, resource, "a3"));
+            this.assertLiteralStringValue("A \n a", this.getByName(AttributeUsage.class, resource, "a2"));
+            this.assertLiteralStringValue("A \t a", this.getByName(AttributeUsage.class, resource, "a3"));
             this.assertLiteralStringValue("A \n a", this.getByName(AttributeUsage.class, resource, "a4"));
         }).check(input);
     }
@@ -323,19 +370,19 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
         });
     }
 
+    /**
+     * The Java pipeline must handle documents that exceeded the former CLI's JSON serialization limit.
+     *
+     * @throws IOException if the source cannot be imported
+     */
     @Test
-    @DisplayName("GIVEN a really big SysML model, WHEN importing that model, THEN the import fails but a error message is returned")
-    public void checkBigSysmlFileFailure() throws IOException {
-
-        final StringBuilder builder = this.generateInDepthSysmlStructure(3000, 20);
-
-        String input = builder.toString();
-        this.checker.addExpectedReportMessage("[ERROR] Error: File size exceeds limit : The selected SysML file is too large to be processed by SysON." +
-                        " Please optimize the model or split it into smaller sub-packages and try again.")
-                .checkImportedModel(resource -> {
-                    assertThat(resource.getContents()).isEmpty();
-                })
-                .check(input);
+    @DisplayName("GIVEN a large SysML model, WHEN importing it without a JSON AST, THEN all top-level packages are imported")
+    public void checkLargeSysmlFile() throws IOException {
+        String input = this.generateInDepthSysmlStructure(3000, 20).toString();
+        this.checker.checkImportedModel(resource -> {
+            assertThat(resource.getContents()).hasSize(1);
+            assertThat(((org.eclipse.syson.sysml.Namespace) resource.getContents().getFirst()).getOwnedMember()).hasSize(3000);
+        }).check(input);
     }
 
 

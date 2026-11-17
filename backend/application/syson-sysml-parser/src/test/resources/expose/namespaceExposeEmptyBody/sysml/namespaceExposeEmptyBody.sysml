@@ -1,0 +1,3 @@
+expose namespace1::namespace2::* {
+
+}

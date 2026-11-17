@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="b2c09714-7b1d-3f75-ae98-957c54230a1a" elementId="b2c09714-7b1d-3f75-ae98-957c54230a1a">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="4c791169-7554-3110-9905-53fc5e7f8afa" elementId="4c791169-7554-3110-9905-53fc5e7f8afa">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="a1b50e2b-0c8c-3fb9-b790-0b654a5ce0f6" declaredName="12a-Dependency" elementId="a1b50e2b-0c8c-3fb9-b790-0b654a5ce0f6">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="e2899c03-f409-3934-8d5b-52293e4dc0f0" elementId="e2899c03-f409-3934-8d5b-52293e4dc0f0">
+        <ownedRelatedElement xsi:type="sysml:Package" xmi:id="70c869aa-3083-3f54-ada0-ef7d9a099960" declaredName="Application Layer" elementId="70c869aa-3083-3f54-ada0-ef7d9a099960"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="6b418fc7-ec2f-32c3-87a4-5ac07aaf5e41" elementId="6b418fc7-ec2f-32c3-87a4-5ac07aaf5e41">
+        <ownedRelatedElement xsi:type="sysml:Package" xmi:id="919b2832-d916-3221-9246-fa711ad92571" declaredName="Service Layer" elementId="919b2832-d916-3221-9246-fa711ad92571"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="9b1abb16-a641-3f89-98c7-c033cbce3a7f" elementId="9b1abb16-a641-3f89-98c7-c033cbce3a7f">
+        <ownedRelatedElement xsi:type="sysml:Package" xmi:id="37149418-9d66-3d32-9f96-5d4ef0efc9a7" declaredName="Data Layer" elementId="37149418-9d66-3d32-9f96-5d4ef0efc9a7"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="02e81945-3cd7-3efa-8ba2-2d97504a9d83" elementId="02e81945-3cd7-3efa-8ba2-2d97504a9d83">
+        <ownedRelatedElement xsi:type="sysml:Dependency" xmi:id="8e82727b-17ad-3e32-bfa7-98b6f211cb94" declaredName="Use" elementId="8e82727b-17ad-3e32-bfa7-98b6f211cb94" client="70c869aa-3083-3f54-ada0-ef7d9a099960" supplier="919b2832-d916-3221-9246-fa711ad92571"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="59573aa6-1147-356b-8958-66b192127241" elementId="59573aa6-1147-356b-8958-66b192127241">
+        <ownedRelatedElement xsi:type="sysml:Dependency" xmi:id="bbb8a2df-afd8-3bec-aed3-56b772e8edaa" elementId="bbb8a2df-afd8-3bec-aed3-56b772e8edaa" client="919b2832-d916-3221-9246-fa711ad92571" supplier="37149418-9d66-3d32-9f96-5d4ef0efc9a7"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="a16fd157-f031-3d66-b9e6-2c8f7c5b50dc" elementId="a16fd157-f031-3d66-b9e6-2c8f7c5b50dc">
+        <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="a42e4c83-1616-39bd-b530-c3ee865afd69" declaredName="x" elementId="a42e4c83-1616-39bd-b530-c3ee865afd69"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="75909bd9-8871-3116-8566-53061390b154" elementId="75909bd9-8871-3116-8566-53061390b154">
+        <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="bda69647-c131-36c5-ae48-67f176263056" declaredName="y" elementId="bda69647-c131-36c5-ae48-67f176263056"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="f944fa8e-fa27-3f3e-8e1b-9aa2b0306956" elementId="f944fa8e-fa27-3f3e-8e1b-9aa2b0306956">
+        <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="6bfc9dd9-ab2b-3b19-8d6e-7d4ed203b6d6" declaredName="z" elementId="6bfc9dd9-ab2b-3b19-8d6e-7d4ed203b6d6"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="4a32cafd-cdd0-32c7-b04b-7c40b08376e2" elementId="4a32cafd-cdd0-32c7-b04b-7c40b08376e2">
+        <ownedRelatedElement xsi:type="sysml:Dependency" xmi:id="a8200db3-5e3e-3a42-8b05-5b8467f2da04" elementId="a8200db3-5e3e-3a42-8b05-5b8467f2da04" client="6bfc9dd9-ab2b-3b19-8d6e-7d4ed203b6d6" supplier="a42e4c83-1616-39bd-b530-c3ee865afd69 bda69647-c131-36c5-ae48-67f176263056"/>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

@@ -959,6 +959,95 @@ public class SysMLElementSerializerTest {
         this.assertTextualFormEquals("attribute attribute1 = bestFuel + idlingFuel * fuel;", model.getAttributeUsage());
     }
 
+    /**
+     * Generated result parameters must not be mistaken for unary input operands, regardless of relationship order.
+     *
+     * @param operator the unary operator to serialize
+     */
+    @DisplayName("GIVEN a unary expression with a result parameter, WHEN serializing, THEN only its input operand follows the operator")
+    @ParameterizedTest
+    @ValueSource(strings = { "+", "-", "not" })
+    public void unaryOperatorIgnoresResultParameter(String operator) {
+        var expression = this.fact.createOperatorExpression();
+        expression.setOperator(operator);
+        this.builder.createIn(ReturnParameterMembership.class, expression);
+        var input = this.builder.createIn(ParameterMembership.class, expression);
+        var parameter = this.fact.createReferenceUsage();
+        input.getOwnedRelatedElement().add(parameter);
+        var value = this.builder.createIn(FeatureValue.class, parameter);
+        String expected;
+        if ("not".equals(operator)) {
+            value.getOwnedRelatedElement().add(this.fact.createLiteralBoolean());
+            expected = "not false";
+        } else {
+            var literal = this.fact.createLiteralInteger();
+            literal.setValue(1);
+            value.getOwnedRelatedElement().add(literal);
+            expected = operator + "1";
+        }
+
+        this.assertTextualFormEquals(expected, expression);
+    }
+
+    /**
+     * Binary expressions retain their operands when completion adds result parameters.
+     */
+    @DisplayName("GIVEN binary expressions with result parameters, WHEN serializing, THEN nested input operands and operators are preserved")
+    @Test
+    public void binaryOperatorsIgnoreResultParameters() {
+        var model = new AttributeUsageWithBinaryOperatorExpressionTestModel();
+        List<OperatorExpression> expressions = new ArrayList<>();
+        model.getAttributeUsage().eAllContents().forEachRemaining(object -> {
+            if (object instanceof OperatorExpression expression) {
+                expressions.add(expression);
+            }
+        });
+        expressions.forEach(expression -> expression.getOwnedRelationship().addFirst(this.fact.createReturnParameterMembership()));
+
+        this.assertTextualFormEquals("attribute attribute1 = bestFuel + idlingFuel * fuel;", model.getAttributeUsage());
+    }
+
+    /**
+     * Both legacy and completed occurrence models must emit a single portion keyword.
+     *
+     * @param portion whether completion has set the portion flag
+     */
+    @DisplayName("GIVEN a snapshot or timeslice, WHEN serializing legacy and completed models, THEN its portion keyword appears once")
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void portionKeywordAppearsOnce(boolean portion) {
+        for (PortionKind kind : PortionKind.values()) {
+            var occurrence = this.builder.createWithName(OccurrenceUsage.class, OCCURRENCE1);
+            occurrence.setPortionKind(kind);
+            occurrence.setIsPortion(portion);
+
+            this.assertTextualFormEquals(kind.getLiteral() + " " + OCCURRENCE1 + ";", occurrence);
+        }
+    }
+
+    /**
+     * Only subports need an explicit ref modifier to distinguish them from composite ports.
+     */
+    @DisplayName("GIVEN non-composite ports with different owners, WHEN serializing, THEN ref is omitted only outside ports")
+    @Test
+    public void portReferenceModifierDependsOnOwner() {
+        var owner = this.fact.createPartDefinition();
+        var port = this.builder.createInWithName(PortUsage.class, owner, SOCKET);
+        port.setIsComposite(false);
+        this.assertTextualFormEquals("port socket;", port);
+
+        var definition = this.fact.createPortDefinition();
+        var subport = this.builder.createInWithName(PortUsage.class, definition, SOCKET);
+        subport.setIsComposite(false);
+        this.assertTextualFormEquals("ref port socket;", subport);
+        subport.setIsComposite(true);
+        this.assertTextualFormEquals("port socket;", subport);
+
+        var nested = this.builder.createInWithName(PortUsage.class, port, SOCKET);
+        nested.setIsComposite(false);
+        this.assertTextualFormEquals("ref port socket;", nested);
+    }
+
     @Test
     public void attributeUsageWithBracketOperatorExpression() {
         AttributeUsageWithBracketOperatorExpressionTestModel model = new AttributeUsageWithBracketOperatorExpressionTestModel();
@@ -1625,7 +1714,7 @@ public class SysMLElementSerializerTest {
                         state s2;
                         transition s2 accept s : Sig via p do send s via x then s3;
                         state s3;
-                        ref port x;
+                        port x;
                         transition T1 first s2 accept s : Sig via p do send s to p then s3;
                         transition T2 first s2 accept s : Sig via p do send s via x to p then s3;
                         transition T3 first s2 accept s : Sig via p do send s to p then s3;

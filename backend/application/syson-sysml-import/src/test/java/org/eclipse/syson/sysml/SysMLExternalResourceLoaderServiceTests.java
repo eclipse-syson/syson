@@ -19,7 +19,9 @@ import java.io.ByteArrayInputStream;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.syson.sysml.services.SysMLParsingService;
 import org.eclipse.syson.sysml.upload.SysMLExternalResourceLoaderService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -31,30 +33,35 @@ public class SysMLExternalResourceLoaderServiceTests {
 
     private static final String PACKAGE_P1 = "package p1;";
 
+    /**
+     * Checks supported textual extensions and rejects JSON content before invoking the parser.
+     */
+    @DisplayName("GIVEN uploaded content and an extension, WHEN checking support, THEN only textual SysML and KerML resources are accepted")
     @Test
     public void testCandHandle() {
+        var loader = new SysMLExternalResourceLoaderService(new SysMLParsingService());
         // Incorrect content
-        assertFalse(new SysMLExternalResourceLoaderService(new SysmlToAst(null)).canHandle(new ByteArrayInputStream("{}".getBytes()), URI.createFileURI("/test/model.sysml"), new ResourceSetImpl()));
+        assertFalse(loader.canHandle(new ByteArrayInputStream("{}".getBytes()), URI.createFileURI("/test/model.sysml"), new ResourceSetImpl()));
         // Incorrect extension
-        assertFalse(new SysMLExternalResourceLoaderService(new SysmlToAst(null)).canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.sysml2"),
+        assertFalse(loader.canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.sysml2"),
                 new ResourceSetImpl()));
         // Valid file
-        assertTrue(new SysMLExternalResourceLoaderService(new SysmlToAst(null)).canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.sysml"),
+        assertTrue(loader.canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.sysml"),
                 new ResourceSetImpl()));
         // Valid file
-        assertTrue(new SysMLExternalResourceLoaderService(new SysmlToAst(null)).canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.kerml"),
+        assertTrue(loader.canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.kerml"),
                 new ResourceSetImpl()));
         // Valid file
-        assertTrue(new SysMLExternalResourceLoaderService(new SysmlToAst(null)).canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.SYSML"),
+        assertTrue(loader.canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.SYSML"),
                 new ResourceSetImpl()));
         // Valid file
-        assertTrue(new SysMLExternalResourceLoaderService(new SysmlToAst(null)).canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.KERML"),
+        assertTrue(loader.canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.KERML"),
                 new ResourceSetImpl()));
         // Valid file
-        assertTrue(new SysMLExternalResourceLoaderService(new SysmlToAst(null)).canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.SysML"),
+        assertTrue(loader.canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.SysML"),
                 new ResourceSetImpl()));
         // Valid file
-        assertTrue(new SysMLExternalResourceLoaderService(new SysmlToAst(null)).canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.KerML"),
+        assertTrue(loader.canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.KerML"),
                 new ResourceSetImpl()));
     }
 

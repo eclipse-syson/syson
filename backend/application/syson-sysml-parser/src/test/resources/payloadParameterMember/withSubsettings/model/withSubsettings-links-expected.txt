@@ -1,0 +1,2 @@
+/@ownedRelatedElement.0/@ownedRelationship.0;referencedFeature;Feature;0;elements
+/@ownedRelatedElement.0/@ownedRelationship.1;type;Type;0;TranslationOrRotation

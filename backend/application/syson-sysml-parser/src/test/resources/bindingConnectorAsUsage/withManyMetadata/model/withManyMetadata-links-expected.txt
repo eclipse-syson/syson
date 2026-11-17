@@ -1,0 +1,7 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0;type;Metaclass;0;meta1
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0;type;Metaclass;0;meta2
+/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0;type;Metaclass;0;meta3
+/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0;memberElement;Feature;0;a::b
+/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1;referencedFeature;Feature;0;namespace1::namespace2
+/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0;memberElement;Feature;0;a::b
+/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1;referencedFeature;Feature;0;namespace1::namespace2

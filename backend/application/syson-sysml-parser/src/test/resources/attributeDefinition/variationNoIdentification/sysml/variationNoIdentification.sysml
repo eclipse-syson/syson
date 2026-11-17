@@ -1,0 +1,1 @@
+variation #c attribute def :> namespace1::namespace2;

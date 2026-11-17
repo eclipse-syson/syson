@@ -1,0 +1,1 @@
+succession : elements : TranslationOrRotation[1..*] ordered nonunique first namespace1::namespace2.namespace3::namespace4.namespace5::namespace6 if if true ? true else false then [1 .. a::b] a ::> namespace1::namespace2;

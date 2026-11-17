@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="13a-Model Containment">
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:RequirementUsage" declaredName="BodyAndInteriorRequirements" isComposite="true">
+          <ownedRelationship xsi:type="sysml:MembershipImport" visibility="public"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:RequirementUsage" declaredName="PowerTrainRequirements" isComposite="true"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Package" declaredName="Vehicle Model">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="This package is used to represent a top-level &quot;model&quot;.&#xA;There is no specific syntax for identifying a package&#xA;used in this way.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Package" declaredName="Vehicle1-Configuration">
+              <ownedRelationship xsi:type="sysml:Membership" memberName="Sport Sedan"/>
+              <ownedRelationship xsi:type="sysml:MembershipImport" visibility="public"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Package" declaredName="Vehicle Reference Model">
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:Documentation" body="This package is used to represent a &quot;model library&quot;.&#xA;There is no specific syntax for identifying a package&#xA;used in this way.&#xA;"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:MembershipImport" visibility="public"/>
+              <ownedRelationship xsi:type="sysml:MembershipImport" visibility="public"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Package" declaredName="VehicleSubsystems">
+              <ownedRelationship xsi:type="sysml:MembershipImport" visibility="public"/>
+              <ownedRelationship xsi:type="sysml:MembershipImport" visibility="public"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Package" declaredName="Body&amp;Interior">
+              <ownedRelationship xsi:type="sysml:MembershipImport" visibility="public"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Package" declaredName="PowerTrain">
+              <ownedRelationship xsi:type="sysml:MembershipImport" visibility="public"/>
+              <ownedRelationship xsi:type="sysml:MembershipImport" visibility="public"/>
+              <ownedRelationship xsi:type="sysml:MembershipImport" visibility="public"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

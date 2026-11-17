@@ -1,0 +1,1 @@
+abstract #meta1 a;

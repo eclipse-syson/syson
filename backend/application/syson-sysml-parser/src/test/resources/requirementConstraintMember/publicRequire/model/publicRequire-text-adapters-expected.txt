@@ -1,0 +1,8 @@
+/@ownedRelatedElement.0/@ownedRelationship.1:
+typing clause start
+/@ownedRelatedElement.0/@ownedRelationship.2:
+typing clause start
+/@ownedRelatedElement.0:
+late nonunique
+/:
+public

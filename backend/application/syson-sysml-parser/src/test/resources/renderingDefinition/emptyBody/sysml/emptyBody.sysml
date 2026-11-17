@@ -1,0 +1,3 @@
+rendering def a {
+
+}

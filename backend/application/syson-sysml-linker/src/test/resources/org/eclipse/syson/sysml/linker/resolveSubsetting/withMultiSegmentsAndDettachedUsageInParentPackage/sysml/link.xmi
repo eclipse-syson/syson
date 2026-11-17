@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="e4d66a31-daae-3895-99b6-e8bca8419f1b" elementId="e4d66a31-daae-3895-99b6-e8bca8419f1b">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="eff78b49-d0ad-34d5-a786-d0a4231add7f" elementId="eff78b49-d0ad-34d5-a786-d0a4231add7f">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="1e5dca56-3ddf-3984-aa1e-40b69b0c9881" declaredName="P1" elementId="1e5dca56-3ddf-3984-aa1e-40b69b0c9881">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="1646b8be-19ec-3ca0-b7f8-a0b965b68ab7" elementId="1646b8be-19ec-3ca0-b7f8-a0b965b68ab7">
+        <ownedRelatedElement xsi:type="sysml:ActionDefinition" xmi:id="254832d6-9dcc-3cad-ae66-e3509f8fd9e2" declaredName="Action1" elementId="254832d6-9dcc-3cad-ae66-e3509f8fd9e2"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="a3e7078d-b3c1-3142-8c98-2b167c94edaa" elementId="a3e7078d-b3c1-3142-8c98-2b167c94edaa">
+        <ownedRelatedElement xsi:type="sysml:ActionUsage" xmi:id="a66041ae-e6a7-3c45-9557-2636d3508297" declaredName="action1" elementId="a66041ae-e6a7-3c45-9557-2636d3508297">
+          <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="756688dc-c4b4-3bfa-9500-a876fbe989e6" elementId="756688dc-c4b4-3bfa-9500-a876fbe989e6" typedFeature="a66041ae-e6a7-3c45-9557-2636d3508297"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="55298fcc-5977-375f-9f34-dad78471d820" elementId="55298fcc-5977-375f-9f34-dad78471d820">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="b72aaf26-2e1f-3ca3-a72e-8e9a155b67bb" declaredName="Part1" elementId="b72aaf26-2e1f-3ca3-a72e-8e9a155b67bb">
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="b3d1f58a-dd8f-3bb2-8044-0318b75f2737" elementId="b3d1f58a-dd8f-3bb2-8044-0318b75f2737">
+            <ownedRelatedElement xsi:type="sysml:PerformActionUsage" xmi:id="38750f5b-8470-3aef-b396-20de7e01dbec" declaredName="action1" elementId="38750f5b-8470-3aef-b396-20de7e01dbec">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="8f969539-93e8-3d86-b42f-ccff45b85084" elementId="8f969539-93e8-3d86-b42f-ccff45b85084" typedFeature="38750f5b-8470-3aef-b396-20de7e01dbec"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="a4865089-cd41-3985-99df-ed6c886237af" elementId="a4865089-cd41-3985-99df-ed6c886237af">
+        <ownedRelatedElement xsi:type="sysml:PartUsage" xmi:id="4349d97e-1b1e-3bde-8c12-d6420f6a72e3" declaredName="part1" elementId="4349d97e-1b1e-3bde-8c12-d6420f6a72e3">
+          <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="42cc739a-4d55-36b0-b23f-31c6b9c42b38" elementId="42cc739a-4d55-36b0-b23f-31c6b9c42b38" typedFeature="4349d97e-1b1e-3bde-8c12-d6420f6a72e3"/>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="be4b8703-d4e6-3a3f-a657-d0aa1597a890" elementId="be4b8703-d4e6-3a3f-a657-d0aa1597a890">
+            <ownedRelatedElement xsi:type="sysml:PerformActionUsage" xmi:id="71815a29-25cb-338c-8bc5-00e579986883" elementId="71815a29-25cb-338c-8bc5-00e579986883">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting" xmi:id="d207d1da-5b2d-3537-baed-5afac1790bba" elementId="d207d1da-5b2d-3537-baed-5afac1790bba"/>
+              <ownedRelationship xsi:type="sysml:Redefinition" xmi:id="cbffd3ba-36e9-3655-a732-3b5172061078" elementId="cbffd3ba-36e9-3655-a732-3b5172061078" redefiningFeature="71815a29-25cb-338c-8bc5-00e579986883"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

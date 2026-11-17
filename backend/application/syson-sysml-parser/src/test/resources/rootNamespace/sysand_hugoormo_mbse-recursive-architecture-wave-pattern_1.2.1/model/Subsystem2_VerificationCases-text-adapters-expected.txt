@@ -1,0 +1,58 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+comment body /* L2 Subsystem2 verification strategy defs (terminal leaf, no decomposition). */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* Verification evidence intent and claim limits are defined in\n     * MyFramework::MyFrameworkVerificationMetaPatterns.\n     * See also MyFramework::MyFrameworkAnalysisMetaPatterns::analysisRolePolicy\n     * for the analysis-vs-empirical claim boundary.\n     */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* L2 SUBSYSTEM2 (PAYLOADVERIFIER) EVIDENCE VERIFICATION STRATEGY\n         * \n         * Terminal leaf subsystem (no further decomposition to L3).\n         * Specializes the 8-stage evidence pipeline for terminal verification.\n         * Subject: payloadVerifier (L2 blackbox - terminal)\n         * Objective: Verify payload quality verification capability\n         * Stimulus: Execute verification behavioral action\n         * Method: analyze for executable model evidence. A realized verifier would require\n         * corresponding test or demonstration evidence.\n         */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+subsets
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /* Verify payloadQualityGainPayloadVerifier is satisfied.\n             * - Requirement: terminal payload verification capability, as specified by\n             *   Subsystem2_Requirements::payloadQualityGainPayloadVerifier.\n             * - Scenario: L2 terminal blackbox context (no graybox decomposition).\n             * - Evidence strategy: Execute verification action, measure output quality.\n             * - Verdict note: inherited verdict computation is a scaffold; concrete projects\n             *   shall specialize evidence collection and acceptance logic.\n             */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+declaration keyword omitted
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* L2 Subsystem2-specific: Execute terminal verification action. */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+{...}
+late nonunique
+redefines
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* L2 Subsystem2 verification scenario usages. */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* SCENARIO 1: Nominal PayloadVerifier terminal verification.\n         * Inherits L2 Subsystem2 evidence strategy.\n         */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+{...}
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* SCENARIO: PayloadVerifier compliance inspection.\n         * One-off manual inspection verification at L2 Subsystem2.\n         */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+subsets
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /* INSPECTION CRITERIA FOR L2 SUBSYSTEM2 (Terminal): Verify compliance. */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0:
+{...}
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}

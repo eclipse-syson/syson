@@ -1,0 +1,1 @@
+protected then [1 .. a::b] a ::> namespace1::namespace2;

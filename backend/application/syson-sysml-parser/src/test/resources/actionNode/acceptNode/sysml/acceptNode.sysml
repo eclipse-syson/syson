@@ -1,0 +1,1 @@
+action initialization accept index := 1;

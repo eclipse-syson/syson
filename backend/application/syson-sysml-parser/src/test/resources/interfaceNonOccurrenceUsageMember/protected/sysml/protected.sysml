@@ -1,0 +1,1 @@
+protected abstract ref a;

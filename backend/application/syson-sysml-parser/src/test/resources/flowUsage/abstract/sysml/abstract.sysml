@@ -1,0 +1,1 @@
+abstract flow a;

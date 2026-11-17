@@ -1,0 +1,1 @@
+/@ownedRelatedElement.0/@ownedRelationship.0;referencedFeature;Feature;0;namespace1::namespace2

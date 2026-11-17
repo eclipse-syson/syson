@@ -1,0 +1,1 @@
+/;redefinedFeature;Feature;0;namespace1::'namespace 2'

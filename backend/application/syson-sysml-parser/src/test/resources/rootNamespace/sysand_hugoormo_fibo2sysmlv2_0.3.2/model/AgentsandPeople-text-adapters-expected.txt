@@ -1,0 +1,4 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /* Compatibility package retained to satisfy legacy source-path references after AgentsAndPeople split into Agents.sysml, CMNSParty.sysml, and People.sysml. */
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}

@@ -1,0 +1,3 @@
+/@ownedRelationship.0;referencedFeature;Feature;0;Req1_1
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0;chainingFeature;Feature;0;system
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1;chainingFeature;Feature;0;sub1

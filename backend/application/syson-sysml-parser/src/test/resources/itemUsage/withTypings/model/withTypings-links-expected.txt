@@ -1,0 +1,2 @@
+/@ownedRelationship.0;type;Type;0;elements
+/@ownedRelationship.1;type;Type;0;TranslationOrRotation

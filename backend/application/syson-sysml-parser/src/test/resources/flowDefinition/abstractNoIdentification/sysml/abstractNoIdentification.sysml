@@ -1,0 +1,1 @@
+abstract #c flow def :> namespace1::namespace2;

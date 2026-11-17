@@ -18,7 +18,7 @@ const body = JSON.parse(event);
 const baseSHA = body.pull_request.base.sha;
 const headSHA = body.pull_request.head.sha;
 
-const gitLogFilesCommand = `git diff --name-only --diff-filter=d ${baseSHA}...${headSHA}`;
+const gitLogFilesCommand = `git diff --name-only --diff-filter=d ${baseSHA}...${headSHA} -- "*.ts" "*.tsx"`;
 const gitLogFilesResult = childProcess.execSync(gitLogFilesCommand, {
   encoding: "utf8",
 });

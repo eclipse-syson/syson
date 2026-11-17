@@ -1,0 +1,2 @@
+null;crossedFeature;0;elements
+null;type;0;TranslationOrRotation

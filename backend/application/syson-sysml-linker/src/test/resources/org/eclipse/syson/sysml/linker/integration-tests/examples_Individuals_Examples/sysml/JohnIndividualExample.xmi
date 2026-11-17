@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="408d5939-b6fb-3dbb-8d66-192ad8672a10" elementId="408d5939-b6fb-3dbb-8d66-192ad8672a10">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="cf9c703a-355e-36e2-87ad-3ad707e41f3b" elementId="cf9c703a-355e-36e2-87ad-3ad707e41f3b">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="0ee27b49-4ffc-3a0f-a183-fb5a3198c463" declaredName="JohnIndividualExample" elementId="0ee27b49-4ffc-3a0f-a183-fb5a3198c463">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="0b92837f-dac7-3e4c-b491-8b013ad26c5e" elementId="0b92837f-dac7-3e4c-b491-8b013ad26c5e">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" xmi:id="98ad21e5-d865-3368-98ae-230c15b7f513" declaredName="Person" elementId="98ad21e5-d865-3368-98ae-230c15b7f513">
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="d4306f59-1d81-3812-a186-623677eb17e0" elementId="d4306f59-1d81-3812-a186-623677eb17e0">
+            <ownedRelatedElement xsi:type="sysml:Documentation" xmi:id="7a781dcd-6d32-39c9-9754-a4e59a63a69f" elementId="7a781dcd-6d32-39c9-9754-a4e59a63a69f" body="This is the definition of the class of persons, each of whom has an age.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="8b3e5fef-d331-37f9-8986-9f24416e25e6" elementId="8b3e5fef-d331-37f9-8986-9f24416e25e6">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="ea2e7fb1-0249-35d1-99a9-0b59d44cab38" declaredName="age" elementId="ea2e7fb1-0249-35d1-99a9-0b59d44cab38">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="26c0c25f-274d-376d-ae8c-d92e61fdbca6" elementId="26c0c25f-274d-376d-ae8c-d92e61fdbca6" typedFeature="ea2e7fb1-0249-35d1-99a9-0b59d44cab38"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="c8242824-e86a-32bf-949c-5dd651e6b8d6" elementId="c8242824-e86a-32bf-949c-5dd651e6b8d6">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="3a995ab8-5d9c-3ace-8f87-e12b044d2cd2" elementId="3a995ab8-5d9c-3ace-8f87-e12b044d2cd2"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="55a635f7-7541-3bd6-8adb-d6afe7c7da06" elementId="55a635f7-7541-3bd6-8adb-d6afe7c7da06">
+            <ownedRelatedElement xsi:type="sysml:OccurrenceUsage" xmi:id="adc50f28-b2de-319f-8020-018bb8094aac" declaredName="asPresident" elementId="adc50f28-b2de-319f-8020-018bb8094aac" isComposite="true" isPortion="true" portionKind="timeslice">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="566495a8-27d9-37c0-9c03-648c5c3604c5" elementId="566495a8-27d9-37c0-9c03-648c5c3604c5" typedFeature="adc50f28-b2de-319f-8020-018bb8094aac"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="ee231914-8f00-343e-86a1-47c74c1490d5" elementId="ee231914-8f00-343e-86a1-47c74c1490d5">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange" xmi:id="84be38f0-953d-3141-8841-1f887d8ae67c" elementId="84be38f0-953d-3141-8841-1f887d8ae67c">
+                  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="472024f7-4636-398c-96b3-60f151a27e09" elementId="472024f7-4636-398c-96b3-60f151a27e09">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" xmi:id="d29ca05e-c584-3171-8ab8-6dd6f13d8ae1" elementId="d29ca05e-c584-3171-8ab8-6dd6f13d8ae1"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="2fb18463-9df3-3ced-accc-964d5b18f8c9" elementId="2fb18463-9df3-3ced-accc-964d5b18f8c9">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity" xmi:id="6f182ea3-72ce-37eb-9170-371b46a2bdde" elementId="6f182ea3-72ce-37eb-9170-371b46a2bdde"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="547d15a4-e931-3b63-ad81-bb73c056e653" elementId="547d15a4-e931-3b63-ad81-bb73c056e653">
+                <ownedRelatedElement xsi:type="sysml:Documentation" xmi:id="3a65f892-ea8d-32d1-b232-0bacfc81620e" elementId="3a65f892-ea8d-32d1-b232-0bacfc81620e" body="These are the periods during which a Person is president.&#xA;"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="958f8167-0f8f-3671-a80d-a9e61188b6fc" elementId="958f8167-0f8f-3671-a80d-a9e61188b6fc">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" xmi:id="9b906f3f-4ade-3d62-95f0-2d98273004c1" declaredName="John" elementId="9b906f3f-4ade-3d62-95f0-2d98273004c1" isIndividual="true">
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="8a170305-40a8-32aa-ab2e-b2940454d59b" elementId="8a170305-40a8-32aa-ab2e-b2940454d59b">
+            <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="22d3a100-e2fd-3feb-9b82-f95874f9a683" elementId="22d3a100-e2fd-3feb-9b82-f95874f9a683"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:Subclassification" xmi:id="cf134893-c149-3fa5-afe9-97013a292485" elementId="cf134893-c149-3fa5-afe9-97013a292485" subclassifier="9b906f3f-4ade-3d62-95f0-2d98273004c1"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="6cbf8e02-bb5a-3f4f-ac20-a632b0969e30" elementId="6cbf8e02-bb5a-3f4f-ac20-a632b0969e30">
+            <ownedRelatedElement xsi:type="sysml:Documentation" xmi:id="d7d6f848-57a8-3166-9137-281546a54af4" elementId="d7d6f848-57a8-3166-9137-281546a54af4" body="This the definition of the individual Person who is John.&#xA;There is at most one such person.&#xA;"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="bc6da39d-7d8e-36cc-85d4-3082f6fa3e08" elementId="bc6da39d-7d8e-36cc-85d4-3082f6fa3e08">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" xmi:id="86ec6fda-4098-32de-aeea-daff1e6ed3c0" declaredName="Country" elementId="86ec6fda-4098-32de-aeea-daff1e6ed3c0">
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="a3a03554-613c-3235-b1c4-1c8a2aea5fac" elementId="a3a03554-613c-3235-b1c4-1c8a2aea5fac">
+            <ownedRelatedElement xsi:type="sysml:Documentation" xmi:id="40206527-14da-3d53-abcc-0c45a616fe3c" elementId="40206527-14da-3d53-abcc-0c45a616fe3c" body="This is the definition of the class of countries, each of which may have &#xA;at most one president (at any point in time).&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="9b4dff75-6bd4-3dc9-943c-79bc62420d40" elementId="9b4dff75-6bd4-3dc9-943c-79bc62420d40">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" xmi:id="0a82b97c-a502-30c0-8e6c-4c13ea112ad9" declaredName="presidentOfCountry" elementId="0a82b97c-a502-30c0-8e6c-4c13ea112ad9">
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="3b57d28d-445d-3200-92f7-3b0ffec663cc" elementId="3b57d28d-445d-3200-92f7-3b0ffec663cc">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange" xmi:id="44a5fe61-b733-3dac-a15b-749a8b731692" elementId="44a5fe61-b733-3dac-a15b-749a8b731692">
+                  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="dac398bf-bf71-37f3-85b8-c33c9c2e0c97" elementId="dac398bf-bf71-37f3-85b8-c33c9c2e0c97">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" xmi:id="920dcd7f-549c-38bc-9dcf-7c23529e727a" elementId="920dcd7f-549c-38bc-9dcf-7c23529e727a"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="619d3c83-de9f-3d04-b5bd-3d443c2d7961" elementId="619d3c83-de9f-3d04-b5bd-3d443c2d7961">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" xmi:id="47db2f52-ec48-3d96-a80c-76c3b30fd7c1" elementId="47db2f52-ec48-3d96-a80c-76c3b30fd7c1" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="f4c50d56-2fc3-383b-b2b1-2b6134d81378" elementId="f4c50d56-2fc3-383b-b2b1-2b6134d81378" typedFeature="0a82b97c-a502-30c0-8e6c-4c13ea112ad9"/>
+              <ownedRelationship xsi:type="sysml:Subsetting" xmi:id="e61d873a-dda6-3a13-9585-9abdf34308d6" elementId="e61d873a-dda6-3a13-9585-9abdf34308d6" subsettedFeature="16f6cdc6-2fec-34ee-9992-93d978878c3e" subsettingFeature="0a82b97c-a502-30c0-8e6c-4c13ea112ad9">
+                <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="16f6cdc6-2fec-34ee-9992-93d978878c3e" elementId="16f6cdc6-2fec-34ee-9992-93d978878c3e">
+                  <ownedRelationship xsi:type="sysml:FeatureChaining" xmi:id="8d8755da-717e-3742-9859-936bb5f2080a" elementId="8d8755da-717e-3742-9859-936bb5f2080a"/>
+                  <ownedRelationship xsi:type="sysml:FeatureChaining" xmi:id="e2929e9b-702c-361c-b5df-482b815da5a1" elementId="e2929e9b-702c-361c-b5df-482b815da5a1"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="204be26d-50d7-3dae-8d82-9c241feef6e5" elementId="204be26d-50d7-3dae-8d82-9c241feef6e5">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" xmi:id="5ee6352a-390b-3fc5-97d5-7bc49d092b0c" declaredName="UnitedStates" elementId="5ee6352a-390b-3fc5-97d5-7bc49d092b0c" isIndividual="true">
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="5ef5c286-cbd2-3404-bece-10e84dae2792" elementId="5ef5c286-cbd2-3404-bece-10e84dae2792">
+            <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="18c3b20e-cf77-303b-8769-374176dd32b2" elementId="18c3b20e-cf77-303b-8769-374176dd32b2"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:Subclassification" xmi:id="9a83f9d8-577c-33cc-bcb1-6a2c81ee019a" elementId="9a83f9d8-577c-33cc-bcb1-6a2c81ee019a" subclassifier="5ee6352a-390b-3fc5-97d5-7bc49d092b0c"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="398482f4-f736-38d3-a795-c4bf25bbd4cf" elementId="398482f4-f736-38d3-a795-c4bf25bbd4cf">
+            <ownedRelatedElement xsi:type="sysml:Documentation" xmi:id="41f1e7ac-2dfb-3965-b7d6-36de8ee15a6d" elementId="41f1e7ac-2dfb-3965-b7d6-36de8ee15a6d" body="This is the definition of the individual country that is the&#xA;United States. It contains a single instance. The United States&#xA;always has a president who must be at least 35 years old.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="1eff69a3-c9a4-3555-8712-5e6161d32e1c" elementId="1eff69a3-c9a4-3555-8712-5e6161d32e1c">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" xmi:id="3dfd808f-abe9-3a77-866b-8e0164838c7a" declaredName="presidentOfUS" elementId="3dfd808f-abe9-3a77-866b-8e0164838c7a">
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="930e282e-1fbc-35cf-9e1b-024b6f7fded7" elementId="930e282e-1fbc-35cf-9e1b-024b6f7fded7">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange" xmi:id="ca7868ed-4963-3658-8f2e-27a8fdfc5e53" elementId="ca7868ed-4963-3658-8f2e-27a8fdfc5e53">
+                  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="44d0bf84-50b2-367d-a164-956040d181cf" elementId="44d0bf84-50b2-367d-a164-956040d181cf">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInteger" xmi:id="c88be236-5cf4-31fd-9f52-892f2a85f450" elementId="c88be236-5cf4-31fd-9f52-892f2a85f450" value="1"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:Redefinition" xmi:id="d844ec62-1268-3abd-9b54-69bf95339f0d" elementId="d844ec62-1268-3abd-9b54-69bf95339f0d" redefiningFeature="3dfd808f-abe9-3a77-866b-8e0164838c7a"/>
+              <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="31cbdbf9-f542-3fc1-8256-d843d21f2962" elementId="31cbdbf9-f542-3fc1-8256-d843d21f2962">
+                <ownedRelatedElement xsi:type="sysml:AssertConstraintUsage" xmi:id="80b1c139-4d82-3788-ae92-8d87c6de791f" elementId="80b1c139-4d82-3788-ae92-8d87c6de791f" isComposite="true">
+                  <ownedRelationship xsi:type="sysml:ResultExpressionMembership" xmi:id="f2dd4edc-4e9b-382b-a07b-1ef4aa219d3d" elementId="f2dd4edc-4e9b-382b-a07b-1ef4aa219d3d">
+                    <ownedRelatedElement xsi:type="sysml:OperatorExpression" xmi:id="497cd7db-eb71-3770-a01d-bbb6e88bbdc5" elementId="497cd7db-eb71-3770-a01d-bbb6e88bbdc5" operator=">=">
+                      <ownedRelationship xsi:type="sysml:ParameterMembership" xmi:id="38f0e6a0-ae50-3323-a1c2-10a9558a20aa" elementId="38f0e6a0-ae50-3323-a1c2-10a9558a20aa" visibility="private">
+                        <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="7c728f51-3a25-3e72-bfbe-209f0b538345" elementId="7c728f51-3a25-3e72-bfbe-209f0b538345" direction="in">
+                          <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="5675bb99-2f0b-39e9-9775-def35f141595" elementId="5675bb99-2f0b-39e9-9775-def35f141595">
+                            <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression" xmi:id="cfbb04bf-e091-345f-a890-c1643f69ee35" elementId="cfbb04bf-e091-345f-a890-c1643f69ee35">
+                              <ownedRelationship xsi:type="sysml:Membership" xmi:id="3f3ed0b5-2bf0-3ded-a56f-980162eff41b" elementId="3f3ed0b5-2bf0-3ded-a56f-980162eff41b"/>
+                              <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="e999a16a-7a2e-3518-8fe1-3164a1f3425b" elementId="e999a16a-7a2e-3518-8fe1-3164a1f3425b">
+                                <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="d8869dc9-197f-31a9-bae4-cfa04b7acfa3" elementId="d8869dc9-197f-31a9-bae4-cfa04b7acfa3" direction="out"/>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                      <ownedRelationship xsi:type="sysml:ParameterMembership" xmi:id="5e0cf302-c6b1-3142-9508-541a4a5024cf" elementId="5e0cf302-c6b1-3142-9508-541a4a5024cf" visibility="private">
+                        <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="23a35ed4-da99-306b-bcc5-b496cdce8f76" elementId="23a35ed4-da99-306b-bcc5-b496cdce8f76" direction="in">
+                          <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="8adeaffa-8e93-3df2-8322-4571b9c06e7c" elementId="8adeaffa-8e93-3df2-8322-4571b9c06e7c">
+                            <ownedRelatedElement xsi:type="sysml:LiteralInteger" xmi:id="8ba3414e-e98e-3c82-964b-2cc681044cfa" elementId="8ba3414e-e98e-3c82-964b-2cc681044cfa" value="35"/>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                      <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="cc056c13-42c2-318b-8d13-7c06fcdabea6" elementId="cc056c13-42c2-318b-8d13-7c06fcdabea6">
+                        <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="c4400018-fd1e-3c9e-8164-f4486fb2d3d7" elementId="c4400018-fd1e-3c9e-8164-f4486fb2d3d7" direction="out"/>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="97eb4599-deaf-300d-8e23-64e6b4966aa3" elementId="97eb4599-deaf-300d-8e23-64e6b4966aa3">
+        <ownedRelatedElement xsi:type="sysml:OccurrenceUsage" xmi:id="2a24d193-07b1-33af-8ab1-3c25516cb27a" declaredName="UnitedStatesWithJohnAsPresident" elementId="2a24d193-07b1-33af-8ab1-3c25516cb27a" isIndividual="true">
+          <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="1f71f268-4d55-3016-9b37-9f96ce8834ba" elementId="1f71f268-4d55-3016-9b37-9f96ce8834ba" typedFeature="2a24d193-07b1-33af-8ab1-3c25516cb27a"/>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="f5e1ee59-0b8a-3199-9646-f1190d759e0d" elementId="f5e1ee59-0b8a-3199-9646-f1190d759e0d">
+            <ownedRelatedElement xsi:type="sysml:ItemUsage" xmi:id="6012807e-e3cd-3a2a-a378-ae6111d09724" declaredName="UnitedStatesWhenJohnIsPresident" elementId="6012807e-e3cd-3a2a-a378-ae6111d09724" isComposite="true" isPortion="true" portionKind="timeslice">
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="7d2fa378-6b34-33ea-8ba6-6d2415f4693f" elementId="7d2fa378-6b34-33ea-8ba6-6d2415f4693f">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange" xmi:id="72f12466-8674-30c4-8e00-a55224f3f742" elementId="72f12466-8674-30c4-8e00-a55224f3f742">
+                  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="dfcb72e9-24ef-3045-9c6a-a88faa03fd21" elementId="dfcb72e9-24ef-3045-9c6a-a88faa03fd21">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity" xmi:id="4e262b3d-c660-3547-8261-48ec7323a5ef" elementId="4e262b3d-c660-3547-8261-48ec7323a5ef"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="02838845-1ad5-332b-a6dd-6d99f85465a4" elementId="02838845-1ad5-332b-a6dd-6d99f85465a4" typedFeature="6012807e-e3cd-3a2a-a378-ae6111d09724"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="3d8189c3-4903-30fa-a326-e7daf736c540" elementId="3d8189c3-4903-30fa-a326-e7daf736c540">
+                <ownedRelatedElement xsi:type="sysml:Documentation" xmi:id="134281dd-a2a6-3bd0-98f5-e9acb29b39d1" elementId="134281dd-a2a6-3bd0-98f5-e9acb29b39d1" body="These are the time slices of the United States during&#xA;which John is president of the United States.&#xA;"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="23d0d545-ee34-326b-af24-91edaad71a6a" elementId="23d0d545-ee34-326b-af24-91edaad71a6a">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage" xmi:id="d2f91e7b-ec82-31c5-a819-3432c5e057f8" elementId="d2f91e7b-ec82-31c5-a819-3432c5e057f8">
+                  <ownedRelationship xsi:type="sysml:Redefinition" xmi:id="662bcf72-1184-3b8b-abec-4fbee404cb05" elementId="662bcf72-1184-3b8b-abec-4fbee404cb05" redefiningFeature="d2f91e7b-ec82-31c5-a819-3432c5e057f8"/>
+                  <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="14f8897b-be7b-3d9c-ba6b-447ec6abc437" elementId="14f8897b-be7b-3d9c-ba6b-447ec6abc437" typedFeature="d2f91e7b-ec82-31c5-a819-3432c5e057f8"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

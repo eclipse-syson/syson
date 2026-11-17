@@ -1,0 +1,3 @@
+/@ownedRelationship.1;superclassifier;Classifier;0;namespace1::namespace2
+/@ownedRelationship.2;superclassifier;Classifier;0;namespace3::namespace4
+/@ownedRelationship.3;superclassifier;Classifier;0;namespace3::namespace4

@@ -1,0 +1,15 @@
+ERROR - null
+  ERROR - Can't resolve $::B1::bEnd's reference chainingFeature to myB.
+    INFO - Namespace $::B1::aEnd can't resolve myB locally.
+    INFO - Namespace $::A can't resolve myB locally.
+    INFO - Namespace $::A can't resolved myB via specializations.
+    INFO - Namespace $::A can't resolved myB via imports.
+    INFO - Namespace $::B1::aEnd can't resolve myB locally.
+    INFO - Namespace $::B::myA can't resolve myB locally.
+    INFO - Namespace $::B::myA can't resolved myB via specializations.
+    INFO - Namespace $::B::myA can't resolved myB via imports.
+    INFO - Namespace $::B1::aEnd can't resolved myB via specializations.
+    INFO - Namespace $::B1::aEnd can't resolved myB via imports.
+    INFO - Namespace $::B1::aEnd can't resolved myB via specializations.
+    INFO - Namespace $::B1::aEnd can't resolved myB via imports.
+    ERROR - Can't resolve $::B1::bEnd's reference chainingFeature to myB.

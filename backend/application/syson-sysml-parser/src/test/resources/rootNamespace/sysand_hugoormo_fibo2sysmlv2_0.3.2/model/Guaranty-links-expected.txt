@@ -1,0 +1,15 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Guaranty
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Guaranty
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Contracts::ContractThirdParty
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1;superclassifier;Classifier;0;Control_Parties::DeJureControllingInterestParty
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Agreements::Commitment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Guaranty
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Contracts::WrittenContract
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Contracts::ContractPrincipal
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.1;superclassifier;Classifier;0;Financial_Products_and_Services::FinancialServiceProvider
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Guaranty
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Debt::CommittedCreditFacility
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;CollateralizedGuaranty
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Guaranty
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Contracts::Counterparty
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.14/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;FiBO_FND_ExternalStubs::Classifier

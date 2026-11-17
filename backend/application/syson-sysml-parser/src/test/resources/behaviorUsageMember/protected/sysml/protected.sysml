@@ -1,0 +1,1 @@
+protected abstract action a;

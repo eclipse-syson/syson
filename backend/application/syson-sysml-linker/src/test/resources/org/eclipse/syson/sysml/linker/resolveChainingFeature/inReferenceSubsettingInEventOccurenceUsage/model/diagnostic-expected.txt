@@ -1,0 +1,15 @@
+ERROR - null
+  ERROR - Can't resolve $::P1::part2's reference type to Part2.
+    INFO - Namespace $::P1::part2 can't resolve Part2 locally.
+    INFO - Namespace $::P1::part2 can't resolved Part2 via specializations.
+    INFO - Namespace $::P1::part2 can't resolved Part2 via imports.
+    INFO - Namespace $::P1 can't resolve Part2 locally.
+    INFO - Namespace $::P1 can't resolved Part2 via specializations.
+    INFO - Namespace $::P1 can't resolved Part2 via imports.
+    INFO - Namespace $ can't resolve Part2 locally.
+    INFO - Namespace $ can't resolved Part2 via specializations.
+    INFO - Namespace $ can't resolved Part2 via imports.
+    INFO - Namespace $ can't resolve Part2 locally.
+    INFO - Namespace $ can't resolved Part2 via specializations.
+    INFO - Namespace $ can't resolved Part2 via imports.
+    ERROR - Can't resolve $::P1::part2's reference type to Part2.

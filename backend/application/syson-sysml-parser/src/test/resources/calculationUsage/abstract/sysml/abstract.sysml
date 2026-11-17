@@ -1,0 +1,1 @@
+abstract calc a;

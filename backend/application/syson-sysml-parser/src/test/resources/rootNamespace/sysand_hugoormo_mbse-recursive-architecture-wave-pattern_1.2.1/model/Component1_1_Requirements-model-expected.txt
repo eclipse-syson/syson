@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="Component1_1_Requirements">
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Comment" body="PATTERN RULES FOR COMPONENT1_1_REQUIREMENTS:&#xA;&#xA;1. LEAF REQUIREMENT SEMANTICS:&#xA;- Terminal decomposition node (no further child needs)&#xA;- Still decontextualize parent need at this level's context&#xA;- Inherit constraint from parent via subsetting (no hardcoding)&#xA;- Subject redefines parent (even at terminal level)&#xA;- No derived requirement (leaf has no decomposition)&#xA;&#xA;2. CONFIGURATION BINDING STRATEGY:&#xA;- Blackbox configuration (Config_bb): attribute binding to action output&#xA;- Graybox configuration (Config_gb): if present, MUST remain abstract&#xA;- Whitebox configuration (Config_wb): integration level for verification&#xA;- Binding is set once at blackbox level; inherited, never overridden&#xA;&#xA;3. SUBJECT REDEFINITION:&#xA;- Original requirement subject: redefines parent subsystem context&#xA;- Narrowing chain continues from L0→L1→L2→L3&#xA;- No further narrowing after this point&#xA;&#xA;4. RECURSIVE CLOSURE SEMANTICS:&#xA;- This leaf requirement validates its parent child need by subsetting it.&#xA;- It is then verified when the leaf component architecture satisfies it.&#xA;- See MyFramework::MyFrameworkRecursiveClosureSemantics for the reusable rule.&#xA;"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Comment" declaredName="patternRules" body="This package implements the MBSE RecursiveArchitecture Weave Pattern at L3 (Component level).&#xA;As a LEAF level, only original requirements exist (no decomposition).&#xA;Violations detected by:&#xA;- Syside syntax/semantic validation&#xA;- Constraint evaluation on live behavioral outputs&#xA;- Cross-level consistency verification&#xA;"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Comment" declaredName="payloadQualityGainComponent1_1ModelerComment" body="L3 leaf requirement: final transformation of the L2 derived need&#xA;(no further decomposition).&#xA;" locale="en_US">
+          <ownedRelationship xsi:type="sysml:Annotation"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:RequirementUsage" declaredName="payloadQualityGainComponent1_1" isComposite="true">
+          <ownedRelationship xsi:type="sysml:Subsetting">
+            <ownedRelatedElement xsi:type="sysml:Feature">
+              <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+              <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Comment" declaredName="transformedRequirementClosureSemantics" body="NEED VALIDATION: By subsetting the L2 payloadPrebuilder child need, this L3&#xA;requirement validates the transformation of that need into the Component1_1&#xA;context.&#xA;&#xA;REQUIREMENT VERIFICATION: This transformed leaf requirement is verified by&#xA;Component1_1_Configuration::payloadPrebuilder_bb and the Component1_1 terminal&#xA;verification cases.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Comment" declaredName="component1_1AllocationRationale" body="DESIGN DECISION: Component1_1 (PayloadPrebuilder) allocated 4.0 units (leaf terminal node).&#xA;RATIONALE: Single atomic component; no further decomposition possible; allocation matches parent prebuilder need.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:SubjectMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="payloadPrebuilder">
+              <ownedRelationship xsi:type="sysml:Redefinition"/>
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="The payload shall achieve a gain of quality through Component1_1 &#xA;of at least 4 units. (Here we decontextualize the requirement from L2)&#xA;This requirement is derived from the subsetted Subsystem1 derived requirement.&#xA;With this we ensure that Component1_1 will perform as needed in the&#xA;context of Subsystem1 by inheriting the constraint from the &#xA;Subsystem1 requirements and redefining the subject.&#xA;&#xA;This is a leaf-level requirement with no further decomposition.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Comment" declaredName="payloadQualityGainComponent1_1ConstraintModelerComment" body="Constraint inherited from parent requirement through subsetting. " locale="en_US">
+              <ownedRelationship xsi:type="sysml:Annotation"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

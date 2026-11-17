@@ -1,0 +1,5 @@
+ERROR - null
+  ERROR - The value $::P (type PortDefinition) can't be assigned to $::Part1::chargeInPort's reference conjugatedPortDefinition (type ConjugatedPortDefinition).
+  ERROR - Can't resolve $::Part1::chargeInPort::<5faaee35-55c9-3ff9-b704-da1837ce8578>'s reference redefinedFeature to attribute1.
+    ERROR - Can't resolve $::Part1::chargeInPort::<5faaee35-55c9-3ff9-b704-da1837ce8578>'s reference redefinedFeature to attribute1.
+  ERROR - Can't resolve $::Part1::chargeInPort::<5faaee35-55c9-3ff9-b704-da1837ce8578>'s reference redefinedFeature to attribute1 via feature not in containing type.

@@ -1,0 +1,2 @@
+/@ownedRelationship.0;type;Metaclass;0;Issue
+/@ownedRelationship.1;annotatedElement;Element;0;engineToTransmissionInterface

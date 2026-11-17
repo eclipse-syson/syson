@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:OperatorExpression xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" operator="meta">
+  <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+    <ownedRelatedElement xsi:type="sysml:Feature">
+      <ownedRelationship xsi:type="sysml:FeatureValue">
+        <ownedRelatedElement xsi:type="sysml:MetadataAccessExpression">
+          <ownedRelationship xsi:type="sysml:Membership"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:ReturnParameterMembership">
+    <ownedRelatedElement xsi:type="sysml:Feature">
+      <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:OperatorExpression>

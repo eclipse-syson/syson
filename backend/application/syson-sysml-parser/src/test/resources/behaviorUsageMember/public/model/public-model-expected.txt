@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:FeatureMembership xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelatedElement xsi:type="sysml:ActionUsage" declaredName="a" isAbstract="true" isComposite="true"/>
+</sysml:FeatureMembership>

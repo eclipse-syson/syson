@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="5ea533ef-4e31-31f7-9cc9-d441c5c3d380" elementId="5ea533ef-4e31-31f7-9cc9-d441c5c3d380">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="eacf03ea-28ee-31fb-81c6-0882ddee7926" elementId="eacf03ea-28ee-31fb-81c6-0882ddee7926">
+    <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="45e1c81f-1fde-3798-89e9-b0d2994d39b0" declaredName="Base" elementId="45e1c81f-1fde-3798-89e9-b0d2994d39b0">
+      <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="823f9882-5196-3598-8e13-28d6b9feb6e5" elementId="823f9882-5196-3598-8e13-28d6b9feb6e5">
+        <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="33c1f0a1-8450-370d-9974-afe9771511ef" declaredName="original" elementId="33c1f0a1-8450-370d-9974-afe9771511ef">
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="20cb1468-e579-3738-8495-48ba51a22be4" elementId="20cb1468-e579-3738-8495-48ba51a22be4">
+            <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="20f61af0-70ed-323f-ba59-7bc9e27c8717" elementId="20f61af0-70ed-323f-ba59-7bc9e27c8717"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

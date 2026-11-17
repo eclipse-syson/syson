@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="Package Example">
+      <ownedRelationship xsi:type="sysml:MembershipImport" visibility="public"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership" visibility="private">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" declaredName="Automobile"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:Membership" memberName="Car"/>
+      <ownedRelationship xsi:type="sysml:Membership" memberName="Torque"/>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

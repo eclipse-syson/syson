@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ASCII"?>
+<!--
+Original model : 
+package <p1> 'Package 1' {
+  package <p2> 'Package 2' {
+    part def part1;
+  }
+  package p3 {
+    alias alias1 for p2::part1;
+    part part2 : alias1;
+    package p4 {
+      requirement def req1;
+      requirement validReq1 : req1;
+    }
+  }
+}
+
+
+-->
+
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" elementId="e325efd1-b85a-3e4f-9e1c-6ad0e5665a96">
+  <ownedRelationship xsi:type="sysml:OwningMembership" elementId="d656bd15-ef98-3143-9b1e-4acf775f635d">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="Package 1" declaredShortName="p1" elementId="7adabe9c-e3d8-3e72-88c3-1855246d9332">
+      <ownedRelationship xsi:type="sysml:OwningMembership" elementId="4c6b46f8-c96d-385c-a2bb-d0241fac63e3">
+        <ownedRelatedElement xsi:type="sysml:Package" declaredName="Package 2" declaredShortName="p2" elementId="272ef651-aef2-3ca6-9465-4a3b6ec6fdeb">
+          <ownedRelationship xsi:type="sysml:OwningMembership" elementId="2c1ea8ac-7798-328b-b212-ccd5862c0a0f">
+            <ownedRelatedElement xsi:type="sysml:PartDefinition" declaredName="part1" elementId="44769487-054c-324c-910f-565d061aec59"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" elementId="3fb2ce16-9a3c-3e2d-beec-69d98794806f">
+        <ownedRelatedElement xsi:type="sysml:Package" declaredName="p3" elementId="6195182e-13b3-32ed-bca7-0bb7c6faf14e">
+          <ownedRelationship xsi:type="sysml:Membership" elementId="81a0220f-f6d5-3b0d-abf2-37785fb80620" memberElement="//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0" memberName="alias1"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership" elementId="f571eca9-467e-39e2-a74f-bbbf114a9310">
+            <ownedRelatedElement xsi:type="sysml:PartUsage" declaredName="part2" elementId="21fc51ff-63be-3465-95b9-e5258527cd42">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" elementId="ec751cc6-cff1-3c0f-a1af-8054abcfcf7f" type="//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0" typedFeature="//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership" elementId="73bc2f0b-f54a-3cf5-9ae0-6132573bf09a">
+            <ownedRelatedElement xsi:type="sysml:Package" declaredName="p4" elementId="59368be2-1fe8-3266-b855-903b036d1b49">
+              <ownedRelationship xsi:type="sysml:OwningMembership" elementId="03ae0c5e-c987-3e01-b4ce-6eadddd8c141">
+                <ownedRelatedElement xsi:type="sysml:RequirementDefinition" declaredName="req1" elementId="9165cd54-df4d-3b58-b0f1-94e5d59f7888"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:OwningMembership" elementId="277768ee-e4d1-3aa8-b495-d880d36b5123">
+                <ownedRelatedElement xsi:type="sysml:RequirementUsage" declaredName="validReq1" elementId="40aecde3-4b15-3da6-8739-ff368be8f109">
+                  <ownedRelationship xsi:type="sysml:FeatureTyping" elementId="13a41b1e-4bbb-347e-9554-fe1d276ffc6c" type="//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0" typedFeature="//@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:OccurrenceUsage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" declaredName="a" isComposite="true" isIndividual="true" portionKind="timeslice">
+  <ownedRelationship xsi:type="sysml:FeatureValue">
+    <ownedRelatedElement xsi:type="sysml:LiteralInteger" value="1"/>
+  </ownedRelationship>
+</sysml:OccurrenceUsage>

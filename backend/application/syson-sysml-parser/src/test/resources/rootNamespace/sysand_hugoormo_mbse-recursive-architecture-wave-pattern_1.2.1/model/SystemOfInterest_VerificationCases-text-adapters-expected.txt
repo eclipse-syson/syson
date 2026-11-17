@@ -1,0 +1,64 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+comment body /* L1 verification strategy defs (inherit from Framework meta-patterns). */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* Verification evidence intent and claim limits are defined in\n     * MyFramework::MyFrameworkVerificationMetaPatterns.\n     * See also MyFramework::MyFrameworkAnalysisMetaPatterns::analysisRolePolicy\n     * for the analysis-vs-empirical claim boundary.\n     */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* L1 SYSTEMOFINTEREST EVIDENCE VERIFICATION STRATEGY\n         * \n         * Specializes the 8-stage evidence pipeline for subsystem context.\n         * Subject: systemOfInterest (L1 whitebox integration)\n         * Objective: Verify payload quality gain through subsystem composition\n         * Stimulus: Execute full interacting chain in wb context (allocated behavior)\n         * Method: analyze for this executable model reference. Implemented systems should\n         * repeat this intent through test or demonstration evidence where applicable.\n         * HINT: Scope is verified through configuration wiring: connector/interface bindings\n         * in SystemOfInterest_Configuration route the payload and feedback path, so a passing\n         * end-to-end run confirms integrated interaction across builder and verifier.\n         * \n         * This def captures the L1-specific verification strategy once.\n         * Scenario usages inherit from this def for different subsystem configurations.\n         */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+subsets
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /* Verify payloadQualityGainSystemOfInterestDerived is satisfied.\n             * - Requirement: payload quality gain through L1 subsystem composition, as specified\n             *   by SystemOfInterest_Requirements::payloadQualityGainSystemOfInterestDerived.\n             * - Scenario: L1 whitebox context with payloadBuilder and payloadVerifier.\n             * - Evidence strategy: Execute subsystem actions, collect quality contributions.\n             * - Verdict note: inherited verdict computation is a scaffold; concrete projects\n             *   shall specialize evidence collection and acceptance logic.\n             */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+declaration keyword omitted
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* L1-specific: execute the connected constituent actions that own executable\n             * behavior. The whitebox action remains a traceability shell when behavior is\n             * delegated to the builder and verifier endpoints.\n             */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+{...}
+late nonunique
+redefines
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* All other 8 actions inherited from meta-pattern. */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /* L1 verification scenario usages (inherit from L1 defs). */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* SCENARIO 1: Nominal SystemOfInterest subsystem composition.\n         * \n         * Inherits L1 evidence strategy; subject binding and prepareContext\n         * can be specialized for this scenario.\n         */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+{...}
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* SCENARIO: SystemOfInterest subsystem compliance.\n         * \n         * One-off manual inspection verification at L1.\n         * Verify that subsystem architecture complies with MyStandard.\n         */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+subsets
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /* INSPECTION CRITERIA FOR L1 SUBSYSTEMS:\n             * 1) Verify subsystem types inherit from MyStandard roots.\n             * 2) Confirm subsystem ports/connections are standard-compliant.\n             * 3) Validate satisfy relations link subsystem architecture to L1 requirements.\n             * 4) Check subsystem allocations are traceable to L2 components.\n             * 5) Ensure boundary specifications conform to standard ontology.\n             */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0:
+{...}
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0:
+comment body /* Additional scenario usages can be added,\n     * for example degraded operational mode.\n     */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}

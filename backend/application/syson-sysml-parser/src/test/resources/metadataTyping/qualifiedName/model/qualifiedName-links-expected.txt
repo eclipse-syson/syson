@@ -1,0 +1,1 @@
+/;type;Metaclass;0;namespace1::namespace2

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:FlowUsage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" isComposite="true">
+  <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+  <ownedRelationship xsi:type="sysml:ParameterMembership">
+    <ownedRelatedElement xsi:type="sysml:EventOccurrenceUsage">
+      <ownedRelationship xsi:type="sysml:ReferenceSubsetting"/>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:ParameterMembership">
+    <ownedRelatedElement xsi:type="sysml:EventOccurrenceUsage">
+      <ownedRelationship xsi:type="sysml:ReferenceSubsetting"/>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:FlowUsage>

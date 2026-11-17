@@ -1,0 +1,1 @@
+private return abstract enum a;

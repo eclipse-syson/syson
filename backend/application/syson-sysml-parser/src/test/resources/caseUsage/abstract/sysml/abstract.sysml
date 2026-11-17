@@ -1,0 +1,1 @@
+abstract case a;

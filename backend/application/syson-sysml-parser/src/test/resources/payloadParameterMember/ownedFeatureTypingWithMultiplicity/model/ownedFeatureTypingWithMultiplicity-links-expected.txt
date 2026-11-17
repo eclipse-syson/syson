@@ -1,0 +1,4 @@
+/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0;chainingFeature;Feature;0;namespace1::namespace2
+/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1;chainingFeature;Feature;0;namespace3::namespace4
+/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2;chainingFeature;Feature;0;namespace5::namespace6
+/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0;memberElement;Feature;0;a::b

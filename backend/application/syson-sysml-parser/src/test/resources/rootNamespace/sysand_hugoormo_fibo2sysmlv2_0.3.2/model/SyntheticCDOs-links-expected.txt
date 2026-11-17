@@ -1,0 +1,11 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Collateralized_Debt_Obligations::CDODeal
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;SyntheticCDO
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1;superclassifier;Classifier;0;Collateralized_Debt_Obligations::ArbitrageCDO
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;SyntheticCDO
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1;superclassifier;Classifier;0;Collateralized_Debt_Obligations::BalanceSheetCDO
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;SyntheticStructuredFinanceInstrument
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Collateralized_Debt_Obligations::CollateralizedDebtObligation
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Securities_Pools::DebtPool
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Legal_Persons::SpecialPurposeVehicle
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Accounting_Equity::FinancialAsset
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Structured_Instruments::StructuredFinanceInstrument

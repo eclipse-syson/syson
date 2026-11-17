@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:ActionDefinition" declaredName="ControlNodeTest">
+      <ownedRelationship xsi:type="sysml:FeatureMembership">
+        <ownedRelatedElement xsi:type="sysml:ActionUsage" declaredName="A1" isComposite="true"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership">
+        <ownedRelatedElement xsi:type="sysml:SuccessionAsUsage">
+          <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership">
+        <ownedRelatedElement xsi:type="sysml:ActionUsage" declaredName="A2" isComposite="true">
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="a" direction="out"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership">
+        <ownedRelatedElement xsi:type="sysml:SuccessionAsUsage">
+          <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership">
+        <ownedRelatedElement xsi:type="sysml:FlowUsage" isComposite="true">
+          <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:FlowEnd">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting"/>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:FlowEnd">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting"/>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership">
+        <ownedRelatedElement xsi:type="sysml:JoinNode" declaredName="J" isComposite="true"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership">
+        <ownedRelatedElement xsi:type="sysml:SuccessionAsUsage">
+          <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership">
+        <ownedRelatedElement xsi:type="sysml:ForkNode" declaredName="F" isComposite="true">
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="a" direction="in"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="b1" direction="out"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="b2" direction="out"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership">
+        <ownedRelatedElement xsi:type="sysml:SuccessionAsUsage">
+          <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership">
+        <ownedRelatedElement xsi:type="sysml:SuccessionAsUsage">
+          <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership">
+        <ownedRelatedElement xsi:type="sysml:FlowUsage" isComposite="true">
+          <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:FlowEnd">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting"/>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:FlowEnd">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting"/>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership">
+        <ownedRelatedElement xsi:type="sysml:FlowUsage" isComposite="true">
+          <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:FlowEnd">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting"/>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:FlowEnd">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting"/>
+              <ownedRelationship xsi:type="sysml:FeatureMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                  <ownedRelationship xsi:type="sysml:Redefinition"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership">
+        <ownedRelatedElement xsi:type="sysml:ActionUsage" declaredName="B1" isComposite="true">
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="b" direction="in"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership">
+        <ownedRelatedElement xsi:type="sysml:SuccessionAsUsage">
+          <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership">
+        <ownedRelatedElement xsi:type="sysml:ActionUsage" declaredName="B2" isComposite="true">
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="b" direction="in"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership">
+        <ownedRelatedElement xsi:type="sysml:SuccessionAsUsage">
+          <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership">
+        <ownedRelatedElement xsi:type="sysml:MergeNode" declaredName="M" isComposite="true"/>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

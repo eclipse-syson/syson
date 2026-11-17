@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="615c31bb-71a1-3a05-90c0-d0880fbf76dc" elementId="615c31bb-71a1-3a05-90c0-d0880fbf76dc">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="f338fc4e-6125-377a-837e-6160daa74b2e" elementId="f338fc4e-6125-377a-837e-6160daa74b2e">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="d3c2c17b-295c-3045-825e-e9d07519da50" declaredName="Dependency Example" elementId="d3c2c17b-295c-3045-825e-e9d07519da50">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="8a562b5d-ea8a-3236-8339-7bb6cdf5d3a0" elementId="8a562b5d-ea8a-3236-8339-7bb6cdf5d3a0">
+        <ownedRelatedElement xsi:type="sysml:PartUsage" xmi:id="7e9dc155-7ccc-3630-934e-803b43aa744f" declaredName="System Assembly" elementId="7e9dc155-7ccc-3630-934e-803b43aa744f">
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="d62af3b4-e9b0-38db-b95e-e0775c0bf893" elementId="d62af3b4-e9b0-38db-b95e-e0775c0bf893">
+            <ownedRelatedElement xsi:type="sysml:PartUsage" xmi:id="ffb3e116-2640-3f80-89f5-73d1c1ea1a6d" declaredName="Computer Subsystem" elementId="ffb3e116-2640-3f80-89f5-73d1c1ea1a6d" isComposite="true">
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="355a07bd-9ec0-3c87-b3a6-1fa2d8cc7b16" elementId="355a07bd-9ec0-3c87-b3a6-1fa2d8cc7b16">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="eae3e91a-3c9b-33dd-bd0e-5e0d9b32de68" elementId="eae3e91a-3c9b-33dd-bd0e-5e0d9b32de68"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="7ede9de2-0510-389d-8fc1-02e47ae87c79" elementId="7ede9de2-0510-389d-8fc1-02e47ae87c79">
+            <ownedRelatedElement xsi:type="sysml:PartUsage" xmi:id="b4ed5643-1d9b-3d56-84cd-14f102a3b78f" declaredName="Storage Subsystem" elementId="b4ed5643-1d9b-3d56-84cd-14f102a3b78f" isComposite="true">
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="5a5dd3b1-e8c0-3a2b-be66-0b9d709aac02" elementId="5a5dd3b1-e8c0-3a2b-be66-0b9d709aac02">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="1364c82a-332c-353c-a295-97c1e0e4234c" elementId="1364c82a-332c-353c-a295-97c1e0e4234c"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="7de1774b-f5f1-3312-9344-820b1c50c494" elementId="7de1774b-f5f1-3312-9344-820b1c50c494">
+        <ownedRelatedElement xsi:type="sysml:Package" xmi:id="77e1c965-12d9-3e6e-879b-fdb7a1ab7ae8" declaredName="Software Design" elementId="77e1c965-12d9-3e6e-879b-fdb7a1ab7ae8">
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="9811d643-4b61-37cf-83ac-d66fe1e22a63" elementId="9811d643-4b61-37cf-83ac-d66fe1e22a63">
+            <ownedRelatedElement xsi:type="sysml:ItemDefinition" xmi:id="bce42f1e-5bbe-3495-a279-d2c14222f68b" declaredName="MessageSchema" elementId="bce42f1e-5bbe-3495-a279-d2c14222f68b"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="43803f46-2a25-3cff-ab64-23304835a5f5" elementId="43803f46-2a25-3cff-ab64-23304835a5f5">
+            <ownedRelatedElement xsi:type="sysml:ItemDefinition" xmi:id="47b1660b-17ee-348c-adec-902a2e72eb37" declaredName="DataSchema" elementId="47b1660b-17ee-348c-adec-902a2e72eb37"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="4e20e659-6a7a-3185-9a99-437b4d2fa4be" elementId="4e20e659-6a7a-3185-9a99-437b4d2fa4be">
+        <ownedRelatedElement xsi:type="sysml:Dependency" xmi:id="67f467e3-cab1-32e7-9d30-25a983c2c110" elementId="67f467e3-cab1-32e7-9d30-25a983c2c110" client="ffb3e116-2640-3f80-89f5-73d1c1ea1a6d" supplier="77e1c965-12d9-3e6e-879b-fdb7a1ab7ae8"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="fac3034f-b28f-33b4-b63d-f31c10c21a8a" elementId="fac3034f-b28f-33b4-b63d-f31c10c21a8a">
+        <ownedRelatedElement xsi:type="sysml:Dependency" xmi:id="5e21f63a-4e97-379f-a0ec-63f995c79a38" declaredName="Schemata" elementId="5e21f63a-4e97-379f-a0ec-63f995c79a38" client="b4ed5643-1d9b-3d56-84cd-14f102a3b78f" supplier="bce42f1e-5bbe-3495-a279-d2c14222f68b 47b1660b-17ee-348c-adec-902a2e72eb37"/>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

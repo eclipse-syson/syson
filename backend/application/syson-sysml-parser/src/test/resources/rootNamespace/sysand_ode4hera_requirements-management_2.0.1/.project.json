@@ -1,0 +1,32 @@
+{
+  "name": "Requirements Management",
+  "publisher": "ode4hera",
+  "description": "The library provides concepts supporting requirements management, in particular a set of attributes to be modeled according to the INCOSE Needs & Requirements Manual.",
+  "version": "2.0.1",
+  "license": "MIT",
+  "maintainer": [
+    "German Aerospace Center (DLR) <digital.engineering@dlr.de>"
+  ],
+  "website": "https://www.ode4hera.eu/",
+  "topic": [
+    "MBSE",
+    "Requirements"
+  ],
+  "usage": [
+    {
+      "resource": "https://www.omg.org/spec/KerML/20250201/Semantic-Library.kpar"
+    },
+    {
+      "resource": "https://www.omg.org/spec/KerML/20250201/Data-Type-Library.kpar"
+    },
+    {
+      "resource": "https://www.omg.org/spec/KerML/20250201/Function-Library.kpar"
+    },
+    {
+      "resource": "https://www.omg.org/spec/SysML/20250201/Systems-Library.kpar"
+    },
+    {
+      "resource": "pkg:sysand/mbse4u/sysmod"
+    }
+  ]
+}

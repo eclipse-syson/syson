@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="214a426c-6118-3291-8917-6b96b2b688a2" elementId="214a426c-6118-3291-8917-6b96b2b688a2">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="6ea8075c-5a50-383d-b226-97bf0ad0c502" elementId="6ea8075c-5a50-383d-b226-97bf0ad0c502">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="41f9262e-7830-309e-a85d-dc606849707b" declaredName="Items Example" elementId="41f9262e-7830-309e-a85d-dc606849707b">
+      <ownedRelationship xsi:type="sysml:NamespaceImport" xmi:id="8a518292-c96c-356f-b6cf-36655afc2ccd" elementId="8a518292-c96c-356f-b6cf-36655afc2ccd">
+        <importedNamespace href="../../../../../../../../sysml.library.xmi.implied/Kernel%20Libraries/Kernel%20Data%20Type%20Library/ScalarValues.kermlx#40bb440c-5036-58e1-8675-5afccb8b8f1d"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="1b7867e4-61fe-3073-85fb-18d38692ed60" elementId="1b7867e4-61fe-3073-85fb-18d38692ed60">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" xmi:id="86e18728-1fa2-3c0a-b993-532c91d0be91" declaredName="Fuel" elementId="86e18728-1fa2-3c0a-b993-532c91d0be91"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="56f01f33-c20f-3f40-8154-6837d889548e" elementId="56f01f33-c20f-3f40-8154-6837d889548e">
+        <ownedRelatedElement xsi:type="sysml:ItemDefinition" xmi:id="82e0ec14-f504-3cbe-b520-8b677b1e887f" declaredName="Person" elementId="82e0ec14-f504-3cbe-b520-8b677b1e887f"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="5f0bb867-83d1-3169-b139-f7de113a0420" elementId="5f0bb867-83d1-3169-b139-f7de113a0420">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="424b2e08-c681-3d6d-9e4f-d15400a287f0" declaredName="Vehicle" elementId="424b2e08-c681-3d6d-9e4f-d15400a287f0">
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="d6d983d0-55e1-39c4-a51c-efbb3d3f385f" elementId="d6d983d0-55e1-39c4-a51c-efbb3d3f385f">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="40fd9894-5fb5-329f-a168-956609518955" declaredName="mass" elementId="40fd9894-5fb5-329f-a168-956609518955">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="1e47fedb-f193-3973-8b50-20e90a16437f" elementId="1e47fedb-f193-3973-8b50-20e90a16437f" typedFeature="40fd9894-5fb5-329f-a168-956609518955">
+                <type href="../../../../../../../../sysml.library.xmi.implied/Kernel%20Libraries/Kernel%20Data%20Type%20Library/ScalarValues.kermlx#14c0aa22-5489-59b5-b438-ded26e83ba31"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="73880c31-8dd7-3b40-a3ed-1d0e45191f97" elementId="73880c31-8dd7-3b40-a3ed-1d0e45191f97">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="239826b0-338a-35cb-8838-cdc6819c4f14" elementId="239826b0-338a-35cb-8838-cdc6819c4f14"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="29d55b31-859a-399b-b19a-8226b15db763" elementId="29d55b31-859a-399b-b19a-8226b15db763">
+            <ownedRelatedElement xsi:type="sysml:ItemUsage" xmi:id="4b3933b0-34cc-3246-8f6a-f9676d1fac23" declaredName="driver" elementId="4b3933b0-34cc-3246-8f6a-f9676d1fac23">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="c791e9d3-56d7-3008-9bd7-c4f686b559ae" elementId="c791e9d3-56d7-3008-9bd7-c4f686b559ae" type="82e0ec14-f504-3cbe-b520-8b677b1e887f" typedFeature="4b3933b0-34cc-3246-8f6a-f9676d1fac23"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="791ef704-96b7-3f4b-a948-db7001fd9f52" elementId="791ef704-96b7-3f4b-a948-db7001fd9f52">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="93f20223-8342-3729-9423-84e160da99b6" elementId="93f20223-8342-3729-9423-84e160da99b6"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="a20b004b-1169-3a25-8b45-6c0038c5a885" elementId="a20b004b-1169-3a25-8b45-6c0038c5a885">
+            <ownedRelatedElement xsi:type="sysml:PartUsage" xmi:id="c9fef56b-fb8b-38f4-83c6-924de8f4ef2f" declaredName="fuelTank" elementId="c9fef56b-fb8b-38f4-83c6-924de8f4ef2f" isComposite="true">
+              <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="8d91faf2-f0b8-33b2-a399-d98f1bfd60dc" elementId="8d91faf2-f0b8-33b2-a399-d98f1bfd60dc">
+                <ownedRelatedElement xsi:type="sysml:ItemUsage" xmi:id="1df36690-2ef9-3a3f-b5db-6ef248a75de3" declaredName="fuel" elementId="1df36690-2ef9-3a3f-b5db-6ef248a75de3" isComposite="true">
+                  <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="f208a205-2e39-307a-8409-f5e29f9de8ce" elementId="f208a205-2e39-307a-8409-f5e29f9de8ce" type="86e18728-1fa2-3c0a-b993-532c91d0be91" typedFeature="1df36690-2ef9-3a3f-b5db-6ef248a75de3"/>
+                  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="4d5a4dc6-6251-3907-9e67-1cd4272ebdc5" elementId="4d5a4dc6-6251-3907-9e67-1cd4272ebdc5">
+                    <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="14d9c667-f078-3251-87f3-1700d64310ff" elementId="14d9c667-f078-3251-87f3-1700d64310ff"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="fbacd5ad-97bc-3ded-a9bd-958bdb771361" elementId="fbacd5ad-97bc-3ded-a9bd-958bdb771361">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="4f619826-584b-3843-9fad-7c7dea7a2e61" elementId="4f619826-584b-3843-9fad-7c7dea7a2e61"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

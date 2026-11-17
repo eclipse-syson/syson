@@ -1,0 +1,3 @@
+ERROR - null
+  ERROR - The start context to resolve $::Test::value's reference redefinedFeature while resolving missing can't be found.
+  ERROR - Can't resolve $::Test::value's reference redefinedFeature to missing via feature not in containing type.

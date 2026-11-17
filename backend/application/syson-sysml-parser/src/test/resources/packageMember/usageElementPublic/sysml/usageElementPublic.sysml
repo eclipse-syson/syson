@@ -1,0 +1,1 @@
+public #meta1 ::> elements : TranslationOrRotation[1..*] ordered nonunique;

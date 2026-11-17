@@ -1,0 +1,1 @@
+individual viewpoint def a;

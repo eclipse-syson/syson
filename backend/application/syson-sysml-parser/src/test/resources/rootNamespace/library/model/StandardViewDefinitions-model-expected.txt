@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:LibraryPackage" declaredName="StandardViewDefinitions" isStandard="true">
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Documentation" body="This package defines the standard view definitions for the SysML language.&#xA;"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:NamespaceImport" visibility="public"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ViewDefinition" declaredName="GeneralView" declaredShortName="gv">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="View definition to present any members of exposed model element(s).&#xA;This is the most general view, enabling presentation of any model element.&#xA;The typical rendering in graphical notation is as a graph of nodes and edges.&#xA;Specializations of GeneralView can be specified through appropriate selection of filters, e.g.:&#xA;- package view, filtering on Package, Package containment, package Import&#xA;- definition and usage view, filtering on Definition, Usage, Specialization, FeatureTyping (covering defined by)&#xA;- requirement view, filtering on RequirementDefinition, RequirementUsage, Specialization, FeatureTyping, &#xA;  SatisfyRequirementUsage, AllocationDefinition, AllocationUsage,&#xA;- view and viewpoint view, filtering on ViewDefinition, ViewUsage, ViewpointDefinition, ViewpointUsage, &#xA;  RenderingDefinition, RenderingUsage, ConcernDefinition, ConcernUsage, StakeholderMembership, ...&#xA;- language extension view, filtering on Metaclass, MetadataFeature, MetadataAccessExpression, ...&#xA;Note: filters are specified by referencing concepts from the KerML.kerml and SysML.sysml standard library packages.&#xA;"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ViewDefinition" declaredName="InterconnectionView" declaredShortName="iv">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="View definition to present exposed features as nodes, nested features as&#xA;nested nodes, and connections between features&#xA;as edges between (nested) nodes. Nested nodes may present boundary features&#xA;(e.g., ports, parameters).&#xA;"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ViewDefinition" declaredName="ActionFlowView" declaredShortName="afv">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="View definition to present connections between actions.&#xA;Valid nodes and edges in an ActionFlowView are:&#xA;- Actions with nested actions&#xA;- Parameters with direction&#xA;- Flow connection usages (e.g., kinds of transfers from output to input)&#xA;- Binding connections between parameters (e.g., delegate a parameter from&#xA;  one level of nesting to another)&#xA;- Proxy connection points&#xA;- Swim lanes&#xA;- Conditional succession&#xA;- Control nodes (fork, join, decision, merge)&#xA;- Control structures, e.g., if-then-else, until-while-loop, for-loop&#xA;- Send and accept actions&#xA;- Change and time triggers&#xA;- Compartments on actions and parameters&#xA;"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ViewDefinition" declaredName="StateTransitionView" declaredShortName="stv">
+          <ownedRelationship xsi:type="sysml:Subclassification"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="View definition to present states and their transitions.&#xA;Valid nodes and edges in a StateTransitionView are:&#xA;- States with nested states&#xA;- Entry, do, and exit actions&#xA;- Transition usages with triggers, guards, and actions&#xA;- Compartments on states&#xA;"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ViewDefinition" declaredName="SequenceView" declaredShortName="sv">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="View definition to present time ordering of event occurrences on lifelines&#xA;of exposed features.&#xA;Valid nodes and edges in a SequenceView are:&#xA;- Features such as parts with their lifelines&#xA;- Event occurrences on the lifelines&#xA;- Messages sent from one part to another with and without a type of flow&#xA;- Succession between event occurrences&#xA;- Nested sequence view (e.g., a reference to a view)&#xA;- Compartments&#xA;The typical rendering in graphical notation depicts the exposed features&#xA;horizontally along the top, with vertical lifelines. The time axis is&#xA;vertical, with time increasing from top to bottom.&#xA;"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ViewDefinition" declaredName="GeometryView" declaredShortName="gev">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="View definition to present a visualization of exposed spatial items in two&#xA;or three dimensions&#xA;Valid nodes and edges in a GeometryView are:&#xA;- Spatial item, including shape&#xA;- Coordinate frame&#xA;- Feature related to spatial item, such as a quantity (e.g. temperature)&#xA;  of which values are to be rendered on a color scale&#xA;The typical rendering in graphical notation would include a number of&#xA;visualization parameters, such as:&#xA;- 2D or 3D view&#xA;- viewing direction&#xA;- zoom level&#xA;- light sources&#xA;- object projection mode, e.g., isometric, perspective, orthographic&#xA;- object rendering mode, e.g., shaded, wireframe, hidden line&#xA;- object pan (placement) and rotate (orientation) settings&#xA;- color maps&#xA;"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ViewDefinition" declaredName="GridView" declaredShortName="grv">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="View definition to present exposed model elements and their relationships,&#xA;arranged in a rectangular grid.&#xA;GridView is the generalization of the following more specialized views:&#xA;- Tabular view&#xA;- Data value tabular view&#xA;- Relationship matrix view, e.g. presenting allocation or dependency relationships&#xA;"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:ViewDefinition" declaredName="BrowserView" declaredShortName="bv">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="View definition to present the hierarchical membership structure of model&#xA;elements starting from one or more exposed root elements.&#xA;The typical rendering in graphical notation is as an indented list of rows,&#xA;consisting of dynamically collapsible-expandable nodes that represent&#xA;branches and leaves of the tree, as in graphical user interface widgets.&#xA;"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

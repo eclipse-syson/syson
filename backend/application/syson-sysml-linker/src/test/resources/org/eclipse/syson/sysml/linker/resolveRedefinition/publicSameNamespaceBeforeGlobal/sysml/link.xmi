@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="812cef06-ce27-35e0-accb-2fe27d9c23b2" elementId="812cef06-ce27-35e0-accb-2fe27d9c23b2">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="5b7cc24e-469f-3452-b4c0-0ca9dfd13856" elementId="5b7cc24e-469f-3452-b4c0-0ca9dfd13856">
+    <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="fe599421-7a11-3a2b-a3f2-2386efb92610" declaredName="a" elementId="fe599421-7a11-3a2b-a3f2-2386efb92610"/>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="3e941b2f-0ecc-346a-b52c-ec208baef398" elementId="3e941b2f-0ecc-346a-b52c-ec208baef398">
+    <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="35727510-80cd-3a31-b8ab-199df90ded03" declaredName="part2" elementId="35727510-80cd-3a31-b8ab-199df90ded03">
+      <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="4a6d56fd-ce2f-3034-b3ad-afc4d0b00fb6" elementId="4a6d56fd-ce2f-3034-b3ad-afc4d0b00fb6">
+        <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="c9e0a7e5-2220-3a43-b1a8-e75232f8aa3c" declaredName="attribute1" elementId="c9e0a7e5-2220-3a43-b1a8-e75232f8aa3c">
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="365729ff-2d4c-3f15-b699-6f84f0eb4435" elementId="365729ff-2d4c-3f15-b699-6f84f0eb4435">
+            <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="67d54334-b428-3d18-bcc8-ddb537a37543" elementId="67d54334-b428-3d18-bcc8-ddb537a37543"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="201e0af4-8da6-31ca-9544-d9a1273562aa" elementId="201e0af4-8da6-31ca-9544-d9a1273562aa">
+        <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="4a4c7d4c-9a6b-346c-954d-0375adf189ec" declaredName="redefinedAttr1" elementId="4a4c7d4c-9a6b-346c-954d-0375adf189ec">
+          <ownedRelationship xsi:type="sysml:Redefinition" xmi:id="380ebe4c-19f0-3067-a240-60025ddc0bb6" elementId="380ebe4c-19f0-3067-a240-60025ddc0bb6" redefiningFeature="4a4c7d4c-9a6b-346c-954d-0375adf189ec"/>
+          <ownedRelationship xsi:type="sysml:Subsetting" xmi:id="c2a17f51-65ef-3ee3-bef3-0abcb98cb18b" elementId="c2a17f51-65ef-3ee3-bef3-0abcb98cb18b" subsettingFeature="4a4c7d4c-9a6b-346c-954d-0375adf189ec"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

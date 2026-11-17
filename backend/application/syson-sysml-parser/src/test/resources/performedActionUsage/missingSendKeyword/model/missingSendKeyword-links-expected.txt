@@ -1,0 +1,1 @@
+/@ownedRelationship.0;referencedFeature;Feature;0;'Start Signal'

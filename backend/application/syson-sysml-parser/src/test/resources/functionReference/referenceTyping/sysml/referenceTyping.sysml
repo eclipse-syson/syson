@@ -1,0 +1,1 @@
+'name space 1'::'name space 2'

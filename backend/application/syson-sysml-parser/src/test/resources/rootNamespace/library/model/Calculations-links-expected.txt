@@ -1,0 +1,15 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1;importedMembership;Membership;0;Performances::Evaluation
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2;importedMembership;Membership;0;Performances::evaluations
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3;importedMembership;Membership;0;Actions::Action
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4;importedMembership;Membership;0;Actions::actions
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Action
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.1;superclassifier;Classifier;0;Evaluation
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0;type;Type;0;Calculation
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1;redefinedFeature;Feature;0;Action::self
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2;redefinedFeature;Feature;0;Evaluation::self
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.0;type;Type;0;Calculation
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1;subsettedFeature;Feature;0;calculations
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.2;subsettedFeature;Feature;0;subactions
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.0;type;Type;0;Calculation
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.2;subsettedFeature;Feature;0;actions
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.3;subsettedFeature;Feature;0;evaluations

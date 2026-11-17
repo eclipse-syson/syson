@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="fd1a1ded-c3b7-32d1-b7bd-922ad61e2734" elementId="fd1a1ded-c3b7-32d1-b7bd-922ad61e2734">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="fa64ce7f-894f-3658-bb83-5d48fb7a52b1" elementId="fa64ce7f-894f-3658-bb83-5d48fb7a52b1">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="1c32e7a5-236e-3a37-a48f-5c423cfd7102" declaredName="other" elementId="1c32e7a5-236e-3a37-a48f-5c423cfd7102">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="756b63a8-eb70-3042-b59f-01e94d132c2d" elementId="756b63a8-eb70-3042-b59f-01e94d132c2d" visibility="private">
+        <ownedRelatedElement xsi:type="sysml:Package" xmi:id="358c5521-396b-351c-a439-f0d4bcd658ad" declaredName="nested" elementId="358c5521-396b-351c-a439-f0d4bcd658ad">
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="03205aac-1d31-3538-8cf2-9e75db665558" elementId="03205aac-1d31-3538-8cf2-9e75db665558" visibility="private">
+            <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="a48eba77-b357-33a5-a90c-81819f3c63d0" declaredName="part1" elementId="a48eba77-b357-33a5-a90c-81819f3c63d0"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="afe9b9ac-1c77-3566-bf1d-7fe8e733988a" elementId="afe9b9ac-1c77-3566-bf1d-7fe8e733988a">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="422e7d7f-e7b9-373a-9dba-5769e2c2bee1" declaredName="current" elementId="422e7d7f-e7b9-373a-9dba-5769e2c2bee1">
+      <ownedRelationship xsi:type="sysml:NamespaceImport" xmi:id="48ace364-65fd-3bf3-9cbe-fec9986d37a8" elementId="48ace364-65fd-3bf3-9cbe-fec9986d37a8" isImportAll="true" isRecursive="true"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="ae581f90-868f-3956-84c8-20549432e1a3" elementId="ae581f90-868f-3956-84c8-20549432e1a3">
+        <ownedRelatedElement xsi:type="sysml:PartUsage" xmi:id="ed0600c2-acb3-3fb8-b0e1-ab926760423d" declaredName="part2" elementId="ed0600c2-acb3-3fb8-b0e1-ab926760423d">
+          <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="a4f5e266-cb91-397f-a338-3b1f7493b99c" elementId="a4f5e266-cb91-397f-a338-3b1f7493b99c" typedFeature="ed0600c2-acb3-3fb8-b0e1-ab926760423d"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

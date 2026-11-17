@@ -1,0 +1,4 @@
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0;importedNamespace;Namespace;0;P1
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0;type;Type;0;A
+/@ownedRelationship.2;importedNamespace;Namespace;0;P2
+/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0;subsettedFeature;Feature;0;a

@@ -1,0 +1,2 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0;memberElement;Element;0;causations
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0;type;Type;0;SysML::Usage

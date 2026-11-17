@@ -1,0 +1,2 @@
+/:
+comment body /*\n * My comment.\n */

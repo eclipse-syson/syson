@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="4cb1fc3e-e318-3759-95a8-930418979146" elementId="4cb1fc3e-e318-3759-95a8-930418979146">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="d5c6e584-2144-3aea-b757-181c3e0f00e5" elementId="d5c6e584-2144-3aea-b757-181c3e0f00e5">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="4eeb3060-cbad-32ec-a96f-abf6e3201bcf" declaredName="other" elementId="4eeb3060-cbad-32ec-a96f-abf6e3201bcf">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="6955f653-0705-3fb1-8177-ad833912405f" elementId="6955f653-0705-3fb1-8177-ad833912405f" visibility="private">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="b9e65e85-328a-3e98-b406-2f8cd7ed6af3" declaredName="part1" elementId="b9e65e85-328a-3e98-b406-2f8cd7ed6af3"/>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="2cb05751-86c7-3074-b9b4-cce6375413d6" elementId="2cb05751-86c7-3074-b9b4-cce6375413d6">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="c8f325ce-23a8-3692-84f8-dbf1ce27375f" declaredName="current" elementId="c8f325ce-23a8-3692-84f8-dbf1ce27375f">
+      <ownedRelationship xsi:type="sysml:MembershipImport" xmi:id="e8cd29e4-af6b-3ac9-8c7f-9b57d74c4f44" elementId="e8cd29e4-af6b-3ac9-8c7f-9b57d74c4f44"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="a0238e56-5687-320c-9842-a1b6e64e520f" elementId="a0238e56-5687-320c-9842-a1b6e64e520f">
+        <ownedRelatedElement xsi:type="sysml:PartUsage" xmi:id="848b86c3-796a-3efc-b93c-8cda41b6cee2" declaredName="part2" elementId="848b86c3-796a-3efc-b93c-8cda41b6cee2">
+          <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="f127b303-09ba-3241-9ae7-dd8bac9ff5f8" elementId="f127b303-09ba-3241-9ae7-dd8bac9ff5f8" typedFeature="848b86c3-796a-3efc-b93c-8cda41b6cee2"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

@@ -1,0 +1,1 @@
+abstract #c allocation def :> namespace1::namespace2;

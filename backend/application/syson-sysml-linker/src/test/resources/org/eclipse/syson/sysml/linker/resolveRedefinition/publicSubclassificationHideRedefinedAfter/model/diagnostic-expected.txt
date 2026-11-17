@@ -1,0 +1,16 @@
+ERROR - null
+  ERROR - Can't resolve $::part2::attribute2's reference subsettedFeature to attribute1.
+    INFO - Namespace $::part2 can't resolve attribute1 locally.
+    WARNING - The membership $::part1::attribute1 in namespace $::part1 has been redefined (resolving attribute1).
+    INFO - Namespace $::part1 can't resolve attribute1 locally.
+    INFO - Namespace $::part1 can't resolved attribute1 via specializations.
+    INFO - Namespace $::part1 can't resolved attribute1 via imports.
+    INFO - Namespace $::part2 can't resolved attribute1 via specializations.
+    INFO - Namespace $::part2 can't resolved attribute1 via imports.
+    INFO - Namespace $ can't resolve attribute1 locally.
+    INFO - Namespace $ can't resolved attribute1 via specializations.
+    INFO - Namespace $ can't resolved attribute1 via imports.
+    INFO - Namespace $ can't resolve attribute1 locally.
+    INFO - Namespace $ can't resolved attribute1 via specializations.
+    INFO - Namespace $ can't resolved attribute1 via imports.
+    ERROR - Can't resolve $::part2::attribute2's reference subsettedFeature to attribute1.

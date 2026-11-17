@@ -1,0 +1,2 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0;memberElement;Feature;0;that
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0;type;Type;0;Item

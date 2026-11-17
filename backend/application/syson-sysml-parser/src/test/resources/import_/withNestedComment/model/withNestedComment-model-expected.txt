@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:MembershipImport xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" visibility="public">
+  <ownedRelationship xsi:type="sysml:Annotation">
+    <ownedRelatedElement xsi:type="sysml:Comment" body="My comment.&#xA;"/>
+  </ownedRelationship>
+</sysml:MembershipImport>
