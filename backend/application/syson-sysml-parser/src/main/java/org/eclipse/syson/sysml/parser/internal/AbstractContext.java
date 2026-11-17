@@ -25,6 +25,7 @@ import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClass;
@@ -78,14 +79,17 @@ public abstract class AbstractContext implements IEObjectContext {
     private final Deque<Operator> operatorStack = new ArrayDeque<>();
 
     /**
+     * The {@link ParserRuleContext} that initiated this context.
+     */
+    private final ParserRuleContext ruleContext;
+
+    /**
      * The operand stack.
-     *
      */
     private final Deque<Object> operandStack;
 
     /**
      * The {@link List} of {@link DanglingLink}.
-     *
      */
     private final List<DanglingLink> danglingLinks;
 
@@ -102,6 +106,8 @@ public abstract class AbstractContext implements IEObjectContext {
     /**
      * Constructor.
      *
+     * @param ruleContext
+     *            the current {@link ParserRuleContext}.
      * @param operandStack
      *            the operand stack
      * @param danglingLinks
@@ -111,11 +117,21 @@ public abstract class AbstractContext implements IEObjectContext {
      * @param internalDiagnostics
      *            the internal {@link Diagnostic} {@link List}
      */
-    public AbstractContext(Deque<Object> operandStack, List<DanglingLink> danglingLinks, Set<EObject> textAdapted, List<Diagnostic> internalDiagnostics) {
+    public AbstractContext(ParserRuleContext ruleContext, Deque<Object> operandStack, List<DanglingLink> danglingLinks, Set<EObject> textAdapted, List<Diagnostic> internalDiagnostics) {
+        this.ruleContext = ruleContext;
         this.operandStack = operandStack;
         this.danglingLinks = danglingLinks;
         this.textAdapted = textAdapted;
         this.internalDiagnostics = internalDiagnostics;
+    }
+
+    /**
+     * Gets the {@link ParserRuleContext} that initiated this context.
+     *
+     * @return the {@link ParserRuleContext} that initiated this context
+     */
+    public ParserRuleContext getRuleContext() {
+        return this.ruleContext;
     }
 
     /**

@@ -951,20 +951,24 @@ public abstract class AbstractSysMLEMFParser extends Parser {
     /**
      * Starts an {@link IEObjectContext} for the given {@link EClass}.
      *
+     * @param ruleContext
+     *            the current {@link ParserRuleContext}.
      * @param eCls
      *            the {@link EClass}
      */
-    protected void start(EClass eCls) {
-        this.contextStack.addLast(new StartContext(eCls, this.operandStack, this.danglingLinks, this.textAdapted, this.getInternalDiagnostics(), this.sysMLFactory));
+    protected void start(ParserRuleContext ruleContext, EClass eCls) {
+        this.contextStack.addLast(new StartContext(ruleContext, eCls, this.operandStack, this.danglingLinks, this.textAdapted, this.getInternalDiagnostics(), this.sysMLFactory));
     }
 
     /**
      * Restarts an {@link IEObjectContext} for the current {@link EObject} operand.
      *
+     * @param ruleContext
+     *            the current {@link ParserRuleContext}.
      */
-    protected void restart() {
+    protected void restart(ParserRuleContext ruleContext) {
         try {
-            this.contextStack.addLast(new RestartContext(this.operandStack, this.danglingLinks, this.textAdapted, this.getInternalDiagnostics()));
+            this.contextStack.addLast(new RestartContext(ruleContext, this.operandStack, this.danglingLinks, this.textAdapted, this.getInternalDiagnostics()));
         } catch (Exception e) {
             BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, null, 0, e.getMessage(), new Object[] { e });
             this.getInternalDiagnostics().add(diagnostic);
@@ -976,7 +980,7 @@ public abstract class AbstractSysMLEMFParser extends Parser {
      */
     protected void startOperatorExpression() {
         try {
-            this.start(this.operatorExpression__());
+            this.start(this.getContext(), this.operatorExpression__());
 
             Expression operande = (Expression) this.operandStack.removeLast();
 
@@ -1002,7 +1006,7 @@ public abstract class AbstractSysMLEMFParser extends Parser {
      */
     protected void startFeatureChainExpression() {
         try {
-            this.start(this.featureChainExpression__());
+            this.start(this.getContext(), this.featureChainExpression__());
 
             Expression operande = (Expression) this.operandStack.removeLast();
 
@@ -1028,7 +1032,7 @@ public abstract class AbstractSysMLEMFParser extends Parser {
      */
     protected void startIndexExpression() {
         try {
-            this.start(this.indexExpression__());
+            this.start(this.getContext(), this.indexExpression__());
 
             Expression operande = (Expression) this.operandStack.removeLast();
 
@@ -1054,7 +1058,7 @@ public abstract class AbstractSysMLEMFParser extends Parser {
      */
     protected void startInvocationExpression() {
         try {
-            this.start(this.invocationExpression__());
+            this.start(this.getContext(), this.invocationExpression__());
 
             Expression operande = (Expression) this.operandStack.removeLast();
 
@@ -1080,7 +1084,7 @@ public abstract class AbstractSysMLEMFParser extends Parser {
      */
     protected void startCollectExpression() {
         try {
-            this.start(this.collectExpression__());
+            this.start(this.getContext(), this.collectExpression__());
 
             Expression operande = (Expression) this.operandStack.removeLast();
 
@@ -1106,7 +1110,7 @@ public abstract class AbstractSysMLEMFParser extends Parser {
      */
     protected void startSelectExpression() {
         try {
-            this.start(this.selectExpression__());
+            this.start(this.getContext(), this.selectExpression__());
 
             Expression operande = (Expression) this.operandStack.removeLast();
 

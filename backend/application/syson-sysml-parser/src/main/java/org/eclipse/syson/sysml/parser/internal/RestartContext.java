@@ -16,6 +16,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Set;
 
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.parser.DanglingLink;
@@ -37,6 +38,8 @@ public class RestartContext extends AbstractContext {
     /**
      * Constructor.
      *
+     * @param ruleContext
+     *            the current {@link ParserRuleContext}.
      * @param operandStack
      *            the operand stack
      * @param danglingLinks
@@ -46,8 +49,8 @@ public class RestartContext extends AbstractContext {
      * @param internalDiagnostics
      *            the internal {@link Diagnostic} {@link List}
      */
-    public RestartContext(Deque<Object> operandStack, List<DanglingLink> danglingLinks, Set<EObject> textAdapted, List<Diagnostic> internalDiagnostics) {
-        super(operandStack, danglingLinks, textAdapted, internalDiagnostics);
+    public RestartContext(ParserRuleContext ruleContext, Deque<Object> operandStack, List<DanglingLink> danglingLinks, Set<EObject> textAdapted, List<Diagnostic> internalDiagnostics) {
+        super(ruleContext, operandStack, danglingLinks, textAdapted, internalDiagnostics);
         this.eObject = (EObject) operandStack.removeLast();
     }
 

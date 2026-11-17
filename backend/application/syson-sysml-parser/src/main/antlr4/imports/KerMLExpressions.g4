@@ -13,7 +13,7 @@
 grammar KerMLExpressions;
 
 ownedExpressionMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	(ownedExpression {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -23,14 +23,14 @@ ownedExpression:
 ;
 
 ownedExpressionReference:
-	{start(featureReferenceExpression__());} (
+	{start(_localctx, featureReferenceExpression__());} (
 	(ownedExpressionMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 conditionalExpression:
 	nullCoalescingExpression
-	| {start(operatorExpression__());} (conditionalOperator {set(operatorExpression_Operator());}) (nullCoalescingExpression {addOperand();}) '?' (ownedExpressionReference {addOperand();}) 'else' (ownedExpressionReference {addOperand();}) {end(_localctx);}
+	| {start(_localctx, operatorExpression__());} (conditionalOperator {set(operatorExpression_Operator());}) (nullCoalescingExpression {addOperand();}) '?' (ownedExpressionReference {addOperand();}) 'else' (ownedExpressionReference {addOperand();}) {end(_localctx);}
 ;
 
 conditionalOperator:
@@ -48,13 +48,13 @@ nullCoalescingOperator:
 ;
 
 impliesExpressionReference:
-	{start(featureReferenceExpression__());} (
+	{start(_localctx, featureReferenceExpression__());} (
 	(impliesExpressionMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 impliesExpressionMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	(impliesExpression {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -70,13 +70,13 @@ impliesOperator:
 ;
 
 orExpressionReference:
-	{start(featureReferenceExpression__());} (
+	{start(_localctx, featureReferenceExpression__());} (
 	(orExpressionMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 orExpressionMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	(orExpression {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -98,13 +98,13 @@ conditionalOrOperator:
 ;
 
 xorExpressionReference:
-	{start(featureReferenceExpression__());} (
+	{start(_localctx, featureReferenceExpression__());} (
 	(xorExpressionMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 xorExpressionMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	(xorExpression {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -137,13 +137,13 @@ conditionalAndOperator:
 ;
 
 equalityExpressionReference:
-	{start(featureReferenceExpression__());} (
+	{start(_localctx, featureReferenceExpression__());} (
 	(equalityExpressionMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 equalityExpressionMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	(equalityExpression {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -166,12 +166,12 @@ classificationExpression:
 		{startOperatorExpression();} (classificationTestOperator {set(operatorExpression_Operator());}) (typeReferenceMember {add(element_OwnedRelationship());}) {end(_localctx);}
 		| {startOperatorExpression();} (castOperator {set(operatorExpression_Operator());}) (typeResultMember {add(element_OwnedRelationship());}) {end(_localctx);}
 	)?
-	| {start(operatorExpression__());} (selfReferenceExpression {addOperand();}) (classificationTestOperator {set(operatorExpression_Operator());}) (typeReferenceMember {add(element_OwnedRelationship());}) {end(_localctx);}
-	| {start(operatorExpression__());} (metadataReference {addOperand();}) (metaClassificationTestOperator {set(operatorExpression_Operator());}) (typeReferenceMember {add(element_OwnedRelationship());}) {end(_localctx);}
-	| {start(operatorExpression__());} (selfReferenceExpression {addOperand();}) (castOperator {set(operatorExpression_Operator());}) (typeResultMember {add(element_OwnedRelationship());}) {end(_localctx);} (
+	| {start(_localctx, operatorExpression__());} (selfReferenceExpression {addOperand();}) (classificationTestOperator {set(operatorExpression_Operator());}) (typeReferenceMember {add(element_OwnedRelationship());}) {end(_localctx);}
+	| {start(_localctx, operatorExpression__());} (metadataReference {addOperand();}) (metaClassificationTestOperator {set(operatorExpression_Operator());}) (typeReferenceMember {add(element_OwnedRelationship());}) {end(_localctx);}
+	| {start(_localctx, operatorExpression__());} (selfReferenceExpression {addOperand();}) (castOperator {set(operatorExpression_Operator());}) (typeResultMember {add(element_OwnedRelationship());}) {end(_localctx);} (
 		{startOperatorExpression();} (classificationTestOperator {set(operatorExpression_Operator());}) (typeReferenceMember {add(element_OwnedRelationship());}) {end(_localctx);}
 	)*
-	| {start(operatorExpression__());} (metadataReference {addOperand();}) (metaCastOperator {set(operatorExpression_Operator());}) (typeResultMember {add(element_OwnedRelationship());}) {end(_localctx);}
+	| {start(_localctx, operatorExpression__());} (metadataReference {addOperand();}) (metaCastOperator {set(operatorExpression_Operator());}) (typeResultMember {add(element_OwnedRelationship());}) {end(_localctx);}
 ;
 
 classificationTestOperator:
@@ -193,49 +193,49 @@ metaCastOperator:
 ;
 
 metadataReference:
-	{start(metadataAccessExpression__());} (
+	{start(_localctx, metadataAccessExpression__());} (
 	(elementReferenceMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 typeReferenceMember:
-	{start(parameterMembership__());} (
+	{start(_localctx, parameterMembership__());} (
 	(typeReference {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 typeResultMember:
-	{start(returnParameterMembership__());} (
+	{start(_localctx, returnParameterMembership__());} (
 	(typeReference {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 typeReference:
-	{start(feature__());} (
+	{start(_localctx, feature__());} (
 	(referenceTyping {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 referenceTyping:
-	{start(featureTyping__());} (
+	{start(_localctx, featureTyping__());} (
 	(qualifiedName {setLink(featureTyping_Type(), type__());})
 	) {end(_localctx);}
 ;
 
 selfReferenceExpression:
-	{start(featureReferenceExpression__());} (
+	{start(_localctx, featureReferenceExpression__());} (
 	(selfReferenceMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 selfReferenceMember:
-	{start(returnParameterMembership__());} (
+	{start(_localctx, returnParameterMembership__());} (
 	(emptyFeature {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 emptyFeature:
-	{start(feature__());} (
+	{start(_localctx, feature__());} (
 	
 	) {end(_localctx);}
 ;
@@ -294,7 +294,7 @@ exponentiationOperator:
 ;
 
 unaryExpression:
-	({start(operatorExpression__());} unaryOperator {set(operatorExpression_Operator());}) (extentExpression {addOperand();} {end(_localctx);})
+	({start(_localctx, operatorExpression__());} unaryOperator {set(operatorExpression_Operator());}) (extentExpression {addOperand();} {end(_localctx);})
 	| extentExpression
 ;
 
@@ -306,7 +306,7 @@ unaryOperator:
 ;
 
 extentExpression:
-	({start(operatorExpression__());} 'all' {set(operatorExpression_Operator(), "all");}) (typeResultMember {add(element_OwnedRelationship());} {end(_localctx);})
+	({start(_localctx, operatorExpression__());} 'all' {set(operatorExpression_Operator(), "all");}) (typeResultMember {add(element_OwnedRelationship());} {end(_localctx);})
 	| primaryExpression
 ;
 
@@ -332,30 +332,30 @@ primaryExpression:
 ;
 
 functionReferenceExpression:
-	{start(featureReferenceExpression__());} (
+	{start(_localctx, featureReferenceExpression__());} (
 	(functionReferenceMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 functionReferenceMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	(functionReference {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 functionReference:
-	{start(expression__());} (
+	{start(_localctx, expression__());} (
 	(referenceTyping {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 featureChainMember:
-	({start(membership__());} member=qualifiedName {setLink(membership_MemberElement(), feature__()); if ($member.quoted) attachQuotedName();} {end(_localctx);})
-	| {start(owningMembership__());} (ownedFeatureChain {add(relationship_OwnedRelatedElement());} {end(_localctx);})
+	({start(_localctx, membership__());} member=qualifiedName {setLink(membership_MemberElement(), feature__()); if ($member.quoted) attachQuotedName();} {end(_localctx);})
+	| {start(_localctx, owningMembership__());} (ownedFeatureChain {add(relationship_OwnedRelatedElement());} {end(_localctx);})
 ;
 
 ownedFeatureChain:
-	{start(feature__());} (
+	{start(_localctx, feature__());} (
 	featureChain
 	) {end(_localctx);}
 ;
@@ -373,19 +373,19 @@ baseExpression:
 ;
 
 bodyExpression:
-	{start(featureReferenceExpression__());} (
+	{start(_localctx, featureReferenceExpression__());} (
 	(expressionBodyMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 expressionBodyMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	(expressionBody {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 expressionBody:
-	{start(expression__());} (
+	{start(_localctx, expression__());} (
 	'{' (
 		(bodyParameterMember {add(element_OwnedRelationship());}) ';'
 	)*
@@ -394,19 +394,19 @@ expressionBody:
 ;
 
 resultExpressionMember:
-	{start(resultExpressionMembership__());} (
+	{start(_localctx, resultExpressionMembership__());} (
 	(ownedExpression {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 bodyParameterMember:
-	{start(parameterMembership__());} (
+	{start(_localctx, parameterMembership__());} (
 	'in' (bodyParameter {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 bodyParameter:
-	{start(feature__());} (
+	{start(_localctx, feature__());} (
 	(name {set(element_DeclaredName());})
 	) {end(_localctx);}
 ;
@@ -418,56 +418,56 @@ sequenceExpression:
 ;
 
 featureReferenceExpression:
-	{start(featureReferenceExpression__());} (
+	{start(_localctx, featureReferenceExpression__());} (
 	(featureReferenceMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 featureReferenceMember:
-	{start(membership__());} (
+	{start(_localctx, membership__());} (
 	(member=qualifiedName {setLink(membership_MemberElement(), feature__()); if ($member.quoted) attachQuotedName();})
 	) {end(_localctx);}
 ;
 
 metadataAccessExpression:
-	{start(metadataAccessExpression__());} (
+	{start(_localctx, metadataAccessExpression__());} (
 	(elementReferenceMember {add(element_OwnedRelationship());}) '.' 'metadata'
 	) {end(_localctx);}
 ;
 
 elementReferenceMember:
-	{start(membership__());} (
+	{start(_localctx, membership__());} (
 	(member=qualifiedName {setLink(membership_MemberElement(), element__()); if ($member.quoted) attachQuotedName();})
 	) {end(_localctx);}
 ;
 
 invocationExpression:
-	{start(invocationExpression__());} (
+	{start(_localctx, invocationExpression__());} (
 	(instantiatedTypeMember {add(element_OwnedRelationship());}) argumentList
 	) {end(_localctx);}
 ;
 
 constructorExpression:
-	{start(constructorExpression__());} (
+	{start(_localctx, constructorExpression__());} (
 	'new' (instantiatedTypeMember {add(element_OwnedRelationship());}) (constructorResultMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 constructorResultMember:
-	{start(returnParameterMembership__());} (
+	{start(_localctx, returnParameterMembership__());} (
 	(constructorResult {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 constructorResult:
-	{start(feature__());} (
+	{start(_localctx, feature__());} (
 	argumentList
 	) {end(_localctx);}
 ;
 
 instantiatedTypeMember:
-	({start(membership__());} qualifiedName {setLink(membership_MemberElement(), type__());} {end(_localctx);})
-	| ({start(owningMembership__());} ownedFeatureChain {add(relationship_OwnedRelatedElement());} {end(_localctx);})
+	({start(_localctx, membership__());} qualifiedName {setLink(membership_MemberElement(), type__());} {end(_localctx);})
+	| ({start(_localctx, owningMembership__());} ownedFeatureChain {add(relationship_OwnedRelatedElement());} {end(_localctx);})
 ;
 
 featureChain:
@@ -477,7 +477,7 @@ featureChain:
 ;
 
 ownedFeatureChaining:
-	{start(featureChaining__());} (
+	{start(_localctx, featureChaining__());} (
 	(member=qualifiedName {setLink(featureChaining_ChainingFeature(), feature__()); if ($member.quoted) attachQuotedName();})
 	) {end(_localctx);}
 ;
@@ -495,13 +495,13 @@ positionalArgumentList:
 ;
 
 argumentMember:
-	{start(parameterMembership__());} (
+	{start(_localctx, parameterMembership__());} (
 	(argument {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 argument:
-	{start(feature__());} (
+	{start(_localctx, feature__());} (
 	(value=argumentValue {add(element_OwnedRelationship()); attachFollowingComments($value.ctx);})
 	) {end(_localctx);}
 ;
@@ -513,31 +513,31 @@ namedArgumentList:
 ;
 
 namedArgumentMember:
-	{start(parameterMembership__());} (
+	{start(_localctx, parameterMembership__());} (
 	(namedArgument {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 namedArgument:
-	{start(feature__());} (
+	{start(_localctx, feature__());} (
 	(parameterRedefinition {add(element_OwnedRelationship());}) '=' (argumentValue {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 parameterRedefinition:
-	{start(redefinition__());} (
+	{start(_localctx, redefinition__());} (
 	(target=qualifiedName {setLink(redefinition_RedefinedFeature(), feature__()); if ($target.quoted) attachQuotedName();})
 	) {end(_localctx);}
 ;
 
 argumentValue:
-	{start(featureValue__());} (
+	{start(_localctx, featureValue__());} (
 	(ownedExpression {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 nullExpression:
-	{start(nullExpression__());} (
+	{start(_localctx, nullExpression__());} (
 	(
 		'null' | '(' ')' {attachEmptyParenthesizedExpression();}
 	)
@@ -553,7 +553,7 @@ literalExpression:
 ;
 
 literalBoolean:
-	{start(literalBoolean__());} (
+	{start(_localctx, literalBoolean__());} (
 	(booleanValue {set(literalBoolean_Value());})
 	) {end(_localctx);}
 ;
@@ -564,19 +564,19 @@ booleanValue:
 ;
 
 literalString:
-	{start(literalString__());} (
+	{start(_localctx, literalString__());} (
 	(value=STRING_VALUE {setStringValue(literalString_Value(), _localctx.value);})
 	) {end(_localctx);}
 ;
 
 literalInteger:
-	{start(literalInteger__());} (
+	{start(_localctx, literalInteger__());} (
 	(value=DECIMAL_VALUE {set(literalInteger_Value(), _localctx.value);})
 	) {end(_localctx);}
 ;
 
 literalReal:
-	{start(literalRational__());} (
+	{start(_localctx, literalRational__());} (
 	(realValue  {set(literalRational_Value(), fromString(eDouble(), currentContextText(_localctx)));})
 	) {end(_localctx);}
 ;
@@ -589,7 +589,7 @@ realValue:
 ;
 
 literalInfinity:
-	{start(literalInfinity__());} (
+	{start(_localctx, literalInfinity__());} (
 	'*'
 	) {end(_localctx);}
 ;
