@@ -41,7 +41,7 @@ INSERT INTO public.document (id, semantic_data_id, name, content, is_read_only, 
 -- Data for Name: library; Type: TABLE DATA; Schema: public; Owner: dbuser
 --
 
-INSERT INTO public.library (id, namespace, name, version, semantic_data_id, description, created_on, last_modified_on) VALUES ('7da60794-1bfa-471b-b995-beccb44bc7c9', '51acd112-ea7d-40e6-a3e3-cabaef5fc11e', 'Batmobile', '1.0.0', 'cff2328c-1c60-4095-8287-f3603551b23d', '', '2025-04-28 12:29:46.917766+00', '2025-04-28 12:29:46.917766+00');
+INSERT INTO public.library (namespace, name, version, semantic_data_id, description, created_on, last_modified_on) VALUES ('51acd112-ea7d-40e6-a3e3-cabaef5fc11e', 'Batmobile', '1.0.0', 'cff2328c-1c60-4095-8287-f3603551b23d', '', '2025-04-28 12:29:46.917766+00', '2025-04-28 12:29:46.917766+00');
 
 
 --

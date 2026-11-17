@@ -32,6 +32,7 @@ import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapte
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.projects.semanticdata.domain.ProjectSemanticData;
 import org.eclipse.sirius.web.projects.semanticdata.domain.services.api.IProjectSemanticDataSearchService;
@@ -231,10 +232,7 @@ public class SysONLibraryUpdateTests extends AbstractIntegrationTests {
 
     protected Library loadMyLibraryV1() {
         return this.librarySearchService
-                .findByNamespaceAndNameAndVersion(
-                        ProjectWithLibraryDependencyTestProjectData.LIBRARY_PROJECT_ID,
-                        "MyLibrary",
-                        "v1")
+                .findById(new LibraryId(ProjectWithLibraryDependencyTestProjectData.LIBRARY_PROJECT_ID, "MyLibrary", "v1"))
                 .orElseThrow();
     }
 
@@ -244,10 +242,7 @@ public class SysONLibraryUpdateTests extends AbstractIntegrationTests {
 
     protected Library loadMyLibraryV2() {
         return this.librarySearchService
-                .findByNamespaceAndNameAndVersion(
-                        ProjectWithLibraryDependencyTestProjectData.LIBRARY_PROJECT_ID,
-                        "MyLibrary",
-                        "v2")
+                .findById(new LibraryId(ProjectWithLibraryDependencyTestProjectData.LIBRARY_PROJECT_ID, "MyLibrary", "v2"))
                 .orElseThrow();
     }
 

@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.eclipse.sirius.web.library.domain.services.LibrarySearchService;
 import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.syson.services.api.ISysONResourceService;
@@ -114,14 +115,12 @@ public class SysONResourceServiceTests {
             return null;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
-        public boolean existsByNamespaceAndNameAndVersion(String namespace, String name, String version) {
+        public boolean existsById(LibraryId libraryId) {
             return false;
-        }
-
-        @Override
-        public Optional<Library> findByNamespaceAndNameAndVersion(String namespace, String name, String version) {
-            return Optional.empty();
         }
 
         @Override
@@ -140,13 +139,19 @@ public class SysONResourceServiceTests {
             return null;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
-        public List<Library> findAllById(Iterable<UUID> ids) {
+        public List<Library> findAllById(Iterable<LibraryId> ids) {
             return null;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
-        public Optional<Library> findById(UUID id) {
+        public Optional<Library> findById(LibraryId id) {
             return Optional.empty();
         }
 

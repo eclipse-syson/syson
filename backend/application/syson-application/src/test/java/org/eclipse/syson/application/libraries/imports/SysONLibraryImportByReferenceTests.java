@@ -212,7 +212,7 @@ public class SysONLibraryImportByReferenceTests extends SysONLibraryImportTests 
                     UUID.randomUUID(),
                     this.projectEditingContextId,
                     "import",
-                    List.of(this.loadMyLibraryV1().getId().toString()));
+                    List.of(this.loadMyLibraryV1().getId()));
             this.createEditingContextEventProcessor(projectEditingContext).handle(importLibrariesInput);
         });
     }

@@ -61,7 +61,7 @@ public class SysONLibraryImportByCopyTests extends SysONLibraryImportTests {
                     UUID.randomUUID(),
                     this.projectEditingContextId,
                     "copy",
-                    List.of(this.loadMyLibraryV1().getId().toString()));
+                    List.of(this.loadMyLibraryV1().getId()));
             this.createEditingContextEventProcessor(projectEditingContext).handle(importLibrariesInput);
             this.projectResourceSet = projectEditingContext.getDomain().getResourceSet();
         });

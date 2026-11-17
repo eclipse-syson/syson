@@ -45,6 +45,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataCreationService;
 import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.syson.application.omnibox.api.IPredicateCanEditingContextPublishSysMLProject;
 import org.eclipse.syson.application.publication.api.ISysMLLibraryPublisher;
@@ -108,7 +109,7 @@ public class SysONSysMLLibraryPublisher implements ISysMLLibraryPublisher {
         if (!this.predicateCanEditingContextPublishSysMLProject.test(libraryAuthoringEditingContext.getId())) {
             result = new ErrorPayload(cause.id(),
                     List.of(new Message("Cannot publish SysML library from editing context '%s'.".formatted(libraryAuthoringEditingContext.getId()), MessageLevel.ERROR)));
-        } else if (this.librarySearchService.findByNamespaceAndNameAndVersion(libraryNamespace, libraryName, libraryVersion).isPresent()) {
+        } else if (this.librarySearchService.existsById(new LibraryId(libraryNamespace, libraryName, libraryVersion))) {
             // The Sirius Web lifecycle for published libraries relies on their immutability, so we want to prevent the
             // publication from happening.
             result = new ErrorPayload(cause.id(),
@@ -199,7 +200,7 @@ public class SysONSysMLLibraryPublisher implements ISysMLLibraryPublisher {
 
     /**
      * Provides the dependencies based on the existing actual EMF cross-references from the resources being published to
-     * resources coming from published libraries.
+     * resources coming from published libraries, resolved by their namespace, name and version.
      *
      * @param emfEditingContext
      *            the (non-{@code null}) {@link IEMFEditingContext} that authors the library.
@@ -220,10 +221,7 @@ public class SysONSysMLLibraryPublisher implements ISysMLLibraryPublisher {
                 // Since this implementation publishes all proper Resources of the ResourceSet into a single library, we
                 // only need to look for the Resources which come from the published libraries we have in dependencies.
                 this.getLibraryMetadata(dependencyCandidate).ifPresent(libraryMetadataAdapter -> {
-                    this.librarySearchService.findByNamespaceAndNameAndVersion(
-                            libraryMetadataAdapter.getNamespace(),
-                            libraryMetadataAdapter.getName(),
-                            libraryMetadataAdapter.getVersion())
+                    this.librarySearchService.findById(new LibraryId(libraryMetadataAdapter.getNamespace(), libraryMetadataAdapter.getName(), libraryMetadataAdapter.getVersion()))
                             .map(Library::getSemanticData)
                             .ifPresentOrElse(dependencies::add,
                                     () -> LOGGER.warn("Cannot retrieve contents of library '%s:%s@%s'"

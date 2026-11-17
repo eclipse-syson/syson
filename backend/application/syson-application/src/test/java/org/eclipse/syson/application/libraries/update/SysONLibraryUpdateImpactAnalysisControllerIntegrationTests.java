@@ -26,6 +26,7 @@ import org.assertj.core.api.InstanceOfAssertFactories;
 import org.eclipse.sirius.components.datatree.DataTree;
 import org.eclipse.sirius.components.datatree.DataTreeNode;
 import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.tests.graphql.EditingContextUpdateLibraryImpactAnalysisReportQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -72,10 +73,10 @@ public class SysONLibraryUpdateImpactAnalysisControllerIntegrationTests extends 
     @SysONLibraryImportTestServer
     @Test
     public void givenProjectWithDependenciesWhenImpactAnalysisReportIsRequestedForTheUpdateOfADependencyThenTheReportIsReturned() {
-        Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(ProjectWithLibraryDependencyTestProjectData.LIBRARY_PROJECT_ID, "MyLibrary", "v2");
+        Optional<Library> optionalLibrary = this.librarySearchService.findById(new LibraryId(ProjectWithLibraryDependencyTestProjectData.LIBRARY_PROJECT_ID, "MyLibrary", "v2"));
         assertThat(optionalLibrary).isPresent();
 
-        Map<String, Object> input = Map.of("editingContextId", ProjectWithLibraryDependencyTestProjectData.EDITING_CONTEXT, "libraryId", optionalLibrary.get().getId());
+        Map<String, Object> input = Map.of("editingContextId", ProjectWithLibraryDependencyTestProjectData.EDITING_CONTEXT, "libraryId", optionalLibrary.get().getId().toString());
         var result = this.editingContextUpdateLibraryImpactAnalysisReportQueryRunner.run(input);
         int nbElementDeleted = JsonPath.read(result.data(), "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementDeleted");
         assertThat(nbElementDeleted).isEqualTo(0);
