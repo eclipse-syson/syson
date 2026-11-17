@@ -30,7 +30,7 @@
     "turbo": "2.10.12"
   },
   "allowScripts": {
-    "core-js-pure@3.50.0": true,
+    "core-js-pure@3.51.0": true,
     "esbuild@0.28.2": true,
     "fsevents@2.3.3": true
   }

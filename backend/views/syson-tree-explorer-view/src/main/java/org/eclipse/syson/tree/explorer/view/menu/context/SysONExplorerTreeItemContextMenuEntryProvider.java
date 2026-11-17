@@ -42,6 +42,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.Represen
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Relationship;
@@ -271,7 +272,7 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemP
                 .flatMap(Collection::stream)
                 .map(AggregateReference::getId)
                 .toList();
-        return this.librarySearchService.findByNamespaceAndNameAndVersion(libraryMetadataAdapter.getNamespace(), libraryMetadataAdapter.getName(), libraryMetadataAdapter.getVersion())
+        return this.librarySearchService.findById(new LibraryId(libraryMetadataAdapter.getNamespace(), libraryMetadataAdapter.getName(), libraryMetadataAdapter.getVersion()))
                 .map(Library::getSemanticData)
                 .map(AggregateReference::getId)
                 .map(editingContextDependencies::contains)

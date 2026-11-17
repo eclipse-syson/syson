@@ -42,6 +42,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDependency;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.tests.graphql.PublishLibrariesMutationRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -126,7 +127,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
         TestTransaction.end();
         TestTransaction.start();
 
-        Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(SimpleProjectElementsTestProjectData.PROJECT_ID, SimpleProjectElementsTestProjectData.PROJECT_NAME, LIBRARY_VERSION);
+        Optional<Library> optionalLibrary = this.librarySearchService.findById(new LibraryId(SimpleProjectElementsTestProjectData.PROJECT_ID, SimpleProjectElementsTestProjectData.PROJECT_NAME, LIBRARY_VERSION));
         assertThat(optionalLibrary)
                 .isPresent()
                 .hasValueSatisfying(library -> assertThat(library.getName()).isEqualTo(SimpleProjectElementsTestProjectData.PROJECT_NAME))
@@ -161,8 +162,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
         TestTransaction.end();
         TestTransaction.start();
 
-        Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(SimpleProjectElementsTestProjectData.PROJECT_ID, SimpleProjectElementsTestProjectData.PROJECT_NAME,
-                LIBRARY_VERSION);
+        Optional<Library> optionalLibrary = this.librarySearchService.findById(new LibraryId(SimpleProjectElementsTestProjectData.PROJECT_ID, SimpleProjectElementsTestProjectData.PROJECT_NAME, LIBRARY_VERSION));
         assertThat(optionalLibrary).isPresent();
         Instant initialLastModifiedOn = optionalLibrary.get().getLastModifiedOn();
 
@@ -176,9 +176,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
         TestTransaction.end();
         TestTransaction.start();
 
-        Optional<Library> optionalUpdatedLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(SimpleProjectElementsTestProjectData.PROJECT_ID,
-                SimpleProjectElementsTestProjectData.PROJECT_NAME,
-                LIBRARY_VERSION);
+        Optional<Library> optionalUpdatedLibrary = this.librarySearchService.findById(new LibraryId(SimpleProjectElementsTestProjectData.PROJECT_ID, SimpleProjectElementsTestProjectData.PROJECT_NAME, LIBRARY_VERSION));
         // Check that the published library has not been updated.
         assertThat(optionalUpdatedLibrary)
                 .isPresent()
@@ -200,7 +198,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
         TestTransaction.start();
 
         final Optional<AggregateReference<SemanticData, UUID>> maybeSemanticDataId = this.librarySearchService
-                .findByNamespaceAndNameAndVersion(SimpleProjectElementsTestProjectData.PROJECT_ID, SimpleProjectElementsTestProjectData.PROJECT_NAME, LIBRARY_VERSION)
+                .findById(new LibraryId(SimpleProjectElementsTestProjectData.PROJECT_ID, SimpleProjectElementsTestProjectData.PROJECT_NAME, LIBRARY_VERSION))
                 .map(Library::getSemanticData);
         assertThat(maybeSemanticDataId).isPresent();
 
@@ -272,7 +270,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
         TestTransaction.end();
         TestTransaction.start();
 
-        Optional<SemanticData> semanticData = this.librarySearchService.findByNamespaceAndNameAndVersion(IMPORTED_PROJECT, IMPORTED_PROJECT_NAME, "1.0.0")
+        Optional<SemanticData> semanticData = this.librarySearchService.findById(new LibraryId(IMPORTED_PROJECT, IMPORTED_PROJECT_NAME, "1.0.0"))
                     .map(Library::getSemanticData)
                     .map(AggregateReference::getId)
                     .flatMap(this.semanticDataSearchService::findById);
@@ -303,7 +301,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
         TestTransaction.end();
         TestTransaction.start();
 
-        Optional<SemanticData> projectLibrarySemanticData = this.librarySearchService.findByNamespaceAndNameAndVersion(ProjectWithUsedBatmobileLibraryDependencyTestProjectData.PROJECT_ID, ProjectWithUsedBatmobileLibraryDependencyTestProjectData.PROJECT_NAME, "1.0.0")
+        Optional<SemanticData> projectLibrarySemanticData = this.librarySearchService.findById(new LibraryId(ProjectWithUsedBatmobileLibraryDependencyTestProjectData.PROJECT_ID, ProjectWithUsedBatmobileLibraryDependencyTestProjectData.PROJECT_NAME, "1.0.0"))
                 .map(Library::getSemanticData)
                 .map(AggregateReference::getId)
                 .flatMap(this.semanticDataSearchService::findById);
@@ -345,8 +343,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
         TestTransaction.start();
 
         Optional<SemanticData> projectLibrarySemanticData = this.librarySearchService
-                .findByNamespaceAndNameAndVersion(ProjectWithUnusedBatmobileLibraryDependencyTestProjectData.PROJECT_ID, ProjectWithUnusedBatmobileLibraryDependencyTestProjectData.PROJECT_NAME,
-                        "1.0.0")
+                .findById(new LibraryId(ProjectWithUnusedBatmobileLibraryDependencyTestProjectData.PROJECT_ID, ProjectWithUnusedBatmobileLibraryDependencyTestProjectData.PROJECT_NAME, "1.0.0"))
                 .map(Library::getSemanticData)
                 .map(AggregateReference::getId)
                 .flatMap(this.semanticDataSearchService::findById);

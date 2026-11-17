@@ -15,6 +15,9 @@ Downstream applications importing these classes must update their imports and de
 
 === Dependency update
 
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.11.1].
+- [releng] Remove `@types/react-router-dom` from dependencies
+
 === Bug fixes
 
 - https://github.com/eclipse-syson/syson/issues/2588[#2588] [metamodel] Fix inherited feature memberships to exclude features replaced by local or inherited redefinitions, including renamed and transitive redefinitions and diamond inheritance.
@@ -22,6 +25,8 @@ Downstream applications importing these classes must update their imports and de
 Connector creation preserves unrelated homonyms when materializing inherited feature chains; flow-end redefinitions identify their owning reference as the redefining feature.
 - https://github.com/eclipse-syson/syson/issues/2602[#2602] [metamodel] Fix owned or inherited multiplicity queries through specialization, including transitive redefinitions, diamond inheritance and cycles.
 - https://github.com/eclipse-syson/syson/issues/2614[#2614] [services] Fix studio color palette loading independently of View metamodel initialization order.
+- [cleanup] Remove `SDVConnectorToolEventHandler` and its dedicated tests now that https://github.com/eclipse-sirius/sirius-web/issues/7120[Sirius Web #7120] is fixed in 2026.11.1.
+Connector tools now use the Sirius Web handler to preserve graphical events in _Interconnection View_ diagrams.
 
 === Improvements
 

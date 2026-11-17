@@ -41,7 +41,7 @@ INSERT INTO public.document (id, semantic_data_id, name, content, created_on, la
 -- Data for Name: library; Type: TABLE DATA; Schema: public; Owner: dbuser
 --
 
-INSERT INTO public.library (id, namespace, name, version, semantic_data_id, description, created_on, last_modified_on) VALUES ('25f2429f-1947-48fa-852a-084fbeb77802', 'b3b3ad8e-dae7-468a-955f-e9914491c911', 'LibraryWithOneCommentAndOneLibraryPackage', '1.0.0', '732e2e1a-04b5-4539-a60a-3fee14c033d8', '', '2025-11-26 13:23:11.702431+00', '2025-11-26 13:23:11.702431+00');
+INSERT INTO public.library (namespace, name, version, semantic_data_id, description, created_on, last_modified_on) VALUES ('b3b3ad8e-dae7-468a-955f-e9914491c911', 'LibraryWithOneCommentAndOneLibraryPackage', '1.0.0', '732e2e1a-04b5-4539-a60a-3fee14c033d8', '', '2025-11-26 13:23:11.702431+00', '2025-11-26 13:23:11.702431+00');
 
 
 --

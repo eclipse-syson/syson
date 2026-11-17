@@ -51,8 +51,8 @@ INSERT INTO public.document (id, semantic_data_id, name, content, created_on, la
 -- Data for Name: library; Type: TABLE DATA; Schema: public; Owner: dbuser
 --
 
-INSERT INTO public.library (id, namespace, name, version, semantic_data_id, description, created_on, last_modified_on) VALUES ('e0e21118-dd33-4b7f-8a01-1225b7232a09', 'c493d950-f81a-4e56-a454-f9e5ce1c839f', 'MyLibrary', 'v1', '0e6584c5-3a49-43eb-a30a-8d71beb5ba10', '', '2025-11-28 10:31:19.29459+00', '2025-11-28 10:31:19.29459+00');
-INSERT INTO public.library (id, namespace, name, version, semantic_data_id, description, created_on, last_modified_on) VALUES ('12d5ba07-55c6-4f45-ae65-207824d57ac1', 'c493d950-f81a-4e56-a454-f9e5ce1c839f', 'MyLibrary', 'v2', 'a4aa2de2-cfaa-4d75-9c5d-6fd2b6c7f0fd', 'Deleted LibraryResource1, deleted AttributeDefinition3, renamed and moved AttributeDefinition1, added attribute4', '2025-11-28 10:35:51.930275+00', '2025-11-28 10:35:51.930275+00');
+INSERT INTO public.library (namespace, name, version, semantic_data_id, description, created_on, last_modified_on) VALUES ('c493d950-f81a-4e56-a454-f9e5ce1c839f', 'MyLibrary', 'v1', '0e6584c5-3a49-43eb-a30a-8d71beb5ba10', '', '2025-11-28 10:31:19.29459+00', '2025-11-28 10:31:19.29459+00');
+INSERT INTO public.library (namespace, name, version, semantic_data_id, description, created_on, last_modified_on) VALUES ('c493d950-f81a-4e56-a454-f9e5ce1c839f', 'MyLibrary', 'v2', 'a4aa2de2-cfaa-4d75-9c5d-6fd2b6c7f0fd', 'Deleted LibraryResource1, deleted AttributeDefinition3, renamed and moved AttributeDefinition1, added attribute4', '2025-11-28 10:35:51.930275+00', '2025-11-28 10:35:51.930275+00');
 
 
 --
