@@ -1,0 +1,1 @@
+succession flow of namespace1::namespace2.namespace3::namespace4.namespace5::namespace6[1 .. a::b] from namespace7::namespace8.namespace9 to namespace10::namespace11.namespace12;

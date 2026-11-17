@@ -1,0 +1,1 @@
+assert satisfy requirement viewpointConformance by that;

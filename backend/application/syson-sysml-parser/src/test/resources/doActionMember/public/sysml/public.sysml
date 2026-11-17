@@ -1,0 +1,1 @@
+public do assign index := index + 1;

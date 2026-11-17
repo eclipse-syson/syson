@@ -1,0 +1,5 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /* Policy: L3 analysis cases are intentionally omitted in this reference pattern.\n     * Rationale: leaf-level _bb parts do not expose recursive constituent behavior;\n     * analysis focus remains at _gb. Exception showcase remains at L2 Subsystem2 (_bb)\n     * for controlled, documented use.\n     */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}

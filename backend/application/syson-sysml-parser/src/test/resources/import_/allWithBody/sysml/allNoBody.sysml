@@ -1,0 +1,1 @@
+protected import all namespace; 

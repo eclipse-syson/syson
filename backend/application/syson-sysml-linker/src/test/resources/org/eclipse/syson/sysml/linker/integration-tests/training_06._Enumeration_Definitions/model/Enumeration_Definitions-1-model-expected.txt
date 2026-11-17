@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="4bcf6f01-69ac-3161-94ef-e5a544fe784c" elementId="4bcf6f01-69ac-3161-94ef-e5a544fe784c">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="21370d2f-bf80-306e-a877-bde233f1a9b8" elementId="21370d2f-bf80-306e-a877-bde233f1a9b8">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="4c3f25ad-bbc7-3897-a59c-55c4e3f6d9c8" declaredName="Enumeration Definitions-1" elementId="4c3f25ad-bbc7-3897-a59c-55c4e3f6d9c8">
+      <ownedRelationship xsi:type="sysml:MembershipImport" xmi:id="44de8f9c-59b9-3d61-ae4b-2b0558024ca0" elementId="44de8f9c-59b9-3d61-ae4b-2b0558024ca0">
+        <importedMembership href="../../../../../../../../sysml.library.xmi.implied/Kernel%20Libraries/Kernel%20Data%20Type%20Library/ScalarValues.kermlx#ab72a695-5fe9-58a3-9d48-9e9a8711862d"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="113cf5d9-b13a-3fd7-8c70-4b6a4e57b07e" elementId="113cf5d9-b13a-3fd7-8c70-4b6a4e57b07e">
+        <ownedRelatedElement xsi:type="sysml:EnumerationDefinition" xmi:id="e9bc4eae-0b8c-35e0-b49b-6a3dc7774c6b" declaredName="TrafficLightColor" elementId="e9bc4eae-0b8c-35e0-b49b-6a3dc7774c6b" isAbstract="true">
+          <ownedRelationship xsi:type="sysml:VariantMembership" xmi:id="ab859a28-bafb-3966-8843-f330085495f4" elementId="ab859a28-bafb-3966-8843-f330085495f4">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" xmi:id="e62d4e3e-2e47-3d99-9fc5-b17715d227af" declaredName="green" elementId="e62d4e3e-2e47-3d99-9fc5-b17715d227af"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership" xmi:id="eb83225f-85c3-34be-a96d-924d7e1cd8c6" elementId="eb83225f-85c3-34be-a96d-924d7e1cd8c6">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" xmi:id="455a3d22-a5df-3911-a7fb-ece738c1862c" declaredName="yellow" elementId="455a3d22-a5df-3911-a7fb-ece738c1862c"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:VariantMembership" xmi:id="198a25d0-3c12-36c7-9377-de2889552c20" elementId="198a25d0-3c12-36c7-9377-de2889552c20">
+            <ownedRelatedElement xsi:type="sysml:EnumerationUsage" xmi:id="dd10e823-5b58-32f0-94aa-d17a588df673" declaredName="red" elementId="dd10e823-5b58-32f0-94aa-d17a588df673"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="140a15a4-98f0-349e-9417-2ba0a25bb65b" elementId="140a15a4-98f0-349e-9417-2ba0a25bb65b">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="7b9e0983-52bb-318e-ba8f-efe2d301acd3" declaredName="TrafficLight" elementId="7b9e0983-52bb-318e-ba8f-efe2d301acd3">
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="ed3365c8-d5aa-326e-ad8c-b3577e5015c8" elementId="ed3365c8-d5aa-326e-ad8c-b3577e5015c8">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="f623863e-8f20-34c1-a539-0442eeeaaef0" declaredName="currentColor" elementId="f623863e-8f20-34c1-a539-0442eeeaaef0">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="58b461d7-0b9f-3677-826b-d8458a740500" elementId="58b461d7-0b9f-3677-826b-d8458a740500" type="e9bc4eae-0b8c-35e0-b49b-6a3dc7774c6b" typedFeature="f623863e-8f20-34c1-a539-0442eeeaaef0"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="9b385d4b-3399-3947-8569-f00ed826a135" elementId="9b385d4b-3399-3947-8569-f00ed826a135">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="129c8caa-d7d3-3df4-90c1-48086933be07" elementId="129c8caa-d7d3-3df4-90c1-48086933be07"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="a917e8cb-fa1e-36a1-9bd1-54adc23852f1" elementId="a917e8cb-fa1e-36a1-9bd1-54adc23852f1">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="01a0176a-3542-3061-90bb-a619c10fcbd8" declaredName="TrafficLightGo" elementId="01a0176a-3542-3061-90bb-a619c10fcbd8">
+          <ownedRelationship xsi:type="sysml:Subclassification" xmi:id="21f5260a-0ebf-3d18-a64e-dc4458f6b7f4" elementId="21f5260a-0ebf-3d18-a64e-dc4458f6b7f4" subclassifier="01a0176a-3542-3061-90bb-a619c10fcbd8" superclassifier="7b9e0983-52bb-318e-ba8f-efe2d301acd3"/>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="7d696efc-ef05-3c32-8c1e-8300e09e652c" elementId="7d696efc-ef05-3c32-8c1e-8300e09e652c">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="b2cc7fde-89bf-37de-a1d0-bed2b7615368" elementId="b2cc7fde-89bf-37de-a1d0-bed2b7615368">
+              <ownedRelationship xsi:type="sysml:Redefinition" xmi:id="83708b94-75f8-3ed5-8053-fda7473e948c" elementId="83708b94-75f8-3ed5-8053-fda7473e948c" redefinedFeature="f623863e-8f20-34c1-a539-0442eeeaaef0" redefiningFeature="b2cc7fde-89bf-37de-a1d0-bed2b7615368"/>
+              <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="88489e6f-9b61-368a-a4b4-b001c0504605" elementId="88489e6f-9b61-368a-a4b4-b001c0504605">
+                <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression" xmi:id="46130cde-c2d8-371b-baf2-07f3b676cea4" elementId="46130cde-c2d8-371b-baf2-07f3b676cea4">
+                  <ownedRelationship xsi:type="sysml:Membership" xmi:id="5be4f36b-b005-36dc-aa9a-8425c51c4259" elementId="5be4f36b-b005-36dc-aa9a-8425c51c4259" memberElement="e62d4e3e-2e47-3d99-9fc5-b17715d227af"/>
+                  <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="45a6cd99-2e02-3657-8d5b-78fe2c62075f" elementId="45a6cd99-2e02-3657-8d5b-78fe2c62075f">
+                    <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="bde1cc2a-d4e6-3444-af5b-7415b7616b6c" elementId="bde1cc2a-d4e6-3444-af5b-7415b7616b6c" direction="out"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

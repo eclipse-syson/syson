@@ -1,0 +1,1 @@
+protected import namespace1::namespace2

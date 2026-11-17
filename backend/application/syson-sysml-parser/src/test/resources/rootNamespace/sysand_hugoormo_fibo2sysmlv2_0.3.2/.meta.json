@@ -1,0 +1,833 @@
+{
+  "index": {
+    "Addresses": "FiBO Foundations FND/Places/Addresses.sysml",
+    "Corporate_Bodies": "FiBO Business Entities BE/LegalEntities/CorporateBodies.sysml",
+    "Securities_Listings": "FiBO Securities SEC/Securities/SecuritiesListings.sysml",
+    "Derivatives_Basics": "FIBO Derivatives DER/DerivativesContracts/DerivativesBasics.sysml",
+    "Canadian_Financial_Services_Entities": "FiBO Financial Business and Commerce FBC/FunctionalEntities/CanadianFinancialServicesEntities.sysml",
+    "Construction_Loans": "FiBO Loan LOAN/RealEstateLoans/ConstructionLoans.sysml",
+    "Mortgage_Origination": "FiBO Loan LOAN/RealEstateLoans/MortgageOrigination.sysml",
+    "Relations": "FiBO Foundations FND/Relations/Relations.sysml",
+    "Legal_Persons": "FiBO Business Entities BE/LegalEntities/LegalPersons.sysml",
+    "European_Securities": "FiBO Securities SEC/Securities/EuropeanSecurities.sysml",
+    "Payments_and_Schedules": "FiBO Foundations FND/ProductsAndServices/PaymentsandSchedules.sysml",
+    "Clients_and_Accounts": "FiBO Financial Business and Commerce FBC/ProductsAndServices/ClientsandAccounts.sysml",
+    "Depositary_Receipts": "FiBO Securities SEC/Equities/DepositaryReceipts.sysml",
+    "IssuanceDocuments": "FiBO Business Processes BP/SecuritiesIssuance/IssuanceDocuments.sysml",
+    "US_National_Bank_Institutions": "FiBO Financial Business and Commerce FBC/FunctionalEntities/NorthAmericanEntities/USNationalInformationCenterControlledVocabularies.sysml",
+    "Swaps": "FIBO Derivatives DER/DerivativesContracts/Swaps.sysml",
+    "Mortgage_backed_Securities": "FiBO Securities SEC/Debt/MortgagebackedSecurities.sysml",
+    "Security_Based_Derivatives": "FIBO Derivatives DER/SecurityBasedDerivatives/SecurityBasedDerivatives.sysml",
+    "SecurityTradingStatuses": "FiBO Market Data MD/TemporalCore/SecurityTradingStatuses.sysml",
+    "Loans_Regulatory": "FiBO Loan LOAN/LoansGeneral/LoansRegulatory.sysml",
+    "Reporting": "FiBO Foundations FND/Arrangements/Reporting.sysml",
+    "Virtual_Places": "FiBO Foundations FND/Places/VirtualPlaces.sysml",
+    "Loan_Products": "FiBO Loan LOAN/LoansSpecific/LoanProducts.sysml",
+    "FiBO_ACTUS_Classifiers": "FiBO ACTUS ACTUS/Classifiers/FiBOACTUSClassifiers.sysml",
+    "CashFlows": "FiBO Foundations FND/Accounting/CashFlows.sysml",
+    "Securities_Classification": "FiBO Securities SEC/Securities/SecuritiesClassification.sysml",
+    "International_Registries_and_Authorities": "FiBO Financial Business and Commerce FBC/FunctionalEntities/InternationalRegistriesAndAuthorities.sysml",
+    "Corporate_Control": "FiBO Business Entities BE/OwnershipAndControl/CorporateControl.sysml",
+    "Corporations": "FiBO Business Entities BE/Corporations/Corporations.sysml",
+    "Credit_Events": "FiBO Financial Business and Commerce FBC/DebtAndEquities/CreditEvents.sysml",
+    "US_Securities": "FiBO Securities SEC/Securities/USSecurities.sysml",
+    "Futures_and_Forwards": "FIBO Derivatives DER/DerivativesContracts/FuturesandForwards.sysml",
+    "Traded_Short_Term_Debt": "FiBO Securities SEC/Debt/TradedShortTermDebt.sysml",
+    "Private_Limited_Companies": "FiBO Business Entities BE/PrivateLimitedCompanies/PrivateLimitedCompanies.sysml",
+    "Agents_and_People": "FiBO Foundations FND/AgentsAndPeople/AgentsandPeople.sysml",
+    "Security_related_Corporate_Actions": "FiBO Corporate Action and Events CAE/CorporateEvents/SecurityrelatedCorporateActions.sysml",
+    "Structured_Instruments": "FIBO Derivatives DER/DerivativesContracts/StructuredInstruments.sysml",
+    "Collateralized_Debt_Obligations": "FiBO Securities SEC/Debt/CollateralizedDebtObligations.sysml",
+    "PrivateLabelMBSIssuance": "FiBO Business Processes BP/SecuritiesIssuance/PrivateLabelMBSIssuance.sysml",
+    "Markets": "FiBO Financial Business and Commerce FBC/FunctionalEntities/Markets.sysml",
+    "Rate_Derivatives": "FIBO Derivatives DER/RateDerivatives/RateDerivatives.sysml",
+    "Currency_Amount": "FiBO Foundations FND/Accounting/CurrencyAmount.sysml",
+    "Classification_Schemes": "FiBO Foundations FND/Arrangements/ClassificationSchemes.sysml",
+    "Functional_Entities": "FiBO Business Entities BE/FunctionalEntities/FunctionalEntities.sysml",
+    "Securities_Identification_Individuals": "FiBO Securities SEC/Securities/SecuritiesIdentificationIndividuals.sysml",
+    "Home_Mortgage_Disclosure_Act_HMDA_Covered_Mortgages": "FiBO Loan LOAN/RealEstateLoans/HomeMortgageDisclosureActHMDACoveredMortgages.sysml",
+    "Bonds": "FiBO Securities SEC/Debt/Bonds.sysml",
+    "Lifecycles": "FiBO Foundations FND/Arrangements/Lifecycles.sysml",
+    "Guaranty": "FiBO Financial Business and Commerce FBC/DebtAndEquities/Guaranty.sysml",
+    "Rights_and_Warrants": "FIBO Derivatives DER/DerivativesContracts/RightsandWarrants.sysml",
+    "Financial_Products_and_Services": "FiBO Financial Business and Commerce FBC/ProductsAndServices/FinancialProductsandServices.sysml",
+    "Regulatory_Agencies": "FiBO Financial Business and Commerce FBC/FunctionalEntities/RegulatoryAgencies.sysml",
+    "Formal_Organizations": "FiBO Foundations FND/Organizations/FormalOrganizations.sysml",
+    "US_Economic_Indicators": "FiBO Indices and Indicators IND/EconomicIndicators/USEconomicIndicators.sysml",
+    "Asset_backed_Securities": "FiBO Securities SEC/Debt/AssetbackedSecurities.sysml",
+    "Ownership_Parties": "FiBO Business Entities BE/OwnershipAndControl/OwnershipParties.sysml",
+    "Student_Loans": "FiBO Loan LOAN/LoansSpecific/StudentLoans.sysml",
+    "ETOptionsTemporal": "FiBO Market Data MD/DerivativesTemporal/ETOptionsTemporal.sysml",
+    "Equity_Instruments": "FiBO Securities SEC/Equities/EquityInstruments.sysml",
+    "Legal_Core": "FiBO Foundations FND/Law/LegalCore.sysml",
+    "Issuance_Process": "FiBO Business Processes BP/SecuritiesIssuance/IssuanceProcess.sysml",
+    "Commodities_Contracts": "FIBO Derivatives DER/DerivativesContracts/CommoditiesContracts.sysml",
+    "Publishers": "FiBO Business Entities BE/FunctionalEntities/Publishers.sysml",
+    "Indicators": "FiBO Indices and Indicators IND/Indicators/Indicators.sysml",
+    "Loan_Events": "FiBO Loan LOAN/LoansGeneral/LoanEvents.sysml",
+    "Collective_Investment_Vehicles": "FiBO Securities SEC/Funds/CollectiveInvestmentVehicles.sysml",
+    "Exotic_Options": "FIBO Derivatives DER/DerivativesContracts/ExoticOptions.sysml",
+    "Financial_Context_and_Process": "FiBO Business Processes BP/Process/FinancialContextandProcess.sysml",
+    "Marine_Finance": "FiBO Loan LOAN/LoansSpecific/MarineFinance.sysml",
+    "Equity_Swaps": "FIBO Derivatives DER/SecurityBasedDerivatives/EquitySwaps.sysml",
+    "Real_Property": "FiBO Foundations FND/Places/RealProperty.sysml",
+    "Basket_Indices": "FiBO Indices and Indicators IND/MarketIndices/BasketIndices.sysml",
+    "Canadian_Economic_Indicators": "FiBO Indices and Indicators IND/EconomicIndicators/CanadianEconomicIndicators.sysml",
+    "FiBO_LOAN_Regulatory_Extensions": "FiBO Loan LOAN/RegulatoryExtensions/FiBOLOANRegulatoryExtensions.sysml",
+    "Corporate_Actions": "FiBO Corporate Action and Events CAE/CorporateEvents/CorporateActions.sysml",
+    "SyntheticCDOs": "FiBO Securities SEC/Debt/SyntheticCDOs.sysml",
+    "Control_Parties": "FiBO Business Entities BE/OwnershipAndControl/ControlParties.sysml",
+    "Market_Transactions": "FiBO Foundations FND/TransactionsExt/MarketTransactions.sysml",
+    "FiBOOccurrences": "FiBO Foundations FND/DatesAndTimes/FiBOOccurrences.sysml",
+    "Government_Entities": "FiBO Business Entities BE/GovernmentEntities/GovernmentEntities.sysml",
+    "Documents": "FiBO Foundations FND/Arrangements/Documents.sysml",
+    "Consumer_Loans": "FiBO Loan LOAN/LoansSpecific/ConsumerLoans.sysml",
+    "Financial_Dates": "FiBO Foundations FND/DatesAndTimes/FinancialDates.sysml",
+    "Facilities": "FiBO Foundations FND/Places/Facilities.sysml",
+    "FiBO_SEC_AgencyMortgagePools": "FiBO Securities SEC/AgencyMortgagePools/FiBOSECAgencyMortgagePools.sysml",
+    "Green_Loans": "FiBO Loan LOAN/LoansSpecific/GreenLoans.sysml",
+    "Credit_Default_Swaps": "FIBO Derivatives DER/CreditDerivatives/CreditDefaultSwaps.sysml",
+    "Ratings": "FiBO Foundations FND/Arrangements/Ratings.sysml",
+    "Business_Centers": "FiBO Financial Business and Commerce FBC/FunctionalEntities/BusinessCenters.sysml",
+    "Securities_Pools": "FiBO Securities SEC/Securities/SecuritiesPools.sysml",
+    "Funds": "FiBO Securities SEC/Funds/Funds.sysml",
+    "Parties": "FiBO Foundations FND/Parties/Parties.sysml",
+    "REA_Transactions": "FiBO Foundations FND/TransactionsExt/REATransactions.sysml",
+    "Sole_Proprietorships": "FiBO Business Entities BE/SoleProprietorships/SoleProprietorships.sysml",
+    "Ownership_and_Control": "FiBO Foundations FND/OwnershipAndControl/OwnershipandControl.sysml",
+    "Partnerships": "FiBO Business Entities BE/Partnerships/Partnerships.sysml",
+    "Foreign_Exchange": "FiBO Indices and Indicators IND/ForeignExchange/ForeignExchange.sysml",
+    "Arrangements": "FiBO Foundations FND/Arrangements/Arrangements.sysml",
+    "CMNSParty": "FiBO Foundations FND/AgentsAndPeople/CMNSParty.sysml",
+    "FiBO_BE_CorporationTypes_US": "FiBO Financial Business and Commerce FBC/FunctionalEntities/NorthAmericanEntities/USFinancialServicesEntities.sysml",
+    "Security_Assets": "FiBO Securities SEC/Securities/SecurityAssets.sysml",
+    "Securities_Restrictions": "FiBO Securities SEC/Securities/SecuritiesRestrictions.sysml",
+    "Pool_backed_Securities": "FiBO Securities SEC/Debt/PoolbackedSecurities.sysml",
+    "AgencyMBSIssuance": "FiBO Business Processes BP/SecuritiesIssuance/AgencyMBSIssuance.sysml",
+    "Products_and_Services": "FiBO Foundations FND/ProductsAndServices/ProductsandServices.sysml",
+    "Securities_Identification": "FiBO Securities SEC/Securities/SecuritiesIdentification.sysml",
+    "Baskets": "FiBO Securities SEC/Securities/Baskets.sysml",
+    "Accounting_Equity": "FiBO Foundations FND/Accounting/AccountingEquity.sysml",
+    "Currency_Contracts": "FIBO Derivatives DER/DerivativesContracts/CurrencyContracts.sysml",
+    "FiBO_FBC_Distribution_Strategies": "FiBO Financial Business and Commerce FBC/DistributionStrategies/FiBOFBCDistributionStrategies.sysml",
+    "Objectives": "FiBO Foundations FND/GoalsAndObjectives/Objectives.sysml",
+    "CFI_Classification": "FiBO Securities SEC/Equities/CFIClassification.sysml",
+    "Assessments": "FiBO Foundations FND/Arrangements/Assessments.sysml",
+    "SecurityCreditStatuses": "FiBO Market Data MD/TemporalCore/SecurityCreditStatuses.sysml",
+    "Options": "FIBO Derivatives DER/DerivativesContracts/Options.sysml",
+    "Equities_IPO_Issuance": "FiBO Business Processes BP/SecuritiesIssuance/EquitiesIPOIssuance.sysml",
+    "Debt_Issuance": "FiBO Business Processes BP/SecuritiesIssuance/DebtIssuance.sysml",
+    "Settlement": "FiBO Financial Business and Commerce FBC/FinancialInstruments/Settlement.sysml",
+    "Financial_Instruments": "FiBO Financial Business and Commerce FBC/FinancialInstruments/FinancialInstruments.sysml",
+    "Derivatives_Master_Agreements": "FIBO Derivatives DER/DerivativesContracts/DerivativesMasterAgreements.sysml",
+    "FiBO_ACTUS_ContractTerms": "FiBO ACTUS ACTUS/ContractTerms/FiBOACTUSContractTerms.sysml",
+    "Loans": "FiBO Loan LOAN/LoansGeneral/Loans.sysml",
+    "Commercial_Loans": "FiBO Loan LOAN/LoansSpecific/CommercialLoans.sysml",
+    "Instrument_Pricing": "FiBO Financial Business and Commerce FBC/FinancialInstruments/InstrumentPricing.sysml",
+    "FiBO_FND_CodeSets_And_Schemes": "FiBO Foundations FND/CodeSets_And_Schemes/FiBOFNDCodeSetsAndSchemes.sysml",
+    "Financial_Services_Entities": "FiBO Financial Business and Commerce FBC/FunctionalEntities/FinancialServicesEntities.sysml",
+    "Mortgages": "FiBO Loan LOAN/RealEstateLoans/Mortgages.sysml",
+    "Business_Dates": "FiBO Foundations FND/DatesAndTimes/BusinessDates.sysml",
+    "Places_NorthAmerica_USPostalServiceAddressesIndividuals_FND": "FiBO Foundations FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals.sysml",
+    "Debt_Instruments": "FiBO Securities SEC/Debt/DebtInstruments.sysml",
+    "Fund_Temporal": "FiBO Market Data MD/CIVTemporal/FundTemporal.sysml",
+    "Loan_Applications": "FiBO Loan LOAN/LoansGeneral/LoanApplications.sysml",
+    "Control": "FiBO Foundations FND/OwnershipAndControl/Control.sysml",
+    "Parametric_Schedules": "FiBO Securities SEC/Securities/ParametricSchedules.sysml",
+    "Futures_Temporal": "FiBO Market Data MD/DerivativesTemporal/FuturesTemporal.sysml",
+    "Agents": "FiBO Foundations FND/AgentsAndPeople/Agents.sysml",
+    "Business_Registries": "FiBO Financial Business and Commerce FBC/FunctionalEntities/BusinessRegistries.sysml",
+    "Bond_Temporal": "FiBO Market Data MD/DebtTemporal/BondTemporal.sysml",
+    "FiBO_FND_ExternalStubs": "FiBO Ontology Bridge/FiBO_FND_ExternalStubs.sysml",
+    "European_Financial_Services_Entities": "FiBO Financial Business and Commerce FBC/FunctionalEntities/EuropeanFinancialServicesEntities.sysml",
+    "Securities_Issuance": "FiBO Securities SEC/Securities/SecuritiesIssuance.sysml",
+    "Interest_Rate_Swaps": "FIBO Derivatives DER/RateDerivatives/InterestRateSwaps.sysml",
+    "Trusts": "FiBO Business Entities BE/Trusts/Trusts.sysml",
+    "FIBO_Annotation_Vocabulary": "FiBO Foundations FND/Utilities/FIBOAnnotationVocabulary.sysml",
+    "Credit_Ratings": "FiBO Financial Business and Commerce FBC/DebtAndEquities/CreditRatings.sysml",
+    "US_Postal_Service_Addresses": "FiBO Foundations FND/Places/NorthAmerica/USPostalServiceAddresses.sysml",
+    "Securities_Transactions": "FiBO Foundations FND/TransactionsExt/SecuritiesTransactions.sysml",
+    "Analytics": "FiBO Foundations FND/Utilities/Analytics.sysml",
+    "MuniIssuance": "FiBO Business Processes BP/SecuritiesIssuance/MuniIssuance.sysml",
+    "Exercise_Conventions": "FiBO Securities SEC/Debt/ExerciseConventions.sysml",
+    "Identifiers_and_Indices": "FiBO Foundations FND/Arrangements/IdentifiersAndIndices.sysml",
+    "Agreements": "FiBO Foundations FND/Agreements/Agreements.sysml",
+    "MBS_Issuance": "FiBO Business Processes BP/SecuritiesIssuance/MBSIssuance.sysml",
+    "Executives": "FiBO Business Entities BE/OwnershipAndControl/Executives.sysml",
+    "Contracts": "FiBO Foundations FND/Agreements/Contracts.sysml",
+    "Interest_Rates": "FiBO Indices and Indicators IND/InterestRates/InterestRates.sysml",
+    "Debt": "FiBO Financial Business and Commerce FBC/DebtAndEquities/Debt.sysml",
+    "Distributed_Loans": "FiBO Securities SEC/Debt/DistributedLoans.sysml",
+    "People": "FiBO Foundations FND/AgentsAndPeople/People.sysml",
+    "Card_Accounts": "FiBO Loan LOAN/LoansSpecific/CardAccounts.sysml",
+    "FiBO_SEC_PreferredShares_Extensions": "FiBO Securities SEC/PreferredSharesExtensions/FiBOSECPreferredSharesExtensions.sysml",
+    "Economic_Indicators": "FiBO Indices and Indicators IND/EconomicIndicators/EconomicIndicators.sysml",
+    "Corporate_Ownership": "FiBO Business Entities BE/OwnershipAndControl/CorporateOwnership.sysml",
+    "Legal_Capacity": "FiBO Foundations FND/Law/LegalCapacity.sysml",
+    "Ownership": "FiBO Foundations FND/OwnershipAndControl/Ownership.sysml"
+  },
+  "created": "2025-11-16T10:54:11.591510000Z",
+  "metamodel": "https://www.omg.org/spec/SysML/20250201",
+  "checksum": {
+    "FiBO Foundations FND/Places/Addresses.sysml": {
+      "value": "36a216a121f0ee0403396d755f8f0e83328133a4734ab91c6d6ce704b343ab87",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Entities BE/LegalEntities/CorporateBodies.sysml": {
+      "value": "ef7e8803e12c248e14749ece4c9b7093938585fdc2d23cf446e392782f316775",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Securities/SecuritiesListings.sysml": {
+      "value": "3a615864858e3ec3bf916ffae79f06ed5f871002410645ce69c7f9061cb7d7ac",
+      "algorithm": "SHA256"
+    },
+    "FIBO Derivatives DER/DerivativesContracts/DerivativesBasics.sysml": {
+      "value": "5436622674233de65e35b447ab627c29f6ea33d6a3c4f8c4e1e2d77eb42a564f",
+      "algorithm": "SHA256"
+    },
+    "FiBO Financial Business and Commerce FBC/FunctionalEntities/CanadianFinancialServicesEntities.sysml": {
+      "value": "0332251a15fd32d995e9c3183c71d04402c510b2d0cac7c73925a9b8b7700313",
+      "algorithm": "SHA256"
+    },
+    "FiBO Loan LOAN/RealEstateLoans/ConstructionLoans.sysml": {
+      "value": "df453ef8373351f656ce5f532cdfe1712fb7f85e5faa65c8b5617b904ae3ebff",
+      "algorithm": "SHA256"
+    },
+    "FiBO Loan LOAN/RealEstateLoans/MortgageOrigination.sysml": {
+      "value": "85d7ee094240616b82d0ef5b1c029e41ee8d3aece705b0e3e692990f7bbca59b",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Relations/Relations.sysml": {
+      "value": "58f1b9ad7bd0a47000b99e95a82e4444843b788170bb6f528f4228382f1baa71",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Entities BE/LegalEntities/LegalPersons.sysml": {
+      "value": "c9e3fabab18d50b5589acaaec22f32bddf88837f8143bcd7ec9887f4454410f3",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Securities/EuropeanSecurities.sysml": {
+      "value": "2cb1864e9bc80de88efc57398da60889e4f048a667c64c2d5bed66f03e4ee92b",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/ProductsAndServices/PaymentsandSchedules.sysml": {
+      "value": "1d6f33ce2e11a456b21f3269f903863ada3b73984bf46ec29e648e9037ea2ebd",
+      "algorithm": "SHA256"
+    },
+    "FiBO Financial Business and Commerce FBC/ProductsAndServices/ClientsandAccounts.sysml": {
+      "value": "0eb0e8c0523b1de26b005c0acbd1e3b44e275904ba73983c06da244ef18a5672",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Equities/DepositaryReceipts.sysml": {
+      "value": "a0f9db5180a7ddc0c3129dbc72541cc185d21568658d406390c42b5daa3e4f61",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Processes BP/SecuritiesIssuance/IssuanceDocuments.sysml": {
+      "value": "8e938e695cc34840f408e2d8f352c268afd925839943bb2bf68ea43266212fee",
+      "algorithm": "SHA256"
+    },
+    "FiBO Financial Business and Commerce FBC/FunctionalEntities/NorthAmericanEntities/USNationalInformationCenterControlledVocabularies.sysml": {
+      "value": "4045a69b9c09d2fb90e342111819faa3ae7e12aae905be91bc06d2cd49034e4c",
+      "algorithm": "SHA256"
+    },
+    "FIBO Derivatives DER/DerivativesContracts/Swaps.sysml": {
+      "value": "77542da99e02b4893905a74105f263052c68d04c74fe2ed6938c897d4bc04e8a",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Debt/MortgagebackedSecurities.sysml": {
+      "value": "ddb2082c9887aa4781750394c6d73c47779fdc6597ee23f04683fbc5534413c5",
+      "algorithm": "SHA256"
+    },
+    "FIBO Derivatives DER/SecurityBasedDerivatives/SecurityBasedDerivatives.sysml": {
+      "value": "e3245ad6f951ec24e4c1f2b509be9fd885d07f4ccf3c2ffe3cb151dd9385a8c3",
+      "algorithm": "SHA256"
+    },
+    "FiBO Market Data MD/TemporalCore/SecurityTradingStatuses.sysml": {
+      "value": "faf550fc01d2da59ca3e5976b5e66314ca3019e86231e1ebcfce3ab383ec8ae1",
+      "algorithm": "SHA256"
+    },
+    "FiBO Loan LOAN/LoansGeneral/LoansRegulatory.sysml": {
+      "value": "c5033d8c94ae9bed893775a8eac1b4e539b14754bf93cab4890ecebd7e3d7a3a",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Arrangements/Reporting.sysml": {
+      "value": "a9d028e7489c234730e476d6e45689bc80f32efb813a9dd6bd3ff8dab618eaf9",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Places/VirtualPlaces.sysml": {
+      "value": "3e97f12c61d61c6544748fb5d3fe6e61ccd760d6e34816be38c4573762eed9ff",
+      "algorithm": "SHA256"
+    },
+    "FiBO Loan LOAN/LoansSpecific/LoanProducts.sysml": {
+      "value": "611209afde392bd8059ab3f47eb2f9e85837a12f16d10f575cde5d0c6e502206",
+      "algorithm": "SHA256"
+    },
+    "FiBO ACTUS ACTUS/Classifiers/FiBOACTUSClassifiers.sysml": {
+      "value": "8e873e80a9917c3b08dba9bee81c3d0eeae8ecc71f116a701a7a8529ce50f602",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Accounting/CashFlows.sysml": {
+      "value": "9550bc8173569bceaacfb8d1f2b857715f3b8fefe9cd0ffe6fcd0a2fc259d40d",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Securities/SecuritiesClassification.sysml": {
+      "value": "bb6a1b5ec8ef17206cf789b2efe33bfc0a9b2419edd15332c2a0ac0658484d7c",
+      "algorithm": "SHA256"
+    },
+    "FiBO Financial Business and Commerce FBC/FunctionalEntities/InternationalRegistriesAndAuthorities.sysml": {
+      "value": "5b16cc65df1cb85c5afddf09ac203d92c0a22f565ea6c8d98deb254a40d3bcef",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Entities BE/OwnershipAndControl/CorporateControl.sysml": {
+      "value": "fa99e9bf70d0e7d05294db62dce436cb43fec657dc45daf1d5b939f48ff5e730",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Entities BE/Corporations/Corporations.sysml": {
+      "value": "9724c474cf10cd97a814ae4c7859eb79aac1d90efdfa19659d3a0126bf2e45de",
+      "algorithm": "SHA256"
+    },
+    "FiBO Financial Business and Commerce FBC/DebtAndEquities/CreditEvents.sysml": {
+      "value": "bd16c5308a69b35431ed3dee01b86dd9572541cfed367889ec57b5f99d22f976",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Securities/USSecurities.sysml": {
+      "value": "50c06adf1dea5b27bcbe97fce83a8a0518856e641380b1055f144f093390e835",
+      "algorithm": "SHA256"
+    },
+    "FIBO Derivatives DER/DerivativesContracts/FuturesandForwards.sysml": {
+      "value": "45bc3f7e304f52cafeb71dc7941c2d282563fc827bf107358f673e64a728f8c2",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Debt/TradedShortTermDebt.sysml": {
+      "value": "b4230501970817ed2a03de1a8173ecc7fe0e8d0382bb911843b5b2ef16c5cb9a",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Entities BE/PrivateLimitedCompanies/PrivateLimitedCompanies.sysml": {
+      "value": "8bf339e41076ca39d428573bf2d36c7837393b8124bca8729dd8354c3a8e7c51",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/AgentsAndPeople/AgentsandPeople.sysml": {
+      "value": "c9f9af76e6a234979b33f213d119be15f4512604a0344a2bc23ae140a7719465",
+      "algorithm": "SHA256"
+    },
+    "FiBO Corporate Action and Events CAE/CorporateEvents/SecurityrelatedCorporateActions.sysml": {
+      "value": "1d3393ebe7e6139a7d13730568470084e19b735489a25ea4b35150a3afe0ffc4",
+      "algorithm": "SHA256"
+    },
+    "FIBO Derivatives DER/DerivativesContracts/StructuredInstruments.sysml": {
+      "value": "2309ebd99269e8ac10e836cebfd6458a79070460c95d348232a6a405873bc1f4",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Debt/CollateralizedDebtObligations.sysml": {
+      "value": "b179b1f312a004fc7c248e6c94437c53f522ebadc7ae64fb6cbc642a5678d7f1",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Processes BP/SecuritiesIssuance/PrivateLabelMBSIssuance.sysml": {
+      "value": "5484641f2393c1dea637919a3aed4fa96dfc4e08bf7c98eda0ce43109f181ab1",
+      "algorithm": "SHA256"
+    },
+    "FiBO Financial Business and Commerce FBC/FunctionalEntities/Markets.sysml": {
+      "value": "112bde4434810c93bb00d52ea434c5d63d1429dd600582220d604931e3054aaa",
+      "algorithm": "SHA256"
+    },
+    "FIBO Derivatives DER/RateDerivatives/RateDerivatives.sysml": {
+      "value": "b76f918d081db4663bfb23cf9edd2a26e22f5cf339da18a1e24398499999a95c",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Accounting/CurrencyAmount.sysml": {
+      "value": "a7d26cd49b7936c9bd2cc75ead4d27b7584628ed6b9b765d2d845110a8ebf2f1",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Arrangements/ClassificationSchemes.sysml": {
+      "value": "b57679a9ea6106a60c5a07f43a0ecef67e71903f7cc323eccd1f14628dba239f",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Entities BE/FunctionalEntities/FunctionalEntities.sysml": {
+      "value": "0a79bfb4f8570d02f5ec29f129f21aa3a5f4b243611e5df23a664d6ba265a774",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Securities/SecuritiesIdentificationIndividuals.sysml": {
+      "value": "d9171beb6c8b4f3bf43f2db0cd5634fe2e016537f4adfb6a9ae2fc5bb5bc929d",
+      "algorithm": "SHA256"
+    },
+    "FiBO Loan LOAN/RealEstateLoans/HomeMortgageDisclosureActHMDACoveredMortgages.sysml": {
+      "value": "af30e9e725ea5dc52c71acf39168bd3f8879bcb412d38da9ec33006f9d7b79c7",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Debt/Bonds.sysml": {
+      "value": "e970111526ba12f0e9a9feac8a6f516d3dbf6953dd1b4d813249f62f4eb69e9a",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Arrangements/Lifecycles.sysml": {
+      "value": "f00353582698bb59066a4da68dd9d782ab0b85903b604f5901191654bd89b422",
+      "algorithm": "SHA256"
+    },
+    "FiBO Financial Business and Commerce FBC/DebtAndEquities/Guaranty.sysml": {
+      "value": "d21dfc16c8c5cabc61ad073c26b2edb0747543c780ff38de93dd64f5c026bce7",
+      "algorithm": "SHA256"
+    },
+    "FIBO Derivatives DER/DerivativesContracts/RightsandWarrants.sysml": {
+      "value": "d106615394239cfe4a08db020b3add385f22b12662f4a2f55f771b8ec91fd1ce",
+      "algorithm": "SHA256"
+    },
+    "FiBO Financial Business and Commerce FBC/ProductsAndServices/FinancialProductsandServices.sysml": {
+      "value": "fb70e8dffe078bc619c44d6c023aa17ecdf8d4affd7166839c80eef898f07c4e",
+      "algorithm": "SHA256"
+    },
+    "FiBO Financial Business and Commerce FBC/FunctionalEntities/RegulatoryAgencies.sysml": {
+      "value": "17e368279326b1eb1ec5f6002562ea25c2f5e00b889ea7fa53b859b6f09c3f5a",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Organizations/FormalOrganizations.sysml": {
+      "value": "e515fe906056511d63cf3fdcf0d45d13bf8762a933611c1ca6f60dd7b2022c03",
+      "algorithm": "SHA256"
+    },
+    "FiBO Indices and Indicators IND/EconomicIndicators/USEconomicIndicators.sysml": {
+      "value": "33a65e49f7de89a060f6ebb717e9d563ccbe1859554338aea466c91606f87b81",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Debt/AssetbackedSecurities.sysml": {
+      "value": "ae9cf14601c425048179a766c92e390b95c25ef71edcb713a0a3d6eb312d80e6",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Entities BE/OwnershipAndControl/OwnershipParties.sysml": {
+      "value": "3d1b407891fbf6fb09dbdf56d0ae6ff2aef5d418a8aa51dd68624559fac7cef2",
+      "algorithm": "SHA256"
+    },
+    "FiBO Loan LOAN/LoansSpecific/StudentLoans.sysml": {
+      "value": "687f39c9a251869f5175a28745bfa9b0e2e46d353fc79c035ed0776ed05df1b2",
+      "algorithm": "SHA256"
+    },
+    "FiBO Market Data MD/DerivativesTemporal/ETOptionsTemporal.sysml": {
+      "value": "25320f925e1d2ceaebe9164e50f99a61e8d401efdbda187de5a0520e4376f163",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Equities/EquityInstruments.sysml": {
+      "value": "0d3e65fdc54d10ed64a5ec23362e918f43d1eacbb9ad9bf4cb9c04a54c6328ac",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Law/LegalCore.sysml": {
+      "value": "98906da3ac7786300769f4913dce646d42b5ba1851ab6af5510bbad54d9120a3",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Processes BP/SecuritiesIssuance/IssuanceProcess.sysml": {
+      "value": "885ecebb0bf5bd91a1a75661e3285c0d5922b9357ba887bc0429f724b3852efc",
+      "algorithm": "SHA256"
+    },
+    "FIBO Derivatives DER/DerivativesContracts/CommoditiesContracts.sysml": {
+      "value": "308efc37fe94cea161e392763c6106ee256ff13c21ce4371fe5792c89b759fd3",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Entities BE/FunctionalEntities/Publishers.sysml": {
+      "value": "80dba9c0fcf04f86c84adafc53f20000788fa6c273c8c18e4ecaf86a364a88e8",
+      "algorithm": "SHA256"
+    },
+    "FiBO Indices and Indicators IND/Indicators/Indicators.sysml": {
+      "value": "cb699930a691dbb36ccd543456e2c95c7a844ea61860c2f7cf621408454dd0e4",
+      "algorithm": "SHA256"
+    },
+    "FiBO Loan LOAN/LoansGeneral/LoanEvents.sysml": {
+      "value": "2fc9288c767b58fa53ccf4dd20231e489c0b5484fc3ce41e1e7e78845afd305c",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Funds/CollectiveInvestmentVehicles.sysml": {
+      "value": "97332318ad92325d2168aa2fb546c6b03deda7e8a40110e1d8ea8261b47b23ec",
+      "algorithm": "SHA256"
+    },
+    "FIBO Derivatives DER/DerivativesContracts/ExoticOptions.sysml": {
+      "value": "8cd08bda3fe3e37dd5340a912dc85d4a53f5acecf057a83bd454f8abe2ed0bc3",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Processes BP/Process/FinancialContextandProcess.sysml": {
+      "value": "de6441e549dc04a8b6c3f302bba02574b0e6b4844ecb77ebd7ec82eecbd8283b",
+      "algorithm": "SHA256"
+    },
+    "FiBO Loan LOAN/LoansSpecific/MarineFinance.sysml": {
+      "value": "04ccb874db74a4898638ded6767883fa617d30b956dbc2d500369d386f8165a3",
+      "algorithm": "SHA256"
+    },
+    "FIBO Derivatives DER/SecurityBasedDerivatives/EquitySwaps.sysml": {
+      "value": "2cfaa74e2748a0b273e81030c6d117e369e6a0837b344d3fbcae92d088ce62a7",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Places/RealProperty.sysml": {
+      "value": "7d027e8c2a5fa0154d999ecb5c3072bde433e74c833246e983212b5f9053b6ab",
+      "algorithm": "SHA256"
+    },
+    "FiBO Indices and Indicators IND/MarketIndices/BasketIndices.sysml": {
+      "value": "a32c35574b55073937fac7c95eced28fe8103177f711558111d79909f4fefc87",
+      "algorithm": "SHA256"
+    },
+    "FiBO Indices and Indicators IND/EconomicIndicators/CanadianEconomicIndicators.sysml": {
+      "value": "f846de2d6d18600c6c30a2b5204fdfd9d1eceb1b1cb3bd6d93dfe84315b84127",
+      "algorithm": "SHA256"
+    },
+    "FiBO Loan LOAN/RegulatoryExtensions/FiBOLOANRegulatoryExtensions.sysml": {
+      "value": "a1c7cd30b581c6b14dcc97d335ac2eb3a44ea96af6153c1a0856d10995b68fd5",
+      "algorithm": "SHA256"
+    },
+    "FiBO Corporate Action and Events CAE/CorporateEvents/CorporateActions.sysml": {
+      "value": "15a4c4a0a02fd0a3b8a812567ce5d6c96ab8babaf97886b1e96028115b6e703b",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Debt/SyntheticCDOs.sysml": {
+      "value": "314b81f3e391dc2ef3d27330163ba3dbd1354e20a5e4290f378c3638e643b41e",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Entities BE/OwnershipAndControl/ControlParties.sysml": {
+      "value": "8c4d483150ab2c2a47d13dc2f64e60622f3542f4fd3b796e3ef6de58e33b5c15",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/TransactionsExt/MarketTransactions.sysml": {
+      "value": "b094515939bd3d7baabf34c7af5b6cc7013084dce5798d07cd188ce8fc0a6bf3",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/DatesAndTimes/FiBOOccurrences.sysml": {
+      "value": "aee8ca39b793cc74a28159347ebb1c5b329e036171ef6a25617f6e2ed58cac79",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Entities BE/GovernmentEntities/GovernmentEntities.sysml": {
+      "value": "e2411668cff2dd6adeae5a4845979c26af162db95373ef7c10d64e4e5cc2c5a3",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Arrangements/Documents.sysml": {
+      "value": "17b0baf25510347089abf0bb7860c222c878256e900906ff5ffeb228a848b1f6",
+      "algorithm": "SHA256"
+    },
+    "FiBO Loan LOAN/LoansSpecific/ConsumerLoans.sysml": {
+      "value": "31a8d340b872794a72b27f604d885bc7bdf8fbcad97929e735cb72b888120d3f",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/DatesAndTimes/FinancialDates.sysml": {
+      "value": "00a8125f3bbbf1aff4a3af2f2172769896020fb1b42b79e00f42dae0649b615c",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Places/Facilities.sysml": {
+      "value": "f71d8c8b8bca05ed423c6fee2adbfbcf4228f67a7992e18c7811cec499cee3f6",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/AgencyMortgagePools/FiBOSECAgencyMortgagePools.sysml": {
+      "value": "861c43d05f6686caa6da348ba6b8561544079070a14ebd900b0194aa305b8c0b",
+      "algorithm": "SHA256"
+    },
+    "FiBO Loan LOAN/LoansSpecific/GreenLoans.sysml": {
+      "value": "8a337479174ac090990ad7f2f6484681f30f6fbe12f45a9106079ecbe75689bf",
+      "algorithm": "SHA256"
+    },
+    "FIBO Derivatives DER/CreditDerivatives/CreditDefaultSwaps.sysml": {
+      "value": "5a9a88a9a6eb2819e0e49b222795de6f096a1559cfc537e1eb9802166a01ac40",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Arrangements/Ratings.sysml": {
+      "value": "1576c69d2a7496982e251487916af85349fceb1bab74c2a1d49ddfa7cb62dc90",
+      "algorithm": "SHA256"
+    },
+    "FiBO Financial Business and Commerce FBC/FunctionalEntities/BusinessCenters.sysml": {
+      "value": "2c76cd85bafaf9b39c0cabcc77c38517c29323a104c91566a323c2374fc15f0b",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Securities/SecuritiesPools.sysml": {
+      "value": "7db3aff3b0fcec0b5a46cf2b4ec1ccd244d859abc3a2ae94545c1bb4aa265723",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Funds/Funds.sysml": {
+      "value": "3f9013c437ae942a297c9f3da9e50bd3703952d75d02bd6cee4eef4648c7f9eb",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Parties/Parties.sysml": {
+      "value": "389fd7c8019596b510001160275bce39fad05eea8afb508263199ea8655b76df",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/TransactionsExt/REATransactions.sysml": {
+      "value": "3a32e9303c69d74de7995db1611977f2b7f31edfbfa3dbd46f9d7438aae35313",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Entities BE/SoleProprietorships/SoleProprietorships.sysml": {
+      "value": "983d8549c63bf053075324d61700c3ce360c2d6932c0b13e9291fbe5ba10086b",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/OwnershipAndControl/OwnershipandControl.sysml": {
+      "value": "592c9c110e888ab3495f0561e3dbe4e5c5a4fd78f629a584db0160c780fe948e",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Entities BE/Partnerships/Partnerships.sysml": {
+      "value": "4456365c0a80d98eb461995d3eb55c4e85abf40e0ecd3b058514502073041a27",
+      "algorithm": "SHA256"
+    },
+    "FiBO Indices and Indicators IND/ForeignExchange/ForeignExchange.sysml": {
+      "value": "be5c3b638b1d2341d7fe27bc9fb95287c764b114c76df83e5362b5b1fdb97dec",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Arrangements/Arrangements.sysml": {
+      "value": "bdf84a741edfab8ea441e8eb6f85119d4b53a93ef02d5eef9e8fd0cc6a23043b",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/AgentsAndPeople/CMNSParty.sysml": {
+      "value": "0453d3115fb6c5a1d5ad440404c3bcc739913276d63b018b5736c7f3f6f2d065",
+      "algorithm": "SHA256"
+    },
+    "FiBO Financial Business and Commerce FBC/FunctionalEntities/NorthAmericanEntities/USFinancialServicesEntities.sysml": {
+      "value": "b57ed76d8bd77ace4fb381176fb481ee7b43870688d4b81468e83c6cb5947cb7",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Securities/SecurityAssets.sysml": {
+      "value": "64b2bffa69bc5ee759b36f1769c89a51a60250a915d73631ccd369b1c6655d7d",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Securities/SecuritiesRestrictions.sysml": {
+      "value": "25f68573f3bf4c78de3961fef3e3e8619bb5cc5183b52f8e5300285ec6f6242c",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Debt/PoolbackedSecurities.sysml": {
+      "value": "a3a2b2e84de66e684ad7b16f79d825a5211470a2ed4fb8029f3a9da99b0eac20",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Processes BP/SecuritiesIssuance/AgencyMBSIssuance.sysml": {
+      "value": "783aedb4a48c140132d5e844c332c58b9351ce8ae79ce1e8a7318c0ad886d77a",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/ProductsAndServices/ProductsandServices.sysml": {
+      "value": "c9980613a344ae908d5d2e128a26b3f5ff1958482bf0c91f4f4a4a793a986ec0",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Securities/SecuritiesIdentification.sysml": {
+      "value": "f36649dd1da5b1324e6065ae56c157b4075ea26d2053770ccd3ee16c83c48aba",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Securities/Baskets.sysml": {
+      "value": "b8d958388b24509dfdbb845e0a28bcfa9995e613d13697073d9f56ced4b96ad4",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Accounting/AccountingEquity.sysml": {
+      "value": "52458c740a7f06cde81020bbb892b87bf4b8475fb0aa0069a1ef6f50f10ab7fe",
+      "algorithm": "SHA256"
+    },
+    "FIBO Derivatives DER/DerivativesContracts/CurrencyContracts.sysml": {
+      "value": "7b507f1645c626792bccc253ed402ec50d75143b4e98b39e59435c6469c0d68f",
+      "algorithm": "SHA256"
+    },
+    "FiBO Financial Business and Commerce FBC/DistributionStrategies/FiBOFBCDistributionStrategies.sysml": {
+      "value": "bfad401826b331a274e56eac096b4395071685d082c9c087c9ea91bc9c019b82",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/GoalsAndObjectives/Objectives.sysml": {
+      "value": "6fe3905ef6c058b2f7f47b16c9d27153a058ed77a637324aa3aea7c5549362ac",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Equities/CFIClassification.sysml": {
+      "value": "4eb95ab60d64adbada23f2df6173a18721c168e94a9c299721204d09de7a7eda",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Arrangements/Assessments.sysml": {
+      "value": "6a3806929591338a4b91c985bf6de8f8865aa1ca2a6dec5b8fd94bdbf56df63d",
+      "algorithm": "SHA256"
+    },
+    "FiBO Market Data MD/TemporalCore/SecurityCreditStatuses.sysml": {
+      "value": "97c2790e8b5854546a3b83e590d038424941d669d1561e02560127a1f00f4917",
+      "algorithm": "SHA256"
+    },
+    "FIBO Derivatives DER/DerivativesContracts/Options.sysml": {
+      "value": "0a54ca3125226cdfae0c317161bf496265547ae81088f112b2e2ed3210f1c159",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Processes BP/SecuritiesIssuance/EquitiesIPOIssuance.sysml": {
+      "value": "ea18ac9a7816b703cfe15e595e3da17fb76a2d074b884f990fd36155f29af17e",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Processes BP/SecuritiesIssuance/DebtIssuance.sysml": {
+      "value": "1fe7ef4954dc6c00cc3bde119a652505836288bdec921aaa5c2e9631d9a59cc7",
+      "algorithm": "SHA256"
+    },
+    "FiBO Financial Business and Commerce FBC/FinancialInstruments/Settlement.sysml": {
+      "value": "eb10a8dc8a507ab905476d314019e4896389fc5c69ad9949722b8753cdd043cd",
+      "algorithm": "SHA256"
+    },
+    "FiBO Financial Business and Commerce FBC/FinancialInstruments/FinancialInstruments.sysml": {
+      "value": "e36b06d7e7333a745bc9b6351fd332a4482fb7835dfa8a8b26bbbba34d94a5f0",
+      "algorithm": "SHA256"
+    },
+    "FIBO Derivatives DER/DerivativesContracts/DerivativesMasterAgreements.sysml": {
+      "value": "0fbcea3f437e0ea952592fcd69b75eb11217dad804d1b77d50dfbceb575451d7",
+      "algorithm": "SHA256"
+    },
+    "FiBO ACTUS ACTUS/ContractTerms/FiBOACTUSContractTerms.sysml": {
+      "value": "87c84cb9faeb9e055e3c536e530e7cf1cdae55e17b1a55db373a84f2fb6058dd",
+      "algorithm": "SHA256"
+    },
+    "FiBO Loan LOAN/LoansGeneral/Loans.sysml": {
+      "value": "165f39c824041916139b7280a76665d0ce770dd70eac7e96033ec2d7711838c3",
+      "algorithm": "SHA256"
+    },
+    "FiBO Loan LOAN/LoansSpecific/CommercialLoans.sysml": {
+      "value": "8adc4cfe78920ba265fc01fd5e45abc4f23329129cacd558833d1bd9c669aa27",
+      "algorithm": "SHA256"
+    },
+    "FiBO Financial Business and Commerce FBC/FinancialInstruments/InstrumentPricing.sysml": {
+      "value": "11f59cf7e83ad37b33b4cde32f9824b5ce6e303f07c9da53844aa1980fad9adf",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/CodeSets_And_Schemes/FiBOFNDCodeSetsAndSchemes.sysml": {
+      "value": "066e399ce0a6f47313b97f358626460ff86988c91342d2f8daa46f2ea8a7413d",
+      "algorithm": "SHA256"
+    },
+    "FiBO Financial Business and Commerce FBC/FunctionalEntities/FinancialServicesEntities.sysml": {
+      "value": "4a0e09bb4fa52d7cefd62aded9d2ed1446968cfd7302f468c5cd1016a6de46c1",
+      "algorithm": "SHA256"
+    },
+    "FiBO Loan LOAN/RealEstateLoans/Mortgages.sysml": {
+      "value": "26d623105fe34d3ca8f21aac677de99b3d13d3d555344b4afa52ca938268e052",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/DatesAndTimes/BusinessDates.sysml": {
+      "value": "75d70449d20864ecbe6a6abedc479a5040b37880e1a050bb66cc5045a6a2e3c7",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals.sysml": {
+      "value": "990ce916422e37ddb84cf2118d0ebe2ccc683b38e4c22dbbc8f0abb81b3b2c21",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Debt/DebtInstruments.sysml": {
+      "value": "aec3d49f7f31ce5060693fde23c201ddb41a96ad55861445a6e92c8db858c77e",
+      "algorithm": "SHA256"
+    },
+    "FiBO Market Data MD/CIVTemporal/FundTemporal.sysml": {
+      "value": "d01b9509d24516d84c3ba2a5df86c66fb61ab0919d9e071f4b39b1a4acc467da",
+      "algorithm": "SHA256"
+    },
+    "FiBO Loan LOAN/LoansGeneral/LoanApplications.sysml": {
+      "value": "a0a345aa30e37d93bead95e5a1c62a3bba696e9c898c0d46d36eb2ad1fc2f166",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/OwnershipAndControl/Control.sysml": {
+      "value": "3368ba7e94251e5fe489b4e8544fcb2a80401af5497daa3a2f5152b505d48320",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Securities/ParametricSchedules.sysml": {
+      "value": "19318be78e7c0e86316fd2bc53dae3ee72fd4efcc8ab6a53ccba2ee2188fa689",
+      "algorithm": "SHA256"
+    },
+    "FiBO Market Data MD/DerivativesTemporal/FuturesTemporal.sysml": {
+      "value": "5c7545f24b9ff81b8731075bd9e3013e139ab9be7243cae20595b26ebbca6cfc",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/AgentsAndPeople/Agents.sysml": {
+      "value": "99927c6d7f8896ae3daa52237ba40a11d7556e1ddc00212f91fb8b0da0bc841e",
+      "algorithm": "SHA256"
+    },
+    "FiBO Financial Business and Commerce FBC/FunctionalEntities/BusinessRegistries.sysml": {
+      "value": "58017ced2c687d6fca941447a969bc64d73be317c2f7b85a3d62b5ac2e283d58",
+      "algorithm": "SHA256"
+    },
+    "FiBO Market Data MD/DebtTemporal/BondTemporal.sysml": {
+      "value": "2003584fde99ef38e1066e19d6fbcc8894aba0981700890352f583acf46f3142",
+      "algorithm": "SHA256"
+    },
+    "FiBO Ontology Bridge/FiBO_FND_ExternalStubs.sysml": {
+      "value": "b160875a5de21c8331c5ad64749bc4b2522b72c5daf8b6199c83ad39256de2f6",
+      "algorithm": "SHA256"
+    },
+    "FiBO Financial Business and Commerce FBC/FunctionalEntities/EuropeanFinancialServicesEntities.sysml": {
+      "value": "5689860c867761b3b1c75ac407bcba2372854149dfc23a1d483e15baa443915d",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Securities/SecuritiesIssuance.sysml": {
+      "value": "bbf7cbc3146c4c1e336009fdb73110c0c9fccc637b821e852362a5c9992403e6",
+      "algorithm": "SHA256"
+    },
+    "FIBO Derivatives DER/RateDerivatives/InterestRateSwaps.sysml": {
+      "value": "407f4a79704c097de6a94ccd064fe9fe33c5c4790c9a9d6b596b08f8238a44ae",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Entities BE/Trusts/Trusts.sysml": {
+      "value": "8d05180703e34fa9464b2c1eed944293b67616470818ce6d29b83c1a9080c618",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Utilities/FIBOAnnotationVocabulary.sysml": {
+      "value": "61e9ba7be297a20d10b1a1b428637b78b477416ecca7a4990846f8ff38f2c1e5",
+      "algorithm": "SHA256"
+    },
+    "FiBO Financial Business and Commerce FBC/DebtAndEquities/CreditRatings.sysml": {
+      "value": "5066a4a775fbe627800fa3944f281d10e25d4af701d43276603376d9b3969332",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Places/NorthAmerica/USPostalServiceAddresses.sysml": {
+      "value": "3fd11fcfe2520763793d2092a83e83afea06a2de649ab40f5ee1153c8ec0f9ad",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/TransactionsExt/SecuritiesTransactions.sysml": {
+      "value": "6fca953fbd61e5fd52191dc43249b26bb15dbe65cc2dd7c9832349c404c97fbe",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Utilities/Analytics.sysml": {
+      "value": "e8b5607011014510cbeb0962a942f870c5b8ffc551395d535fb6af41325642f7",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Processes BP/SecuritiesIssuance/MuniIssuance.sysml": {
+      "value": "d57ddbb2d864939356e3ea4b494d0251603fa351a6031e2118f77f9579df6ee1",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Debt/ExerciseConventions.sysml": {
+      "value": "883682145652a33b2d1f02baec5091a5ecaf3ebc327dc44cd258369925191486",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Arrangements/IdentifiersAndIndices.sysml": {
+      "value": "b559f02b618fede823c9852569557dba9146c3041056c60972e4bf73a66a164e",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Agreements/Agreements.sysml": {
+      "value": "8e86160361a1146e630cc9ba83a6e5e0547014ec98b1c40d3b48e6f085ca12ec",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Processes BP/SecuritiesIssuance/MBSIssuance.sysml": {
+      "value": "283f7afdb6c5acfa18f80fd4d6bfda313cc428389526b8eb0fac1588a5996381",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Entities BE/OwnershipAndControl/Executives.sysml": {
+      "value": "e3c83ec2ee2dd996fc5f8a66a98589b07cc6c30fd843a3aeed46b7dcd13d983f",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Agreements/Contracts.sysml": {
+      "value": "4c580a57b2985def9b6db820721788bd9d5a3092462216850ba94c06ccc116de",
+      "algorithm": "SHA256"
+    },
+    "FiBO Indices and Indicators IND/InterestRates/InterestRates.sysml": {
+      "value": "c9e769b3b5bf078d6a6bf7a69d17f5cd713f62715963a45704f75b7318cdf02e",
+      "algorithm": "SHA256"
+    },
+    "FiBO Financial Business and Commerce FBC/DebtAndEquities/Debt.sysml": {
+      "value": "90ac3d73c393e9ffd38e6b5d02541e817ac50fe83af5e01c71f628dded6b05d4",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/Debt/DistributedLoans.sysml": {
+      "value": "dd6b6e58bb42aec420e80fa10514b876f7f18847b86078314540cf8f4d2fe984",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/AgentsAndPeople/People.sysml": {
+      "value": "ebc16d2a2b7f0415bc03829fc061c5ed8f4f86be526a7be2e5dc0c82df69c503",
+      "algorithm": "SHA256"
+    },
+    "FiBO Loan LOAN/LoansSpecific/CardAccounts.sysml": {
+      "value": "e81198db9dd238ba4e4088086916ab531570b6f3b1e938716e2a6a6c82f4f405",
+      "algorithm": "SHA256"
+    },
+    "FiBO Securities SEC/PreferredSharesExtensions/FiBOSECPreferredSharesExtensions.sysml": {
+      "value": "22011c3b9169e8bd021178cb1058647b4adabeed194d9a83a78f48f97f4d2046",
+      "algorithm": "SHA256"
+    },
+    "FiBO Indices and Indicators IND/EconomicIndicators/EconomicIndicators.sysml": {
+      "value": "fd96291a162046343881b53cfc5c66038a53552031c03622c4ea77e96f16baf6",
+      "algorithm": "SHA256"
+    },
+    "FiBO Business Entities BE/OwnershipAndControl/CorporateOwnership.sysml": {
+      "value": "54677d6101cae6422507b5201da6a46a090d6111473e4e72f8e3b611d89bbb76",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/Law/LegalCapacity.sysml": {
+      "value": "c5bb646ea7583d0e4db965fc710c34cc757ea46a3a5d35df2e40196a5bac2606",
+      "algorithm": "SHA256"
+    },
+    "FiBO Foundations FND/OwnershipAndControl/Ownership.sysml": {
+      "value": "fc6cc0a0bcf0f372f79e6d6e64bcb68eaf2b4955cac097dd55e7cdd79f9b49e2",
+      "algorithm": "SHA256"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0:
+public
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3:
+public
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}
+quoted name

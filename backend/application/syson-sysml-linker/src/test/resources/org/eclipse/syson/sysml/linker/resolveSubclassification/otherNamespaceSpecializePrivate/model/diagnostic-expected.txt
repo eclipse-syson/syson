@@ -1,0 +1,9 @@
+ERROR - null
+  ERROR - Can't resolve $::current::part2's reference superclassifier to $::other::part1.
+    INFO - Namespace $::other can't resolve part1 locally.
+    INFO - Namespace $::other can't resolved part1 via specializations.
+    INFO - Namespace $::other can't resolved part1 via imports.
+    INFO - Namespace $ can't resolve $::other::part1 locally.
+    INFO - Namespace $ can't resolved $::other::part1 via specializations.
+    INFO - Namespace $ can't resolved $::other::part1 via imports.
+    ERROR - Can't resolve $::current::part2's reference superclassifier to $::other::part1.

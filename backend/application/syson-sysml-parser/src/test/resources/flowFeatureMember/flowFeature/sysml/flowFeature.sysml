@@ -1,0 +1,1 @@
+namespace1::'namespace 2'

@@ -1,0 +1,23 @@
+ERROR - null
+  ERROR - Can't resolve $::current's reference importedNamespace to $::other::part1.
+    INFO - Namespace $::other can't resolve part1 locally.
+    INFO - Namespace $::other can't resolved part1 via specializations.
+    INFO - Namespace $::other can't resolved part1 via imports.
+    INFO - Namespace $ can't resolve $::other::part1 locally.
+    INFO - Namespace $ can't resolved $::other::part1 via specializations.
+    INFO - Namespace $ can't resolved $::other::part1 via imports.
+    ERROR - Can't resolve $::current's reference importedNamespace to $::other::part1.
+  ERROR - Can't resolve $::current::part2's reference type to part111.
+    INFO - Namespace $::current::part2 can't resolve part111 locally.
+    INFO - Namespace $::current::part2 can't resolved part111 via specializations.
+    INFO - Namespace $::current::part2 can't resolved part111 via imports.
+    INFO - Namespace $::current can't resolve part111 locally.
+    INFO - Namespace $::current can't resolved part111 via specializations.
+    INFO - Namespace $::current can't resolved part111 via imports.
+    INFO - Namespace $ can't resolve part111 locally.
+    INFO - Namespace $ can't resolved part111 via specializations.
+    INFO - Namespace $ can't resolved part111 via imports.
+    INFO - Namespace $ can't resolve part111 locally.
+    INFO - Namespace $ can't resolved part111 via specializations.
+    INFO - Namespace $ can't resolved part111 via imports.
+    ERROR - Can't resolve $::current::part2's reference type to part111.

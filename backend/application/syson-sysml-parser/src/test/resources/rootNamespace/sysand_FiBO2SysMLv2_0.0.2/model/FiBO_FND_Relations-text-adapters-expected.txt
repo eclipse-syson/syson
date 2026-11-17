@@ -1,0 +1,10 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /* Configuration Item (CI) package for FIBO_FND_Relations and its exported model elements. */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1:
+public
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /* relation semantics are intentionally provided by KerML/SysML native\n        language constructs (e.g., dependency, specialization, redefinition,\n        subsetting, typing, usage). This package serves as a CI anchor only\n        and does not reify language-level relations as domain items. */
+/@ownedRelationship.1/@ownedRelatedElement.0:
+{...}

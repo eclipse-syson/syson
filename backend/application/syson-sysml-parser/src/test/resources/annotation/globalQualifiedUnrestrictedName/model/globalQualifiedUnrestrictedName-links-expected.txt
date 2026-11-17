@@ -1,0 +1,1 @@
+/;annotatedElement;Element;0;$::'namespace 1'::'namespace 2'::'annotation 1'

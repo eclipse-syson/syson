@@ -1,0 +1,12 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /*\n * This package defines the base types for attributes and related structural elements \n * in the SysML language.\n */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /*\n\t\t * AttributeValue is the most general type of data values that represent qualities or characteristics \n\t\t * of a system or part of a system. AttributeValue is the base type of all AttributeDefinitions.\n\t\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /*\n\t\t * attributeValues is the base feature for all AttributeUsages.\n\t\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}

@@ -1,0 +1,2 @@
+1:0 - token recognition error at: '"'
+1:1 - missing STRING_VALUE at '<EOF>'

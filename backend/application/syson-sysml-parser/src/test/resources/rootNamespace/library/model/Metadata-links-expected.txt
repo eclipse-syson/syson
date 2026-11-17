@@ -1,0 +1,12 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1;importedMembership;Membership;0;Metaobjects::Metaobject
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2;importedMembership;Membership;0;Metaobjects::metaobjects
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3;importedMembership;Membership;0;Items::Item
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4;importedMembership;Membership;0;Items::items
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.0;superclassifier;Classifier;0;Metaobject
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.1;superclassifier;Classifier;0;Item
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0;type;Type;0;MetadataItem
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1;redefinedFeature;Feature;0;Metaobject::self
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2;redefinedFeature;Feature;0;Item::self
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.0;type;Type;0;MetadataItem
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.2;subsettedFeature;Feature;0;metaobjects
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.3;subsettedFeature;Feature;0;items

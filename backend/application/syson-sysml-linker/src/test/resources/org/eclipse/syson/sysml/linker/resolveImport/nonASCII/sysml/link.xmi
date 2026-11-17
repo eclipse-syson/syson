@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="acd91f9b-d434-34a4-844f-995de29c986e" elementId="acd91f9b-d434-34a4-844f-995de29c986e">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="660a59f0-aeb0-37cf-99ed-a499c64cd46d" elementId="660a59f0-aeb0-37cf-99ed-a499c64cd46d">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="5024d50f-e7ce-372f-867a-665016e465d2" declaredName="P1" elementId="5024d50f-e7ce-372f-867a-665016e465d2">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="8c200ee4-fc15-3454-b688-446a0c8df00b" elementId="8c200ee4-fc15-3454-b688-446a0c8df00b">
+        <ownedRelatedElement xsi:type="sysml:PartUsage" xmi:id="85539c34-c772-3bd6-bef5-64eeda81e9d6" declaredName="Café" elementId="85539c34-c772-3bd6-bef5-64eeda81e9d6">
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="351e122b-c3b7-3c0b-a0e9-73dbf7b5b78e" elementId="351e122b-c3b7-3c0b-a0e9-73dbf7b5b78e">
+            <ownedRelatedElement xsi:type="sysml:PartUsage" xmi:id="8e3c048d-a61a-37ad-ad5a-ab81a4fc51f3" declaredName="日本語" elementId="8e3c048d-a61a-37ad-ad5a-ab81a4fc51f3" isComposite="true">
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="36cc0cfc-4010-33dd-9234-38b05fc40973" elementId="36cc0cfc-4010-33dd-9234-38b05fc40973">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="b8e24835-d7a7-397f-a812-552656db938f" elementId="b8e24835-d7a7-397f-a812-552656db938f"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:MembershipImport" xmi:id="1139e30e-90a3-3c17-b8c9-f06cd4a34e64" elementId="1139e30e-90a3-3c17-b8c9-f06cd4a34e64"/>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

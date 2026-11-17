@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="6157316b-65f0-3938-8eb4-947adf1d1d7f" elementId="6157316b-65f0-3938-8eb4-947adf1d1d7f">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="e3720ee8-e548-3224-a62b-2e647bdff737" elementId="e3720ee8-e548-3224-a62b-2e647bdff737">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="f882f57f-1c58-3f65-95b3-f575cc26ece3" declaredName="other" elementId="f882f57f-1c58-3f65-95b3-f575cc26ece3">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="96ee530c-25ed-3216-a568-c85eda55fbf6" elementId="96ee530c-25ed-3216-a568-c85eda55fbf6">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="544aa240-d2e8-332f-9960-38a42ea759e8" declaredName="part1" elementId="544aa240-d2e8-332f-9960-38a42ea759e8"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:Membership" xmi:id="bed79740-ab5c-3b13-af5a-0e919b3f5d93" elementId="bed79740-ab5c-3b13-af5a-0e919b3f5d93" memberElement="544aa240-d2e8-332f-9960-38a42ea759e8" memberName="part1alias"/>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

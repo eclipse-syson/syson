@@ -1,0 +1,28 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /*\n  * Copyright (c) 2013-2025 EDM Council, Inc.\n  * Copyright (c) 2013-2025 Object Management Group, Inc.\n  *\n  * Permission is hereby granted, free of charge, to any person obtaining a copy\n  * of this software and associated documentation files (the 'Software'), to deal\n  * in the Software without restriction, including without limitation the rights\n  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  * copies of the Software, and to permit persons to whom the Software is\n  * furnished to do so, subject to the following conditions:\n  *\n  * The above copyright notice and this permission notice shall be included in all\n  * copies or substantial portions of the Software.\n  *\n  * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n  * THE SOFTWARE.\n  *\n  * See https://opensource.org/licenses/MIT. */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /*\n\t * FiBO ACTUS Contract Terms - OWL source: fibo/fnd/arrangements/documents/Contracts\n\t * \n\t * This module defines ACTUS (Algorithmic Contract Types Unified Standards) contract\n\t * term concepts. ACTUS provides a standardized specification for financial contracts\n\t * and their data model for structured contract data and analytics.\n\t * \n\t * The classes in this package represent enumerated types and code elements used in\n\t * ACTUS contract definitions, including business day conventions, calendar codes,\n\t * and contract term specifications.\n\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /**\n\t * Code element representing ACTUS business day convention\n\t * \n\t * OWL source documentation:\n\t * Specifies how dates are calculated in the ACTUS contract framework when dates\n\t * fall on non-business days (weekends or holidays).\n\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* code element for one of a set of conventions that ACTUS supports for handling dates that fall on non-business days */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /**\n\t * Code element representing ACTUS calendar code\n\t * \n\t * OWL source documentation:\n\t * Enumeration of calendar codes used in ACTUS contracts to define holidays\n\t * and business day adjustments for specific jurisdictions or markets.\n\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* code for a calendar that applies to a particular contract, defining holidays and business day adjustments for specific jurisdictions or markets */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+comment body /**\n\t * Code element representing ACTUS contract term specification\n\t * \n\t * OWL source documentation:\n\t * Encodes standardized contract terms according to the ACTUS specification,\n\t * enabling systematic representation and processing of contract attributes.\n\t */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* code denoting a term describing an aspect of one or more ACTUS contract type(s), enabling systematic representation and processing of contract attributes */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}

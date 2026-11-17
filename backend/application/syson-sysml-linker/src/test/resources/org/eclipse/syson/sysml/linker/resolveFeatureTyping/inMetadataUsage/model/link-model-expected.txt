@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="b08222df-414a-3cb7-a3b3-1d35c5afca07" elementId="b08222df-414a-3cb7-a3b3-1d35c5afca07">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="388d59d6-96b0-3e8c-846f-06bdfd6bed2f" elementId="388d59d6-96b0-3e8c-846f-06bdfd6bed2f">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="d9868dda-1042-3062-917a-7bd002a7de72" declaredName="Other" elementId="d9868dda-1042-3062-917a-7bd002a7de72">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="395f804d-4ccd-3937-9c38-f3cb7ccc27dc" elementId="395f804d-4ccd-3937-9c38-f3cb7ccc27dc">
+        <ownedRelatedElement xsi:type="sysml:MetadataDefinition" xmi:id="bee62c4b-3425-3326-b8a8-d65e6d311fc6" declaredName="Metadata1" elementId="bee62c4b-3425-3326-b8a8-d65e6d311fc6"/>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="13d41b75-b620-3dc6-bee6-e00c30f94046" elementId="13d41b75-b620-3dc6-bee6-e00c30f94046">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="05090f76-3332-3fe8-b27d-5db68acbd931" declaredName="P1" elementId="05090f76-3332-3fe8-b27d-5db68acbd931">
+      <ownedRelationship xsi:type="sysml:NamespaceImport" xmi:id="86bd3878-0e36-313c-93d1-fece1e910b6e" elementId="86bd3878-0e36-313c-93d1-fece1e910b6e" importedNamespace="d9868dda-1042-3062-917a-7bd002a7de72"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="37e16f40-a576-34f7-9308-855cd03d4d39" elementId="37e16f40-a576-34f7-9308-855cd03d4d39">
+        <ownedRelatedElement xsi:type="sysml:MetadataUsage" xmi:id="21737ca9-5566-33dd-9c90-13c276d0e972" elementId="21737ca9-5566-33dd-9c90-13c276d0e972">
+          <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="51295dad-5731-3a7d-a7cb-f4cbd05dc10d" elementId="51295dad-5731-3a7d-a7cb-f4cbd05dc10d" type="bee62c4b-3425-3326-b8a8-d65e6d311fc6" typedFeature="21737ca9-5566-33dd-9c90-13c276d0e972"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

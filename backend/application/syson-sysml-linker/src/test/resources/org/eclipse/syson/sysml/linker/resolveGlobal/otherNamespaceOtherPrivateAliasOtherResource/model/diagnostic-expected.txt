@@ -1,0 +1,9 @@
+ERROR - null
+  ERROR - Can't resolve $::grandfather::father::current::part5's reference type to $::other::part1alias.
+    INFO - Namespace $ can't resolve $::other::part1alias locally.
+    INFO - Namespace $ can't resolved $::other::part1alias via specializations.
+    INFO - Namespace $ can't resolved $::other::part1alias via imports.
+    INFO - Namespace $ can't resolve $::other::part1alias locally.
+    INFO - Namespace $ can't resolved $::other::part1alias via specializations.
+    INFO - Namespace $ can't resolved $::other::part1alias via imports.
+    ERROR - Can't resolve $::grandfather::father::current::part5's reference type to $::other::part1alias.

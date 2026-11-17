@@ -1,0 +1,1 @@
+private abstract ref a;

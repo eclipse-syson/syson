@@ -1,0 +1,1 @@
+1:2 - extraneous input '..' expecting {'*', '.', 'true', 'false', '$', DECIMAL_VALUE, EXP_VALUE, ID, UNRESTRICTED_NAME, STRING_VALUE}

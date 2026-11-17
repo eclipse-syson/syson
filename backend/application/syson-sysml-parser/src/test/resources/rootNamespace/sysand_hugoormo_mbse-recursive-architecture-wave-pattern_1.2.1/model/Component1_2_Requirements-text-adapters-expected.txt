@@ -1,0 +1,29 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /*\n    PATTERN RULES FOR COMPONENT1_2_REQUIREMENTS:\n    \n    1. LEAF REQUIREMENT SEMANTICS:\n       - Terminal decomposition node (no further child needs)\n       - Still decontextualize parent need at this level's context\n       - Inherit constraint from parent via subsetting (no hardcoding)\n       - Subject redefines parent (even at terminal level)\n       - No derived requirement (leaf has no decomposition)\n    \n    2. CONFIGURATION BINDING STRATEGY:\n       - Blackbox configuration (Config_bb): attribute binding to action output\n       - Graybox configuration (Config_gb): if present, MUST remain abstract\n       - Whitebox configuration (Config_wb): integration level for verification\n       - Binding is set once at blackbox level; inherited, never overridden\n    \n    3. SUBJECT REDEFINITION:\n       - Original requirement subject: redefines parent subsystem context\n       - Narrowing chain continues from L0→L1→L2→L3\n       - No further narrowing after this point\n\n    4. RECURSIVE CLOSURE SEMANTICS:\n       - This leaf requirement validates its parent child need by subsetting it.\n       - It is then verified when the leaf component architecture satisfies it.\n       - See MyFramework::MyFrameworkRecursiveClosureSemantics for the reusable rule.\n    */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /*\n        This package implements the MBSE RecursiveArchitecture Weave Pattern at L3 (Component level).\n        As a LEAF level, only original requirements exist (no decomposition).\n        Violations detected by:\n        - Syside syntax/semantic validation\n        - Constraint evaluation on live behavioral outputs\n        - Cross-level consistency verification\n    */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /* L3 leaf requirement: final transformation of the L2 derived need\n     * (no further decomposition).\n     */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /*\n            NEED VALIDATION: By subsetting the L2 payloadFinisher child need, this L3\n            requirement validates the transformation of that need into the Component1_2\n            context.\n\n            REQUIREMENT VERIFICATION: This transformed leaf requirement is verified by\n            Component1_2_Configuration::payloadFinisher_bb and the Component1_2 terminal\n            verification cases.\n        */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /*\n            DESIGN DECISION: Component1_2 (PayloadFinisher) allocated 10.0 units (leaf terminal node).\n            RATIONALE: Single atomic component; no further decomposition possible; allocation matches parent finisher need.\n        */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+late nonunique
+subsets
+redefines
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* The payload shall achieve a gain of quality through Component1_2 \n         * of at least 10 units. (Here we decontextualize the requirement from L2)\n         * This requirement is derived from the subsetted Subsystem1 derived requirement.\n         * With this we ensure that Component1_2 will perform as needed in the\n         * context of Subsystem1 by inheriting the constraint from the \n         * Subsystem1 requirements and redefining the subject.\n         * \n         * This is a leaf-level requirement with no further decomposition.\n         */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+comment body /* Constraint inherited from parent requirement through subsetting. */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+late nonunique
+subsets
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}

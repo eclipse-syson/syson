@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="934dbce1-5517-34f7-9feb-d8d67c64d8e8" elementId="934dbce1-5517-34f7-9feb-d8d67c64d8e8">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="7830fe3c-651f-3360-808a-496e1a81fb9c" elementId="7830fe3c-651f-3360-808a-496e1a81fb9c">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="68e47a50-d77d-3cd0-836c-13066943a774" declaredName="13a-Model Containment" elementId="68e47a50-d77d-3cd0-836c-13066943a774">
+      <ownedRelationship xsi:type="sysml:NamespaceImport" xmi:id="75ed58ca-6b78-357e-b369-d4d8bed229ce" elementId="75ed58ca-6b78-357e-b369-d4d8bed229ce"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport" xmi:id="0aefc24a-1683-3f3b-95f2-9c959ab0dd52" elementId="0aefc24a-1683-3f3b-95f2-9c959ab0dd52"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="2b6c5e30-215f-3ff9-8690-a00bd1a9a09a" elementId="2b6c5e30-215f-3ff9-8690-a00bd1a9a09a">
+        <ownedRelatedElement xsi:type="sysml:RequirementUsage" xmi:id="17617ed1-2f6f-3fb5-ac96-0985c6de11a4" declaredName="BodyAndInteriorRequirements" elementId="17617ed1-2f6f-3fb5-ac96-0985c6de11a4">
+          <ownedRelationship xsi:type="sysml:MembershipImport" xmi:id="fd93961c-3cb2-32e9-a738-ef604d700aaa" elementId="fd93961c-3cb2-32e9-a738-ef604d700aaa" visibility="public"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="363288b5-21da-314b-8ae1-6940d429bb5c" elementId="363288b5-21da-314b-8ae1-6940d429bb5c">
+        <ownedRelatedElement xsi:type="sysml:RequirementUsage" xmi:id="e9ae746a-626f-3428-bb4a-4b291d16cc3b" declaredName="PowerTrainRequirements" elementId="e9ae746a-626f-3428-bb4a-4b291d16cc3b"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="c021f523-4b88-34be-8ff0-2b30f49df2ae" elementId="c021f523-4b88-34be-8ff0-2b30f49df2ae">
+        <ownedRelatedElement xsi:type="sysml:Package" xmi:id="ef9dd9d3-d89f-3c83-bbc3-5c49d2f5861e" declaredName="Vehicle Model" elementId="ef9dd9d3-d89f-3c83-bbc3-5c49d2f5861e">
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="7753eda0-6b22-35ec-a870-f7dae45ccfaf" elementId="7753eda0-6b22-35ec-a870-f7dae45ccfaf">
+            <ownedRelatedElement xsi:type="sysml:Documentation" xmi:id="5e2754fa-2b4e-33aa-bbc4-016d46b8e112" elementId="5e2754fa-2b4e-33aa-bbc4-016d46b8e112" body="This package is used to represent a top-level &quot;model&quot;.&#xA;There is no specific syntax for identifying a package&#xA;used in this way.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="5ca50f07-faf7-3459-bc81-b3007efd5470" elementId="5ca50f07-faf7-3459-bc81-b3007efd5470">
+            <ownedRelatedElement xsi:type="sysml:Package" xmi:id="94118fac-c224-3c7f-88c4-c471fe8069ef" declaredName="Vehicle1-Configuration" elementId="94118fac-c224-3c7f-88c4-c471fe8069ef">
+              <ownedRelationship xsi:type="sysml:Membership" xmi:id="65a2ec88-7340-3762-b3cf-56d75343787e" elementId="65a2ec88-7340-3762-b3cf-56d75343787e" memberName="Sport Sedan"/>
+              <ownedRelationship xsi:type="sysml:MembershipImport" xmi:id="aa7e0275-0f45-34d9-aa8e-b76e0fd80a92" elementId="aa7e0275-0f45-34d9-aa8e-b76e0fd80a92" visibility="public"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="7d72f8ed-4be6-3ec6-a4fe-dd33b0b71017" elementId="7d72f8ed-4be6-3ec6-a4fe-dd33b0b71017">
+            <ownedRelatedElement xsi:type="sysml:Package" xmi:id="c58e804b-6455-3f69-83f6-abd48b1e3cb4" declaredName="Vehicle Reference Model" elementId="c58e804b-6455-3f69-83f6-abd48b1e3cb4">
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="67035d31-f0ba-3d46-834d-ae3464a363e5" elementId="67035d31-f0ba-3d46-834d-ae3464a363e5">
+                <ownedRelatedElement xsi:type="sysml:Documentation" xmi:id="4fea5cb8-9ef6-3900-8b49-760d3e7e2e15" elementId="4fea5cb8-9ef6-3900-8b49-760d3e7e2e15" body="This package is used to represent a &quot;model library&quot;.&#xA;There is no specific syntax for identifying a package&#xA;used in this way.&#xA;"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:MembershipImport" xmi:id="7ce554d7-558e-3626-a582-ebdcfb751cdc" elementId="7ce554d7-558e-3626-a582-ebdcfb751cdc" visibility="public"/>
+              <ownedRelationship xsi:type="sysml:MembershipImport" xmi:id="f1c87617-2bcb-3d6a-9259-f359cfab6658" elementId="f1c87617-2bcb-3d6a-9259-f359cfab6658" visibility="public" importedMembership="ab869729-b55c-36e7-af90-050f12bf41f0"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="ab869729-b55c-36e7-af90-050f12bf41f0" elementId="ab869729-b55c-36e7-af90-050f12bf41f0">
+            <ownedRelatedElement xsi:type="sysml:Package" xmi:id="8e5f88f4-5034-31a8-b963-65aec0e82360" declaredName="VehicleSubsystems" elementId="8e5f88f4-5034-31a8-b963-65aec0e82360">
+              <ownedRelationship xsi:type="sysml:MembershipImport" xmi:id="cdc7a504-85a6-3d72-a3a3-98be4d74f055" elementId="cdc7a504-85a6-3d72-a3a3-98be4d74f055" visibility="public" importedMembership="9318bf1a-8dcb-3909-8322-3571587ea82b"/>
+              <ownedRelationship xsi:type="sysml:MembershipImport" xmi:id="91baec8c-f835-3dc8-87cd-a36b7c34399a" elementId="91baec8c-f835-3dc8-87cd-a36b7c34399a" visibility="public" importedMembership="8041f23a-32e4-3273-9108-a194f6f4469c"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="9318bf1a-8dcb-3909-8322-3571587ea82b" elementId="9318bf1a-8dcb-3909-8322-3571587ea82b">
+            <ownedRelatedElement xsi:type="sysml:Package" xmi:id="c07b1eb2-36ae-393d-8305-6d92dd8d88c8" declaredName="Body&amp;Interior" elementId="c07b1eb2-36ae-393d-8305-6d92dd8d88c8">
+              <ownedRelationship xsi:type="sysml:MembershipImport" xmi:id="8bbf64b1-9f00-3f71-a2fb-4063506e4e7d" elementId="8bbf64b1-9f00-3f71-a2fb-4063506e4e7d" visibility="public" importedMembership="2b6c5e30-215f-3ff9-8690-a00bd1a9a09a"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="8041f23a-32e4-3273-9108-a194f6f4469c" elementId="8041f23a-32e4-3273-9108-a194f6f4469c">
+            <ownedRelatedElement xsi:type="sysml:Package" xmi:id="bf47c925-c17e-35ea-89b4-15701cd15a50" declaredName="PowerTrain" elementId="bf47c925-c17e-35ea-89b4-15701cd15a50">
+              <ownedRelationship xsi:type="sysml:MembershipImport" xmi:id="5b4bcd57-ef4f-3b4f-b40b-6025cd8b503c" elementId="5b4bcd57-ef4f-3b4f-b40b-6025cd8b503c" visibility="public"/>
+              <ownedRelationship xsi:type="sysml:MembershipImport" xmi:id="50af596c-d731-3554-8eea-e3a34958db43" elementId="50af596c-d731-3554-8eea-e3a34958db43" visibility="public"/>
+              <ownedRelationship xsi:type="sysml:MembershipImport" xmi:id="f88fb609-1038-366d-9860-4811d0aa2865" elementId="f88fb609-1038-366d-9860-4811d0aa2865" visibility="public" importedMembership="363288b5-21da-314b-8ae1-6940d429bb5c"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="16c4790a-5363-3541-9c2b-3b40f8489365" elementId="16c4790a-5363-3541-9c2b-3b40f8489365">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="6174f091-52d9-36bf-9dbf-759c076ffa70" elementId="6174f091-52d9-36bf-9dbf-759c076ffa70">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="3592f83d-c7b0-30b1-b14b-4a0e53edaecd" declaredName="current" elementId="3592f83d-c7b0-30b1-b14b-4a0e53edaecd">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="9280f9a3-7b7d-348f-8b1b-a5d394ed6742" elementId="9280f9a3-7b7d-348f-8b1b-a5d394ed6742">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="8f671236-745f-308c-b17d-b2e4f04cd794" declaredName="part2" elementId="8f671236-745f-308c-b17d-b2e4f04cd794">
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="644e9796-10f7-3cbe-8033-86cf45f5e6bd" elementId="644e9796-10f7-3cbe-8033-86cf45f5e6bd">
+            <ownedRelatedElement xsi:type="sysml:ActionUsage" xmi:id="f86f7ded-c7ce-3f0b-a2fa-9a23139a3d4b" declaredName="action1" elementId="f86f7ded-c7ce-3f0b-a2fa-9a23139a3d4b" isComposite="true"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="b2c52eac-92e4-34fc-b004-7b6ed36792c1" elementId="b2c52eac-92e4-34fc-b004-7b6ed36792c1">
+            <ownedRelatedElement xsi:type="sysml:PerformActionUsage" xmi:id="030c8ace-2a7b-3f25-bcb6-02a8e4bcbcc6" declaredName="callAction1" elementId="030c8ace-2a7b-3f25-bcb6-02a8e4bcbcc6">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting" xmi:id="6cf55f8d-c702-33c2-be00-c64e693f4b87" elementId="6cf55f8d-c702-33c2-be00-c64e693f4b87"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

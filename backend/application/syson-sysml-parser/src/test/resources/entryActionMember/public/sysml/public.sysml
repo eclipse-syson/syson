@@ -1,0 +1,1 @@
+public entry assign index := index + 1;

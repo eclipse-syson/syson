@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:PartDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="ac74d42c-2e2b-3a45-bd3e-b2802f7e35ed" declaredName="Root" elementId="ac74d42c-2e2b-3a45-bd3e-b2802f7e35ed">
+  <ownedRelationship xsi:type="sysml:Subclassification" xmi:id="5f58cdb8-f8ce-3196-bb4b-dcb0c928318a" elementId="5f58cdb8-f8ce-3196-bb4b-dcb0c928318a" subclassifier="ac74d42c-2e2b-3a45-bd3e-b2802f7e35ed">
+    <superclassifier href="base.xmi#45e1c81f-1fde-3798-89e9-b0d2994d39b0"/>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="405e6c1b-dce8-3ef1-a482-832c6c838246" elementId="405e6c1b-dce8-3ef1-a482-832c6c838246">
+    <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="c9f356b5-05f2-38e1-9264-1c5e8b347aec" declaredName="replacement" elementId="c9f356b5-05f2-38e1-9264-1c5e8b347aec">
+      <ownedRelationship xsi:type="sysml:Redefinition" xmi:id="9e466f85-c209-36a3-baed-35b10f783509" elementId="9e466f85-c209-36a3-baed-35b10f783509" redefiningFeature="c9f356b5-05f2-38e1-9264-1c5e8b347aec">
+        <redefinedFeature href="base.xmi#33c1f0a1-8450-370d-9974-afe9771511ef"/>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:PartDefinition>

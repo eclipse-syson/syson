@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="37a350b2-851d-31e3-8b74-21b2ca6d84c1" elementId="37a350b2-851d-31e3-8b74-21b2ca6d84c1">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="2387b323-1717-3aec-bf17-0cdb3f0b78ba" elementId="2387b323-1717-3aec-bf17-0cdb3f0b78ba">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="10897db5-b814-33af-b9c7-40390d3819c3" declaredName="Verification Case Definition Example" elementId="10897db5-b814-33af-b9c7-40390d3819c3">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="3dbee6e6-0893-3f20-b5bc-6798acb03a45" elementId="3dbee6e6-0893-3f20-b5bc-6798acb03a45">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="fb2680cb-b80b-3da1-a43a-2affa64383c1" declaredName="Vehicle" elementId="fb2680cb-b80b-3da1-a43a-2affa64383c1">
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="f804e7ad-c5b4-3007-9fe0-f4d83382e1ba" elementId="f804e7ad-c5b4-3007-9fe0-f4d83382e1ba">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="495a23e9-dde4-37fd-8b14-dc48a94a433e" declaredName="mass" elementId="495a23e9-dde4-37fd-8b14-dc48a94a433e">
+              <ownedRelationship xsi:type="sysml:Subsetting" xmi:id="669dddaa-d5c0-3059-bdff-969a9156abf5" elementId="669dddaa-d5c0-3059-bdff-969a9156abf5" subsettingFeature="495a23e9-dde4-37fd-8b14-dc48a94a433e">
+                <subsettedFeature href="../../../../../../../../sysml.library.xmi.implied/Domain%20Libraries/Quantities%20and%20Units/ISQBase.sysmlx#9af08108-292b-534a-a527-068c17423dfd"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="bc456228-3267-3d28-a0e3-71b1d11d34e2" elementId="bc456228-3267-3d28-a0e3-71b1d11d34e2">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="8624dade-af6d-3b9f-94d4-c2b2aff5b60d" elementId="8624dade-af6d-3b9f-94d4-c2b2aff5b60d"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="500ca898-e79d-3715-aaea-7a64ab3d1782" elementId="500ca898-e79d-3715-aaea-7a64ab3d1782">
+        <ownedRelatedElement xsi:type="sysml:RequirementUsage" xmi:id="3c69454f-9ae5-3437-af18-93d6e9a62c05" declaredName="vehicleMassRequirement" elementId="3c69454f-9ae5-3437-af18-93d6e9a62c05">
+          <ownedRelationship xsi:type="sysml:SubjectMembership" xmi:id="218b4072-5199-3a63-a056-2675d38e449e" elementId="218b4072-5199-3a63-a056-2675d38e449e">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" xmi:id="1bcf74fb-5d23-3377-aa76-3ba10652147f" declaredName="vehicle" elementId="1bcf74fb-5d23-3377-aa76-3ba10652147f" direction="in">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="b60c9cbe-c480-3947-bd00-8c3fc3c76314" elementId="b60c9cbe-c480-3947-bd00-8c3fc3c76314" type="fb2680cb-b80b-3da1-a43a-2affa64383c1" typedFeature="1bcf74fb-5d23-3377-aa76-3ba10652147f"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="c966e888-c9fe-3b63-ab6c-707503b65454" elementId="c966e888-c9fe-3b63-ab6c-707503b65454">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" xmi:id="5387a8cd-c956-3855-bc43-574c72127f96" declaredName="massActual" elementId="5387a8cd-c956-3855-bc43-574c72127f96" direction="in">
+              <ownedRelationship xsi:type="sysml:Subsetting" xmi:id="e26bae21-8ab9-35cd-a325-28dd86e3e8ce" elementId="e26bae21-8ab9-35cd-a325-28dd86e3e8ce" subsettingFeature="5387a8cd-c956-3855-bc43-574c72127f96">
+                <subsettedFeature href="../../../../../../../../sysml.library.xmi.implied/Domain%20Libraries/Quantities%20and%20Units/ISQBase.sysmlx#9af08108-292b-534a-a527-068c17423dfd"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="d16294a9-b542-3a51-9977-91cdba44dec4" elementId="d16294a9-b542-3a51-9977-91cdba44dec4">
+            <ownedRelatedElement xsi:type="sysml:Documentation" xmi:id="9af6e1b0-ad6a-37ef-b584-d28b9200e53e" elementId="9af6e1b0-ad6a-37ef-b584-d28b9200e53e" body="The vehicle mass shall be less than or equal to 2500 kg. "/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:RequirementConstraintMembership" xmi:id="002a4162-1ceb-3d34-965d-4257aa7a0b2e" elementId="002a4162-1ceb-3d34-965d-4257aa7a0b2e" kind="requirement">
+            <ownedRelatedElement xsi:type="sysml:ConstraintUsage" xmi:id="ece265fb-4d91-363f-bd6c-be3867eb1fb2" elementId="ece265fb-4d91-363f-bd6c-be3867eb1fb2" isComposite="true">
+              <ownedRelationship xsi:type="sysml:ResultExpressionMembership" xmi:id="6791302e-0c7f-3aee-8c95-b22fcae41a19" elementId="6791302e-0c7f-3aee-8c95-b22fcae41a19">
+                <ownedRelatedElement xsi:type="sysml:OperatorExpression" xmi:id="c5e1817d-622d-348f-a830-504b374bc075" elementId="c5e1817d-622d-348f-a830-504b374bc075" operator="and">
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" xmi:id="e8396374-c998-3be2-97b4-a47cc021fd62" elementId="e8396374-c998-3be2-97b4-a47cc021fd62" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="5e96bca9-86b5-3ff6-ac7a-fa8d967464c6" elementId="5e96bca9-86b5-3ff6-ac7a-fa8d967464c6" direction="in">
+                      <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="15db490e-5ac2-39f3-aa8d-372c052a9270" elementId="15db490e-5ac2-39f3-aa8d-372c052a9270">
+                        <ownedRelatedElement xsi:type="sysml:OperatorExpression" xmi:id="86b7b6b9-d7ba-3c76-9dd4-8271e05a4ebf" elementId="86b7b6b9-d7ba-3c76-9dd4-8271e05a4ebf" operator="==">
+                          <ownedRelationship xsi:type="sysml:ParameterMembership" xmi:id="f3616a8d-e127-3275-89ee-de7a56546a80" elementId="f3616a8d-e127-3275-89ee-de7a56546a80" visibility="private">
+                            <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="239f42dc-cdc3-31e8-86bc-df02399ec106" elementId="239f42dc-cdc3-31e8-86bc-df02399ec106" direction="in">
+                              <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="fb4586ed-7cf3-3bea-afd5-d25e08f1c28f" elementId="fb4586ed-7cf3-3bea-afd5-d25e08f1c28f">
+                                <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression" xmi:id="9c0eca64-612d-3355-9a4f-557d41f310c2" elementId="9c0eca64-612d-3355-9a4f-557d41f310c2">
+                                  <ownedRelationship xsi:type="sysml:Membership" xmi:id="a4a7e5c6-cf32-36fd-8126-c04bafb9bd5b" elementId="a4a7e5c6-cf32-36fd-8126-c04bafb9bd5b" memberElement="5387a8cd-c956-3855-bc43-574c72127f96"/>
+                                  <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="6f359792-5638-3954-9ab0-a49bdddef2b7" elementId="6f359792-5638-3954-9ab0-a49bdddef2b7">
+                                    <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="900a0427-b2a5-35cd-a39f-715281b8a65b" elementId="900a0427-b2a5-35cd-a39f-715281b8a65b" direction="out"/>
+                                  </ownedRelationship>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                          <ownedRelationship xsi:type="sysml:ParameterMembership" xmi:id="d57ebd40-cdc9-30f6-91ad-d672a1f7bc4a" elementId="d57ebd40-cdc9-30f6-91ad-d672a1f7bc4a" visibility="private">
+                            <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="9a41d7d3-1f50-3740-9acb-f43bc1991304" elementId="9a41d7d3-1f50-3740-9acb-f43bc1991304" direction="in">
+                              <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="f7d91365-e6a0-3398-a49c-6ffec48081b3" elementId="f7d91365-e6a0-3398-a49c-6ffec48081b3">
+                                <ownedRelatedElement xsi:type="sysml:FeatureChainExpression" xmi:id="852ebfc4-4090-36db-925b-5a10712316f7" elementId="852ebfc4-4090-36db-925b-5a10712316f7">
+                                  <ownedRelationship xsi:type="sysml:ParameterMembership" xmi:id="4ef7bbb8-8f05-3c8b-8b3c-e32aa40edde9" elementId="4ef7bbb8-8f05-3c8b-8b3c-e32aa40edde9" visibility="private">
+                                    <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="34dad5e6-0a6a-3413-a050-27f0df36d98e" elementId="34dad5e6-0a6a-3413-a050-27f0df36d98e" direction="in">
+                                      <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="00b9216a-44ef-3532-b4e3-bd34ebbad625" elementId="00b9216a-44ef-3532-b4e3-bd34ebbad625">
+                                        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression" xmi:id="ac39056c-ffb7-30f1-9547-261297c063fd" elementId="ac39056c-ffb7-30f1-9547-261297c063fd">
+                                          <ownedRelationship xsi:type="sysml:Membership" xmi:id="5856dca4-69b7-37a8-a69e-6b1c8beebcac" elementId="5856dca4-69b7-37a8-a69e-6b1c8beebcac" memberElement="1bcf74fb-5d23-3377-aa76-3ba10652147f"/>
+                                          <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="d7ae79de-60c2-39f8-b741-7a492b2d9272" elementId="d7ae79de-60c2-39f8-b741-7a492b2d9272">
+                                            <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="7d30d29c-5688-3e35-8e65-d1d5312d7a4b" elementId="7d30d29c-5688-3e35-8e65-d1d5312d7a4b" direction="out"/>
+                                          </ownedRelationship>
+                                        </ownedRelatedElement>
+                                      </ownedRelationship>
+                                      <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="56333e47-c677-32bb-9dbe-d27214f7d66b" elementId="56333e47-c677-32bb-9dbe-d27214f7d66b">
+                                        <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="0e48293e-f9cd-3cbe-bb92-e666b81b3a00" declaredName="" elementId="0e48293e-f9cd-3cbe-bb92-e666b81b3a00"/>
+                                      </ownedRelationship>
+                                    </ownedRelatedElement>
+                                  </ownedRelationship>
+                                  <ownedRelationship xsi:type="sysml:Membership" xmi:id="d1ee2b0a-303b-3793-8b86-64fb2be5fe6d" elementId="d1ee2b0a-303b-3793-8b86-64fb2be5fe6d" memberElement="495a23e9-dde4-37fd-8b14-dc48a94a433e"/>
+                                  <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="b9098b83-7803-3b6f-ad63-a163bff415b2" elementId="b9098b83-7803-3b6f-ad63-a163bff415b2">
+                                    <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="adfd37a9-c0c9-3c25-bbe5-19370b753513" elementId="adfd37a9-c0c9-3c25-bbe5-19370b753513" direction="out"/>
+                                  </ownedRelationship>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                          <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="2ecd793e-539d-3665-a202-577978a10abd" elementId="2ecd793e-539d-3665-a202-577978a10abd">
+                            <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="582cc48a-256e-349f-b95c-d54bc94cc663" elementId="582cc48a-256e-349f-b95c-d54bc94cc663" direction="out"/>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" xmi:id="d0524544-2e56-38c5-ac5e-739e8c36cc88" elementId="d0524544-2e56-38c5-ac5e-739e8c36cc88" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="f5f297bc-e1ae-3635-a006-97872a6c80ce" elementId="f5f297bc-e1ae-3635-a006-97872a6c80ce" direction="in">
+                      <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="bd3c0bc9-05b3-33af-88a9-f6d7ad4e1407" elementId="bd3c0bc9-05b3-33af-88a9-f6d7ad4e1407">
+                        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression" xmi:id="822dc967-cb90-3ba8-b435-4da1737ef13c" elementId="822dc967-cb90-3ba8-b435-4da1737ef13c">
+                          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="af8cbaec-827b-3c62-8da3-1d2300025cd0" elementId="af8cbaec-827b-3c62-8da3-1d2300025cd0">
+                            <ownedRelatedElement xsi:type="sysml:OperatorExpression" xmi:id="4dc4a165-302e-34bf-999d-6ff31ea076cf" elementId="4dc4a165-302e-34bf-999d-6ff31ea076cf" operator="&lt;=">
+                              <ownedRelationship xsi:type="sysml:ParameterMembership" xmi:id="3798f18c-90a1-314f-bc2c-c34a62ec8172" elementId="3798f18c-90a1-314f-bc2c-c34a62ec8172" visibility="private">
+                                <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="36f13b59-186b-393e-b12e-134e2d19f687" elementId="36f13b59-186b-393e-b12e-134e2d19f687" direction="in">
+                                  <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="c3684e60-9935-3e79-b027-f31e10d8e70d" elementId="c3684e60-9935-3e79-b027-f31e10d8e70d">
+                                    <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression" xmi:id="5477c19a-4234-3ea7-8b0f-9c750d9c2437" elementId="5477c19a-4234-3ea7-8b0f-9c750d9c2437">
+                                      <ownedRelationship xsi:type="sysml:Membership" xmi:id="f5292634-7d47-33eb-a364-3859e295df35" elementId="f5292634-7d47-33eb-a364-3859e295df35" memberElement="5387a8cd-c956-3855-bc43-574c72127f96"/>
+                                      <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="dd719114-9026-3096-9824-e06458878a59" elementId="dd719114-9026-3096-9824-e06458878a59">
+                                        <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="1d9f8a63-5a21-3c1d-bf9b-551659049735" elementId="1d9f8a63-5a21-3c1d-bf9b-551659049735" direction="out"/>
+                                      </ownedRelationship>
+                                    </ownedRelatedElement>
+                                  </ownedRelationship>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                              <ownedRelationship xsi:type="sysml:ParameterMembership" xmi:id="3cb98ba9-d8ce-3cb0-a4cb-53522898b6d7" elementId="3cb98ba9-d8ce-3cb0-a4cb-53522898b6d7" visibility="private">
+                                <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="cf27078d-fb14-39ec-8f91-fab1519d318e" elementId="cf27078d-fb14-39ec-8f91-fab1519d318e" direction="in">
+                                  <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="fb6c3765-b2e3-3667-ab13-2be536d0b917" elementId="fb6c3765-b2e3-3667-ab13-2be536d0b917">
+                                    <ownedRelatedElement xsi:type="sysml:OperatorExpression" xmi:id="76fe259e-f1d9-3920-979e-0254267fdf58" elementId="76fe259e-f1d9-3920-979e-0254267fdf58" operator="[">
+                                      <ownedRelationship xsi:type="sysml:ParameterMembership" xmi:id="00dac793-1c1f-35da-ae4a-1ec4534d1dad" elementId="00dac793-1c1f-35da-ae4a-1ec4534d1dad" visibility="private">
+                                        <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="42104b48-01ff-33de-9005-fedecdb76b28" elementId="42104b48-01ff-33de-9005-fedecdb76b28" direction="in">
+                                          <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="1739ee3d-e07f-365f-8a18-6fe5a701022c" elementId="1739ee3d-e07f-365f-8a18-6fe5a701022c">
+                                            <ownedRelatedElement xsi:type="sysml:LiteralInteger" xmi:id="3a1a021d-1e6e-309d-a335-eed95a9fef99" elementId="3a1a021d-1e6e-309d-a335-eed95a9fef99" value="2500"/>
+                                          </ownedRelationship>
+                                        </ownedRelatedElement>
+                                      </ownedRelationship>
+                                      <ownedRelationship xsi:type="sysml:ParameterMembership" xmi:id="f7ff5a1a-6509-3031-8e07-3e94e9ad6e9c" elementId="f7ff5a1a-6509-3031-8e07-3e94e9ad6e9c" visibility="private">
+                                        <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="822261af-ca9c-36e2-9b28-3172cd016bec" elementId="822261af-ca9c-36e2-9b28-3172cd016bec" direction="in">
+                                          <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="48863274-4c34-33d7-be1e-d27e05167420" elementId="48863274-4c34-33d7-be1e-d27e05167420">
+                                            <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression" xmi:id="7aac91a8-9931-3aa0-9b2f-b022f09d3a43" elementId="7aac91a8-9931-3aa0-9b2f-b022f09d3a43">
+                                              <ownedRelationship xsi:type="sysml:Membership" xmi:id="bad43f7d-883a-3500-919f-6716e08d83a6" elementId="bad43f7d-883a-3500-919f-6716e08d83a6">
+                                                <memberElement xsi:type="sysml:AttributeUsage" href="../../../../../../../../sysml.library.xmi.implied/Domain%20Libraries/Quantities%20and%20Units/SI.sysmlx#bb1d79c2-1306-5b35-a807-93e46fc3431c"/>
+                                              </ownedRelationship>
+                                              <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="5c7f9fa5-05f4-3f24-8528-16bb0c0e8cc5" elementId="5c7f9fa5-05f4-3f24-8528-16bb0c0e8cc5">
+                                                <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="1f034c94-73a7-386c-8c77-fc817106da18" elementId="1f034c94-73a7-386c-8c77-fc817106da18" direction="out"/>
+                                              </ownedRelationship>
+                                            </ownedRelatedElement>
+                                          </ownedRelationship>
+                                        </ownedRelatedElement>
+                                      </ownedRelationship>
+                                      <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="2da17478-a2bb-350c-b156-fcb127c88862" elementId="2da17478-a2bb-350c-b156-fcb127c88862">
+                                        <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="777b68a2-e7a8-32bb-abb5-74a427bd2793" elementId="777b68a2-e7a8-32bb-abb5-74a427bd2793" direction="out"/>
+                                      </ownedRelationship>
+                                    </ownedRelatedElement>
+                                  </ownedRelationship>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                              <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="638752f2-d2cf-32be-92d7-e9a0be6a72c5" elementId="638752f2-d2cf-32be-92d7-e9a0be6a72c5">
+                                <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="c9d176fd-276c-3ab9-9ad8-001a19c95c3f" elementId="c9d176fd-276c-3ab9-9ad8-001a19c95c3f" direction="out"/>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                          <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="45f95d56-ad3f-33c6-a7c9-7103078794e6" elementId="45f95d56-ad3f-33c6-a7c9-7103078794e6">
+                            <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="3673e029-a2e8-3b03-8b04-3b3d5b5f772b" elementId="3673e029-a2e8-3b03-8b04-3b3d5b5f772b" direction="out"/>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="ddbba133-2a74-3b21-8b60-425238f9b1fb" elementId="ddbba133-2a74-3b21-8b60-425238f9b1fb">
+                    <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="a55109ee-259b-36b3-bdd2-1e21bba69f8b" elementId="a55109ee-259b-36b3-bdd2-1e21bba69f8b" direction="out"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="10318790-7b06-38e4-b209-44f48c799055" elementId="10318790-7b06-38e4-b209-44f48c799055">
+        <ownedRelatedElement xsi:type="sysml:VerificationCaseDefinition" xmi:id="b44136f4-03b4-3794-89b1-385b32dbc9a4" declaredName="VehicleMassTest" elementId="b44136f4-03b4-3794-89b1-385b32dbc9a4">
+          <ownedRelationship xsi:type="sysml:NamespaceImport" xmi:id="e6aedd57-35ff-3923-b8f1-33ef3e525d9d" elementId="e6aedd57-35ff-3923-b8f1-33ef3e525d9d">
+            <importedNamespace href="../../../../../../../../sysml.library.xmi.implied/Systems%20Library/VerificationCases.sysmlx#80adc6de-385d-5253-ad54-767ce42dbd6a"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:SubjectMembership" xmi:id="6813de9c-2778-3f7f-b63a-9742703de3e4" elementId="6813de9c-2778-3f7f-b63a-9742703de3e4">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" xmi:id="f19e30f8-df9f-3864-adf1-e6eeb4333f62" declaredName="testVehicle" elementId="f19e30f8-df9f-3864-adf1-e6eeb4333f62" direction="in">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="90730440-d458-3419-bc44-face83ebd728" elementId="90730440-d458-3419-bc44-face83ebd728" type="fb2680cb-b80b-3da1-a43a-2affa64383c1" typedFeature="f19e30f8-df9f-3864-adf1-e6eeb4333f62"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:ObjectiveMembership" xmi:id="27a1e037-bdfd-3818-9b35-d0acc407226a" elementId="27a1e037-bdfd-3818-9b35-d0acc407226a">
+            <ownedRelatedElement xsi:type="sysml:RequirementUsage" xmi:id="dff510dc-3449-3038-8a7a-5c3d04892b16" declaredName="vehicleMassVerificationObjective" elementId="dff510dc-3449-3038-8a7a-5c3d04892b16" isComposite="true">
+              <ownedRelationship xsi:type="sysml:RequirementVerificationMembership" xmi:id="8e92744f-55b8-394d-a069-920057b8cb49" elementId="8e92744f-55b8-394d-a069-920057b8cb49">
+                <ownedRelatedElement xsi:type="sysml:RequirementUsage" xmi:id="1c0338c6-7b85-34cb-a3ee-49caa37ffd77" elementId="1c0338c6-7b85-34cb-a3ee-49caa37ffd77" isComposite="true">
+                  <ownedRelationship xsi:type="sysml:ReferenceSubsetting" xmi:id="771ee042-de01-356a-95f6-7c21175153fe" elementId="771ee042-de01-356a-95f6-7c21175153fe" referencedFeature="3c69454f-9ae5-3437-af18-93d6e9a62c05"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="eead92d1-1b52-3e3f-84f2-69c8f009c968" elementId="eead92d1-1b52-3e3f-84f2-69c8f009c968">
+            <ownedRelatedElement xsi:type="sysml:ActionUsage" xmi:id="9ca263ba-7f73-3da4-8141-0b094d83a8c8" declaredName="collectData" elementId="9ca263ba-7f73-3da4-8141-0b094d83a8c8" isComposite="true">
+              <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="5c160838-711e-3503-8014-bc41ed598f66" elementId="5c160838-711e-3503-8014-bc41ed598f66">
+                <ownedRelatedElement xsi:type="sysml:PartUsage" xmi:id="65ffc4b2-28c0-3f99-9689-a0e878f0b601" declaredName="testVehicle" elementId="65ffc4b2-28c0-3f99-9689-a0e878f0b601" direction="in">
+                  <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="b5a1c35b-91d9-3784-861a-3df932ee181a" elementId="b5a1c35b-91d9-3784-861a-3df932ee181a" type="fb2680cb-b80b-3da1-a43a-2affa64383c1" typedFeature="65ffc4b2-28c0-3f99-9689-a0e878f0b601"/>
+                  <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="1b1009dc-9776-3bf5-b090-a1f84ab2bfbd" elementId="1b1009dc-9776-3bf5-b090-a1f84ab2bfbd">
+                    <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression" xmi:id="32ae1a5f-8044-3f27-b8e8-49e07f3587df" elementId="32ae1a5f-8044-3f27-b8e8-49e07f3587df">
+                      <ownedRelationship xsi:type="sysml:Membership" xmi:id="ab9d92ea-c142-3af8-8c7c-bad6405edc3d" elementId="ab9d92ea-c142-3af8-8c7c-bad6405edc3d" memberElement="f19e30f8-df9f-3864-adf1-e6eeb4333f62"/>
+                      <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="ea3d962f-5e2b-3a71-ba48-5e28e22246cd" elementId="ea3d962f-5e2b-3a71-ba48-5e28e22246cd">
+                        <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="34a67760-852d-3807-a25a-a5ffe7a9e766" elementId="34a67760-852d-3807-a25a-a5ffe7a9e766" direction="out"/>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="4468795e-3ab7-3b0e-aa73-1f5161141eac" elementId="4468795e-3ab7-3b0e-aa73-1f5161141eac">
+                    <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="964326f8-57d1-32fa-a13d-bf1355dce812" elementId="964326f8-57d1-32fa-a13d-bf1355dce812"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="140e7885-a643-3bc5-ac60-30174db97c09" elementId="140e7885-a643-3bc5-ac60-30174db97c09">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage" xmi:id="b98e6707-b65a-3f20-8edd-d90976dc8a71" declaredName="massMeasured" elementId="b98e6707-b65a-3f20-8edd-d90976dc8a71" direction="out">
+                  <ownedRelationship xsi:type="sysml:Subsetting" xmi:id="832e7f75-95bc-3bea-84a0-d209c73f7fbb" elementId="832e7f75-95bc-3bea-84a0-d209c73f7fbb" subsettingFeature="b98e6707-b65a-3f20-8edd-d90976dc8a71">
+                    <subsettedFeature href="../../../../../../../../sysml.library.xmi.implied/Domain%20Libraries/Quantities%20and%20Units/ISQBase.sysmlx#9af08108-292b-534a-a527-068c17423dfd"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="2b388b4e-7f09-36a2-ba3e-a1af7307e508" elementId="2b388b4e-7f09-36a2-ba3e-a1af7307e508">
+            <ownedRelatedElement xsi:type="sysml:ActionUsage" xmi:id="302cba6f-5ac8-303e-81f3-4d1335d969e5" declaredName="processData" elementId="302cba6f-5ac8-303e-81f3-4d1335d969e5" isComposite="true">
+              <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="f9e0efc4-1923-3b43-851b-eba54a79cae2" elementId="f9e0efc4-1923-3b43-851b-eba54a79cae2">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage" xmi:id="0de44a9d-c2fd-3ba3-b68c-bd359f5d89c3" declaredName="massMeasured" elementId="0de44a9d-c2fd-3ba3-b68c-bd359f5d89c3" direction="in">
+                  <ownedRelationship xsi:type="sysml:Subsetting" xmi:id="3188eab3-b5ea-3b63-bc30-df99ab4f4d3b" elementId="3188eab3-b5ea-3b63-bc30-df99ab4f4d3b" subsettingFeature="0de44a9d-c2fd-3ba3-b68c-bd359f5d89c3">
+                    <subsettedFeature href="../../../../../../../../sysml.library.xmi.implied/Domain%20Libraries/Quantities%20and%20Units/ISQBase.sysmlx#9af08108-292b-534a-a527-068c17423dfd"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="2598eebb-61a2-3b84-ae57-33014c3f3c52" elementId="2598eebb-61a2-3b84-ae57-33014c3f3c52">
+                    <ownedRelatedElement xsi:type="sysml:FeatureChainExpression" xmi:id="fcf3cfce-b8e3-3878-8385-be04225a9c6f" elementId="fcf3cfce-b8e3-3878-8385-be04225a9c6f">
+                      <ownedRelationship xsi:type="sysml:ParameterMembership" xmi:id="b3a3664d-ca18-38c5-a199-0a8b321462df" elementId="b3a3664d-ca18-38c5-a199-0a8b321462df" visibility="private">
+                        <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="e733d466-94a5-33d3-b6a6-77736192ddb6" elementId="e733d466-94a5-33d3-b6a6-77736192ddb6" direction="in">
+                          <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="7b17a864-1a36-35e5-b465-e2fbea82b471" elementId="7b17a864-1a36-35e5-b465-e2fbea82b471">
+                            <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression" xmi:id="91d9a650-a591-3d56-9739-aa9ed766594a" elementId="91d9a650-a591-3d56-9739-aa9ed766594a">
+                              <ownedRelationship xsi:type="sysml:Membership" xmi:id="312e612d-4168-36ad-b002-12ed19ed91a6" elementId="312e612d-4168-36ad-b002-12ed19ed91a6" memberElement="9ca263ba-7f73-3da4-8141-0b094d83a8c8"/>
+                              <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="80f2e907-a0da-3fee-bf50-19e5c479a65d" elementId="80f2e907-a0da-3fee-bf50-19e5c479a65d">
+                                <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="aef1b7a3-6583-3fcf-aa2d-bfdf7e3a4e8d" elementId="aef1b7a3-6583-3fcf-aa2d-bfdf7e3a4e8d" direction="out"/>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="aa56bd3b-5ce1-345b-8c67-0ff75d10635f" elementId="aa56bd3b-5ce1-345b-8c67-0ff75d10635f">
+                            <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="96266d86-9702-3553-8c5f-5426d75c76a4" declaredName="" elementId="96266d86-9702-3553-8c5f-5426d75c76a4"/>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                      <ownedRelationship xsi:type="sysml:Membership" xmi:id="5663bb10-1a75-388d-893f-77407e365c8d" elementId="5663bb10-1a75-388d-893f-77407e365c8d" memberElement="b98e6707-b65a-3f20-8edd-d90976dc8a71"/>
+                      <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="df765ab1-683a-3a32-9a3b-9fa7174d054e" elementId="df765ab1-683a-3a32-9a3b-9fa7174d054e">
+                        <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="98aa59b2-3664-368d-bc6a-3fef46f7ac53" elementId="98aa59b2-3664-368d-bc6a-3fef46f7ac53" direction="out"/>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="bfc45c78-1673-3eae-ac6b-ef74466e8cc4" elementId="bfc45c78-1673-3eae-ac6b-ef74466e8cc4">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage" xmi:id="a586b705-304a-3bcb-b9e3-da5cdb30c600" declaredName="massProcessed" elementId="a586b705-304a-3bcb-b9e3-da5cdb30c600" direction="out">
+                  <ownedRelationship xsi:type="sysml:Subsetting" xmi:id="596e419d-834f-3b81-82e4-97d6c5d1f4ba" elementId="596e419d-834f-3b81-82e4-97d6c5d1f4ba" subsettingFeature="a586b705-304a-3bcb-b9e3-da5cdb30c600">
+                    <subsettedFeature href="../../../../../../../../sysml.library.xmi.implied/Domain%20Libraries/Quantities%20and%20Units/ISQBase.sysmlx#9af08108-292b-534a-a527-068c17423dfd"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="1dc5196f-c358-36bc-b47b-9e41c2d4ef4f" elementId="1dc5196f-c358-36bc-b47b-9e41c2d4ef4f">
+            <ownedRelatedElement xsi:type="sysml:ActionUsage" xmi:id="8e494059-c554-3532-bc0f-63d4b37120bc" declaredName="evaluateData" elementId="8e494059-c554-3532-bc0f-63d4b37120bc" isComposite="true">
+              <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="04958284-a007-37cb-a3a8-fe5695965a7c" elementId="04958284-a007-37cb-a3a8-fe5695965a7c">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage" xmi:id="6a67af74-7352-3ebf-8244-487cae93f652" declaredName="massProcessed" elementId="6a67af74-7352-3ebf-8244-487cae93f652" direction="in">
+                  <ownedRelationship xsi:type="sysml:Subsetting" xmi:id="50a936b1-3734-37f5-8729-3bc7e4255182" elementId="50a936b1-3734-37f5-8729-3bc7e4255182" subsettingFeature="6a67af74-7352-3ebf-8244-487cae93f652">
+                    <subsettedFeature href="../../../../../../../../sysml.library.xmi.implied/Domain%20Libraries/Quantities%20and%20Units/ISQBase.sysmlx#9af08108-292b-534a-a527-068c17423dfd"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="e97d353e-9d46-3026-9e26-b93122badd48" elementId="e97d353e-9d46-3026-9e26-b93122badd48">
+                    <ownedRelatedElement xsi:type="sysml:FeatureChainExpression" xmi:id="f48ef83f-9cdd-30f7-a736-401c6f7f6147" elementId="f48ef83f-9cdd-30f7-a736-401c6f7f6147">
+                      <ownedRelationship xsi:type="sysml:ParameterMembership" xmi:id="ade5d242-513c-30e6-af50-8a593cf3ed28" elementId="ade5d242-513c-30e6-af50-8a593cf3ed28" visibility="private">
+                        <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="928cd4ed-0c25-30b6-a6b4-47a0ae521243" elementId="928cd4ed-0c25-30b6-a6b4-47a0ae521243" direction="in">
+                          <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="1d40bda7-10ac-3691-b2e1-cee310dc3782" elementId="1d40bda7-10ac-3691-b2e1-cee310dc3782">
+                            <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression" xmi:id="534a0d65-9ba3-3545-9e4e-58ff4acb4a38" elementId="534a0d65-9ba3-3545-9e4e-58ff4acb4a38">
+                              <ownedRelationship xsi:type="sysml:Membership" xmi:id="7420e3b3-7063-3e65-b7ae-c9d8821ee7f3" elementId="7420e3b3-7063-3e65-b7ae-c9d8821ee7f3" memberElement="302cba6f-5ac8-303e-81f3-4d1335d969e5"/>
+                              <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="c1234027-8eff-3710-861e-9da6bd0f9e19" elementId="c1234027-8eff-3710-861e-9da6bd0f9e19">
+                                <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="39d17567-47e2-3963-a7f2-0ac60511fe28" elementId="39d17567-47e2-3963-a7f2-0ac60511fe28" direction="out"/>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="ca4bafa8-a26b-362a-bc4c-57c46675df4a" elementId="ca4bafa8-a26b-362a-bc4c-57c46675df4a">
+                            <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="13795b7a-0c45-363c-9360-5c0ee0f99308" declaredName="" elementId="13795b7a-0c45-363c-9360-5c0ee0f99308"/>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                      <ownedRelationship xsi:type="sysml:Membership" xmi:id="3095ae43-2d35-3f39-9d66-9e2448aeb414" elementId="3095ae43-2d35-3f39-9d66-9e2448aeb414" memberElement="a586b705-304a-3bcb-b9e3-da5cdb30c600"/>
+                      <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="08cf4497-52f5-3564-bccd-0a7daef9e1be" elementId="08cf4497-52f5-3564-bccd-0a7daef9e1be">
+                        <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="5e02f5ba-ae2e-3b2b-a3e3-448d9824e0b2" elementId="5e02f5ba-ae2e-3b2b-a3e3-448d9824e0b2" direction="out"/>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="3a26296c-bf5d-32f4-9326-e811d8a9dc2c" elementId="3a26296c-bf5d-32f4-9326-e811d8a9dc2c">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage" xmi:id="0d63e3a9-39c6-3e9b-a946-dfa68efeb220" declaredName="verdict" elementId="0d63e3a9-39c6-3e9b-a946-dfa68efeb220" direction="out">
+                  <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="2bc199bf-624e-3483-9cda-1c82e1ac9b54" elementId="2bc199bf-624e-3483-9cda-1c82e1ac9b54" typedFeature="0d63e3a9-39c6-3e9b-a946-dfa68efeb220">
+                    <type href="../../../../../../../../sysml.library.xmi.implied/Systems%20Library/VerificationCases.sysmlx#f06263b0-9202-57eb-944a-e0abb70837fb"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="a2a78d69-245f-3af1-8d22-641ab068306d" elementId="a2a78d69-245f-3af1-8d22-641ab068306d">
+                    <ownedRelatedElement xsi:type="sysml:InvocationExpression" xmi:id="3dd3370d-b5a2-39b2-b0fa-228596519fa6" elementId="3dd3370d-b5a2-39b2-b0fa-228596519fa6">
+                      <ownedRelationship xsi:type="sysml:Membership" xmi:id="df3c3a6d-e9b2-33a0-895a-16c4cf89d43f" elementId="df3c3a6d-e9b2-33a0-895a-16c4cf89d43f">
+                        <memberElement xsi:type="sysml:CalculationDefinition" href="../../../../../../../../sysml.library.xmi.implied/Systems%20Library/VerificationCases.sysmlx#adee398e-adf1-588c-bb0f-a25eab464557"/>
+                      </ownedRelationship>
+                      <ownedRelationship xsi:type="sysml:ParameterMembership" xmi:id="07d27f23-207a-3c43-a83e-f2c4fea280be" elementId="07d27f23-207a-3c43-a83e-f2c4fea280be">
+                        <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="eac02916-795c-3568-a498-5863fab2c684" elementId="eac02916-795c-3568-a498-5863fab2c684" direction="in">
+                          <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="b388999f-8672-3609-82f1-e06e6e0b83c9" elementId="b388999f-8672-3609-82f1-e06e6e0b83c9">
+                            <ownedRelatedElement xsi:type="sysml:InvocationExpression" xmi:id="b5fee269-ee2c-3b40-99ba-ebe16e7c0ce8" elementId="b5fee269-ee2c-3b40-99ba-ebe16e7c0ce8">
+                              <ownedRelationship xsi:type="sysml:Membership" xmi:id="ffdeeeda-8128-36fb-9c9b-f053808b5c76" elementId="ffdeeeda-8128-36fb-9c9b-f053808b5c76" memberElement="3c69454f-9ae5-3437-af18-93d6e9a62c05"/>
+                              <ownedRelationship xsi:type="sysml:ParameterMembership" xmi:id="644798e3-8323-3fb5-9fee-2b89868ae992" elementId="644798e3-8323-3fb5-9fee-2b89868ae992">
+                                <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="35b3a9c4-c784-3960-a973-f7684a26c2fb" elementId="35b3a9c4-c784-3960-a973-f7684a26c2fb" direction="in">
+                                  <ownedRelationship xsi:type="sysml:Redefinition" xmi:id="3414c7f9-cd9a-386f-9bf1-0db4cb606fe2" elementId="3414c7f9-cd9a-386f-9bf1-0db4cb606fe2" redefinedFeature="1bcf74fb-5d23-3377-aa76-3ba10652147f" redefiningFeature="35b3a9c4-c784-3960-a973-f7684a26c2fb"/>
+                                  <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="b9404c73-42ca-3266-817b-781ee0c739df" elementId="b9404c73-42ca-3266-817b-781ee0c739df">
+                                    <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression" xmi:id="c89402b1-573d-33a8-8cfb-fb4e49ee5d09" elementId="c89402b1-573d-33a8-8cfb-fb4e49ee5d09">
+                                      <ownedRelationship xsi:type="sysml:Membership" xmi:id="757aa6b9-02ae-3533-979b-770bc95e46c2" elementId="757aa6b9-02ae-3533-979b-770bc95e46c2" memberElement="f19e30f8-df9f-3864-adf1-e6eeb4333f62"/>
+                                      <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="dc0a51b0-2646-3b05-9a05-b6569f0f6217" elementId="dc0a51b0-2646-3b05-9a05-b6569f0f6217">
+                                        <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="661ec5ed-a941-35af-94a9-e121562bf912" elementId="661ec5ed-a941-35af-94a9-e121562bf912" direction="out"/>
+                                      </ownedRelationship>
+                                    </ownedRelatedElement>
+                                  </ownedRelationship>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                              <ownedRelationship xsi:type="sysml:ParameterMembership" xmi:id="769a48dc-0db3-3849-b204-c603d2e234f7" elementId="769a48dc-0db3-3849-b204-c603d2e234f7">
+                                <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="53f00176-fdf3-3c1c-bc08-25da14522aa8" elementId="53f00176-fdf3-3c1c-bc08-25da14522aa8" direction="in">
+                                  <ownedRelationship xsi:type="sysml:Redefinition" xmi:id="d36e4dff-0c60-383e-b679-c49bbf5b4a12" elementId="d36e4dff-0c60-383e-b679-c49bbf5b4a12" redefinedFeature="5387a8cd-c956-3855-bc43-574c72127f96" redefiningFeature="53f00176-fdf3-3c1c-bc08-25da14522aa8"/>
+                                  <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="e13e0246-cc90-3429-b3b8-4595028e980f" elementId="e13e0246-cc90-3429-b3b8-4595028e980f">
+                                    <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression" xmi:id="fa761553-2fba-35b7-bf14-506ee6856e77" elementId="fa761553-2fba-35b7-bf14-506ee6856e77">
+                                      <ownedRelationship xsi:type="sysml:Membership" xmi:id="3699420a-e0f6-3f0a-a549-157bcdf15df2" elementId="3699420a-e0f6-3f0a-a549-157bcdf15df2" memberElement="6a67af74-7352-3ebf-8244-487cae93f652"/>
+                                      <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="7d30e112-dfd8-3064-9dfe-2b1158f90f4c" elementId="7d30e112-dfd8-3064-9dfe-2b1158f90f4c">
+                                        <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="16d14033-605e-3e37-8558-4a198c4dbd22" elementId="16d14033-605e-3e37-8558-4a198c4dbd22" direction="out"/>
+                                      </ownedRelationship>
+                                    </ownedRelatedElement>
+                                  </ownedRelationship>
+                                </ownedRelatedElement>
+                              </ownedRelationship>
+                              <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="bcd08dee-d602-3eae-bd96-101b2f4b81ea" elementId="bcd08dee-d602-3eae-bd96-101b2f4b81ea">
+                                <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="bb2a9cfc-2c7d-3264-b87e-cd470cafb0ab" elementId="bb2a9cfc-2c7d-3264-b87e-cd470cafb0ab" direction="out"/>
+                              </ownedRelationship>
+                            </ownedRelatedElement>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                      <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="681078b1-ba5d-3d53-9bdb-1ca9cf9eb1c2" elementId="681078b1-ba5d-3d53-9bdb-1ca9cf9eb1c2">
+                        <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="9fd2a108-5747-3d20-b2e5-d58b2cc1c78c" elementId="9fd2a108-5747-3d20-b2e5-d58b2cc1c78c" direction="out"/>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="b9bf6a21-3f90-3a00-b543-d93d834cd3ea" elementId="b9bf6a21-3f90-3a00-b543-d93d834cd3ea">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" xmi:id="706de001-c713-3666-b974-1f97bffe066c" declaredName="verdict" elementId="706de001-c713-3666-b974-1f97bffe066c" direction="out">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="8c192e62-f25a-3e66-9095-6b0c86f045ec" elementId="8c192e62-f25a-3e66-9095-6b0c86f045ec" typedFeature="706de001-c713-3666-b974-1f97bffe066c">
+                <type href="../../../../../../../../sysml.library.xmi.implied/Systems%20Library/VerificationCases.sysmlx#f06263b0-9202-57eb-944a-e0abb70837fb"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="1a66784d-fbaa-306b-9e6b-ae5279b766a4" elementId="1a66784d-fbaa-306b-9e6b-ae5279b766a4">
+                <ownedRelatedElement xsi:type="sysml:FeatureChainExpression" xmi:id="e82b302d-a072-3b95-a44d-5825be946e8e" elementId="e82b302d-a072-3b95-a44d-5825be946e8e">
+                  <ownedRelationship xsi:type="sysml:ParameterMembership" xmi:id="076e65fc-6bc2-3dcc-af96-cf0305322993" elementId="076e65fc-6bc2-3dcc-af96-cf0305322993" visibility="private">
+                    <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="3132052d-2bdc-3703-8387-07ee307541d8" elementId="3132052d-2bdc-3703-8387-07ee307541d8" direction="in">
+                      <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="081e1ff3-79df-36a8-910c-8f30f6e11bfe" elementId="081e1ff3-79df-36a8-910c-8f30f6e11bfe">
+                        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression" xmi:id="81722d61-3def-3485-8691-4a9f444f8933" elementId="81722d61-3def-3485-8691-4a9f444f8933">
+                          <ownedRelationship xsi:type="sysml:Membership" xmi:id="f087a564-4982-370f-b6ef-f1aea086f7ce" elementId="f087a564-4982-370f-b6ef-f1aea086f7ce" memberElement="8e494059-c554-3532-bc0f-63d4b37120bc"/>
+                          <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="b500105c-1dc1-3024-8e0e-fe3fb8fde251" elementId="b500105c-1dc1-3024-8e0e-fe3fb8fde251">
+                            <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="606e6f16-f31b-30f6-83a2-7e024de027e4" elementId="606e6f16-f31b-30f6-83a2-7e024de027e4" direction="out"/>
+                          </ownedRelationship>
+                        </ownedRelatedElement>
+                      </ownedRelationship>
+                      <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="db24bcd7-6aa2-3174-b925-b74fa2722fc3" elementId="db24bcd7-6aa2-3174-b925-b74fa2722fc3">
+                        <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="958fe0e7-4987-3c0b-89cd-82f4e925609d" declaredName="" elementId="958fe0e7-4987-3c0b-89cd-82f4e925609d"/>
+                      </ownedRelationship>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:Membership" xmi:id="b76ff351-01d3-3c4e-9fa9-d3ea9c5ced24" elementId="b76ff351-01d3-3c4e-9fa9-d3ea9c5ced24" memberElement="0d63e3a9-39c6-3e9b-a946-dfa68efeb220"/>
+                  <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="f3c34407-a7f5-316e-8423-2f20c366e9b3" elementId="f3c34407-a7f5-316e-8423-2f20c366e9b3">
+                    <ownedRelatedElement xsi:type="sysml:Feature" xmi:id="61d7f780-fb84-3b93-950c-2273668a8fd4" elementId="61d7f780-fb84-3b93-950c-2273668a8fd4" direction="out"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

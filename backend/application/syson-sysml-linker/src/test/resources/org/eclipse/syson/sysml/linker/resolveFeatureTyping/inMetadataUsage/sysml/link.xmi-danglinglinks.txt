@@ -1,0 +1,2 @@
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0;importedNamespace;0;Other
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0;type;0;Metadata1

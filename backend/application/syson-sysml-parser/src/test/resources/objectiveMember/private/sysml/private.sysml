@@ -1,0 +1,1 @@
+private objective :> elements : TranslationOrRotation[1..*] ordered nonunique;

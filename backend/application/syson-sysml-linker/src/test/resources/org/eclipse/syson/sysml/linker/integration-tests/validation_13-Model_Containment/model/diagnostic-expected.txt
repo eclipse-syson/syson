@@ -1,0 +1,2495 @@
+ERROR - null
+  ERROR - Can't resolve $::13a-Model Containment's reference importedNamespace to 2a-Parts Interconnection.
+    INFO - Namespace $::13a-Model Containment can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $::13a-Model Containment can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $::13a-Model Containment can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    INFO - Namespace $ can't resolve 2a-Parts Interconnection locally.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via specializations.
+    INFO - Namespace $ can't resolved 2a-Parts Interconnection via imports.
+    ERROR - Can't resolve $::13a-Model Containment's reference importedNamespace to 2a-Parts Interconnection.
+  ERROR - Can't resolve $::13a-Model Containment's reference importedNamespace to 8-Requirements.
+    INFO - Namespace $::13a-Model Containment can't resolve 8-Requirements locally.
+    INFO - Namespace $::13a-Model Containment can't resolved 8-Requirements via specializations.
+    INFO - Namespace $::13a-Model Containment can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    INFO - Namespace $ can't resolve 8-Requirements locally.
+    INFO - Namespace $ can't resolved 8-Requirements via specializations.
+    INFO - Namespace $ can't resolved 8-Requirements via imports.
+    ERROR - Can't resolve $::13a-Model Containment's reference importedNamespace to 8-Requirements.
+  ERROR - Can't resolve $::13a-Model Containment::BodyAndInteriorRequirements's reference importedMembership to MassLimitationRequirement.
+    INFO - Namespace $::13a-Model Containment::BodyAndInteriorRequirements can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $::Requirements::requirementChecks can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $::Requirements::RequirementCheck can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $::Requirements::RequirementConstraintCheck can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $::Constraints::ConstraintCheck can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $::Performances::BooleanEvaluation can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $::Performances::Evaluation can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $::Performances::Performance can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $::Occurrences::Occurrence can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $::Base::Anything can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $::Base::Anything can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $::Base::Anything can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $::Occurrences::Occurrence can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $::Occurrences::Occurrence can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $::Performances::Performance can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $::Performances::Performance can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $::Performances::Evaluation can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $::Performances::Evaluation can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $::Performances::BooleanEvaluation can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $::Performances::BooleanEvaluation can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $::Constraints::ConstraintCheck can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $::Constraints::ConstraintCheck can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $::Requirements::RequirementConstraintCheck can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $::Requirements::RequirementConstraintCheck can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $::Requirements::RequirementCheck can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $::Requirements::RequirementCheck can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $::Constraints::constraintChecks can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $::Performances::booleanEvaluations can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $::Performances::evaluations can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $::Performances::performances can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $::Occurrences::occurrences can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $::Base::things can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $::Base::things can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $::Base::things can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $::Occurrences::occurrences can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $::Occurrences::occurrences can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $::Performances::performances can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $::Performances::performances can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $::Performances::evaluations can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $::Performances::evaluations can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $::Performances::booleanEvaluations can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $::Performances::booleanEvaluations can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $::Constraints::constraintChecks can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $::Constraints::constraintChecks can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $::Requirements::requirementChecks can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $::Requirements::requirementChecks can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $::13a-Model Containment::BodyAndInteriorRequirements can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $::13a-Model Containment::BodyAndInteriorRequirements can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $::13a-Model Containment can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $::13a-Model Containment can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $::13a-Model Containment can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    INFO - Namespace $ can't resolve MassLimitationRequirement locally.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via specializations.
+    INFO - Namespace $ can't resolved MassLimitationRequirement via imports.
+    ERROR - Can't resolve $::13a-Model Containment::BodyAndInteriorRequirements's reference importedMembership to MassLimitationRequirement.
+  ERROR - Can't resolve $::13a-Model Containment::Vehicle Model::Vehicle1-Configuration's reference importedMembership to vehicle1_c1 Specification Context::vehicle1-c1 Specification.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model::Vehicle1-Configuration can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model::Vehicle1-Configuration can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model::Vehicle1-Configuration can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $::13a-Model Containment can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $::13a-Model Containment can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $::13a-Model Containment can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 Specification Context::vehicle1-c1 Specification locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 Specification Context::vehicle1-c1 Specification via imports.
+    ERROR - Can't resolve $::13a-Model Containment::Vehicle Model::Vehicle1-Configuration's reference importedMembership to vehicle1_c1 Specification Context::vehicle1-c1 Specification.
+  ERROR - Can't resolve $::13a-Model Containment::Vehicle Model::Vehicle1-Configuration::Sport Sedan's reference memberElement to vehicle1_c1.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model::Vehicle1-Configuration can't resolve vehicle1_c1 locally.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model::Vehicle1-Configuration can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model::Vehicle1-Configuration can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model can't resolve vehicle1_c1 locally.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $::13a-Model Containment can't resolve vehicle1_c1 locally.
+    INFO - Namespace $::13a-Model Containment can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $::13a-Model Containment can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    INFO - Namespace $ can't resolve vehicle1_c1 locally.
+    INFO - Namespace $ can't resolved vehicle1_c1 via specializations.
+    INFO - Namespace $ can't resolved vehicle1_c1 via imports.
+    ERROR - Can't resolve $::13a-Model Containment::Vehicle Model::Vehicle1-Configuration::Sport Sedan's reference memberElement to vehicle1_c1.
+  ERROR - Can't resolve $::13a-Model Containment::Vehicle Model::Vehicle Reference Model's reference importedMembership to VehicleA.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model::Vehicle Reference Model can't resolve VehicleA locally.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model::Vehicle Reference Model can't resolved VehicleA via specializations.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model::Vehicle Reference Model can't resolved VehicleA via imports.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model can't resolve VehicleA locally.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model can't resolved VehicleA via specializations.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model can't resolved VehicleA via imports.
+    INFO - Namespace $::13a-Model Containment can't resolve VehicleA locally.
+    INFO - Namespace $::13a-Model Containment can't resolved VehicleA via specializations.
+    INFO - Namespace $::13a-Model Containment can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    INFO - Namespace $ can't resolve VehicleA locally.
+    INFO - Namespace $ can't resolved VehicleA via specializations.
+    INFO - Namespace $ can't resolved VehicleA via imports.
+    ERROR - Can't resolve $::13a-Model Containment::Vehicle Model::Vehicle Reference Model's reference importedMembership to VehicleA.
+  ERROR - Can't resolve $::13a-Model Containment::Vehicle Model::PowerTrain's reference importedMembership to Engine.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model::PowerTrain can't resolve Engine locally.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model::PowerTrain can't resolved Engine via specializations.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model::PowerTrain can't resolved Engine via imports.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model can't resolve Engine locally.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model can't resolved Engine via specializations.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model can't resolved Engine via imports.
+    INFO - Namespace $::13a-Model Containment can't resolve Engine locally.
+    INFO - Namespace $::13a-Model Containment can't resolved Engine via specializations.
+    INFO - Namespace $::13a-Model Containment can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    INFO - Namespace $ can't resolve Engine locally.
+    INFO - Namespace $ can't resolved Engine via specializations.
+    INFO - Namespace $ can't resolved Engine via imports.
+    ERROR - Can't resolve $::13a-Model Containment::Vehicle Model::PowerTrain's reference importedMembership to Engine.
+  ERROR - Can't resolve $::13a-Model Containment::Vehicle Model::PowerTrain's reference importedMembership to Transmission.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model::PowerTrain can't resolve Transmission locally.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model::PowerTrain can't resolved Transmission via specializations.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model::PowerTrain can't resolved Transmission via imports.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model can't resolve Transmission locally.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model can't resolved Transmission via specializations.
+    INFO - Namespace $::13a-Model Containment::Vehicle Model can't resolved Transmission via imports.
+    INFO - Namespace $::13a-Model Containment can't resolve Transmission locally.
+    INFO - Namespace $::13a-Model Containment can't resolved Transmission via specializations.
+    INFO - Namespace $::13a-Model Containment can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    INFO - Namespace $ can't resolve Transmission locally.
+    INFO - Namespace $ can't resolved Transmission via specializations.
+    INFO - Namespace $ can't resolved Transmission via imports.
+    ERROR - Can't resolve $::13a-Model Containment::Vehicle Model::PowerTrain's reference importedMembership to Transmission.

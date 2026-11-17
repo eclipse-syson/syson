@@ -1,0 +1,1 @@
+initialization accept index := 1;

@@ -1,0 +1,1 @@
+abstract #c rendering def :> namespace1::namespace2;

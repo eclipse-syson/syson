@@ -1,0 +1,3 @@
+/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0;type;Metaclass;0;meta1
+/@ownedRelatedElement.0/@ownedRelationship.1;referencedFeature;Feature;0;elements
+/@ownedRelatedElement.0/@ownedRelationship.2;type;Type;0;TranslationOrRotation

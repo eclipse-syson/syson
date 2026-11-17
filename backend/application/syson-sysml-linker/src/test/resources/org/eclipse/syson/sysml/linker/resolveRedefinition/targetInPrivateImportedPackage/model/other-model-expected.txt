@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="16201974-5fdb-3e59-b86a-d6ba6b0779b8" elementId="16201974-5fdb-3e59-b86a-d6ba6b0779b8">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="d499fab8-dc04-3607-b277-e1e9754400de" elementId="d499fab8-dc04-3607-b277-e1e9754400de">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="baf86c77-ed48-3700-8214-1411f4d51d3f" declaredName="Other" elementId="baf86c77-ed48-3700-8214-1411f4d51d3f">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="1b76523f-d193-336a-92d2-9713de2d1e6d" elementId="1b76523f-d193-336a-92d2-9713de2d1e6d">
+        <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="05cf5d67-6303-3a24-83b6-993c165c0b01" declaredName="attribute1" elementId="05cf5d67-6303-3a24-83b6-993c165c0b01"/>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

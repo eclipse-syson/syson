@@ -1,0 +1,4 @@
+/;supplier;Element;0;namespace5::namespace6
+/;supplier;Element;1;namespace7::namespace8
+/;client;Element;0;namespace1::namespace2
+/;client;Element;1;namespace3::namespace4

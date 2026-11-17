@@ -1,0 +1,1 @@
+/@ownedRelationship.0;memberElement;Type;0;namespace1::namespace2

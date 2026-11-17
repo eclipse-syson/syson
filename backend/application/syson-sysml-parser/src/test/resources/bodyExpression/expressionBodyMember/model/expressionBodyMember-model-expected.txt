@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:FeatureReferenceExpression xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:FeatureMembership">
+    <ownedRelatedElement xsi:type="sysml:Expression">
+      <ownedRelationship xsi:type="sysml:FeatureMembership">
+        <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="x" direction="in"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership">
+        <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="y" direction="in"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:ResultExpressionMembership">
+        <ownedRelatedElement xsi:type="sysml:OperatorExpression" operator="+">
+          <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+            <ownedRelatedElement xsi:type="sysml:Feature" direction="in">
+              <ownedRelationship xsi:type="sysml:FeatureValue">
+                <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                  <ownedRelationship xsi:type="sysml:Membership"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:ParameterMembership" visibility="private">
+            <ownedRelatedElement xsi:type="sysml:Feature">
+              <ownedRelationship xsi:type="sysml:FeatureValue">
+                <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+                  <ownedRelationship xsi:type="sysml:Membership"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:FeatureReferenceExpression>

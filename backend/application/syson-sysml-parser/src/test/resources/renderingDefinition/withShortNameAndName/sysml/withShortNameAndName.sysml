@@ -1,0 +1,1 @@
+#c rendering def <a> b specializes namespace1::namespace2;

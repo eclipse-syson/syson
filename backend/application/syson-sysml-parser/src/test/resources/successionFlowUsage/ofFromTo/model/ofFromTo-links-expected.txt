@@ -1,0 +1,8 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0;chainingFeature;Feature;0;namespace1::namespace2
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1;chainingFeature;Feature;0;namespace3::namespace4
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2;chainingFeature;Feature;0;namespace5::namespace6
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0;memberElement;Feature;0;a::b
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0;referencedFeature;Feature;0;namespace7::namespace8
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0;redefinedFeature;Feature;0;namespace9
+/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0;referencedFeature;Feature;0;namespace10::namespace11
+/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0;redefinedFeature;Feature;0;namespace12

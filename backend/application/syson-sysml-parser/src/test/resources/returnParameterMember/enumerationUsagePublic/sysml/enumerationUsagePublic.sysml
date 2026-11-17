@@ -1,0 +1,1 @@
+public return abstract enum a;

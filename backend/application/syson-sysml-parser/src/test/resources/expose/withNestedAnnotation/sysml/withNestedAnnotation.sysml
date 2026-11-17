@@ -1,0 +1,3 @@
+expose MyItem {
+  @MyAnnotation;
+}

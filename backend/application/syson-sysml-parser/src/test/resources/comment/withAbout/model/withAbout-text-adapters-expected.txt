@@ -1,0 +1,4 @@
+/:
+comment body /*\n * My comment.\n */
+quoted name
+comment

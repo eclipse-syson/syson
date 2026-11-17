@@ -1,0 +1,1 @@
+#c item def :> namespace1::namespace2;

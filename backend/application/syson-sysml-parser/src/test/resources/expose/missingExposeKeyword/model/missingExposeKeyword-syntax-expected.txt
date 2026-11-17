@@ -1,0 +1,1 @@
+1:0 - mismatched input 'namespace1' expecting 'expose'

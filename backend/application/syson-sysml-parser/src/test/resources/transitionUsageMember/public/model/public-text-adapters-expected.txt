@@ -1,0 +1,5 @@
+/@ownedRelatedElement.0:
+{...}
+transition
+/:
+public

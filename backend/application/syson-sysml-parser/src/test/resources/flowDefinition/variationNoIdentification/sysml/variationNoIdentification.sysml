@@ -1,0 +1,1 @@
+variation #c flow def :> namespace1::namespace2;

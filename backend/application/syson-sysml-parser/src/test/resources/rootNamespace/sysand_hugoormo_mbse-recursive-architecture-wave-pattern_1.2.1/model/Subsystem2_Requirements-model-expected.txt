@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="Subsystem2_Requirements">
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Comment" body="PATTERN RULES FOR SUBSYSTEM2_REQUIREMENTS:&#xA;&#xA;1. TERMINAL SUBSYSTEM SEMANTICS:&#xA;- No further decomposition (leaf at L2 in this pattern)&#xA;- Original requirement only (no derived requirement for decomposition)&#xA;- Decontextualize parent need at this level's blackbox context&#xA;- Inherit constraint from parent via subsetting (no hardcoding)&#xA;- Subject redefines parent (narrows context)&#xA;&#xA;2. CONFIGURATION BINDING STRATEGY:&#xA;- Blackbox configuration (Config_bb): attribute binding to action output&#xA;- Graybox configuration (Config_gb): if present, MUST remain abstract&#xA;- Whitebox configuration (Config_wb): integration level for verification&#xA;- Binding is set once at blackbox level; inherited, never overridden&#xA;&#xA;3. SUBJECT REDEFINITION:&#xA;- Original requirement subject: redefines parent system context&#xA;- Narrowing chain continues from L0→L1→L2&#xA;- No further children, but may have behavioral realization&#xA;&#xA;4. RECURSIVE CLOSURE SEMANTICS:&#xA;- This terminal requirement validates its parent child need by subsetting it.&#xA;- It is then verified when the terminal subsystem architecture satisfies it.&#xA;- See MyFramework::MyFrameworkRecursiveClosureSemantics for the reusable rule.&#xA;"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Comment" declaredName="patternRules" body="This package implements the MBSE RecursiveArchitecture Weave Pattern at L2 (Subsystem level).&#xA;SUBSYSTEM2 is a TERMINAL branch: no further decomposition.&#xA;Violations detected by:&#xA;- Syside syntax/semantic validation&#xA;- Constraint evaluation on live behavioral outputs&#xA;- Cross-level consistency verification&#xA;"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Comment" declaredName="payloadQualityGainPayloadVerifierModelerComment" body="L2 terminal requirement branch: transforms L1 need and stops&#xA;recursion on this path.&#xA;" locale="en_US">
+          <ownedRelationship xsi:type="sysml:Annotation"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:RequirementUsage" declaredName="payloadQualityGainPayloadVerifier" isComposite="true">
+          <ownedRelationship xsi:type="sysml:Subsetting">
+            <ownedRelatedElement xsi:type="sysml:Feature">
+              <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+              <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Comment" declaredName="transformedRequirementClosureSemantics" body="NEED VALIDATION: By subsetting the L1 child need, this L2 terminal&#xA;requirement validates the transformation of the payloadVerifier need into the&#xA;Subsystem2 context.&#xA;&#xA;REQUIREMENT VERIFICATION: This transformed terminal requirement is verified by&#xA;Subsystem2_Configuration::payloadVerifier_bb and the Subsystem2 verification cases.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:SubjectMembership">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" declaredName="payloadVerifier">
+              <ownedRelationship xsi:type="sysml:Redefinition"/>
+              <ownedRelationship xsi:type="sysml:Subsetting"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Documentation" body="The payload shall achieve a gain of quality through Subsystem2 &#xA;of at least 7 units. (Here we decontextualize the requirement from L1)&#xA;This requirement is derived from the subsetted system of interest derived requirement.&#xA;With this we ensure that Subsystem2 will perform as needed in the&#xA;context of the system of interest by inheriting the constraint from the &#xA;system of interest requirements and redefining the subject.&#xA;&#xA;Subsystem2 is a terminal subsystem (not further decomposed), so this is&#xA;the final requirement at this level with no further gb decomposition.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Comment" declaredName="payloadQualityGainPayloadVerifierConstraintModelerComment" body="Constraint inherited from parent requirement through subsetting. " locale="en_US">
+              <ownedRelationship xsi:type="sysml:Annotation"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

@@ -1,0 +1,40 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /*\n         * This package defines the standard view definitions for the SysML language.\n         */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1:
+public
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /*\n             * View definition to present any members of exposed model element(s).\n             * This is the most general view, enabling presentation of any model element.\n             * The typical rendering in graphical notation is as a graph of nodes and edges.\n             * Specializations of GeneralView can be specified through appropriate selection of filters, e.g.:\n             * - package view, filtering on Package, Package containment, package Import\n             * - definition and usage view, filtering on Definition, Usage, Specialization, FeatureTyping (covering defined by)\n             * - requirement view, filtering on RequirementDefinition, RequirementUsage, Specialization, FeatureTyping, \n             *   SatisfyRequirementUsage, AllocationDefinition, AllocationUsage,\n             * - view and viewpoint view, filtering on ViewDefinition, ViewUsage, ViewpointDefinition, ViewpointUsage, \n             *   RenderingDefinition, RenderingUsage, ConcernDefinition, ConcernUsage, StakeholderMembership, ...\n             * - language extension view, filtering on Metaclass, MetadataFeature, MetadataAccessExpression, ...\n             * Note: filters are specified by referencing concepts from the KerML.kerml and SysML.sysml standard library packages.\n             */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /*\n             * View definition to present exposed features as nodes, nested features as\n             * nested nodes, and connections between features\n             * as edges between (nested) nodes. Nested nodes may present boundary features\n             * (e.g., ports, parameters).\n             */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /*\n             * View definition to present connections between actions.\n             * Valid nodes and edges in an ActionFlowView are:\n             * - Actions with nested actions\n             * - Parameters with direction\n             * - Flow connection usages (e.g., kinds of transfers from output to input)\n             * - Binding connections between parameters (e.g., delegate a parameter from\n             *   one level of nesting to another)\n             * - Proxy connection points\n             * - Swim lanes\n             * - Conditional succession\n             * - Control nodes (fork, join, decision, merge)\n             * - Control structures, e.g., if-then-else, until-while-loop, for-loop\n             * - Send and accept actions\n             * - Change and time triggers\n             * - Compartments on actions and parameters\n             */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /*\n             * View definition to present states and their transitions.\n             * Valid nodes and edges in a StateTransitionView are:\n             * - States with nested states\n             * - Entry, do, and exit actions\n             * - Transition usages with triggers, guards, and actions\n             * - Compartments on states\n             */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+{...}
+specializes
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /*\n             * View definition to present time ordering of event occurrences on lifelines\n             * of exposed features.\n             * Valid nodes and edges in a SequenceView are:\n             * - Features such as parts with their lifelines\n             * - Event occurrences on the lifelines\n             * - Messages sent from one part to another with and without a type of flow\n             * - Succession between event occurrences\n             * - Nested sequence view (e.g., a reference to a view)\n             * - Compartments\n             * The typical rendering in graphical notation depicts the exposed features\n             * horizontally along the top, with vertical lifelines. The time axis is\n             * vertical, with time increasing from top to bottom.\n             */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /*\n             * View definition to present a visualization of exposed spatial items in two\n             * or three dimensions\n             * Valid nodes and edges in a GeometryView are:\n             * - Spatial item, including shape\n             * - Coordinate frame\n             * - Feature related to spatial item, such as a quantity (e.g. temperature)\n             *   of which values are to be rendered on a color scale\n             * The typical rendering in graphical notation would include a number of\n             * visualization parameters, such as:\n             * - 2D or 3D view\n             * - viewing direction\n             * - zoom level\n             * - light sources\n             * - object projection mode, e.g., isometric, perspective, orthographic\n             * - object rendering mode, e.g., shaded, wireframe, hidden line\n             * - object pan (placement) and rotate (orientation) settings\n             * - color maps\n             */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /*\n             * View definition to present exposed model elements and their relationships,\n             * arranged in a rectangular grid.\n             * GridView is the generalization of the following more specialized views:\n             * - Tabular view\n             * - Data value tabular view\n             * - Relationship matrix view, e.g. presenting allocation or dependency relationships\n             */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /*\n             * View definition to present the hierarchical membership structure of model\n             * elements starting from one or more exposed root elements.\n             * The typical rendering in graphical notation is as an indented list of rows,\n             * consisting of dynamically collapsible-expandable nodes that represent\n             * branches and leaves of the tree, as in graphical user interface widgets.\n             */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}

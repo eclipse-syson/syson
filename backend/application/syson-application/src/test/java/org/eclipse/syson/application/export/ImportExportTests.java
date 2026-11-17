@@ -446,7 +446,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     first start then fork1;
                     first a1 then join1;
                     first a2 then join1;
-                    then done;
+                    first join1 then done;
                 }""";
         /**
          * Here we have differences here because :
@@ -1557,7 +1557,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         }
                         transition S2 accept Exit then done;
                         transition S1 accept s : Sig do action D then S2.S3;
-                        transition T first S2.S3 accept s : Sig via p if true do send s via this to p then S1;
+                        transition T first S2.S3 accept s : Sig via p if true do send s via subactions::this to p then S1;
                         exit act;
                         state S3 {
                             state S3a;

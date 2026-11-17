@@ -1,0 +1,10 @@
+ERROR - null
+  ERROR - Can't resolve $::part2::redefinedAttr1's reference redefinedFeature to $::part2::attribute1.
+    INFO - Namespace $::part2 can't resolve attribute1 locally.
+    INFO - Namespace $::part2 can't resolved attribute1 via specializations.
+    INFO - Namespace $::part2 can't resolved attribute1 via imports.
+    INFO - Namespace $ can't resolve $::part2::attribute1 locally.
+    INFO - Namespace $ can't resolved $::part2::attribute1 via specializations.
+    INFO - Namespace $ can't resolved $::part2::attribute1 via imports.
+    ERROR - Can't resolve $::part2::redefinedAttr1's reference redefinedFeature to $::part2::attribute1.
+  ERROR - Can't resolve $::part2::redefinedAttr1's reference redefinedFeature to $::part2::attribute1 via feature not in containing type.

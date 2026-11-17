@@ -1,0 +1,1 @@
+variation enum a;

@@ -1,0 +1,1 @@
+public abstract ref a;

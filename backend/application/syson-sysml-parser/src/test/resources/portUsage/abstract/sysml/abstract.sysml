@@ -1,0 +1,1 @@
+abstract port a;

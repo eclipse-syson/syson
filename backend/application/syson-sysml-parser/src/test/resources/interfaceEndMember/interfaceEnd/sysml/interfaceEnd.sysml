@@ -1,0 +1,1 @@
+a references namespace1::namespace2

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="f55dfba7-0ca1-3e69-967a-4e2232bf8747" elementId="f55dfba7-0ca1-3e69-967a-4e2232bf8747">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="d765df41-cefe-3229-8386-ac526d63c29c" elementId="d765df41-cefe-3229-8386-ac526d63c29c">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="ec4a98d7-2f73-3aa8-bba3-f7b595236d43" declaredName="Package1" elementId="ec4a98d7-2f73-3aa8-bba3-f7b595236d43">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="4450fa7f-980b-317b-97bb-822781623d4b" elementId="4450fa7f-980b-317b-97bb-822781623d4b">
+        <ownedRelatedElement xsi:type="sysml:ViewUsage" xmi:id="78aea724-e088-3668-aa8a-89c81182449a" declaredName="view1" elementId="78aea724-e088-3668-aa8a-89c81182449a">
+          <ownedRelationship xsi:type="sysml:MembershipExpose" xmi:id="d2feb47d-c5b4-38d9-b61f-16f5cb5fea19" elementId="d2feb47d-c5b4-38d9-b61f-16f5cb5fea19" visibility="protected"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="d9de4c14-16e9-3737-aeb2-a76e0c363365" elementId="d9de4c14-16e9-3737-aeb2-a76e0c363365">
+        <ownedRelatedElement xsi:type="sysml:PartUsage" xmi:id="68cd8c11-f62c-3ce8-bff0-35b6eed2c0a8" declaredName="part1" elementId="68cd8c11-f62c-3ce8-bff0-35b6eed2c0a8"/>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

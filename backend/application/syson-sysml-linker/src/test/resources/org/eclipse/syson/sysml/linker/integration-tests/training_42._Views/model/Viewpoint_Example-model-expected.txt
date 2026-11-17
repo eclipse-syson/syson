@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="56339baa-79a3-30bc-a728-040c0396115d" elementId="56339baa-79a3-30bc-a728-040c0396115d">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="207f69e2-dfff-3ae1-946e-bd67f1e5ea36" elementId="207f69e2-dfff-3ae1-946e-bd67f1e5ea36">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="fa74ff1c-7e48-38d2-a6dd-408a3fae3382" declaredName="Viewpoint Example" elementId="fa74ff1c-7e48-38d2-a6dd-408a3fae3382">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="12c02e2d-f49e-3edb-ac71-ad49cb0be55a" elementId="12c02e2d-f49e-3edb-ac71-ad49cb0be55a">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="22e4bd84-2bc2-3cb7-b9d1-423de1113c1d" declaredName="Systems Engineer" elementId="22e4bd84-2bc2-3cb7-b9d1-423de1113c1d"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="693a7907-ac9c-37a3-ae9d-4e4fea486889" elementId="693a7907-ac9c-37a3-ae9d-4e4fea486889">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="e4531011-e3e9-365f-8cd2-230b98ce1a53" declaredName="IV&amp;V" elementId="e4531011-e3e9-365f-8cd2-230b98ce1a53"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="9412c9ef-78f2-3856-8358-7e21aa46d7e4" elementId="9412c9ef-78f2-3856-8358-7e21aa46d7e4">
+        <ownedRelatedElement xsi:type="sysml:ConcernUsage" xmi:id="d2f7c1eb-d5d1-3194-8f9c-27d6307e6981" declaredName="system breakdown" elementId="d2f7c1eb-d5d1-3194-8f9c-27d6307e6981">
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="1aee1c56-1476-31af-9d5f-35c16f68f4ec" elementId="1aee1c56-1476-31af-9d5f-35c16f68f4ec">
+            <ownedRelatedElement xsi:type="sysml:Documentation" xmi:id="51230c45-97cb-3c33-a1f4-870b6436da63" elementId="51230c45-97cb-3c33-a1f4-870b6436da63" body="To ensure that a system covers all its required capabilities,&#xA;it is necessary to understand how it is broken down into&#xA;subsystems and components that provide those capabilities.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:SubjectMembership" xmi:id="50018424-c97e-3301-b14d-23018a58aaa8" elementId="50018424-c97e-3301-b14d-23018a58aaa8">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" xmi:id="32dbbffc-de57-3a54-9aba-6ef7ebadc218" elementId="32dbbffc-de57-3a54-9aba-6ef7ebadc218" direction="in"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:StakeholderMembership" xmi:id="faecaff8-2dca-3b28-b041-8285c3d8dacb" elementId="faecaff8-2dca-3b28-b041-8285c3d8dacb">
+            <ownedRelatedElement xsi:type="sysml:PartUsage" xmi:id="cb11a03e-adcd-3276-b92b-b9bd4214752f" declaredName="se" elementId="cb11a03e-adcd-3276-b92b-b9bd4214752f" direction="in">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="ffeb3c36-d652-3892-b254-f272cc1301d6" elementId="ffeb3c36-d652-3892-b254-f272cc1301d6" type="22e4bd84-2bc2-3cb7-b9d1-423de1113c1d" typedFeature="cb11a03e-adcd-3276-b92b-b9bd4214752f"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="7a69af14-6177-31b2-a5d8-c9aa1954611d" elementId="7a69af14-6177-31b2-a5d8-c9aa1954611d">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="2a35bccf-14d1-3dc7-bc69-3000f7b33a81" elementId="2a35bccf-14d1-3dc7-bc69-3000f7b33a81"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:StakeholderMembership" xmi:id="dea2f1de-51bf-376a-bfac-f446d122d539" elementId="dea2f1de-51bf-376a-bfac-f446d122d539">
+            <ownedRelatedElement xsi:type="sysml:PartUsage" xmi:id="4f675507-9092-3281-8bc7-fa28c171c05d" declaredName="ivv" elementId="4f675507-9092-3281-8bc7-fa28c171c05d" direction="in">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="a79d5cde-93aa-3be3-acba-1204cd74481c" elementId="a79d5cde-93aa-3be3-acba-1204cd74481c" type="e4531011-e3e9-365f-8cd2-230b98ce1a53" typedFeature="4f675507-9092-3281-8bc7-fa28c171c05d"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="618997ab-ec26-3cd5-ad8e-041d2c8bdee0" elementId="618997ab-ec26-3cd5-ad8e-041d2c8bdee0">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="8cdeccf1-caed-3c85-9343-6f6da22a5ea4" elementId="8cdeccf1-caed-3c85-9343-6f6da22a5ea4"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="d7ba8fec-4e3f-3f78-ad1e-41daa36661c3" elementId="d7ba8fec-4e3f-3f78-ad1e-41daa36661c3">
+        <ownedRelatedElement xsi:type="sysml:ConcernUsage" xmi:id="a7696253-e222-33fa-93e0-6bcfe2d67471" declaredName="modularity" elementId="a7696253-e222-33fa-93e0-6bcfe2d67471">
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="f561a734-99a1-3946-a4be-3fa5711fb7a9" elementId="f561a734-99a1-3946-a4be-3fa5711fb7a9">
+            <ownedRelatedElement xsi:type="sysml:Documentation" xmi:id="f4f9cb68-a7f3-3931-9ae6-5f17565579c0" elementId="f4f9cb68-a7f3-3931-9ae6-5f17565579c0" body="There should be well defined interfaces between the parts of&#xA;a system that allow each part to be understood individually,&#xA;as well as being part of the whole system.&#xA;"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:SubjectMembership" xmi:id="79b0168f-98fa-3840-992f-7dd59dc0e360" elementId="79b0168f-98fa-3840-992f-7dd59dc0e360">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" xmi:id="1e41c807-5fe3-3ae3-9d3d-416dd2634159" elementId="1e41c807-5fe3-3ae3-9d3d-416dd2634159" direction="in"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:StakeholderMembership" xmi:id="9adc534b-3a65-3891-b283-d5be2017e2c0" elementId="9adc534b-3a65-3891-b283-d5be2017e2c0">
+            <ownedRelatedElement xsi:type="sysml:PartUsage" xmi:id="1d9fb174-b1b3-3852-bb98-a5b97c8273b9" declaredName="se" elementId="1d9fb174-b1b3-3852-bb98-a5b97c8273b9" direction="in">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="8f3d2b3e-006d-3a7a-8314-802b31e07077" elementId="8f3d2b3e-006d-3a7a-8314-802b31e07077" type="22e4bd84-2bc2-3cb7-b9d1-423de1113c1d" typedFeature="1d9fb174-b1b3-3852-bb98-a5b97c8273b9"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="f4a062a1-077b-3ba7-9b0b-53942cbde4bf" elementId="f4a062a1-077b-3ba7-9b0b-53942cbde4bf">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="d8e86ba7-686b-3e4e-ba8a-6c79803b05fc" elementId="d8e86ba7-686b-3e4e-ba8a-6c79803b05fc"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="25bb8857-4aa1-3277-9dea-dfe628d44822" elementId="25bb8857-4aa1-3277-9dea-dfe628d44822">
+        <ownedRelatedElement xsi:type="sysml:ViewpointUsage" xmi:id="2d78e1cf-ad00-3e95-a4b0-bdd77e3c66d4" declaredName="system structure perspective" elementId="2d78e1cf-ad00-3e95-a4b0-bdd77e3c66d4">
+          <ownedRelationship xsi:type="sysml:FramedConcernMembership" xmi:id="b04d673d-245c-36e6-b4d9-f54e24d36183" elementId="b04d673d-245c-36e6-b4d9-f54e24d36183">
+            <ownedRelatedElement xsi:type="sysml:ConcernUsage" xmi:id="cc743ca1-1283-3016-bebb-8f6bfa49d1d7" elementId="cc743ca1-1283-3016-bebb-8f6bfa49d1d7" isComposite="true">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting" xmi:id="701aacf8-e029-3dd1-8555-50039f04a1f5" elementId="701aacf8-e029-3dd1-8555-50039f04a1f5" referencedFeature="d2f7c1eb-d5d1-3194-8f9c-27d6307e6981"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FramedConcernMembership" xmi:id="0c4c861b-4c79-3dbe-b20a-f02b8c0ef864" elementId="0c4c861b-4c79-3dbe-b20a-f02b8c0ef864">
+            <ownedRelatedElement xsi:type="sysml:ConcernUsage" xmi:id="8d27f883-0866-3eae-bcd1-156b89cae701" elementId="8d27f883-0866-3eae-bcd1-156b89cae701" isComposite="true">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting" xmi:id="ddb0767a-5ae5-3d9f-a046-3877c6508755" elementId="ddb0767a-5ae5-3d9f-a046-3877c6508755" referencedFeature="a7696253-e222-33fa-93e0-6bcfe2d67471"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:RequirementConstraintMembership" xmi:id="ce05389e-3c44-3f9e-b10e-13bf3f96aeb4" elementId="ce05389e-3c44-3f9e-b10e-13bf3f96aeb4" kind="requirement">
+            <ownedRelatedElement xsi:type="sysml:ConstraintUsage" xmi:id="de0a289f-11da-3e6a-ae7e-23cb5870d19f" elementId="de0a289f-11da-3e6a-ae7e-23cb5870d19f" isComposite="true">
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="af94b781-e1f6-377b-9ba0-093183ae8a23" elementId="af94b781-e1f6-377b-9ba0-093183ae8a23">
+                <ownedRelatedElement xsi:type="sysml:Documentation" xmi:id="547d6d86-9c34-32ed-817c-6967f2b6ebea" elementId="547d6d86-9c34-32ed-817c-6967f2b6ebea" body="A system structure view shall show the hierarchical &#xA;part decomposition of a system, starting with a &#xA;specified root part.&#xA;"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="c5e5cb3c-6b25-3157-aea3-bfabd43e1a99" elementId="c5e5cb3c-6b25-3157-aea3-bfabd43e1a99">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="31805ca7-6bfb-3262-a0a1-e34fe41b4bc2" elementId="31805ca7-6bfb-3262-a0a1-e34fe41b4bc2">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="afc58031-07d9-359a-b6c2-33f1494474d1" declaredName="grandfather" elementId="afc58031-07d9-359a-b6c2-33f1494474d1">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="2b5fb2af-62e1-3173-a30f-921bd44a5388" elementId="2b5fb2af-62e1-3173-a30f-921bd44a5388">
+        <ownedRelatedElement xsi:type="sysml:Package" xmi:id="835b8340-95dc-393b-97e7-91a04644d505" declaredName="father" elementId="835b8340-95dc-393b-97e7-91a04644d505">
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="104f02a4-e54a-3f4f-90d3-5ce2041e1a42" elementId="104f02a4-e54a-3f4f-90d3-5ce2041e1a42">
+            <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="4de5d8da-4438-306b-a6ad-5c87b61e3c90" declaredName="part2" elementId="4de5d8da-4438-306b-a6ad-5c87b61e3c90"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:Membership" xmi:id="2e3d6408-7b1b-3394-afa0-cfbc4f9cb9fb" elementId="2e3d6408-7b1b-3394-afa0-cfbc4f9cb9fb" memberName="part2alias"/>
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="4f72e416-2960-3ce9-a7df-aac65780d672" elementId="4f72e416-2960-3ce9-a7df-aac65780d672">
+            <ownedRelatedElement xsi:type="sysml:Package" xmi:id="7447b315-8900-3c8f-8382-5e31d03c2566" declaredName="current" elementId="7447b315-8900-3c8f-8382-5e31d03c2566">
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="36cd088a-6c9c-3675-b469-216dc7172ae2" elementId="36cd088a-6c9c-3675-b469-216dc7172ae2">
+                <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="d312c1b5-43a5-30d5-9f72-72dbf75fce1b" declaredName="part3" elementId="d312c1b5-43a5-30d5-9f72-72dbf75fce1b"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:Membership" xmi:id="58783dce-22ef-31ab-971a-a200620ee2b1" elementId="58783dce-22ef-31ab-971a-a200620ee2b1" memberName="part3alias"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="d05a4cb5-de2b-341f-9ca4-c33e782c5f32" elementId="d05a4cb5-de2b-341f-9ca4-c33e782c5f32">
+                <ownedRelatedElement xsi:type="sysml:Package" xmi:id="73835992-cc07-35ed-8f01-70a0d32e71b6" declaredName="child" elementId="73835992-cc07-35ed-8f01-70a0d32e71b6">
+                  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="8e3aae55-fc74-3ada-9edc-f460eed4285b" elementId="8e3aae55-fc74-3ada-9edc-f460eed4285b">
+                    <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="a2424ca4-6d96-3cc0-9023-2309526d8b61" declaredName="part4" elementId="a2424ca4-6d96-3cc0-9023-2309526d8b61"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:Membership" xmi:id="c869a393-120e-3b51-a30d-58aefc097867" elementId="c869a393-120e-3b51-a30d-58aefc097867" memberName="part4alias"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="3ee82e9c-841c-317a-b914-36272d5a27ff" elementId="3ee82e9c-841c-317a-b914-36272d5a27ff">
+                <ownedRelatedElement xsi:type="sysml:PartUsage" xmi:id="1475bd99-33e9-32cb-8beb-f87fe1ab273e" declaredName="part5" elementId="1475bd99-33e9-32cb-8beb-f87fe1ab273e">
+                  <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="e7b62706-6578-3107-81f7-19f2ce98353c" elementId="e7b62706-6578-3107-81f7-19f2ce98353c" typedFeature="1475bd99-33e9-32cb-8beb-f87fe1ab273e"/>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

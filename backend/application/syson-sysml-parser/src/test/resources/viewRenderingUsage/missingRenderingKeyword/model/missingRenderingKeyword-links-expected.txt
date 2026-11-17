@@ -1,0 +1,2 @@
+/@ownedRelationship.0;referencedFeature;Feature;0;viewRendering
+/@ownedRelationship.1;type;Type;0;Rendering

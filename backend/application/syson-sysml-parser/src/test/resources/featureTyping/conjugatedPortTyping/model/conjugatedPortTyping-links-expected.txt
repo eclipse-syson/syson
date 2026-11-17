@@ -1,0 +1,1 @@
+/;conjugatedPortDefinition;ConjugatedPortDefinition;0;~namespace1::namespace2

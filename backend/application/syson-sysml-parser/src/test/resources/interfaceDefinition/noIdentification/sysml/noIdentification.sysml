@@ -1,0 +1,1 @@
+#c interface def :> namespace1::namespace2;

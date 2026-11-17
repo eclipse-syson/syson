@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:SatisfyRequirementUsage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" declaredName="req1_1" isComposite="true">
+  <ownedRelationship xsi:type="sysml:FeatureTyping"/>
+  <ownedRelationship xsi:type="sysml:SubjectMembership">
+    <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+      <ownedRelationship xsi:type="sysml:FeatureValue">
+        <ownedRelatedElement xsi:type="sysml:FeatureReferenceExpression">
+          <ownedRelationship xsi:type="sysml:OwningMembership">
+            <ownedRelatedElement xsi:type="sysml:Feature">
+              <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+              <ownedRelationship xsi:type="sysml:FeatureChaining"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:SatisfyRequirementUsage>

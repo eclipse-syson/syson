@@ -28,6 +28,18 @@
           <url>https://maven.pkg.github.com/eclipse-sirius/sirius-emf-json</url>
         </repository>
         <repository>
+          <id>github-sysmlv2-pilot-implementation-obeonetwork</id>
+          <name>SysML v2 Pilot Implementation Obeo Network - Maven Packages</name>
+          <url>https://maven.pkg.github.com/ObeoNetwork/SysML-v2-Pilot-Implementation</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+          </snapshots>
+        </repository>
+        <repository>
           <id>github</id>
           <name>SysON - Maven Packages</name>
           <url>https://maven.pkg.github.com/eclipse-syson/syson</url>
@@ -44,6 +56,11 @@
     </server>
     <server>
       <id>github-sirius-emfjson</id>
+      <username>${env.USERNAME}</username>
+      <password>${env.PASSWORD}</password>
+    </server>
+    <server>
+      <id>github-sysmlv2-pilot-implementation-obeonetwork</id>
       <username>${env.USERNAME}</username>
       <password>${env.PASSWORD}</password>
     </server>

@@ -1,0 +1,18 @@
+{
+  "index": {
+    "RequirementsManagement": "RequirementsManagement.sysml",
+    "RequirementsManagement_AttributesExample": "examples/01_requirement_attributes.sysml"
+  },
+  "created": "2025-10-20T09:07:55.309199700Z",
+  "metamodel": "https://www.omg.org/spec/SysML/20250201",
+  "checksum": {
+    "RequirementsManagement.sysml": {
+      "value": "f7a480d6baed5b06eefb3be222608a616241eca5cf6dbde738f22ec00a9d3073",
+      "algorithm": "SHA256"
+    },
+    "examples/01_requirement_attributes.sysml": {
+      "value": "9461e190778234582b1ffc20f79170f7155c201b8085cb28882bf9ac8c6068ad",
+      "algorithm": "SHA256"
+    }
+  }
+}

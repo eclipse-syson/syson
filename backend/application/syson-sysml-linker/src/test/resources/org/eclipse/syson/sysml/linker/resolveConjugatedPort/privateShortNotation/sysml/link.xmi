@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="41911135-9223-3235-aa33-37f53d9396c7" elementId="41911135-9223-3235-aa33-37f53d9396c7">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="a64d4386-7e7f-3a1d-9d24-9beea1494596" elementId="a64d4386-7e7f-3a1d-9d24-9beea1494596" visibility="private">
+    <ownedRelatedElement xsi:type="sysml:PortDefinition" xmi:id="618537e2-9476-35f0-93ca-1cc5e40db8b1" declaredName="P" elementId="618537e2-9476-35f0-93ca-1cc5e40db8b1">
+      <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="fe35e4e5-955a-32d0-8acc-b2662c5bdf25" elementId="fe35e4e5-955a-32d0-8acc-b2662c5bdf25">
+        <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="a50e17a5-3558-39b8-9d54-e1b4e0d66725" declaredName="attribute1" elementId="a50e17a5-3558-39b8-9d54-e1b4e0d66725">
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="d39cf397-9465-36b4-aabd-5d93ae12c9e9" elementId="d39cf397-9465-36b4-aabd-5d93ae12c9e9">
+            <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="cceeabd1-06df-303c-b574-a9b143ddd5e4" elementId="cceeabd1-06df-303c-b574-a9b143ddd5e4"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="cf3efba7-e52d-38eb-9dfb-da49b97f6fa1" elementId="cf3efba7-e52d-38eb-9dfb-da49b97f6fa1">
+        <ownedRelatedElement xsi:type="sysml:ConjugatedPortDefinition" xmi:id="dc4e01a8-b3f9-36b2-947a-dd5e21b9e17e" elementId="dc4e01a8-b3f9-36b2-947a-dd5e21b9e17e">
+          <ownedRelationship xsi:type="sysml:PortConjugation" xmi:id="76721405-653b-3877-b581-ef4c0a46604c" elementId="76721405-653b-3877-b581-ef4c0a46604c" conjugatedType="dc4e01a8-b3f9-36b2-947a-dd5e21b9e17e" originalPortDefinition="618537e2-9476-35f0-93ca-1cc5e40db8b1"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="1d96b1b3-9521-3f6a-b309-68052ba4e945" elementId="1d96b1b3-9521-3f6a-b309-68052ba4e945">
+    <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="60901067-2fa8-33b5-a78e-3afa0038b6d8" declaredName="Part1" elementId="60901067-2fa8-33b5-a78e-3afa0038b6d8">
+      <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="3d5ef989-7196-38d0-a26a-ed30dab6657f" elementId="3d5ef989-7196-38d0-a26a-ed30dab6657f">
+        <ownedRelatedElement xsi:type="sysml:PortUsage" xmi:id="244ffb33-4129-3849-be51-d9b7261c9e19" declaredName="chargeInPort" elementId="244ffb33-4129-3849-be51-d9b7261c9e19">
+          <ownedRelationship xsi:type="sysml:ConjugatedPortTyping" xmi:id="3115cf89-ef4b-3f75-9beb-6737e0926a8e" elementId="3115cf89-ef4b-3f75-9beb-6737e0926a8e" typedFeature="244ffb33-4129-3849-be51-d9b7261c9e19"/>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="da297916-8d10-3502-a62e-30177ad37e22" elementId="da297916-8d10-3502-a62e-30177ad37e22">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="9f89bffa-3bc1-33bb-a7d5-d514d95253aa" elementId="9f89bffa-3bc1-33bb-a7d5-d514d95253aa">
+              <ownedRelationship xsi:type="sysml:Redefinition" xmi:id="6a842e4c-d59a-3f46-bb68-9630f404beb3" elementId="6a842e4c-d59a-3f46-bb68-9630f404beb3" redefiningFeature="9f89bffa-3bc1-33bb-a7d5-d514d95253aa"/>
+              <ownedRelationship xsi:type="sysml:FeatureValue" xmi:id="9d23b7e9-92f0-3136-8c9f-1c1e8d8365f7" elementId="9d23b7e9-92f0-3136-8c9f-1c1e8d8365f7">
+                <ownedRelatedElement xsi:type="sysml:LiteralInteger" xmi:id="ff6f0522-073e-3fde-9b66-1d3c3e2e30b0" elementId="ff6f0522-073e-3fde-9b66-1d3c3e2e30b0" value="1"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="2c49c73c-1724-3945-bf74-d8f4b0cee84b" elementId="2c49c73c-1724-3945-bf74-d8f4b0cee84b">
+            <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="0f2788b4-fb77-3322-b161-8316b5438bd4" elementId="0f2788b4-fb77-3322-b161-8316b5438bd4"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

@@ -1,0 +1,2 @@
+/:
+string literal "some\n\n\t\n\nstring"

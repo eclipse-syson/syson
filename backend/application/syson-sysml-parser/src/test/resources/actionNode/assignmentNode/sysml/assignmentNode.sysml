@@ -1,0 +1,1 @@
+action initialization assign index := 1;

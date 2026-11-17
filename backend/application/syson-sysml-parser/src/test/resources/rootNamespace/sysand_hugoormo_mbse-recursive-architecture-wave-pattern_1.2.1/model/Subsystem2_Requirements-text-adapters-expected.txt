@@ -1,0 +1,26 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /*\n    PATTERN RULES FOR SUBSYSTEM2_REQUIREMENTS:\n    \n    1. TERMINAL SUBSYSTEM SEMANTICS:\n       - No further decomposition (leaf at L2 in this pattern)\n       - Original requirement only (no derived requirement for decomposition)\n       - Decontextualize parent need at this level's blackbox context\n       - Inherit constraint from parent via subsetting (no hardcoding)\n       - Subject redefines parent (narrows context)\n    \n    2. CONFIGURATION BINDING STRATEGY:\n       - Blackbox configuration (Config_bb): attribute binding to action output\n       - Graybox configuration (Config_gb): if present, MUST remain abstract\n       - Whitebox configuration (Config_wb): integration level for verification\n       - Binding is set once at blackbox level; inherited, never overridden\n    \n    3. SUBJECT REDEFINITION:\n       - Original requirement subject: redefines parent system context\n       - Narrowing chain continues from L0→L1→L2\n       - No further children, but may have behavioral realization\n\n    4. RECURSIVE CLOSURE SEMANTICS:\n       - This terminal requirement validates its parent child need by subsetting it.\n       - It is then verified when the terminal subsystem architecture satisfies it.\n       - See MyFramework::MyFrameworkRecursiveClosureSemantics for the reusable rule.\n    */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /*\n        This package implements the MBSE RecursiveArchitecture Weave Pattern at L2 (Subsystem level).\n        SUBSYSTEM2 is a TERMINAL branch: no further decomposition.\n        Violations detected by:\n        - Syside syntax/semantic validation\n        - Constraint evaluation on live behavioral outputs\n        - Cross-level consistency verification\n    */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /* L2 terminal requirement branch: transforms L1 need and stops\n     * recursion on this path.\n     */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /*\n            NEED VALIDATION: By subsetting the L1 child need, this L2 terminal\n            requirement validates the transformation of the payloadVerifier need into the\n            Subsystem2 context.\n\n            REQUIREMENT VERIFICATION: This transformed terminal requirement is verified by\n            Subsystem2_Configuration::payloadVerifier_bb and the Subsystem2 verification cases.\n        */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+subsets
+redefines
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+comment body /* The payload shall achieve a gain of quality through Subsystem2 \n         * of at least 7 units. (Here we decontextualize the requirement from L1)\n         * This requirement is derived from the subsetted system of interest derived requirement.\n         * With this we ensure that Subsystem2 will perform as needed in the\n         * context of the system of interest by inheriting the constraint from the \n         * system of interest requirements and redefining the subject.\n         * \n         * Subsystem2 is a terminal subsystem (not further decomposed), so this is\n         * the final requirement at this level with no further gb decomposition.\n         */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* Constraint inherited from parent requirement through subsetting. */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+late nonunique
+subsets
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}

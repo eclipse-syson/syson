@@ -35,6 +35,7 @@
 		<sirius.emfjson.version>2.5.5-SNAPSHOT</sirius.emfjson.version>
 		<sirius.web.version>2026.11.2</sirius.web.version>
 		<syson.version>2026.11.2</syson.version>
+		<sysmlv2.pilot.implementation.obeo.version>0.64.0-SNAPSHOT</sysmlv2.pilot.implementation.obeo.version>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/releng/backend/releng/syson-test-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
@@ -50,6 +51,17 @@
 		<repository>
 			<id>github-sirius-web</id>
 			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-web</url>
+		</repository>
+		<repository>
+			<id>github-sysmlv2-pilot-implementation-obeonetwork</id>
+			<url>https://maven.pkg.github.com/ObeoNetwork/SysML-v2-Pilot-Implementation</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
 		</repository>
 	</repositories>
 
@@ -147,6 +159,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-sysml-linker</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
 				<artifactId>syson-sysml-metamodel</artifactId>
 				<version>${syson.version}</version>
 			</dependency>
@@ -171,6 +188,11 @@
 				<artifactId>syson-sysml-metamodel-services</artifactId>
 				<version>${syson.version}</version>
 				<type>test-jar</type>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-sysml-parser</artifactId>
+				<version>${syson.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.syson</groupId>
@@ -217,11 +239,21 @@
 				<artifactId>syson-tree-services</artifactId>
 				<version>${syson.version}</version>
 			</dependency>
-            <dependency>
-              <groupId>org.liquibase</groupId>
-              <artifactId>liquibase-core</artifactId>
-              <version>4.33.0</version>
-            </dependency>
+			<dependency>
+				<groupId>org.omg.sysml</groupId>
+				<artifactId>org.omg.sysml.model</artifactId>
+				<version>${sysmlv2.pilot.implementation.obeo.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.omg.sysml</groupId>
+				<artifactId>org.omg.sysml.logic</artifactId>
+				<version>${sysmlv2.pilot.implementation.obeo.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-core</artifactId>
+				<version>4.33.0</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 

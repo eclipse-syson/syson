@@ -1,0 +1,2 @@
+/@ownedRelationship.0;type;Metaclass;0;Rationale
+/@ownedRelationship.1;annotatedElement;Element;0;engineTradeOffAnalysis::vehicle_b_engine4cyl

@@ -1,0 +1,2 @@
+/@ownedRelatedElement.0/@ownedRelationship.0;chainingFeature;Feature;0;namespace1::namespace2
+/@ownedRelatedElement.0/@ownedRelationship.1;chainingFeature;Feature;0;namespace3

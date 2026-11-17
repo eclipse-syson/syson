@@ -1,0 +1,1 @@
+individual view def a;

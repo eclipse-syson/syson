@@ -1,0 +1,10 @@
+2:10 - token recognition error at: 'é'
+3:9 - token recognition error at: '日'
+3:10 - token recognition error at: '本'
+3:11 - token recognition error at: '語'
+6:20 - token recognition error at: 'é'
+6:23 - token recognition error at: '日'
+6:24 - token recognition error at: '本'
+6:25 - token recognition error at: '語'
+6:26 - no viable alternative at input 'privateimportCaf::;'
+6:21 - extraneous input '::' expecting {';', '{', '=', ':=', 'default'}

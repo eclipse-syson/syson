@@ -1,0 +1,64 @@
+{
+    "projects": [
+        {
+            "path": "Domain Libraries/Analysis",
+            "iris": [
+                "urn:kpar:SysML-Analysis-Library"
+            ]
+        },
+        {
+            "path": "Domain Libraries/Cause and Effect",
+            "iris": [
+                "urn:kpar:SysML-Cause-and-Effect-Library"
+            ]
+        },
+        {
+            "path": "Domain Libraries/Geometry",
+            "iris": [
+                "urn:kpar:SysML-Geometry-Library"
+            ]
+        },
+        {
+            "path": "Domain Libraries/Metadata",
+            "iris": [
+                "urn:kpar:SysML-Metadata-Library"
+            ]
+        },
+        {
+            "path": "Domain Libraries/Quantities and Units",
+            "iris": [
+                "urn:kpar:SysML-Quantities-and-Units-Library"
+            ]
+        },
+        {
+            "path": "Domain Libraries/Requirement Derivation",
+            "iris": [
+                "urn:kpar:SysML-Requirement-Derivation-Library"
+            ]
+        },
+        {
+            "path": "Kernel Libraries/Kernel Data Type Library",
+            "iris": [
+                "urn:kpar:Kernel-Data-Type-Library"
+            ]
+        },
+        {
+            "path": "Kernel Libraries/Kernel Function Library",
+            "iris": [
+                "urn:kpar:Kernel-Function-Library"
+            ]
+        },
+        {
+            "path": "Kernel Libraries/Kernel Semantic Library",
+            "iris": [
+                "urn:kpar:Kernel-Semantic-Library"
+            ]
+        },
+        {
+            "path": "Systems Library",
+            "iris": [
+                "urn:kpar:SysML-Systems-Library"
+            ]
+        }
+    ]
+}

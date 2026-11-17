@@ -1,0 +1,4 @@
+/@ownedRelationship.1/@ownedRelatedElement.0:
+action
+/:
+action

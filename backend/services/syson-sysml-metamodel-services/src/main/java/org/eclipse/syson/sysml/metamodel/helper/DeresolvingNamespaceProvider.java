@@ -26,6 +26,7 @@ import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChainExpression;
 import org.eclipse.syson.sysml.FeatureChaining;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Import;
@@ -35,6 +36,8 @@ import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Specialization;
+import org.eclipse.syson.sysml.Succession;
+import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 
 /**
@@ -103,9 +106,17 @@ public class DeresolvingNamespaceProvider {
         return result;
     }
 
+    /**
+     * Gets the lexical scope of a membership target, excluding the generated transition source scope.
+     *
+     * @param membership the membership whose target is serialized
+     * @return the namespace used to resolve its textual target
+     */
     private Namespace getDeresolvingNamespaceForMembership(Membership membership) {
         Namespace ns = membership.getMembershipOwningNamespace();
-        if (ns instanceof FeatureReferenceExpression featureRef) {
+        if (ns instanceof TransitionUsage && !(membership instanceof FeatureMembership)) {
+            ns = ns.getOwningNamespace();
+        } else if (ns instanceof FeatureReferenceExpression featureRef) {
             // If the membershipOwningNamespace is a FeatureReferenceExpression (see 8.3.4.8.4), then the
             // local Namespace is the non-invocation Namespace for the membershipOwningNamespace, which is
             // defined to be the nearest containing Namespace that is none of the following:
@@ -157,6 +168,12 @@ public class DeresolvingNamespaceProvider {
         return result;
     }
 
+    /**
+     * Gets the specialization scope, including the outer state scope of a generated transition target.
+     *
+     * @param specialization the specialization whose general element is serialized
+     * @return its name resolution namespace
+     */
     private Namespace getDeresolvingNamespaceForSpecialization(Specialization specialization) {
         // If the Specialization is a ReferenceSubsetting (see 8.3.3.3.9), and its referencingFeature is
         // an end Feature whose owningType is a Connector, then the local Namespace is the
@@ -166,6 +183,10 @@ public class DeresolvingNamespaceProvider {
             Feature feature = refSubsetting.getReferencingFeature();
             if (feature != null && feature.isIsEnd() && feature.getOwningType() instanceof Connector connector) {
                 result = connector.getOwningNamespace();
+                if (result instanceof TransitionUsage transition && connector instanceof Succession
+                        && !(connector.eContainer() instanceof FeatureMembership) && connector.getEndFeature().indexOf(feature) == 1) {
+                    result = transition.getOwningNamespace();
+                }
             }
         }
 

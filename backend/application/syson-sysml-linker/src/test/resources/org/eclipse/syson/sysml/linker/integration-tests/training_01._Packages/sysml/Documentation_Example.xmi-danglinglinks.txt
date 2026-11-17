@@ -1,0 +1,2 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2;memberElement;0;Automobile
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3;memberElement;0;ISQ::TorqueValue

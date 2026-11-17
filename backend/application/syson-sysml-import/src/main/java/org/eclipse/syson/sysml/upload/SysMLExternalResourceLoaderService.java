@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -30,11 +29,8 @@ import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.web.application.document.services.LoadingReport;
 import org.eclipse.sirius.web.application.document.services.api.ExternalResourceLoadingResult;
 import org.eclipse.sirius.web.application.document.services.api.IExternalResourceLoaderService;
-import org.eclipse.syson.sysml.ASTTransformer;
-import org.eclipse.syson.sysml.AstParsingResult;
-import org.eclipse.syson.sysml.SysmlToAst;
-import org.eclipse.syson.sysml.metamodel.services.textual.utils.Status;
 import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
+import org.eclipse.syson.sysml.services.SysMLParsingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -49,10 +45,15 @@ public class SysMLExternalResourceLoaderService implements IExternalResourceLoad
 
     private final Logger logger = LoggerFactory.getLogger(SysMLExternalResourceLoaderService.class);
 
-    private final SysmlToAst sysmlToAst;
+    private final SysMLParsingService parsingService;
 
-    public SysMLExternalResourceLoaderService(SysmlToAst sysmlToAst) {
-        this.sysmlToAst = Objects.requireNonNull(sysmlToAst);
+    /**
+     * Creates a loader backed by the Java parser and linker.
+     *
+     * @param parsingService the shared parsing pipeline
+     */
+    public SysMLExternalResourceLoaderService(SysMLParsingService parsingService) {
+        this.parsingService = Objects.requireNonNull(parsingService);
     }
 
     @Override
@@ -78,23 +79,15 @@ public class SysMLExternalResourceLoaderService implements IExternalResourceLoad
 
     @Override
     public Optional<ExternalResourceLoadingResult> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet, boolean applyMigrationParticipants) {
-        AstParsingResult astResult = this.sysmlToAst.convert(inputStream, resourceURI.fileExtension(), true);
-
-        List<String> reports = new ArrayList<>(astResult.reports().stream().map(Status::toString).toList());
-        final Resource resource;
-        if (astResult.ast().isPresent()) {
-            ASTTransformer transformer = new ASTTransformer();
-            resource = transformer.convertResource(astResult.ast().get(), resourceSet);
-            if (resource != null) {
-                ElementUtil.setIsImported(resource, true);
-                resourceSet.getResources().add(resource);
-            }
-            reports.addAll(transformer.logTransformationMessages());
-
-        } else {
-            // It seems there is a problem in the API, to be able to report an error, we need a resource.
-            // https://github.com/eclipse-sirius/sirius-web/issues/6281
-            resource = new JSONResourceFactory().createResourceFromPath(null);
+        var result = this.parsingService.parseAndLink(resourceSet, null, inputStream);
+        List<String> reports = result.messages().stream().map(message -> message.level() + ": " + message.body()).toList();
+        // The upload API requires a resource even when only an error report is available.
+        Resource resource = new JSONResourceFactory().createResourceFromPath(null);
+        if (result.root() != null) {
+            resource.getContents().add(result.root());
+            ElementUtil.setIsImported(resource, true);
+            resourceSet.getResources().add(resource);
+            result.applyImports();
         }
         return Optional.of(new ExternalResourceLoadingResult(resource, new LoadingReport(reports)));
 

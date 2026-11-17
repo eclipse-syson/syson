@@ -1,0 +1,1 @@
+viewpoint def a;

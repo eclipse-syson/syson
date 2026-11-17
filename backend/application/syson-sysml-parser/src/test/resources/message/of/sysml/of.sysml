@@ -1,0 +1,1 @@
+message publish_message of Publish[1] from producer.publish_source_event to server.publish_target_event;

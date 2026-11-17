@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="3e53c6cd-4b81-3c45-8f58-7b984f9332fb" elementId="3e53c6cd-4b81-3c45-8f58-7b984f9332fb">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="a06ec568-f570-3b51-b6f3-e1249d693e2c" elementId="a06ec568-f570-3b51-b6f3-e1249d693e2c">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="68a922aa-bbd1-3f1e-b6e1-14e429a207ec" declaredName="Package Example" elementId="68a922aa-bbd1-3f1e-b6e1-14e429a207ec">
+      <ownedRelationship xsi:type="sysml:MembershipImport" xmi:id="f4914891-e677-3d45-a179-ff1da031fadb" elementId="f4914891-e677-3d45-a179-ff1da031fadb" visibility="public"/>
+      <ownedRelationship xsi:type="sysml:NamespaceImport" xmi:id="a79f2216-f20f-32da-a348-921967a45e4f" elementId="a79f2216-f20f-32da-a348-921967a45e4f"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="74afab42-451b-3920-8704-e817b20e1bcf" elementId="74afab42-451b-3920-8704-e817b20e1bcf" visibility="private">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="2a3690fc-9980-3a68-ab5e-be20fc58761a" declaredName="Automobile" elementId="2a3690fc-9980-3a68-ab5e-be20fc58761a"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:Membership" xmi:id="cbb7ae78-5003-3a96-b8ad-165b519e7a54" elementId="cbb7ae78-5003-3a96-b8ad-165b519e7a54" memberName="Car"/>
+      <ownedRelationship xsi:type="sysml:Membership" xmi:id="9fd6e575-3c0b-39f1-b326-ae2ee74a67e1" elementId="9fd6e575-3c0b-39f1-b326-ae2ee74a67e1" memberName="Torque"/>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

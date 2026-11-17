@@ -1,0 +1,3 @@
+null;type;0;c
+null;type;0;d
+null;superclassifier;0;namespace1::namespace2

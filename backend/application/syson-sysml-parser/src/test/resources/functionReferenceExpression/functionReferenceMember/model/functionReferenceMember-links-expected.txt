@@ -1,0 +1,1 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0;type;Type;0;'name space 1'::'name space 2'

@@ -431,12 +431,20 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
         });
     }
 
+    /**
+     * Creates an expression and includes server diagnostics when creation fails.
+     *
+     * @param editingContextId the editing context identifier
+     * @param parentElementId the expression owner's identifier
+     * @param expressionContent the expression text
+     * @return the mutation and its success assertion
+     */
     private Runnable createExpression(String editingContextId, String parentElementId, String expressionContent) {
         return () -> {
             var input = new CreateExpressionInput(UUID.randomUUID(), editingContextId, parentElementId, expressionContent);
             var result = this.createExpressionMutationRunner.run(input);
             String typename = JsonPath.read(result.data(), "$.data.createExpression.__typename");
-            assertThat(typename).isEqualTo(CreateExpressionSuccessPayload.class.getSimpleName());
+            assertThat(typename).as("Expression creation response: %s", result.data()).isEqualTo(CreateExpressionSuccessPayload.class.getSimpleName());
         };
     }
 

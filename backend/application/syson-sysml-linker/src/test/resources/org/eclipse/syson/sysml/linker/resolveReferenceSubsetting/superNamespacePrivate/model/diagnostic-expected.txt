@@ -1,0 +1,21 @@
+ERROR - null
+  ERROR - Can't resolve $::current::part2::callAction1's reference referencedFeature to action1.
+    INFO - Namespace $::current::part2::callAction1 can't resolve action1 locally.
+    INFO - Namespace $::current::part2::callAction1 can't resolved action1 via specializations.
+    INFO - Namespace $::current::part2::callAction1 can't resolved action1 via imports.
+    INFO - Namespace $::current::part2 can't resolve action1 locally.
+    INFO - Namespace $::current::part1 can't resolve action1 locally.
+    INFO - Namespace $::current::part1 can't resolved action1 via specializations.
+    INFO - Namespace $::current::part1 can't resolved action1 via imports.
+    INFO - Namespace $::current::part2 can't resolved action1 via specializations.
+    INFO - Namespace $::current::part2 can't resolved action1 via imports.
+    INFO - Namespace $::current can't resolve action1 locally.
+    INFO - Namespace $::current can't resolved action1 via specializations.
+    INFO - Namespace $::current can't resolved action1 via imports.
+    INFO - Namespace $ can't resolve action1 locally.
+    INFO - Namespace $ can't resolved action1 via specializations.
+    INFO - Namespace $ can't resolved action1 via imports.
+    INFO - Namespace $ can't resolve action1 locally.
+    INFO - Namespace $ can't resolved action1 via specializations.
+    INFO - Namespace $ can't resolved action1 via imports.
+    ERROR - Can't resolve $::current::part2::callAction1's reference referencedFeature to action1.

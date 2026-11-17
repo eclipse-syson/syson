@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="Comment Example">
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Comment" body="This is a comment, which is a part of the model, &#xA;annotating (by default) it's owning namespace. "/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Comment" declaredName="Comment1" body="This is a named comment. "/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:Comment" body="This is an unnamed comment, annotating an &#xA;explicitly specified element. &#xA;">
+          <ownedRelationship xsi:type="sysml:Annotation"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" declaredName="Automobile"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:Membership" memberName="Car">
+        <ownedRelationship xsi:type="sysml:Annotation">
+          <ownedRelatedElement xsi:type="sysml:Comment" body="This is a comment annotating its owning&#xA;element.&#xA;"/>
+        </ownedRelationship>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:Membership" memberName="Torque"/>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

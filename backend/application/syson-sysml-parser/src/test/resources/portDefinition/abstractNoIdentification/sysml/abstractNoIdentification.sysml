@@ -1,0 +1,1 @@
+abstract #c port def :> namespace1::namespace2;

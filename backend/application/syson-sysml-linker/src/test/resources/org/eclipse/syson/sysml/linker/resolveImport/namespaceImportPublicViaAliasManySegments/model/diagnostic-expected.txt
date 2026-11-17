@@ -1,0 +1,18 @@
+ERROR - null
+  ERROR - Can't resolve $::current::part2's reference type to importAlias::part111.
+    INFO - Namespace $::current::part2 can't resolve importAlias::part111 locally.
+    INFO - Namespace $::current::part2 can't resolved importAlias::part111 via specializations.
+    INFO - Namespace $::current::part2 can't resolved importAlias::part111 via imports.
+    INFO - Namespace $::other::part1 can't resolve part111 locally.
+    INFO - Namespace $::other::part1 can't resolved part111 via specializations.
+    INFO - Namespace $::other::part1 can't resolved part111 via imports.
+    INFO - Namespace $::current can't resolve importAlias::part111 locally.
+    INFO - Namespace $::current can't resolved importAlias::part111 via specializations.
+    INFO - Namespace $::current can't resolved importAlias::part111 via imports.
+    INFO - Namespace $ can't resolve importAlias::part111 locally.
+    INFO - Namespace $ can't resolved importAlias::part111 via specializations.
+    INFO - Namespace $ can't resolved importAlias::part111 via imports.
+    INFO - Namespace $ can't resolve importAlias::part111 locally.
+    INFO - Namespace $ can't resolved importAlias::part111 via specializations.
+    INFO - Namespace $ can't resolved importAlias::part111 via imports.
+    ERROR - Can't resolve $::current::part2's reference type to importAlias::part111.

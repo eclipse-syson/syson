@@ -1,0 +1,1 @@
+#c occurence def :> namespace1::namespace2;

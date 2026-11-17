@@ -1,0 +1,6 @@
+/@ownedRelationship.0;type;Type;0;elements
+/@ownedRelationship.1;type;Type;0;TranslationOrRotation
+/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0;memberElement;Feature;0;a::b
+/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1;referencedFeature;Feature;0;namespace1::namespace2
+/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0;memberElement;Feature;0;a::b
+/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1;referencedFeature;Feature;0;namespace1::namespace2

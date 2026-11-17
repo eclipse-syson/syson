@@ -1,0 +1,35 @@
+ERROR - null
+  ERROR - Can't resolve $::P::test::<19032d30-3562-34ef-8b3e-104c16dde24c>::<6f04475f-4974-356a-aa25-89f709b9b63e>'s reference redefinedFeature to missing.
+    INFO - Namespace $::P::C can't resolve missing locally.
+    INFO - Namespace $::P::C can't resolved missing via specializations.
+    INFO - Namespace $::P::C can't resolved missing via imports.
+    INFO - Namespace $::P::test can't resolve missing locally.
+    INFO - Namespace $::P::test can't resolved missing via specializations.
+    INFO - Namespace $::P::test can't resolved missing via imports.
+    INFO - Namespace $::P can't resolve missing locally.
+    INFO - Namespace $::P can't resolved missing via specializations.
+    INFO - Namespace $::P can't resolved missing via imports.
+    INFO - Namespace $ can't resolve missing locally.
+    INFO - Namespace $ can't resolved missing via specializations.
+    INFO - Namespace $ can't resolved missing via imports.
+    INFO - Namespace $ can't resolve missing locally.
+    INFO - Namespace $ can't resolved missing via specializations.
+    INFO - Namespace $ can't resolved missing via imports.
+    ERROR - Can't resolve $::P::test::<19032d30-3562-34ef-8b3e-104c16dde24c>::<6f04475f-4974-356a-aa25-89f709b9b63e>'s reference redefinedFeature to missing.
+  ERROR - Can't resolve $::P::test::<19032d30-3562-34ef-8b3e-104c16dde24c>::<6f04475f-4974-356a-aa25-89f709b9b63e>'s reference redefinedFeature to missing.
+    INFO - Namespace $::P::C can't resolve missing locally.
+    INFO - Namespace $::P::C can't resolved missing via specializations.
+    INFO - Namespace $::P::C can't resolved missing via imports.
+    INFO - Namespace $::P::test can't resolve missing locally.
+    INFO - Namespace $::P::test can't resolved missing via specializations.
+    INFO - Namespace $::P::test can't resolved missing via imports.
+    INFO - Namespace $::P can't resolve missing locally.
+    INFO - Namespace $::P can't resolved missing via specializations.
+    INFO - Namespace $::P can't resolved missing via imports.
+    INFO - Namespace $ can't resolve missing locally.
+    INFO - Namespace $ can't resolved missing via specializations.
+    INFO - Namespace $ can't resolved missing via imports.
+    INFO - Namespace $ can't resolve missing locally.
+    INFO - Namespace $ can't resolved missing via specializations.
+    INFO - Namespace $ can't resolved missing via imports.
+    ERROR - Can't resolve $::P::test::<19032d30-3562-34ef-8b3e-104c16dde24c>::<6f04475f-4974-356a-aa25-89f709b9b63e>'s reference redefinedFeature to missing.

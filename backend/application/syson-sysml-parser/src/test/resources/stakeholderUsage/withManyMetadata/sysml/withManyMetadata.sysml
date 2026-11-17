@@ -1,0 +1,1 @@
+stakeholder #a #b #c driver : Person;

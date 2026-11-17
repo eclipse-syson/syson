@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="e91ab54f-866b-3b65-a594-649aee231d36" elementId="e91ab54f-866b-3b65-a594-649aee231d36">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="dfb9d122-c277-3746-a004-36d543f5c338" elementId="dfb9d122-c277-3746-a004-36d543f5c338">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="201d22be-6443-382f-b49b-6713422d2acf" declaredName="Opaque Action Example" elementId="201d22be-6443-382f-b49b-6713422d2acf">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="d38737da-af9f-32cd-991e-a1d06af912a3" elementId="d38737da-af9f-32cd-991e-a1d06af912a3">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="17a5c527-9403-3385-96a6-da1adfec34b3" declaredName="Sensor" elementId="17a5c527-9403-3385-96a6-da1adfec34b3">
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="65c0b647-3daa-3ddf-b07f-a0cfaa67a25f" elementId="65c0b647-3daa-3ddf-b07f-a0cfaa67a25f">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="c563a411-3896-3e14-b97c-6985ce4c7725" declaredName="ready" elementId="c563a411-3896-3e14-b97c-6985ce4c7725">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="f977c0c8-bc1c-3b4e-a1ed-a2ec5ccab959" elementId="f977c0c8-bc1c-3b4e-a1ed-a2ec5ccab959" typedFeature="c563a411-3896-3e14-b97c-6985ce4c7725">
+                <type href="../../../../../../../../sysml.library.xmi.implied/Kernel%20Libraries/Kernel%20Data%20Type%20Library/ScalarValues.kermlx#d1e9242d-b2e3-5270-bf69-4f4fb0447193"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="93d0674a-def5-304b-b1c5-f358f93ac3a6" elementId="93d0674a-def5-304b-b1c5-f358f93ac3a6">
+                <ownedRelatedElement xsi:type="sysml:Multiplicity" xmi:id="d161f764-a4bb-3a05-8a46-18ec7e6e73d9" elementId="d161f764-a4bb-3a05-8a46-18ec7e6e73d9"/>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="ccc20ad4-b6ee-37ce-82b2-ea938f4009c1" elementId="ccc20ad4-b6ee-37ce-82b2-ea938f4009c1">
+        <ownedRelatedElement xsi:type="sysml:ActionDefinition" xmi:id="42c5eda8-2c2a-30aa-ab5d-eeff2e4808af" declaredName="UpdateSensors" elementId="42c5eda8-2c2a-30aa-ab5d-eeff2e4808af">
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="5f9b3ceb-c351-364b-b529-101d7ec9be79" elementId="5f9b3ceb-c351-364b-b529-101d7ec9be79">
+            <ownedRelatedElement xsi:type="sysml:ReferenceUsage" xmi:id="b4dac2b1-3268-341b-8589-d50834a82e3f" declaredName="sensors" elementId="b4dac2b1-3268-341b-8589-d50834a82e3f" direction="in">
+              <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="8dff9250-9e9c-3c1d-b9e7-acaee8ee6cd4" elementId="8dff9250-9e9c-3c1d-b9e7-acaee8ee6cd4" type="17a5c527-9403-3385-96a6-da1adfec34b3" typedFeature="b4dac2b1-3268-341b-8589-d50834a82e3f"/>
+              <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="27e03beb-c2d8-3aa8-88f8-a1228bbbfb92" elementId="27e03beb-c2d8-3aa8-88f8-a1228bbbfb92">
+                <ownedRelatedElement xsi:type="sysml:MultiplicityRange" xmi:id="88c9fb49-6657-33aa-b219-d53c53c38f71" elementId="88c9fb49-6657-33aa-b219-d53c53c38f71">
+                  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="7f21f71f-3228-3493-b0eb-cb6078265ed4" elementId="7f21f71f-3228-3493-b0eb-cb6078265ed4">
+                    <ownedRelatedElement xsi:type="sysml:LiteralInfinity" xmi:id="9096f35a-cee1-372b-8521-2b11fc6a6a48" elementId="9096f35a-cee1-372b-8521-2b11fc6a6a48"/>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="c5bc050b-ffd9-38d2-a588-9e915a8bcdf5" elementId="c5bc050b-ffd9-38d2-a588-9e915a8bcdf5">
+            <ownedRelatedElement xsi:type="sysml:TextualRepresentation" xmi:id="00c23c75-df16-3f21-a61b-0910984aff3c" elementId="00c23c75-df16-3f21-a61b-0910984aff3c" body="for (sensor in sensors) {&#xA;    if (sensor.ready) {&#xA;        Update(sensor);&#xA;    }&#xA;}&#xA;" language="Alf"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

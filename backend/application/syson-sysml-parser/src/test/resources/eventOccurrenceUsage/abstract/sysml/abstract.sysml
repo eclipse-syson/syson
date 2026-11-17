@@ -1,0 +1,1 @@
+abstract event occurrence a;

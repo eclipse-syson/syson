@@ -1,0 +1,1 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0;importedNamespace;Namespace;0;ISQ

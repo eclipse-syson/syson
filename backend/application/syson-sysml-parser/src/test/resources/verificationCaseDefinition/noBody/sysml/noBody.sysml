@@ -1,0 +1,1 @@
+verification def a;

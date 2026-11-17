@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="aaf9cc81-e8ad-3073-b52b-21f049103528" elementId="aaf9cc81-e8ad-3073-b52b-21f049103528">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="ac504756-131e-3a3d-969a-dcf40c3971df" elementId="ac504756-131e-3a3d-969a-dcf40c3971df">
+    <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="e39d190d-d4c9-3fbf-80e6-18b27585c467" declaredName="Root" elementId="e39d190d-d4c9-3fbf-80e6-18b27585c467">
+      <ownedRelationship xsi:type="sysml:Subclassification" xmi:id="78ae1938-8d78-3022-af89-4b1bce100b5d" elementId="78ae1938-8d78-3022-af89-4b1bce100b5d" subclassifier="e39d190d-d4c9-3fbf-80e6-18b27585c467">
+        <superclassifier href="base.xmi#45e1c81f-1fde-3798-89e9-b0d2994d39b0"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="76af1d58-dcfd-3d1b-8eac-47df4e3f4661" elementId="76af1d58-dcfd-3d1b-8eac-47df4e3f4661">
+        <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="00f5fbff-267d-3b28-8545-efb39f981194" declaredName="replacement" elementId="00f5fbff-267d-3b28-8545-efb39f981194">
+          <ownedRelationship xsi:type="sysml:Redefinition" xmi:id="aa37a986-3a05-3b3d-a7b5-bd234b3c86ca" elementId="aa37a986-3a05-3b3d-a7b5-bd234b3c86ca" redefiningFeature="00f5fbff-267d-3b28-8545-efb39f981194">
+            <redefinedFeature href="base.xmi#33c1f0a1-8450-370d-9974-afe9771511ef"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

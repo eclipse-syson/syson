@@ -1,0 +1,17 @@
+ERROR - null
+  ERROR - Can't resolve $::FollowingSegmentVisibility::privateReference::<67e8f028-425c-3362-a19d-c2647f1d5c23>::<920157b2-f224-35ab-a752-1f6f30b54432>'s reference chainingFeature to privatePart.
+    INFO - Namespace $::FollowingSegmentVisibility::holder::container can't resolve privatePart locally.
+    INFO - Namespace $::FollowingSegmentVisibility::Container can't resolve privatePart locally.
+    INFO - Namespace $::FollowingSegmentVisibility::Container can't resolved privatePart via specializations.
+    INFO - Namespace $::FollowingSegmentVisibility::Container can't resolved privatePart via imports.
+    INFO - Namespace $::FollowingSegmentVisibility::holder::container can't resolved privatePart via specializations.
+    INFO - Namespace $::FollowingSegmentVisibility::holder::container can't resolved privatePart via imports.
+    ERROR - Can't resolve $::FollowingSegmentVisibility::privateReference::<67e8f028-425c-3362-a19d-c2647f1d5c23>::<920157b2-f224-35ab-a752-1f6f30b54432>'s reference chainingFeature to privatePart.
+  ERROR - Can't resolve $::FollowingSegmentVisibility::protectedReference::<3d64d603-8f40-3824-ac83-ffac7a574d4d>::<1f3892ab-3d3f-3dad-9df3-252c3b80567f>'s reference chainingFeature to protectedPart.
+    INFO - Namespace $::FollowingSegmentVisibility::holder::container can't resolve protectedPart locally.
+    INFO - Namespace $::FollowingSegmentVisibility::Container can't resolve protectedPart locally.
+    INFO - Namespace $::FollowingSegmentVisibility::Container can't resolved protectedPart via specializations.
+    INFO - Namespace $::FollowingSegmentVisibility::Container can't resolved protectedPart via imports.
+    INFO - Namespace $::FollowingSegmentVisibility::holder::container can't resolved protectedPart via specializations.
+    INFO - Namespace $::FollowingSegmentVisibility::holder::container can't resolved protectedPart via imports.
+    ERROR - Can't resolve $::FollowingSegmentVisibility::protectedReference::<3d64d603-8f40-3824-ac83-ffac7a574d4d>::<1f3892ab-3d3f-3dad-9df3-252c3b80567f>'s reference chainingFeature to protectedPart.

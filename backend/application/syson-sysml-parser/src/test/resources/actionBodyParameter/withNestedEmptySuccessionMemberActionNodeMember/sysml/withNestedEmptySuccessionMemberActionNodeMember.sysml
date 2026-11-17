@@ -1,0 +1,3 @@
+action a {
+  then protected action sendFuelCommand send new FuelCommand() to engine_a;
+}

@@ -1,0 +1,2 @@
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0;importedMembership;0;$::other::part1
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0;type;0;part11::part111

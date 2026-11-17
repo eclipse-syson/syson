@@ -1,0 +1,1 @@
+public exit assign index := index + 1;

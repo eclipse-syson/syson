@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="7875809a-1edd-3335-9bfa-9006401f3c4f" elementId="7875809a-1edd-3335-9bfa-9006401f3c4f">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="f0336de4-ca45-39bb-8d35-87817bfcc2cc" elementId="f0336de4-ca45-39bb-8d35-87817bfcc2cc">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="034168bc-beb1-381d-86e4-1702ce6fb201" declaredName="current" elementId="034168bc-beb1-381d-86e4-1702ce6fb201">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="b607357d-97f7-3b0b-b6bb-b3d8d1979774" elementId="b607357d-97f7-3b0b-b6bb-b3d8d1979774">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="958936b9-a0c7-39c3-918e-9ae87d7f7204" declaredName="part1" elementId="958936b9-a0c7-39c3-918e-9ae87d7f7204">
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="40929d1c-be79-3648-b947-07cff18f9110" elementId="40929d1c-be79-3648-b947-07cff18f9110">
+            <ownedRelatedElement xsi:type="sysml:ActionUsage" xmi:id="41752c22-5dff-3681-826a-195d8a9f7dbe" declaredName="action1" elementId="41752c22-5dff-3681-826a-195d8a9f7dbe" isComposite="true"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="77cd82bc-7405-302d-b4d6-de5fb3d2e8d3" elementId="77cd82bc-7405-302d-b4d6-de5fb3d2e8d3">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="c264dd19-29ac-3dee-855b-616921ad1c23" declaredName="part2" elementId="c264dd19-29ac-3dee-855b-616921ad1c23">
+          <ownedRelationship xsi:type="sysml:Subclassification" xmi:id="c549a76c-f043-3723-8927-ef2798d368a7" elementId="c549a76c-f043-3723-8927-ef2798d368a7" subclassifier="c264dd19-29ac-3dee-855b-616921ad1c23" superclassifier="958936b9-a0c7-39c3-918e-9ae87d7f7204"/>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="ec34f15f-ecfa-339b-9f9a-5b2c3f9daf9b" elementId="ec34f15f-ecfa-339b-9f9a-5b2c3f9daf9b">
+            <ownedRelatedElement xsi:type="sysml:PerformActionUsage" xmi:id="ffa3bb5d-9152-3407-8ec4-7355b4546308" declaredName="callAction1" elementId="ffa3bb5d-9152-3407-8ec4-7355b4546308">
+              <ownedRelationship xsi:type="sysml:ReferenceSubsetting" xmi:id="f26d3633-11c1-30b0-9f5a-6b4ff52cd914" elementId="f26d3633-11c1-30b0-9f5a-6b4ff52cd914" referencedFeature="41752c22-5dff-3681-826a-195d8a9f7dbe"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

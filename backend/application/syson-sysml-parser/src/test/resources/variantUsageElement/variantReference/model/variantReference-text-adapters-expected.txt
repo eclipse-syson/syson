@@ -1,0 +1,4 @@
+/@ownedRelationship.2:
+typing clause start
+/:
+=>

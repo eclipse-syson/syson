@@ -1,0 +1,1 @@
+[1 .. a::b] namespace1::namespace2

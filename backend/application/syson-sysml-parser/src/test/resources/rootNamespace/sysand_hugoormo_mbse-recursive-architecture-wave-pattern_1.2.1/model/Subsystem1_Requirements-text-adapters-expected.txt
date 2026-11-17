@@ -1,0 +1,113 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /*\n    PATTERN RULES FOR SUBSYSTEM1_REQUIREMENTS:\n    \n    1. ORIGINAL REQUIREMENTS (no binding):\n       - Decontextualize parent need at this level's blackbox context\n       - Inherit constraint from parent via subsetting (no hardcoding)\n       - Subject MUST reference _bb (blackbox) configuration\n       - Frame/assume gates capture stakeholder concerns and assumptions\n       - No attribute binding at requirement level (binding lives in configuration)\n    \n    2. DERIVED REQUIREMENTS (with binding and allocation):\n       - Decompose original requirement into child needs via budget allocation\n       - Subject MUST reference _gb (graybox) configuration\n       - Attribute binding MUST define sum: qualityContribution = budget1 + budget2\n       - Budget attributes MUST have explicit values with design rationale comments\n       - Nested child needs MUST reference budget attributes (not hardcoded values)\n       - Constraint MUST reference budget attributes (validates allocation closure)\n    \n    3. CONSTRAINT INHERITANCE:\n       - Original requirement constraints are inherited via subsetting (automatic)\n       - DO NOT hardcode inherited constraints in child requirements (DRY violation)\n       - Child requirement constraints MUST reference budget attributes (not literal values)\n    \n    4. CONFIGURATION BINDING STRATEGY:\n       - Blackbox configuration (Config_bb): attribute binding to action output\n       - Graybox configuration (Config_gb): MUST remain abstract (no binding override)\n       - Whitebox configuration (Config_wb): integration level for verification\n       - Binding is set once at blackbox level; inherited, never overridden\n    \n    5. SUBJECT REDEFINITION:\n       - Original requirement subject: redefines parent context (narrows focus)\n       - Derived requirement subject: redefines parent context (same narrowing)\n       - Nested child needs subject: redefine derived requirement's subject\n       - Redefinition chain implements context decomposition L0→L1→L2→L3\n\n    6. RECURSIVE CLOSURE SEMANTICS:\n       - A nested child need is validated when a lower-level requirement subsets it.\n       - The transformed lower-level requirement is verified when architecture satisfies it.\n       - See MyFramework::MyFrameworkRecursiveClosureSemantics for the reusable rule.\n    */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /*\n        This package implements the MBSE RecursiveArchitecture Weave Pattern at L2 (Subsystem level).\n        All requirements MUST follow the rules above. Violations detected by:\n        - Syside syntax/semantic validation\n        - Constraint evaluation on live behavioral outputs\n        - Cross-level consistency verification\n    */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+comment body /* L2 original requirement: transforms the L1 derived need into an\n     * L2 blackbox requirement.\n     */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /*\n            NEED VALIDATION: By subsetting the L1 child need, this L2 requirement validates\n            the transformation of the system-level payloadBuilder need into the Subsystem1\n            context.\n\n            REQUIREMENT VERIFICATION: This transformed L2 requirement is verified by\n            Subsystem1_Configuration::payloadBuilder_bb and, for decomposition evidence, by\n            Subsystem1_Configuration::payloadBuilder_gb.\n        */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+subsets
+redefines
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+comment body /* The payload shall achieve a gain of quality through Subsystem1 \n         * of at least 14 units. (Here we decontextualize the requirement from L1)\n         * This requirement is derived from the subsetted system of interest derived requirement.\n         * With this we ensure that Subsystem1 will perform as needed in the\n         * context of the system of interest by inheriting the constraint from the \n         * system of interest requirements and redefining the subject.\n         */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* Constraint inherited from parent requirement through subsetting. */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+late nonunique
+subsets
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* L2 derived requirement: allocates the L2 requirement to L3 components. */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+late nonunique
+subsets
+redefines
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+redefines
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+comment body /* The payload shall achieve a gain of quality through the payloadBuilder\n         * of at least 14 units such that the cost of the subsystem is optimal.\n         * This requirement is decomposed into needs for the constituent parts\n         * (payloadPrebuilder and payloadFinisher).\n         */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
+comment body /* Requirement decomposition predicates. */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+{...}
+constraint
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 1
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.6/@ownedRelatedElement.0:
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.7/@ownedRelatedElement.0:
+comment body /*\n            DESIGN DECISION: PayloadPrebuilder allocated 4.0 units (28.6% of builder capacity).\n            RATIONALE: Initial preparation phase; smaller allocation; validates input and prepares payload structure. A trade-off analysis would be preformed that surfaces this cost vs. allocation.\n        */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.0:
+defined by
+typing clause start
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 1
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.8/@ownedRelatedElement.0:
+late nonunique
+defined by
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.9/@ownedRelatedElement.0:
+comment body /*\n            DESIGN DECISION: PayloadFinisher allocated 10.0 units (71.4% of builder capacity).\n            RATIONALE: Main assembly and integration phase; larger allocation; combines and integrates subcomponents into final payload. A trade-off analysis would be preformed that surfaces this cost vs. allocation.\n        */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+late nonunique
+redefines
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+redefines
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0:
+comment body /* Constraint inherited from parent requirement;\n         * validated through attribute binding.\n         */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.12/@ownedRelatedElement.0:
+comment body /* Child need handed over to L3 Component1_1. */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /*\n                NEED VALIDATION: This L2 child need is validated by\n                Component1_1_Requirements::payloadQualityGainComponent1_1, which subsets this\n                requirement and redefines the subject in the L3 payloadPrebuilder context.\n\n                REQUIREMENT VERIFICATION: The transformed L3 requirement is verified by the\n                Component1_1 blackbox configuration and its terminal verification cases.\n            */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* The payload shall achieve a gain of quality through the payloadPrebuilder\n             * in the context of the payloadBuilder of at least 4 units.\n             * This is a derived need that shall be satisfied by the payloadPrebuilder\n             * (Component1_1) at level L3.\n             */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+redefines
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+constraint
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.13/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.14/@ownedRelatedElement.0:
+comment body /* Child need handed over to L3 Component1_2. */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.15/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+comment body /*\n                NEED VALIDATION: This L2 child need is validated by\n                Component1_2_Requirements::payloadQualityGainComponent1_2, which subsets this\n                requirement and redefines the subject in the L3 payloadFinisher context.\n\n                REQUIREMENT VERIFICATION: The transformed L3 requirement is verified by the\n                Component1_2 blackbox configuration and its terminal verification cases.\n            */
+comment
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.15/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
+comment body /* The payload shall achieve a gain of quality through the payloadFinisher\n             * in the context of the payloadBuilder of at least 10 units.\n             * This is a derived need that shall be satisfied by the payloadFinisher\n             * (Component1_2) at level L3.\n             */
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.15/@ownedRelatedElement.0/@ownedRelationship.2/@ownedRelatedElement.0:
+late nonunique
+redefines
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.15/@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0:
+{...}
+constraint
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0/@ownedRelationship.15/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
+{...}
+late nonunique
+subsets
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}

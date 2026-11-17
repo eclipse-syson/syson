@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201" xmi:id="ad7cf0c2-764f-3605-93a2-0f7afd449fb9" elementId="ad7cf0c2-764f-3605-93a2-0f7afd449fb9">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="3d4b84a6-f226-3098-81b5-f0b022db4731" elementId="3d4b84a6-f226-3098-81b5-f0b022db4731">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="2366da78-4636-3584-9d90-4569d80745ed" declaredName="Quantities" elementId="2366da78-4636-3584-9d90-4569d80745ed">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="0b339218-e5e8-3724-9dd6-91f43694006f" elementId="0b339218-e5e8-3724-9dd6-91f43694006f">
+        <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="edbd36df-1a8f-32a5-a84a-8cf47b52c775" declaredName="radius" elementId="edbd36df-1a8f-32a5-a84a-8cf47b52c775"/>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="3cc41fd7-d3da-306c-9857-8187cd7b38f9" elementId="3cc41fd7-d3da-306c-9857-8187cd7b38f9">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="feb1f0fb-ba57-3110-b811-3e08244a8a3b" declaredName="Shapes" elementId="feb1f0fb-ba57-3110-b811-3e08244a8a3b">
+      <ownedRelationship xsi:type="sysml:NamespaceImport" xmi:id="d7f07669-e5b7-3e61-83e5-7b6cfed76a05" elementId="d7f07669-e5b7-3e61-83e5-7b6cfed76a05" importedNamespace="2366da78-4636-3584-9d90-4569d80745ed"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="5b2f5b5b-290b-321f-8538-77fbd58eb796" elementId="5b2f5b5b-290b-321f-8538-77fbd58eb796">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="b4797fbf-94e3-36da-bcd7-01db01b42386" declaredName="General" elementId="b4797fbf-94e3-36da-bcd7-01db01b42386"/>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="1c5ae669-0af3-3979-af4a-87ee25e6b838" elementId="1c5ae669-0af3-3979-af4a-87ee25e6b838">
+        <ownedRelatedElement xsi:type="sysml:PartDefinition" xmi:id="714a2ccb-f262-3601-8335-ab119cc400d4" declaredName="Specific" elementId="714a2ccb-f262-3601-8335-ab119cc400d4">
+          <ownedRelationship xsi:type="sysml:Subclassification" xmi:id="118f627a-859f-310b-9c8b-fb6fcdfff9bb" elementId="118f627a-859f-310b-9c8b-fb6fcdfff9bb" subclassifier="714a2ccb-f262-3601-8335-ab119cc400d4" superclassifier="b4797fbf-94e3-36da-bcd7-01db01b42386"/>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="34833cff-0301-33f3-8aa6-70f74df1fe0a" elementId="34833cff-0301-33f3-8aa6-70f74df1fe0a">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="3c8b7be9-d8b9-3c38-bc93-3f09fd32f24d" declaredName="redefinedRadius" elementId="3c8b7be9-d8b9-3c38-bc93-3f09fd32f24d">
+              <ownedRelationship xsi:type="sysml:Redefinition" xmi:id="4fd2260a-61d3-3ddf-bd42-850ce134d117" elementId="4fd2260a-61d3-3ddf-bd42-850ce134d117" redefinedFeature="edbd36df-1a8f-32a5-a84a-8cf47b52c775" redefiningFeature="3c8b7be9-d8b9-3c38-bc93-3f09fd32f24d"/>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

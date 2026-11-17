@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ const body = JSON.parse(event);
 const baseSHA = body.pull_request.base.sha;
 const headSHA = body.pull_request.head.sha;
 
-const gitLogCommand = `git diff --name-only ${baseSHA}...${headSHA}`;
+const gitLogCommand = `git diff --name-only ${baseSHA}...${headSHA} -- "*.java" "*.ts" "*.tsx" "*.js"`;
 const result = childProcess.execSync(gitLogCommand, { encoding: 'utf8' });
 const filePaths = result.split(/\r?\n/);
 
