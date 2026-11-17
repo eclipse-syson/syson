@@ -16,6 +16,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Set;
 
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -45,6 +46,8 @@ public class StartContext extends AbstractContext {
     /**
      * Constructor.
      *
+     * @param ruleContext
+     *            the current {@link ParserRuleContext}.
      * @param eClass
      *            the {@link EClass} to instantiate.
      * @param operandStack
@@ -56,9 +59,9 @@ public class StartContext extends AbstractContext {
      * @param internalDiagnostics
      *            the internal {@link Diagnostic} {@link List}
      */
-    public StartContext(EClass eClass, Deque<Object> operandStack, List<DanglingLink> danglingLinks, Set<EObject> textAdapted, List<Diagnostic> internalDiagnostics,
+    public StartContext(ParserRuleContext ruleContext, EClass eClass, Deque<Object> operandStack, List<DanglingLink> danglingLinks, Set<EObject> textAdapted, List<Diagnostic> internalDiagnostics,
             SysMLFactory sysMLFactory) {
-        super(operandStack, danglingLinks, textAdapted, internalDiagnostics);
+        super(ruleContext, operandStack, danglingLinks, textAdapted, internalDiagnostics);
         this.eClass = eClass;
         this.sysMLFactory = sysMLFactory;
     }

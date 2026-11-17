@@ -35,7 +35,7 @@ superClass=AbstractSysMLEMFParser;
 import KerMLExpressions;
 
 rootNamespace:
-	{start(namespace__());} (
+	{start(_localctx, namespace__());} (
 	packageBodyElement*
 	) {attachTrailingComments();} {end(_localctx);}
 ;
@@ -51,7 +51,7 @@ relationshipBody:
 ;
 
 dependency:
-	{start(dependency__());} (
+	{start(_localctx, dependency__());} (
 	(prefixMetadataAnnotation {add(element_OwnedRelationship());})* 'dependency' (
 		identification? 'from'
 		| {attachDependencyFromOmitted();}
@@ -67,19 +67,19 @@ dependency:
 ;
 
 annotation:
-	{start(annotation__());} (
+	{start(_localctx, annotation__());} (
 	qualifiedName {setLink(annotation_AnnotatedElement(), element__());}
 	) {end(_localctx);}
 ;
 
 ownedAnnotation:
-	{start(annotation__());} (
+	{start(_localctx, annotation__());} (
 	(annotatingElement {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 annotatingMember:
-	{start(owningMembership__());} (
+	{start(_localctx, owningMembership__());} (
 	memberPrefix (annotatingElement {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -92,7 +92,7 @@ annotatingElement:
 ;
 
 comment:
-	{start(comment__());} (
+	{start(_localctx, comment__());} (
 	(
 		'comment' {attachCommentKeyword();} identification? (
 			'about' (annotation {add(element_OwnedRelationship());}) (
@@ -108,7 +108,7 @@ comment:
 ;
 
 documentation:
-	{start(documentation__());} (
+	{start(_localctx, documentation__());} (
 	'doc' identification? (
 		'locale' (locale=STRING_VALUE {setStringValue(comment_Locale(), _localctx.locale);})
 	)?
@@ -117,7 +117,7 @@ documentation:
 ;
 
 textualRepresentation:
-	{start(textualRepresentation__());} (
+	{start(_localctx, textualRepresentation__());} (
 	(
 		'rep' {attachExplicitRepKeyword();} identification?
 	)?
@@ -139,31 +139,31 @@ metadataUsageKeyword:
 ;
 
 metadataDefinition:
-	{start(metadataDefinition__());} (
+	{start(_localctx, metadataDefinition__());} (
 	('abstract' {setTrue(type_IsAbstract());})? definitionExtensionKeyword* metadataDefKeyword definition
 	) {end(_localctx);}
 ;
 
 prefixMetadataAnnotation:
-	{start(annotation__());} (
+	{start(_localctx, annotation__());} (
 	'#' (prefixMetadataUsage {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 prefixMetadataMember:
-	{start(owningMembership__());} (
+	{start(_localctx, owningMembership__());} (
 	'#' (prefixMetadataUsage {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 prefixMetadataUsage:
-	{start(metadataUsage__());} (
+	{start(_localctx, metadataUsage__());} (
 	{attachPrefixMetadata();} (metadataTyping {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 metadataUsage:
-	{start(metadataUsage__());} (
+	{start(_localctx, metadataUsage__());} (
 	usageExtensionKeyword* metadataUsageKeyword metadataUsageDeclaration (
 		'about' (annotation {add(element_OwnedRelationship());}) (
 			',' (annotation {add(element_OwnedRelationship());})
@@ -181,7 +181,7 @@ metadataUsageDeclaration:
 ;
 
 metadataTyping:
-	{start(featureTyping__());} (
+	{start(_localctx, featureTyping__());} (
 	(qualifiedName {setLink(featureTyping_Type(), metaclass__());})
 	) {end(_localctx);}
 ;
@@ -194,13 +194,13 @@ metadataBody:
 ;
 
 metadataBodyUsageMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	(metadataBodyUsage {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 metadataBodyUsage:
-	{start(referenceUsage__());} (
+	{start(_localctx, referenceUsage__());} (
 	('ref' {attachExplicitRefPrefix();})? (
 		':>>' {attachRedefSymb();} | 'redefines' {attachRedef();}
 	)? (ownedRedefinition {add(element_OwnedRelationship());}) featureSpecializationPart? valuePart? metadataBody
@@ -208,13 +208,13 @@ metadataBodyUsage:
 ;
 
 package_:
-	{start(package__());} (
+	{start(_localctx, package__());} (
 	(prefixMetadataMember {add(element_OwnedRelationship());})* packageDeclaration packageBody
 	) {end(_localctx);}
 ;
 
 libraryPackage:
-	{start(libraryPackage__());} (
+	{start(_localctx, libraryPackage__());} (
 	('standard' {setTrue(libraryPackage_IsStandard());})? 'library' (prefixMetadataMember {add(element_OwnedRelationship());})* packageDeclaration packageBody
 	) {end(_localctx);}
 ;
@@ -245,7 +245,7 @@ memberPrefix:
 ;
 
 packageMember:
-	{start(owningMembership__());} (
+	{start(_localctx, owningMembership__());} (
 	memberPrefix (
 		(definitionElement {add(relationship_OwnedRelatedElement());}) | (usageElement {add(relationship_OwnedRelatedElement());})
 	)
@@ -253,13 +253,13 @@ packageMember:
 ;
 
 elementFilterMember:
-	{start(elementFilterMembership__());} (
+	{start(_localctx, elementFilterMembership__());} (
 	memberPrefix 'filter' (ownedExpression {add(relationship_OwnedRelatedElement());}) ';'
 	) {end(_localctx);}
 ;
 
 aliasMember:
-	{start(membership__());} (
+	{start(_localctx, membership__());} (
 	memberPrefix 'alias' (
 		'<' (name {set(membership_MemberShortName());}) '>'
 	)?
@@ -274,11 +274,11 @@ importPrefix:
 import_:
 	(
 		membershipImport | namespaceImport
-	) {restart();} relationshipBody {end(_localctx);}
+	) {restart(_localctx);} relationshipBody {end(_localctx);}
 ;
 
 membershipImport:
-	{start(membershipImport__());} (
+	{start(_localctx, membershipImport__());} (
 	importPrefix importedMembership
 	) {end(_localctx);}
 ;
@@ -290,7 +290,7 @@ importedMembership:
 ;
 
 namespaceImport:
-	{start(namespaceImport__());} (
+	{start(_localctx, namespaceImport__());} (
 	importPrefix (
 		importedNamespace | (filterPackage {add(relationship_OwnedRelatedElement());})
 	)
@@ -304,7 +304,7 @@ importedNamespace:
 ;
 
 filterPackage:
-	{start(package__());} (
+	{start(_localctx, package__());} (
 	(filterPackageImport {add(element_OwnedRelationship());}) (filterPackageMember {add(element_OwnedRelationship());})+
 	) {end(_localctx);}
 ;
@@ -315,19 +315,19 @@ filterPackageImport:
 ;
 
 filterPackageMembershipImport:
-	{start(membershipImport__());} (
+	{start(_localctx, membershipImport__());} (
 	importedMembership
 	) {end(_localctx);}
 ;
 
 filterPackageNamespaceImport:
-	{start(namespaceImport__());} (
+	{start(_localctx, namespaceImport__());} (
 	importedNamespace
 	) {end(_localctx);}
 ;
 
 filterPackageMember:
-	{start(elementFilterMembership__());} (
+	{start(_localctx, elementFilterMembership__());} (
 	(filterPackageMemberVisibility {set(membership_Visibility());}) (ownedExpression {add(relationship_OwnedRelatedElement());}) ']'
 	) {end(_localctx);}
 ;
@@ -392,7 +392,7 @@ specializesKeyword:
 ;
 
 ownedSubclassification:
-	{start(subclassification__());} (
+	{start(_localctx, subclassification__());} (
 	(qualifiedName {setLink(subclassification_Superclassifier(), classifier__());})
 	) {end(_localctx);}
 ;
@@ -490,23 +490,23 @@ featureTyping:
 ;
 
 ownedFeatureTyping:
-	({start(featureTyping__()); attachTypingClauseStart();} target=qualifiedName {setLink(featureTyping_Type(), type__()); if ($target.quoted) attachQuotedName();} {end(_localctx);})
-	| ({start(featureTyping__()); attachTypingClauseStart();} ownedFeatureChain {add(relationship_OwnedRelatedElement());} {end(_localctx);})
+	({start(_localctx, featureTyping__()); attachTypingClauseStart();} target=qualifiedName {setLink(featureTyping_Type(), type__()); if ($target.quoted) attachQuotedName();} {end(_localctx);})
+	| ({start(_localctx, featureTyping__()); attachTypingClauseStart();} ownedFeatureChain {add(relationship_OwnedRelatedElement());} {end(_localctx);})
 ;
 
 ownedSubsetting:
-	({start(subsetting__());} target=qualifiedName {setLink(subsetting_SubsettedFeature(), feature__()); if ($target.quoted) attachQuotedName();} {end(_localctx);})
-	| ({start(subsetting__());} ownedFeatureChain {add(relationship_OwnedRelatedElement());} {end(_localctx);})
+	({start(_localctx, subsetting__());} target=qualifiedName {setLink(subsetting_SubsettedFeature(), feature__()); if ($target.quoted) attachQuotedName();} {end(_localctx);})
+	| ({start(_localctx, subsetting__());} ownedFeatureChain {add(relationship_OwnedRelatedElement());} {end(_localctx);})
 ;
 
 ownedReferenceSubsetting returns [boolean quoted]:
-	({start(referenceSubsetting__());} reference=qualifiedName {setLink(referenceSubsetting_ReferencedFeature(), feature__()); $quoted = $reference.quoted; if ($reference.quoted) attachQuotedName();} {end(_localctx);})
-	| ({start(referenceSubsetting__());} ownedFeatureChain {add(relationship_OwnedRelatedElement());} {end(_localctx);})
+	({start(_localctx, referenceSubsetting__());} reference=qualifiedName {setLink(referenceSubsetting_ReferencedFeature(), feature__()); $quoted = $reference.quoted; if ($reference.quoted) attachQuotedName();} {end(_localctx);})
+	| ({start(_localctx, referenceSubsetting__());} ownedFeatureChain {add(relationship_OwnedRelatedElement());} {end(_localctx);})
 ;
 
 ownedCrossSubsetting:
-	({start(crossSubsetting__());} target=qualifiedName {setLink(crossSubsetting_CrossedFeature(), feature__()); if ($target.quoted) attachQuotedName();} {end(_localctx);})
-	| ({start(crossSubsetting__());} ownedFeatureChain {add(relationship_OwnedRelatedElement());} {end(_localctx);})
+	({start(_localctx, crossSubsetting__());} target=qualifiedName {setLink(crossSubsetting_CrossedFeature(), feature__()); if ($target.quoted) attachQuotedName();} {end(_localctx);})
+	| ({start(_localctx, crossSubsetting__());} ownedFeatureChain {add(relationship_OwnedRelatedElement());} {end(_localctx);})
 ;
 
 redefinitions:
@@ -516,18 +516,18 @@ redefinitions:
 ;
 
 ownedRedefinition:
-	({start(redefinition__());} target=qualifiedName {setLink(redefinition_RedefinedFeature(), feature__()); if ($target.quoted) attachQuotedName();} {end(_localctx);})
-	| ({start(redefinition__());} ownedFeatureChain {add(relationship_OwnedRelatedElement());} {end(_localctx);})
+	({start(_localctx, redefinition__());} target=qualifiedName {setLink(redefinition_RedefinedFeature(), feature__()); if ($target.quoted) attachQuotedName();} {end(_localctx);})
+	| ({start(_localctx, redefinition__());} ownedFeatureChain {add(relationship_OwnedRelatedElement());} {end(_localctx);})
 ;
 
 ownedMultiplicity:
-	{start(owningMembership__());} (
+	{start(_localctx, owningMembership__());} (
 	(multiplicityRange {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 multiplicityRange:
-	{start(multiplicityRange__());} (
+	{start(_localctx, multiplicityRange__());} (
 	'[' (multiplicityExpressionMember {add(element_OwnedRelationship());}) (
 		'..' (multiplicityExpressionMember {add(element_OwnedRelationship());})
 	)?
@@ -536,7 +536,7 @@ multiplicityRange:
 ;
 
 multiplicityExpressionMember:
-	{start(owningMembership__());} (
+	{start(_localctx, owningMembership__());} (
 	((literalExpression | featureReferenceExpression) {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -577,41 +577,41 @@ definitionBodyItem:
 ;
 
 definitionMember:
-	{start(owningMembership__());} (
+	{start(_localctx, owningMembership__());} (
 	memberPrefix (definitionElement {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 variantUsageMember:
-	{start(variantMembership__());} (
+	{start(_localctx, variantMembership__());} (
 	memberPrefix 'variant' (parsedUsage=variantUsageElement {add(relationship_OwnedRelatedElement());
 		attachSameLineFollowingComments($parsedUsage.ctx);})
 	) {end(_localctx);}
 ;
 
 nonOccurrenceUsageMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	memberPrefix (parsedUsage=nonOccurrenceUsageElement {add(relationship_OwnedRelatedElement());
 		attachSameLineFollowingComments($parsedUsage.ctx);})
 	) {end(_localctx);}
 ;
 
 occurrenceUsageMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	memberPrefix (parsedUsage=occurrenceUsageElement {add(relationship_OwnedRelatedElement());
 		attachSameLineFollowingComments($parsedUsage.ctx);})
 	) {end(_localctx);}
 ;
 
 structureUsageMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	memberPrefix (parsedUsage=structureUsageElement {add(relationship_OwnedRelatedElement());
 		attachSameLineFollowingComments($parsedUsage.ctx);})
 	) {end(_localctx);}
 ;
 
 behaviorUsageMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	memberPrefix (behaviorUsageElement {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -651,13 +651,13 @@ usagePrefix:
 ;
 
 ownedCrossFeatureMember:
-	{start(owningMembership__());} (
+	{start(_localctx, owningMembership__());} (
 	(ownedCrossFeature {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 ownedCrossFeature:
-	{start(referenceUsage__());} (
+	{start(_localctx, referenceUsage__());} (
 	basicUsagePrefix usageDeclaration
 	) {end(_localctx);}
 ;
@@ -683,7 +683,7 @@ valuePart:
 ;
 
 featureValue:
-	{start(featureValue__());} (
+	{start(_localctx, featureValue__());} (
 	(
 		'='
 		| (':=' {setTrue(featureValue_IsInitial());})
@@ -705,13 +705,13 @@ referenceUsageKeyword:
 ;
 
 defaultReferenceUsage:
-	{start(referenceUsage__());} (
+	{start(_localctx, referenceUsage__());} (
 	('end' {setTrue(feature_IsEnd());})? refPrefix usageDeclaration valuePart? usageBody
 	) {end(_localctx);}
 ;
 
 referenceUsage:
-	{start(referenceUsage__());} (
+	{start(_localctx, referenceUsage__());} (
 	(
 		endUsagePrefix | refPrefix
 	) referenceUsageKeyword {attachExplicitRefPrefix();} usage
@@ -719,7 +719,7 @@ referenceUsage:
 ;
 
 variantReference:
-	{start(referenceUsage__());} (
+	{start(_localctx, referenceUsage__());} (
 	(ownedReferenceSubsetting {add(element_OwnedRelationship());}) featureSpecialization* usageBody
 	) {end(_localctx);}
 ;
@@ -801,13 +801,13 @@ variantUsageElement:
 ;
 
 extendedDefinition:
-	{start(definition__());} (
+	{start(_localctx, definition__());} (
 	basicDefinitionPrefix? definitionExtensionKeyword+ 'def' definition
 	) {end(_localctx);}
 ;
 
 extendedUsage:
-	{start(usage__());} (
+	{start(_localctx, usage__());} (
 	unextendedUsagePrefix usageExtensionKeyword+ usage
 	) {end(_localctx);}
 ;
@@ -825,13 +825,13 @@ attributeUsageKeyword:
 ;
 
 attributeDefinition:
-	{start(attributeDefinition__());} (
+	{start(_localctx, attributeDefinition__());} (
 	definitionPrefix attributeDefKeyword definition
 	) {end(_localctx);}
 ;
 
 attributeUsage:
-	{start(attributeUsage__());} (
+	{start(_localctx, attributeUsage__());} (
 	usagePrefix attributeUsageKeyword usage
 	) {end(_localctx);}
 ;
@@ -849,7 +849,7 @@ enumerationUsageKeyword:
 ;
 
 enumerationDefinition:
-	{start(enumerationDefinition__());} (
+	{start(_localctx, enumerationDefinition__());} (
 	definitionExtensionKeyword* enumerationDefKeyword definitionDeclaration enumerationBody
 	) {end(_localctx);}
 ;
@@ -863,19 +863,19 @@ enumerationBody:
 ;
 
 enumerationUsageMember:
-	{start(variantMembership__());} (
+	{start(_localctx, variantMembership__());} (
 	memberPrefix (enumeratedValue {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 enumeratedValue:
-	{start(enumerationUsage__());} (
+	{start(_localctx, enumerationUsage__());} (
 	usageExtensionKeyword* keyword=enumerationUsageKeyword? {if ($keyword.ctx == null) attachEnumKeywordOmitted();} usage
 	) {end(_localctx);}
 ;
 
 enumerationUsage:
-	{start(enumerationUsage__());} (
+	{start(_localctx, enumerationUsage__());} (
 	usagePrefix enumerationUsageKeyword usage
 	) {end(_localctx);}
 ;
@@ -896,25 +896,25 @@ occurrenceDefinitionPrefix:
 ;
 
 occurrenceDefinition:
-	{start(occurrenceDefinition__());} (
+	{start(_localctx, occurrenceDefinition__());} (
 	occurrenceDefinitionPrefix occurrenceDefKeyword definition
 	) {end(_localctx);}
 ;
 
 individualDefinition:
-	{start(occurrenceDefinition__());} (
+	{start(_localctx, occurrenceDefinition__());} (
 	basicDefinitionPrefix? ('individual' {setTrue(occurrenceDefinition_IsIndividual());} {attachCompactIndividualDefinition();}) (emptyMultiplicityMember {add(element_OwnedRelationship());}) definitionExtensionKeyword* 'def' definition
 	) {end(_localctx);}
 ;
 
 emptyMultiplicityMember:
-	{start(owningMembership__());} (
+	{start(_localctx, owningMembership__());} (
 	(emptyMultiplicity {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 emptyMultiplicity:
-	{start(multiplicity__());} (
+	{start(_localctx, multiplicity__());} (
 	
 	) {end(_localctx);}
 ;
@@ -931,19 +931,19 @@ occurrenceUsagePrefix:
 ;
 
 occurrenceUsage:
-	{start(occurrenceUsage__());} (
+	{start(_localctx, occurrenceUsage__());} (
 	occurrenceUsagePrefix occurrenceUsageKeyword usage
 	) {end(_localctx);}
 ;
 
 individualUsage:
-	{start(occurrenceUsage__());} (
+	{start(_localctx, occurrenceUsage__());} (
 	basicUsagePrefix ('individual' {setTrue(occurrenceUsage_IsIndividual());} {attachCompactIndividualUsage();}) usageExtensionKeyword* usage
 	) {end(_localctx);}
 ;
 
 portionUsage:
-	{start(occurrenceUsage__());} (
+	{start(_localctx, occurrenceUsage__());} (
 	basicUsagePrefix ('individual' {setTrue(occurrenceUsage_IsIndividual());})? (portionKind {set(occurrenceUsage_PortionKind());}) usageExtensionKeyword* usage
 	) {end(_localctx);}
 ;
@@ -954,7 +954,7 @@ portionKind:
 ;
 
 eventOccurrenceUsage:
-	{start(eventOccurrenceUsage__());} (
+	{start(_localctx, eventOccurrenceUsage__());} (
 	occurrenceUsagePrefix 'event' (
 		(ownedReferenceSubsetting {add(element_OwnedRelationship());}) featureSpecializationPart? | occurrenceUsageKeyword usageDeclaration?
 	) usageCompletion
@@ -962,37 +962,37 @@ eventOccurrenceUsage:
 ;
 
 emptySuccessionMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	(emptySuccession {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 emptySuccession:
-	{start(successionAsUsage__());} (
+	{start(_localctx, successionAsUsage__());} (
 	'then' (multiplicitySourceEndMember {add(element_OwnedRelationship());}) (emptyTargetEndMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 multiplicitySourceEndMember:
-	{start(endFeatureMembership__());} (
+	{start(_localctx, endFeatureMembership__());} (
 	(multiplicitySourceEnd {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 multiplicitySourceEnd:
-	{start(referenceUsage__());} (
+	{start(_localctx, referenceUsage__());} (
 	(ownedMultiplicity {add(element_OwnedRelationship());})?
 	) {end(_localctx);}
 ;
 
 emptyTargetEndMember:
-	{start(endFeatureMembership__());} (
+	{start(_localctx, endFeatureMembership__());} (
 	(emptyTargetEnd {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 emptyTargetEnd:
-	{start(referenceUsage__());} (
+	{start(_localctx, referenceUsage__());} (
 	
 	) {end(_localctx);}
 ;
@@ -1010,13 +1010,13 @@ itemUsageKeyword:
 ;
 
 itemDefinition:
-	{start(itemDefinition__());} (
+	{start(_localctx, itemDefinition__());} (
 	occurrenceDefinitionPrefix itemDefKeyword definition
 	) {end(_localctx);}
 ;
 
 itemUsage:
-	{start(itemUsage__());} (
+	{start(_localctx, itemUsage__());} (
 	occurrenceUsagePrefix itemUsageKeyword usage
 	) {end(_localctx);}
 ;
@@ -1034,13 +1034,13 @@ partUsageKeyword:
 ;
 
 partDefinition:
-	{start(partDefinition__());} (
+	{start(_localctx, partDefinition__());} (
 	occurrenceDefinitionPrefix partDefKeyword definition
 	) {end(_localctx);}
 ;
 
 partUsage:
-	{start(partUsage__());} (
+	{start(_localctx, partUsage__());} (
 	occurrenceUsagePrefix partUsageKeyword usage
 	) {end(_localctx);}
 ;
@@ -1054,31 +1054,31 @@ portDefKeyword:
 ;
 
 portDefinition:
-	{start(portDefinition__());} (
+	{start(_localctx, portDefinition__());} (
 	definitionPrefix portDefKeyword definition (conjugatedPortDefinitionMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 conjugatedPortDefinitionMember:
-	{start(owningMembership__());} (
+	{start(_localctx, owningMembership__());} (
 	(conjugatedPortDefinition {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 conjugatedPortDefinition:
-	{start(conjugatedPortDefinition__());} (
+	{start(_localctx, conjugatedPortDefinition__());} (
 	(portConjugation {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 portConjugation:
-	{start(portConjugation__());} (
+	{start(_localctx, portConjugation__());} (
 	
 	) {end(_localctx);}
 ;
 
 conjugatedPortTyping:
-	{start(conjugatedPortTyping__()); attachTypingClauseStart();} (
+	{start(_localctx, conjugatedPortTyping__()); attachTypingClauseStart();} (
 	(conjugatedQualifiedName {setLink(conjugatedPortTyping_ConjugatedPortDefinition(), conjugatedPortDefinition__());})
 	) {end(_localctx);}
 ;
@@ -1092,19 +1092,19 @@ portUsageKeyword:
 ;
 
 portUsage:
-	{start(portUsage__());} (
+	{start(_localctx, portUsage__());} (
 	occurrenceUsagePrefix portUsageKeyword {attachEndFeatureKeyword();} usage
 	) {end(_localctx);}
 ;
 
 connectorEndMember:
-	{start(endFeatureMembership__());} (
+	{start(_localctx, endFeatureMembership__());} (
 	(connectorEnd {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 connectorEnd:
-	{start(referenceUsage__());} (
+	{start(_localctx, referenceUsage__());} (
 	(ownedCrossMultiplicityMember {add(element_OwnedRelationship());})? (
 		(name {set(element_DeclaredName());}) referencesKeyword
 	)?
@@ -1113,13 +1113,13 @@ connectorEnd:
 ;
 
 ownedCrossMultiplicityMember:
-	{start(owningMembership__());} (
+	{start(_localctx, owningMembership__());} (
 	(ownedCrossMultiplicity {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 ownedCrossMultiplicity:
-	{start(feature__());} (
+	{start(_localctx, feature__());} (
 	(ownedMultiplicity {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
@@ -1129,7 +1129,7 @@ bindingKeyword:
 ;
 
 bindingConnectorAsUsage:
-	{start(bindingConnectorAsUsage__());} (
+	{start(_localctx, bindingConnectorAsUsage__());} (
 	usagePrefix (
 		bindingKeyword {attachExplicitDeclarationKeyword();} usageDeclaration?
 	)?
@@ -1142,7 +1142,7 @@ successionKeyword:
 ;
 
 successionAsUsage:
-	{start(successionAsUsage__());} (
+	{start(_localctx, successionAsUsage__());} (
 	usagePrefix (
 		successionKeyword {attachSuccessionKeyword();} usageDeclaration?
 	)?
@@ -1159,7 +1159,7 @@ connectionDefKeyword:
 ;
 
 connectionDefinition:
-	{start(connectionDefinition__());} (
+	{start(_localctx, connectionDefinition__());} (
 	occurrenceDefinitionPrefix connectionDefKeyword definition
 	) {end(_localctx);}
 ;
@@ -1173,7 +1173,7 @@ connectionUsageKeyword:
 ;
 
 connectionUsage:
-	{start(connectionUsage__());} (
+	{start(_localctx, connectionUsage__());} (
 	occurrenceUsagePrefix (
 		connectionUsageKeyword usageDeclaration? valuePart? (
 			connectorKeyword connectorPart
@@ -1200,13 +1200,13 @@ naryConnectorPart:
 ;
 
 emptySourceEndMember:
-	{start(endFeatureMembership__());} (
+	{start(_localctx, endFeatureMembership__());} (
 	(emptySourceEnd {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 emptySourceEnd:
-	{start(referenceUsage__());} (
+	{start(_localctx, referenceUsage__());} (
 	
 	) {end(_localctx);}
 ;
@@ -1220,7 +1220,7 @@ interfaceDefKeyword:
 ;
 
 interfaceDefinition:
-	{start(interfaceDefinition__());} (
+	{start(_localctx, interfaceDefinition__());} (
 	occurrenceDefinitionPrefix interfaceDefKeyword definitionDeclaration interfaceBody
 	) {end(_localctx);}
 ;
@@ -1240,7 +1240,7 @@ interfaceBodyItem:
 ;
 
 interfaceNonOccurrenceUsageMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	memberPrefix (interfaceNonOccurrenceUsageElement {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -1254,7 +1254,7 @@ interfaceNonOccurrenceUsageElement:
 ;
 
 interfaceOccurrenceUsageMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	memberPrefix (interfaceOccurrenceUsageElement {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -1266,7 +1266,7 @@ interfaceOccurrenceUsageElement:
 ;
 
 defaultInterfaceEnd:
-	{start(portUsage__());} (
+	{start(_localctx, portUsage__());} (
 	('end' {setTrue(feature_IsEnd());}) usage
 	) {end(_localctx);}
 ;
@@ -1276,7 +1276,7 @@ interfaceUsageKeyword:
 ;
 
 interfaceUsage:
-	{start(interfaceUsage__());} (
+	{start(_localctx, interfaceUsage__());} (
 	occurrenceUsagePrefix interfaceUsageKeyword
 	interfaceUsageDeclaration interfaceBody
 	) {end(_localctx);}
@@ -1307,13 +1307,13 @@ naryInterfacePart:
 ;
 
 interfaceEndMember:
-	{start(endFeatureMembership__());} (
+	{start(_localctx, endFeatureMembership__());} (
 	(interfaceEnd {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 interfaceEnd:
-	{start(portUsage__());} (
+	{start(_localctx, portUsage__());} (
 	(ownedCrossMultiplicityMember {add(element_OwnedRelationship());})? (
 		(name {set(element_DeclaredName());}) referencesKeyword
 	)?
@@ -1330,7 +1330,7 @@ allocationDefKeyword:
 ;
 
 allocationDefinition:
-	{start(allocationDefinition__());} (
+	{start(_localctx, allocationDefinition__());} (
 	occurrenceDefinitionPrefix allocationDefKeyword definition
 	) {end(_localctx);}
 ;
@@ -1344,7 +1344,7 @@ allocateKeyword:
 ;
 
 allocationUsage:
-	{start(allocationUsage__());} (
+	{start(_localctx, allocationUsage__());} (
 	occurrenceUsagePrefix allocationUsageDeclaration usageBody
 	) {end(_localctx);}
 ;
@@ -1365,7 +1365,7 @@ flowDefKeyword:
 ;
 
 flowDefinition:
-	{start(flowDefinition__());} (
+	{start(_localctx, flowDefinition__());} (
 	occurrenceDefinitionPrefix flowDefKeyword definition
 	) {end(_localctx);}
 ;
@@ -1375,7 +1375,7 @@ messageKeyword:
 ;
 
 message:
-	{start(flowUsage__());} (
+	{start(_localctx, flowUsage__());} (
 	occurrenceUsagePrefix messageKeyword {attachMessageUsage();} messageDeclaration definitionBody
 	) {end(_localctx);}
 ;
@@ -1391,19 +1391,19 @@ messageDeclaration:
 ;
 
 messageEventMember:
-	{start(parameterMembership__());} (
+	{start(_localctx, parameterMembership__());} (
 	(messageEvent {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 messageEvent:
-	{start(eventOccurrenceUsage__());} (
+	{start(_localctx, eventOccurrenceUsage__());} (
 	(ownedReferenceSubsetting {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 flowUsage:
-	{start(flowUsage__());} (
+	{start(_localctx, flowUsage__());} (
 	occurrenceUsagePrefix flowKeyword flowDeclaration definitionBody
 	) {end(_localctx);}
 ;
@@ -1413,7 +1413,7 @@ successionFlowKeyword:
 ;
 
 successionFlowUsage:
-	{start(successionFlowUsage__());} (
+	{start(_localctx, successionFlowUsage__());} (
 	occurrenceUsagePrefix successionFlowKeyword flowDeclaration definitionBody
 	) {end(_localctx);}
 ;
@@ -1429,13 +1429,13 @@ flowDeclaration:
 ;
 
 payloadFeatureMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	(payloadFeature {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 payloadFeature:
-	{start(payloadFeature__());} (
+	{start(_localctx, payloadFeature__());} (
 	payload
 	) {end(_localctx);}
 ;
@@ -1453,24 +1453,24 @@ payloadFeatureSpecializationPart:
 ;
 
 flowEndMember:
-	{start(endFeatureMembership__());} (
+	{start(_localctx, endFeatureMembership__());} (
 	(flowEnd {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 flowEnd:
-	{start(flowEnd__());} (
+	{start(_localctx, flowEnd__());} (
 	(flowEndSubsetting {add(element_OwnedRelationship());})? (flowFeatureMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 flowEndSubsetting:
-	{start(referenceSubsetting__());} (qualifiedName {setLink(referenceSubsetting_ReferencedFeature(), feature__());}) '.' {end(_localctx);}
-	| {start(referenceSubsetting__());} (featureChainPrefix {add(relationship_OwnedRelatedElement());}) {end(_localctx);}
+	{start(_localctx, referenceSubsetting__());} (qualifiedName {setLink(referenceSubsetting_ReferencedFeature(), feature__());}) '.' {end(_localctx);}
+	| {start(_localctx, referenceSubsetting__());} (featureChainPrefix {add(relationship_OwnedRelatedElement());}) {end(_localctx);}
 ;
 
 featureChainPrefix:
-	{start(feature__());} (
+	{start(_localctx, feature__());} (
 	(
 		(ownedFeatureChaining {add(element_OwnedRelationship());}) '.'
 	)+
@@ -1479,19 +1479,19 @@ featureChainPrefix:
 ;
 
 flowFeatureMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	(flowFeature {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 flowFeature:
-	{start(referenceUsage__());} (
+	{start(_localctx, referenceUsage__());} (
 	(flowRedefinition {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 flowRedefinition:
-	{start(redefinition__());} (
+	{start(_localctx, redefinition__());} (
 	(qualifiedName {setLink(redefinition_RedefinedFeature(), feature__());})
 	) {end(_localctx);}
 ;
@@ -1505,7 +1505,7 @@ actionDefKeyword:
 ;
 
 actionDefinition:
-	{start(actionDefinition__());} (
+	{start(_localctx, actionDefinition__());} (
 	occurrenceDefinitionPrefix actionDefKeyword definitionDeclaration actionBody
 	) {end(_localctx);}
 ;
@@ -1528,25 +1528,25 @@ actionBodyItem:
 ;
 
 initialNodeMember:
-	{start(membership__());} (
+	{start(_localctx, membership__());} (
 	memberPrefix 'first' {attachFirstMembership();} (qualifiedName {setLink(membership_MemberElement(), feature__());}) relationshipBody
 	) {end(_localctx);}
 ;
 
 actionNodeMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	memberPrefix (actionNode {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 targetSuccessionMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	memberPrefix (actionTargetSuccession {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 guardedSuccessionMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	memberPrefix (guardedSuccession {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -1556,13 +1556,13 @@ actionUsageKeyword:
 ;
 
 actionUsage:
-	{start(actionUsage__());} (
+	{start(_localctx, actionUsage__());} (
 	occurrenceUsagePrefix actionUsageKeyword actionUsageDeclaration actionBody
 	) {end(_localctx);}
 ;
 
 performActionUsage:
-	{start(performActionUsage__());} (
+	{start(_localctx, performActionUsage__());} (
 	occurrenceUsagePrefix 'perform' performActionUsageDeclaration actionBody
 	) {end(_localctx);}
 ;
@@ -1597,7 +1597,7 @@ actionNodePrefix:
 ;
 
 acceptNode:
-	{start(acceptActionUsage__());} (
+	{start(_localctx, acceptActionUsage__());} (
 	occurrenceUsagePrefix acceptNodeDeclaration actionBody
 	) {attachFollowingComments(_localctx);} {end(_localctx);}
 ;
@@ -1613,14 +1613,14 @@ acceptParameterPart:
 ;
 
 payloadParameterMember:
-	{start(parameterMembership__());} (
+	{start(_localctx, parameterMembership__());} (
 	(payloadParameter {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 payloadParameter:
-	{start(referenceUsage__());} payload {end(_localctx);}
-	| {start(referenceUsage__());} identification? payloadFeatureSpecializationPart? triggerValuePart {end(_localctx);}
+	{start(_localctx, referenceUsage__());} payload {end(_localctx);}
+	| {start(_localctx, referenceUsage__());} identification? payloadFeatureSpecializationPart? triggerValuePart {end(_localctx);}
 ;
 
 triggerValuePart:
@@ -1628,14 +1628,14 @@ triggerValuePart:
 ;
 
 triggerFeatureValue:
-	{start(featureValue__());} (
+	{start(_localctx, featureValue__());} (
 	(triggerExpression {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 triggerExpression:
-	{start(triggerInvocationExpression__());} (timeTriggerKind {set(triggerInvocationExpression_Kind());}) (argumentMember {add(element_OwnedRelationship());}) {end(_localctx);}
-	| {start(triggerInvocationExpression__());} (changeTriggerKind {set(triggerInvocationExpression_Kind());}) (argumentExpressionMember {add(element_OwnedRelationship());}) {end(_localctx);}
+	{start(_localctx, triggerInvocationExpression__());} (timeTriggerKind {set(triggerInvocationExpression_Kind());}) (argumentMember {add(element_OwnedRelationship());}) {end(_localctx);}
+	| {start(_localctx, triggerInvocationExpression__());} (changeTriggerKind {set(triggerInvocationExpression_Kind());}) (argumentExpressionMember {add(element_OwnedRelationship());}) {end(_localctx);}
 ;
 
 timeTriggerKind:
@@ -1648,25 +1648,25 @@ changeTriggerKind:
 ;
 
 argumentExpressionMember:
-	{start(parameterMembership__());} (
+	{start(_localctx, parameterMembership__());} (
 	(argumentExpression {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 argumentExpression:
-	{start(feature__());} (
+	{start(_localctx, feature__());} (
 	(argumentExpressionValue {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 argumentExpressionValue:
-	{start(featureValue__());} (
+	{start(_localctx, featureValue__());} (
 	(ownedExpressionReference {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 sendNode:
-	{start(sendActionUsage__());} (
+	{start(_localctx, sendActionUsage__());} (
 	occurrenceUsagePrefix actionNodeUsageDeclaration? 'send' (
 		actionBody | (
 			(nodeParameterMember {add(element_OwnedRelationship());}) senderReceiverPart? | (emptyParameterMember {add(element_OwnedRelationship());}) senderReceiverPart
@@ -1687,25 +1687,25 @@ senderReceiverPart:
 ;
 
 nodeParameterMember:
-	{start(parameterMembership__());} (
+	{start(_localctx, parameterMembership__());} (
 	(nodeParameter {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 nodeParameter:
-	{start(referenceUsage__());} (
+	{start(_localctx, referenceUsage__());} (
 	(featureBinding {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 featureBinding:
-	{start(featureValue__());} (
+	{start(_localctx, featureValue__());} (
 	(ownedExpression {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 assignmentNode:
-	{start(assignmentActionUsage__());} (
+	{start(_localctx, assignmentActionUsage__());} (
 	occurrenceUsagePrefix assignmentNodeDeclaration actionBody
 	) {end(_localctx);}
 ;
@@ -1715,13 +1715,13 @@ assignmentNodeDeclaration:
 ;
 
 assignmentTargetMember:
-	{start(parameterMembership__());} (
+	{start(_localctx, parameterMembership__());} (
 	(targetParameter {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 targetParameter:
-	{start(referenceUsage__());} (
+	{start(_localctx, referenceUsage__());} (
 	(
 		(targetBinding {add(element_OwnedRelationship());}) '.'
 	)?
@@ -1730,25 +1730,25 @@ targetParameter:
 ;
 
 targetFeatureMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	(targetFeature {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 targetFeature:
-	{start(referenceUsage__());} (
+	{start(_localctx, referenceUsage__());} (
 	(targetAccessedFeatureMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 targetAccessedFeatureMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	(emptyUsage {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 targetBinding:
-	{start(featureValue__());} (
+	{start(_localctx, featureValue__());} (
 	(targetExpression {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -1772,13 +1772,13 @@ targetExpression:
 ;
 
 expressionParameterMember:
-	{start(parameterMembership__());} (
+	{start(_localctx, parameterMembership__());} (
 	(ownedExpression {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 ifNode:
-	{start(ifActionUsage__());} (
+	{start(_localctx, ifActionUsage__());} (
 	actionNodePrefix 'if' (expressionParameterMember {add(element_OwnedRelationship());}) (actionBodyParameterMember {add(element_OwnedRelationship());}) (
 		'else' ((actionBodyParameterMember | ifNodeParameterMember) {add(element_OwnedRelationship());})
 	)?
@@ -1786,13 +1786,13 @@ ifNode:
 ;
 
 actionBodyParameterMember:
-	{start(parameterMembership__());} (
+	{start(_localctx, parameterMembership__());} (
 	(actionBodyParameter {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 actionBodyParameter:
-	{start(actionUsage__());} (
+	{start(_localctx, actionUsage__());} (
 	(
 		actionUsageKeyword {attachExplicitActionNodeKeyword();} usageDeclaration?
 	)?
@@ -1801,13 +1801,13 @@ actionBodyParameter:
 ;
 
 ifNodeParameterMember:
-	{start(parameterMembership__());} (
+	{start(_localctx, parameterMembership__());} (
 	(ifNode {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 whileLoopNode:
-	{start(whileLoopActionUsage__());} (
+	{start(_localctx, whileLoopActionUsage__());} (
 	actionNodePrefix (
 		'while' (expressionParameterMember {add(element_OwnedRelationship());}) | 'loop' (emptyParameterMember {add(element_OwnedRelationship());})
 	) (actionBodyParameterMember {add(element_OwnedRelationship());}) (
@@ -1817,25 +1817,25 @@ whileLoopNode:
 ;
 
 forLoopNode:
-	{start(forLoopActionUsage__());} (
+	{start(_localctx, forLoopActionUsage__());} (
 	actionNodePrefix 'for' (forVariableDeclarationMember {add(element_OwnedRelationship());}) 'in' (nodeParameterMember {add(element_OwnedRelationship());}) (actionBodyParameterMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 forVariableDeclarationMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	(forVariableDeclaration {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 forVariableDeclaration:
-	{start(referenceUsage__());} (
+	{start(_localctx, referenceUsage__());} (
 	usageDeclaration
 	) {end(_localctx);}
 ;
 
 terminateNode:
-	{start(terminateActionUsage__());} (
+	{start(_localctx, terminateActionUsage__());} (
 	occurrenceUsagePrefix actionNodeUsageDeclaration? 'terminate' (
 		actionBody | (nodeParameterMember {add(element_OwnedRelationship());}) actionBody
 	)
@@ -1854,37 +1854,37 @@ controlNodePrefix:
 ;
 
 mergeNode:
-	{start(mergeNode__());} (
+	{start(_localctx, mergeNode__());} (
 	controlNodePrefix ('merge' {setTrue(feature_IsComposite());}) usageDeclaration? actionBody
 	) {end(_localctx);}
 ;
 
 decisionNode:
-	{start(decisionNode__());} (
+	{start(_localctx, decisionNode__());} (
 	controlNodePrefix ('decide' {setTrue(feature_IsComposite());}) usageDeclaration? actionBody
 	) {end(_localctx);}
 ;
 
 joinNode:
-	{start(joinNode__());} (
+	{start(_localctx, joinNode__());} (
 	controlNodePrefix ('join' {setTrue(feature_IsComposite());}) usageDeclaration? actionBody
 	) {end(_localctx);}
 ;
 
 forkNode:
-	{start(forkNode__());} (
+	{start(_localctx, forkNode__());} (
 	controlNodePrefix ('fork' {setTrue(feature_IsComposite());}) usageDeclaration? actionBody
 	) {end(_localctx);}
 ;
 
 emptyParameterMember:
-	{start(parameterMembership__());} (
+	{start(_localctx, parameterMembership__());} (
 	(emptyUsage {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 emptyUsage:
-	{start(referenceUsage__());} (
+	{start(_localctx, referenceUsage__());} (
 	
 	) {end(_localctx);}
 ;
@@ -1892,29 +1892,29 @@ emptyUsage:
 actionTargetSuccession:
 	(
 		targetSuccession | guardedTargetSuccession | defaultTargetSuccession
-	) {restart();} usageBody {end(_localctx);}
+	) {restart(_localctx);} usageBody {end(_localctx);}
 ;
 
 targetSuccession:
-	{start(successionAsUsage__());} (
+	{start(_localctx, successionAsUsage__());} (
 	(multiplicitySourceEndMember {add(element_OwnedRelationship());}) 'then' (connectorEndMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 guardedTargetSuccession:
-	{start(transitionUsage__());} (
+	{start(_localctx, transitionUsage__());} (
 	(emptyParameterMember {add(element_OwnedRelationship());}) (guardExpressionMember {add(element_OwnedRelationship());}) 'then' (transitionSuccessionMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 defaultTargetSuccession:
-	{start(transitionUsage__());} (
+	{start(_localctx, transitionUsage__());} (
 	(emptyParameterMember {add(element_OwnedRelationship());}) 'else' {attachDefaultTargetSuccession();} (transitionSuccessionMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 guardedSuccession:
-	{start(transitionUsage__());} (
+	{start(_localctx, transitionUsage__());} (
 	(
 		successionKeyword {attachSuccessionKeyword();} usageDeclaration
 	)?
@@ -1931,7 +1931,7 @@ stateDefKeyword:
 ;
 
 stateDefinition:
-	{start(stateDefinition__());} (
+	{start(_localctx, stateDefinition__());} (
 	occurrenceDefinitionPrefix stateDefKeyword definitionDeclaration stateDefBody
 	) {end(_localctx);}
 ;
@@ -1960,7 +1960,7 @@ stateBodyItem:
 ;
 
 entryActionMember:
-	{start(stateSubactionMembership__());} (
+	{start(_localctx, stateSubactionMembership__());} (
 	memberPrefix (entryActionKind {set(stateSubactionMembership_Kind());}) (stateActionUsage {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -1970,7 +1970,7 @@ entryActionKind:
 ;
 
 doActionMember:
-	{start(stateSubactionMembership__());} (
+	{start(_localctx, stateSubactionMembership__());} (
 	memberPrefix (doActionKind {set(stateSubactionMembership_Kind());}) (stateActionUsage {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -1980,7 +1980,7 @@ doActionKind:
 ;
 
 exitActionMember:
-	{start(stateSubactionMembership__());} (
+	{start(_localctx, stateSubactionMembership__());} (
 	memberPrefix (exitActionKind {set(stateSubactionMembership_Kind());}) (stateActionUsage {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -1990,7 +1990,7 @@ exitActionKind:
 ;
 
 entryTransitionMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	memberPrefix (
 		(guardedTargetSuccession {add(relationship_OwnedRelatedElement());}) | 'then' (transitionSuccession {add(relationship_OwnedRelatedElement());})
 	) ';'
@@ -1999,30 +1999,30 @@ entryTransitionMember:
 
 stateActionUsage:
 	emptyActionUsage ';'
-	| performedActionUsage {restart();} {attachTrailingComments();} actionBody {end(_localctx);}
+	| performedActionUsage {restart(_localctx);} {attachTrailingComments();} actionBody {end(_localctx);}
 ;
 
 emptyActionUsage:
-	{start(actionUsage__());} (
+	{start(_localctx, actionUsage__());} (
 	
 	) {end(_localctx);}
 ;
 
 performedActionUsage:
-	{start(performActionUsage__());} performActionUsageDeclaration {end(_localctx);}
-	| {start(acceptActionUsage__());} acceptNodeDeclaration {end(_localctx);}
-	| {start(sendActionUsage__());} sendNodeDeclaration {end(_localctx);}
-	| {start(assignmentActionUsage__());} assignmentNodeDeclaration {end(_localctx);}
+	{start(_localctx, performActionUsage__());} performActionUsageDeclaration {end(_localctx);}
+	| {start(_localctx, acceptActionUsage__());} acceptNodeDeclaration {end(_localctx);}
+	| {start(_localctx, sendActionUsage__());} sendNodeDeclaration {end(_localctx);}
+	| {start(_localctx, assignmentActionUsage__());} assignmentNodeDeclaration {end(_localctx);}
 ;
 
 transitionUsageMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	memberPrefix (transitionUsage {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 targetTransitionUsageMember:
-	{start(featureMembership__());} (
+	{start(_localctx, featureMembership__());} (
 	memberPrefix (targetTransitionUsage {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -2032,7 +2032,7 @@ stateUsageKeyword:
 ;
 
 stateUsage:
-	{start(stateUsage__());} (
+	{start(_localctx, stateUsage__());} (
 	occurrenceUsagePrefix stateUsageKeyword actionUsageDeclaration stateUsageBody
 	) {end(_localctx);}
 ;
@@ -2043,7 +2043,7 @@ stateUsageBody:
 ;
 
 exhibitStateUsage:
-	{start(exhibitStateUsage__());} (
+	{start(_localctx, exhibitStateUsage__());} (
 	occurrenceUsagePrefix 'exhibit' (
 		(ownedReferenceSubsetting {add(element_OwnedRelationship());}) featureSpecializationPart? | stateUsageKeyword {attachExplicitStateUsageKeyword();} usageDeclaration?
 	) valuePart? stateUsageBody
@@ -2055,7 +2055,7 @@ transitionUsageKeyword:
 ;
 
 transitionUsage:
-	{start(transitionUsage__());} (
+	{start(_localctx, transitionUsage__());} (
 	transitionUsageKeyword {attachExplicitTransitionKeyword();} (
 		usageDeclaration? first='first'
 	)?
@@ -2067,7 +2067,7 @@ transitionUsage:
 ;
 
 targetTransitionUsage:
-	{start(transitionUsage__());} (
+	{start(_localctx, transitionUsage__());} (
 	(emptyParameterMember {add(element_OwnedRelationship());}) (
 		transitionUsageKeyword {attachExplicitTransitionKeyword();} (
 			(emptyParameterMember {add(element_OwnedRelationship());}) (triggerActionMember {add(element_OwnedRelationship());})
@@ -2081,12 +2081,12 @@ targetTransitionUsage:
 ;
 
 transitionSourceMember:
-	{start(membership__());} (qualifiedName {setLink(membership_MemberElement(), feature__());}) {end(_localctx);}
-	| {start(owningMembership__());} (ownedFeatureChain {add(relationship_OwnedRelatedElement());}) {end(_localctx);}
+	{start(_localctx, membership__());} (qualifiedName {setLink(membership_MemberElement(), feature__());}) {end(_localctx);}
+	| {start(_localctx, owningMembership__());} (ownedFeatureChain {add(relationship_OwnedRelatedElement());}) {end(_localctx);}
 ;
 
 triggerActionMember:
-	{start(transitionFeatureMembership__());} (
+	{start(_localctx, transitionFeatureMembership__());} (
 	(triggerFeatureKind {set(transitionFeatureMembership_Kind());}) (triggerAction {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -2096,13 +2096,13 @@ triggerFeatureKind:
 ;
 
 triggerAction:
-	{start(acceptActionUsage__());} (
+	{start(_localctx, acceptActionUsage__());} (
 	part=acceptParameterPart
 	) {attachFollowingComments($part.ctx);} {end(_localctx);}
 ;
 
 guardExpressionMember:
-	{start(transitionFeatureMembership__());} (
+	{start(_localctx, transitionFeatureMembership__());} (
 	(guardFeatureKind {set(transitionFeatureMembership_Kind());}) (ownedExpression {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -2112,7 +2112,7 @@ guardFeatureKind:
 ;
 
 effectBehaviorMember:
-	{start(transitionFeatureMembership__());} (
+	{start(_localctx, transitionFeatureMembership__());} (
 	(effectFeatureKind {set(transitionFeatureMembership_Kind());}) (effectBehaviorUsage {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -2124,18 +2124,18 @@ effectFeatureKind:
 effectBehaviorUsage:
 	emptyActionUsage
 	| performedActionUsage (
-		{restart();} '{' {attachBodyBlock();} actionBodyItem* '}' {end(_localctx);}
+		{restart(_localctx);} '{' {attachBodyBlock();} actionBodyItem* '}' {end(_localctx);}
 	)? {attachFollowingComments(_localctx);}
 ;
 
 transitionSuccessionMember:
-	{start(owningMembership__());} (
+	{start(_localctx, owningMembership__());} (
 	(transitionSuccession {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 transitionSuccession:
-	{start(successionAsUsage__());} (
+	{start(_localctx, successionAsUsage__());} (
 	(emptySourceEndMember {add(element_OwnedRelationship());}) (connectorEndMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
@@ -2149,7 +2149,7 @@ calculationDefKeyword:
 ;
 
 calculationDefinition:
-	{start(calculationDefinition__());} (
+	{start(_localctx, calculationDefinition__());} (
 	occurrenceDefinitionPrefix calculationDefKeyword definitionDeclaration calculationBody
 	) {end(_localctx);}
 ;
@@ -2169,13 +2169,13 @@ calculationBodyItem:
 ;
 
 returnParameterMember:
-	{start(returnParameterMembership__());} (
+	{start(_localctx, returnParameterMembership__());} (
 	memberPrefix 'return' (usageElement {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 resultExpressionMember:
-	{start(resultExpressionMembership__());} (
+	{start(_localctx, resultExpressionMembership__());} (
 	memberPrefix (ownedExpression {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -2185,7 +2185,7 @@ calculationUsageKeyword:
 ;
 
 calculationUsage:
-	{start(calculationUsage__());} (
+	{start(_localctx, calculationUsage__());} (
 	occurrenceUsagePrefix calculationUsageKeyword actionUsageDeclaration calculationBody
 	) {end(_localctx);}
 ;
@@ -2199,7 +2199,7 @@ constraintDefKeyword:
 ;
 
 constraintDefinition:
-	{start(constraintDefinition__());} (
+	{start(_localctx, constraintDefinition__());} (
 	occurrenceDefinitionPrefix constraintDefKeyword definitionDeclaration calculationBody
 	) {end(_localctx);}
 ;
@@ -2209,13 +2209,13 @@ constraintUsageKeyword:
 ;
 
 constraintUsage:
-	{start(constraintUsage__());} (
+	{start(_localctx, constraintUsage__());} (
 	occurrenceUsagePrefix constraintUsageKeyword constraintUsageDeclaration calculationBody
 	) {end(_localctx);}
 ;
 
 assertConstraintUsage:
-	{start(assertConstraintUsage__());} (
+	{start(_localctx, assertConstraintUsage__());} (
 	occurrenceUsagePrefix 'assert' ('not' {setTrue(invariant_IsNegated());})? (
 		{attachDeclarationKeywordOmitted();} (ownedReferenceSubsetting {add(element_OwnedRelationship());}) featureSpecializationPart? | constraintUsageKeyword constraintUsageDeclaration
 	) calculationBody
@@ -2235,7 +2235,7 @@ requirementDefKeyword:
 ;
 
 requirementDefinition:
-	{start(requirementDefinition__());} (
+	{start(_localctx, requirementDefinition__());} (
 	occurrenceDefinitionPrefix requirementDefKeyword definitionDeclaration requirementBody
 	) {end(_localctx);}
 ;
@@ -2256,19 +2256,19 @@ requirementBodyItem:
 ;
 
 subjectMember:
-	{start(subjectMembership__());} (
+	{start(_localctx, subjectMembership__());} (
 	memberPrefix (subject=subjectUsage {add(relationship_OwnedRelatedElement()); attachFollowingComments($subject.ctx);})
 	) {end(_localctx);}
 ;
 
 subjectUsage:
-	{start(referenceUsage__());} (
+	{start(_localctx, referenceUsage__());} (
 	'subject' usageExtensionKeyword* usage
 	) {end(_localctx);}
 ;
 
 requirementConstraintMember:
-	{start(requirementConstraintMembership__());} (
+	{start(_localctx, requirementConstraintMembership__());} (
 	memberPrefix (requirementConstraintKind {set(requirementConstraintMembership_Kind());}) (requirementConstraintUsage {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -2279,15 +2279,15 @@ requirementConstraintKind:
 ;
 
 requirementConstraintUsage:
-	{start(constraintUsage__());} (ownedReferenceSubsetting {add(element_OwnedRelationship());}) featureSpecializationPart? calculationBody {end(_localctx);}
-	| {start(constraintUsage__());} (
+	{start(_localctx, constraintUsage__());} (ownedReferenceSubsetting {add(element_OwnedRelationship());}) featureSpecializationPart? calculationBody {end(_localctx);}
+	| {start(_localctx, constraintUsage__());} (
 		usageExtensionKeyword* constraintUsageKeyword {attachRequirementConstraintKeyword();}
 		| usageExtensionKeyword+ {attachDeclarationKeywordOmitted();}
 	) constraintUsageDeclaration calculationBody {end(_localctx);}
 ;
 
 framedConcernMember:
-	{start(framedConcernMembership__());} (
+	{start(_localctx, framedConcernMembership__());} (
 	memberPrefix (framedConcernKind {set(requirementConstraintMembership_Kind());}) (framedConcernUsage {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -2297,33 +2297,33 @@ framedConcernKind:
 ;
 
 framedConcernUsage:
-	{start(concernUsage__());} (reference=ownedReferenceSubsetting {add(element_OwnedRelationship()); if ($reference.quoted) attachQuotedName();}) featureSpecializationPart? requirementBody {end(_localctx);}
-	| {start(concernUsage__());} (
+	{start(_localctx, concernUsage__());} (reference=ownedReferenceSubsetting {add(element_OwnedRelationship()); if ($reference.quoted) attachQuotedName();}) featureSpecializationPart? requirementBody {end(_localctx);}
+	| {start(_localctx, concernUsage__());} (
 		usageExtensionKeyword* concernUsageKeyword
 		| usageExtensionKeyword+ {attachDeclarationKeywordOmitted();}
 	) constraintUsageDeclaration requirementBody {end(_localctx);}
 ;
 
 actorMember:
-	{start(actorMembership__());} (
+	{start(_localctx, actorMembership__());} (
 	memberPrefix (actor=actorUsage {add(relationship_OwnedRelatedElement()); attachFollowingComments($actor.ctx);})
 	) {end(_localctx);}
 ;
 
 actorUsage:
-	{start(partUsage__());} (
+	{start(_localctx, partUsage__());} (
 	'actor' usageExtensionKeyword* usage
 	) {end(_localctx);}
 ;
 
 stakeholderMember:
-	{start(stakeholderMembership__());} (
+	{start(_localctx, stakeholderMembership__());} (
 	memberPrefix (stakeholder=stakeholderUsage {add(relationship_OwnedRelatedElement()); attachFollowingComments($stakeholder.ctx);})
 	) {end(_localctx);}
 ;
 
 stakeholderUsage:
-	{start(partUsage__());} (
+	{start(_localctx, partUsage__());} (
 	'stakeholder' usageExtensionKeyword* usage
 	) {end(_localctx);}
 ;
@@ -2333,13 +2333,13 @@ requirementUsageKeyword:
 ;
 
 requirementUsage:
-	{start(requirementUsage__());} (
+	{start(_localctx, requirementUsage__());} (
 	occurrenceUsagePrefix requirementUsageKeyword constraintUsageDeclaration requirementBody
 	) {end(_localctx);}
 ;
 
 satisfyRequirementUsage:
-	{start(satisfyRequirementUsage__());} (
+	{start(_localctx, satisfyRequirementUsage__());} (
 	occurrenceUsagePrefix ('assert' {attachSatisfyAssert();})? ('not' {setTrue(invariant_IsNegated());})? 'satisfy' (
 		{attachDeclarationKeywordOmitted();} (ownedReferenceSubsetting {add(element_OwnedRelationship());}) featureSpecializationPart?
 		| requirementUsageKeyword usageDeclaration?
@@ -2351,25 +2351,25 @@ satisfyRequirementUsage:
 ;
 
 satisfactionSubjectMember:
-	{start(subjectMembership__());} (
+	{start(_localctx, subjectMembership__());} (
 	(satisfactionParameter {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 satisfactionParameter:
-	{start(referenceUsage__());} (
+	{start(_localctx, referenceUsage__());} (
 	(satisfactionFeatureValue {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
 
 satisfactionFeatureValue:
-	{start(featureValue__());} (
+	{start(_localctx, featureValue__());} (
 	(satisfactionReferenceExpression {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 satisfactionReferenceExpression:
-	{start(featureReferenceExpression__());} (
+	{start(_localctx, featureReferenceExpression__());} (
 	(featureChainMember {add(element_OwnedRelationship());})
 	) {end(_localctx);}
 ;
@@ -2383,7 +2383,7 @@ concernDefKeyword:
 ;
 
 concernDefinition:
-	{start(concernDefinition__());} (
+	{start(_localctx, concernDefinition__());} (
 	occurrenceDefinitionPrefix concernDefKeyword definitionDeclaration requirementBody
 	) {end(_localctx);}
 ;
@@ -2393,7 +2393,7 @@ concernUsageKeyword:
 ;
 
 concernUsage:
-	{start(concernUsage__());} (
+	{start(_localctx, concernUsage__());} (
 	occurrenceUsagePrefix concernUsageKeyword constraintUsageDeclaration requirementBody
 	) {end(_localctx);}
 ;
@@ -2407,7 +2407,7 @@ caseDefKeyword:
 ;
 
 caseDefinition:
-	{start(caseDefinition__());} (
+	{start(_localctx, caseDefinition__());} (
 	occurrenceDefinitionPrefix caseDefKeyword definitionDeclaration caseBody
 	) {end(_localctx);}
 ;
@@ -2425,13 +2425,13 @@ caseBodyItem:
 ;
 
 objectiveMember:
-	{start(objectiveMembership__());} (
+	{start(_localctx, objectiveMembership__());} (
 	memberPrefix 'objective' (objective=objectiveRequirementUsage {add(relationship_OwnedRelatedElement()); attachFollowingComments($objective.ctx);})
 	) {end(_localctx);}
 ;
 
 objectiveRequirementUsage:
-	{start(requirementUsage__());} (
+	{start(_localctx, requirementUsage__());} (
 	usageExtensionKeyword* constraintUsageDeclaration requirementBody
 	) {end(_localctx);}
 ;
@@ -2441,7 +2441,7 @@ caseUsageKeyword:
 ;
 
 caseUsage:
-	{start(caseUsage__());} (
+	{start(_localctx, caseUsage__());} (
 	occurrenceUsagePrefix caseUsageKeyword actionUsageDeclaration caseBody
 	) {end(_localctx);}
 ;
@@ -2459,13 +2459,13 @@ analysisCaseUsageKeyword:
 ;
 
 analysisCaseDefinition:
-	{start(analysisCaseDefinition__());} (
+	{start(_localctx, analysisCaseDefinition__());} (
 	occurrenceDefinitionPrefix analysisCaseDefKeyword definitionDeclaration caseBody
 	) {end(_localctx);}
 ;
 
 analysisCaseUsage:
-	{start(analysisCaseUsage__());} (
+	{start(_localctx, analysisCaseUsage__());} (
 	occurrenceUsagePrefix analysisCaseUsageKeyword actionUsageDeclaration caseBody
 	) {end(_localctx);}
 ;
@@ -2483,19 +2483,19 @@ verificationCaseUsageKeyword:
 ;
 
 verificationCaseDefinition:
-	{start(verificationCaseDefinition__());} (
+	{start(_localctx, verificationCaseDefinition__());} (
 	occurrenceDefinitionPrefix verificationCaseDefKeyword definitionDeclaration caseBody
 	) {end(_localctx);}
 ;
 
 verificationCaseUsage:
-	{start(verificationCaseUsage__());} (
+	{start(_localctx, verificationCaseUsage__());} (
 	occurrenceUsagePrefix verificationCaseUsageKeyword actionUsageDeclaration caseBody
 	) {end(_localctx);}
 ;
 
 requirementVerificationMember:
-	{start(requirementVerificationMembership__());} (
+	{start(_localctx, requirementVerificationMembership__());} (
 	memberPrefix (requirementVerificationKind {set(requirementConstraintMembership_Kind());}) (requirementVerificationUsage {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
@@ -2505,8 +2505,8 @@ requirementVerificationKind:
 ;
 
 requirementVerificationUsage:
-	{start(requirementUsage__()); attachDeclarationKeywordOmitted();} (ownedReferenceSubsetting {add(element_OwnedRelationship());}) featureSpecialization* requirementBody {end(_localctx);}
-	| {start(requirementUsage__());} (
+	{start(_localctx, requirementUsage__()); attachDeclarationKeywordOmitted();} (ownedReferenceSubsetting {add(element_OwnedRelationship());}) featureSpecialization* requirementBody {end(_localctx);}
+	| {start(_localctx, requirementUsage__());} (
 		usageExtensionKeyword* requirementUsageKeyword | usageExtensionKeyword+ {attachDeclarationKeywordOmitted();}
 	) constraintUsageDeclaration requirementBody {end(_localctx);}
 ;
@@ -2524,19 +2524,19 @@ useCaseUsageKeyword:
 ;
 
 useCaseDefinition:
-	{start(useCaseDefinition__());} (
+	{start(_localctx, useCaseDefinition__());} (
 	occurrenceDefinitionPrefix useCaseDefKeyword definitionDeclaration caseBody
 	) {end(_localctx);}
 ;
 
 useCaseUsage:
-	{start(useCaseUsage__());} (
+	{start(_localctx, useCaseUsage__());} (
 	occurrenceUsagePrefix useCaseUsageKeyword actionUsageDeclaration caseBody
 	) {end(_localctx);}
 ;
 
 includeUseCaseUsage:
-	{start(includeUseCaseUsage__());} (
+	{start(_localctx, includeUseCaseUsage__());} (
 	occurrenceUsagePrefix 'include' (
 		(ownedReferenceSubsetting {add(element_OwnedRelationship());}) featureSpecializationPart? | useCaseUsageKeyword usageDeclaration?
 	) valuePart? caseBody
@@ -2552,7 +2552,7 @@ viewDefKeyword:
 ;
 
 viewDefinition:
-	{start(viewDefinition__());} (
+	{start(_localctx, viewDefinition__());} (
 	occurrenceDefinitionPrefix viewDefKeyword definitionDeclaration viewDefinitionBody
 	) {end(_localctx);}
 ;
@@ -2569,14 +2569,14 @@ viewDefinitionBodyItem:
 ;
 
 viewRenderingMember:
-	{start(viewRenderingMembership__());} (
+	{start(_localctx, viewRenderingMembership__());} (
 	memberPrefix 'render' (viewRenderingUsage {add(relationship_OwnedRelatedElement());})
 	) {end(_localctx);}
 ;
 
 viewRenderingUsage:
-	{start(renderingUsage__()); attachDeclarationKeywordOmitted();} (ownedReferenceSubsetting {add(element_OwnedRelationship());}) featureSpecializationPart? usageBody {end(_localctx);}
-	| {start(renderingUsage__());} (
+	{start(_localctx, renderingUsage__()); attachDeclarationKeywordOmitted();} (ownedReferenceSubsetting {add(element_OwnedRelationship());}) featureSpecializationPart? usageBody {end(_localctx);}
+	| {start(_localctx, renderingUsage__());} (
 		usageExtensionKeyword* 'rendering' | usageExtensionKeyword+ {attachDeclarationKeywordOmitted();}
 	) usage {end(_localctx);}
 ;
@@ -2586,7 +2586,7 @@ viewUsageKeyword:
 ;
 
 viewUsage:
-	{start(viewUsage__());} (
+	{start(_localctx, viewUsage__());} (
 	occurrenceUsagePrefix viewUsageKeyword usageDeclaration? valuePart? viewBody
 	) {end(_localctx);}
 ;
@@ -2614,17 +2614,17 @@ exposeVisibilityKind:
 expose:
 	(
 		membershipExpose | namespaceExpose
-	) {restart();} relationshipBody {end(_localctx);}
+	) {restart(_localctx);} relationshipBody {end(_localctx);}
 ;
 
 membershipExpose:
-	{start(membershipExpose__());} (
+	{start(_localctx, membershipExpose__());} (
 	exposePrefix importedMembership
 	) {end(_localctx);}
 ;
 
 namespaceExpose:
-	{start(namespaceExpose__());} (
+	{start(_localctx, namespaceExpose__());} (
 	exposePrefix (
 		importedNamespace | (filterPackage {add(relationship_OwnedRelatedElement());})
 	)
@@ -2644,13 +2644,13 @@ viewpointUsageKeyword:
 ;
 
 viewpointDefinition:
-	{start(viewpointDefinition__());} (
+	{start(_localctx, viewpointDefinition__());} (
 	occurrenceDefinitionPrefix viewpointDefKeyword definitionDeclaration requirementBody
 	) {end(_localctx);}
 ;
 
 viewpointUsage:
-	{start(viewpointUsage__());} (
+	{start(_localctx, viewpointUsage__());} (
 	occurrenceUsagePrefix viewpointUsageKeyword constraintUsageDeclaration requirementBody
 	) {end(_localctx);}
 ;
@@ -2664,7 +2664,7 @@ renderingDefKeyword:
 ;
 
 renderingDefinition:
-	{start(renderingDefinition__());} (
+	{start(_localctx, renderingDefinition__());} (
 	occurrenceDefinitionPrefix renderingDefKeyword definition
 	) {end(_localctx);}
 ;
@@ -2674,13 +2674,13 @@ renderingUsageKeyword:
 ;
 
 renderingUsage:
-	{start(renderingUsage__());} (
+	{start(_localctx, renderingUsage__());} (
 	occurrenceUsagePrefix renderingUsageKeyword usage
 	) {end(_localctx);}
 ;
 
 expressionBody:
-	{start(expression__());} (
+	{start(_localctx, expression__());} (
 	calculationBody
 	) {end(_localctx);}
 ;
