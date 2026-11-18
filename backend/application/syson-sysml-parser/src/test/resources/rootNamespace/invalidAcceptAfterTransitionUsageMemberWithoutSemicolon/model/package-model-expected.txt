@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="P">
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:StateDefinition" declaredName="S">
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:StateUsage" declaredName="s1" isComposite="true"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:StateUsage" declaredName="s2" isComposite="true"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership">
+            <ownedRelatedElement xsi:type="sysml:TransitionUsage" isComposite="true">
+              <ownedRelationship xsi:type="sysml:Membership"/>
+              <ownedRelationship xsi:type="sysml:ParameterMembership">
+                <ownedRelatedElement xsi:type="sysml:ReferenceUsage"/>
+              </ownedRelationship>
+              <ownedRelationship xsi:type="sysml:OwningMembership">
+                <ownedRelatedElement xsi:type="sysml:SuccessionAsUsage">
+                  <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+                    <ownedRelatedElement xsi:type="sysml:ReferenceUsage"/>
+                  </ownedRelationship>
+                  <ownedRelationship xsi:type="sysml:EndFeatureMembership">
+                    <ownedRelatedElement xsi:type="sysml:ReferenceUsage">
+                      <ownedRelationship xsi:type="sysml:ReferenceSubsetting"/>
+                    </ownedRelatedElement>
+                  </ownedRelationship>
+                </ownedRelatedElement>
+              </ownedRelationship>
+            </ownedRelatedElement>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:PartUsage" declaredName="keep" isComposite="true"/>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="Q"/>
+  </ownedRelationship>
+</sysml:Namespace>

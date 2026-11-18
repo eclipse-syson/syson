@@ -1,0 +1,3 @@
+4:0 - no viable alternative at input 'privateimportR::S}'
+3:18 - mismatched input '::' expecting {';', '{', '=', ':=', 'default'}
+4:0 - mismatched input '}' expecting {';', '{', '=', ':=', 'default'}

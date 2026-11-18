@@ -80,12 +80,15 @@ public class SysMLModelParser {
     /**
      * Parses tokens from the supplied lexer, retaining its source positions and syntax diagnostics.
      *
-     * @param <T> the model type produced by the selected rule
-     * @param lexer the SysML lexer, optionally adapting tokens at an application boundary
-     * @param parseOperation the selected grammar rule
+     * @param <T>
+     *            the model type produced by the selected rule
+     * @param lexer
+     *            the SysML lexer, optionally adapting tokens at an application boundary
+     * @param parseOperation
+     *            the selected grammar rule
      * @return the parsed model and diagnostics
      */
-    private <T> ISysMLParseResult<T> parse(SysMLLexer lexer, ParseOperation parseOperation) {
+    private <T> SysMLParseResult<T> parse(SysMLLexer lexer, ParseOperation parseOperation) {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         SysMLParser parser = new SysMLParser(tokens);
         parser.setBuildParseTree(false);
@@ -147,10 +150,13 @@ public class SysMLModelParser {
     }
 
     /**
-     * Parses the complete input using the <code>rootNamespace</code> rule, returning no root if recovery produced an incompatible result.
+     * Parses the complete input using the <code>rootNamespace</code> rule, returning no root if recovery produced an
+     * incompatible result.
      *
-     * @param is the textual input
-     * @param charset the source character set
+     * @param is
+     *            the textual input
+     * @param charset
+     *            the source character set
      * @return the {@link ISysMLParseResult}
      */
     public ISysMLParseResult<Namespace> parseRootNamespace(InputStream is, Charset charset) throws IOException {
@@ -164,14 +170,19 @@ public class SysMLModelParser {
      * @return the root namespace and diagnostics, including any unconsumed input
      */
     public ISysMLParseResult<Namespace> parseRootNamespace(SysMLLexer lexer) {
-        ISysMLParseResult<?> result = this.parse(lexer, parser -> {
+        SysMLParseResult<?> result = this.parse(lexer, parser -> {
             parser.rootNamespace();
             if (parser.getCurrentToken().getType() != Token.EOF) {
                 parser.notifyErrorListeners("Unexpected trailing input '" + parser.getCurrentToken().getText() + "'");
             }
         });
-        Namespace root = result.model() instanceof Namespace namespace ? namespace : null;
-        return new SysMLParseResult<>(root, result.danglingLinks(), result.textAdapted(), result.diagnostic(), ((SysMLParseResult<?>) result).internalDiagnostic());
+        Namespace root;
+        if (result.model() instanceof Namespace namespace && result.internalDiagnostic().getSeverity() < Diagnostic.ERROR) {
+            root = namespace;
+        }else {
+            root = null;
+        }
+        return new SysMLParseResult<>(root, result.danglingLinks(), result.textAdapted(), result.diagnostic(), result.internalDiagnostic());
     }
 
     /**

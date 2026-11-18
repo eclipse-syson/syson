@@ -1,0 +1,2 @@
+3:8 - Unexpected 'accept' in state body, skipped text "accept x then idle { action outer { action inner ; } }"
+9:8 - Unexpected 'accept' in state body, skipped text "accept y then idle"
