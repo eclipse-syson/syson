@@ -12,10 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.metamodel.helper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -30,7 +28,6 @@ import org.eclipse.syson.sysml.AnalysisCaseUsage;
 import org.eclipse.syson.sysml.AssertConstraintUsage;
 import org.eclipse.syson.sysml.AssignmentActionUsage;
 import org.eclipse.syson.sysml.AttributeUsage;
-import org.eclipse.syson.sysml.Behavior;
 import org.eclipse.syson.sysml.CalculationDefinition;
 import org.eclipse.syson.sysml.CalculationUsage;
 import org.eclipse.syson.sysml.CaseDefinition;
@@ -100,7 +97,6 @@ import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateSubactionKind;
 import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.StateUsage;
-import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
@@ -121,6 +117,7 @@ import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.ViewpointDefinition;
 import org.eclipse.syson.sysml.ViewpointUsage;
 import org.eclipse.syson.sysml.WhileLoopActionUsage;
+import org.eclipse.syson.sysml.helper.ImplicitParameterRedefinition;
 import org.eclipse.syson.sysml.util.ILibraryNamespaceProvider;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
@@ -579,9 +576,7 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
 
     @Override
     public List<Specialization> caseFeature(Feature object) {
-        if (!this.implicitSpecializations.hasRedefinition()) {
-            this.implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
-        }
+        this.implicitSpecializations.addAll(this.createImplicitParameterRedefinitions(object));
         // The specification states that "If the Feature has chainingFeatures, then the union also includes the types of
         // the last chainingFeature".We need to implement this here in order to make inherited Feature resolvable.
         // If we only implement this in "getType" of the Feature implementation the general mechanism of name resolution
@@ -1368,6 +1363,19 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
         return null;
     }
 
+    /**
+     * Creates an implied relationship to each missing positional target (KerML 7.4.7.2 and 7.4.7.3).
+     * Calling this rule directly avoids the full switch's library lookups by name.
+     *
+     * @param feature
+     *            the potential redefining parameter
+     * @return the inferred redefinitions, detached from the model, or an empty list if none apply
+     */
+    private List<Redefinition> createImplicitParameterRedefinitions(Feature feature) {
+        return new ImplicitParameterRedefinition(feature).findMissingRedefinitionTargets(this.implicitSpecializations.getSpecializations()).stream()
+                .map(target -> this.implicitRedefinition(feature, target)).toList();
+    }
+
     private List<Type> getBaseTypes(MetadataUsage metadaUsage) {
         String baseTypeFeatureQn = "Metaobjects::SemanticMetadata::baseType";
         Feature baseTypeFeature = this.namespaceProvider.getNamespaceFromLibrary(baseTypeFeatureQn, Feature.class);
@@ -1562,91 +1570,5 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
 
     private boolean isValidSourceOrTargetFeaturForSuccession(Feature feature) {
         return !(feature instanceof Connector || feature instanceof TransitionUsage);
-    }
-
-    /**
-     * Handle the creation of implicit redefinitions for feature that are parameters of their owner.
-     * <p>
-     * This method implements KerML 7.4.7.2 and 7.4.7.3, and ensures that a parameter implicitly redefines the
-     * corresponding parameters of its owner's specializations that are {@link Behavior} or {@link Step}.
-     * </p>
-     *
-     * @param feature
-     *            the feature to redefine
-     * @return the list of {@link Redefinition} for the provided {@code feature}
-     */
-    private List<Redefinition> handleImplicitParameterRedefinition(Feature feature) {
-        List<Redefinition> implicitRedefinitions = new ArrayList<>();
-        if (feature.getOwner() instanceof Step stepOwner) {
-            implicitRedefinitions = this.handleImplicitParameterRedefinition(feature, stepOwner);
-        } else if (feature.getOwner() instanceof Behavior behaviorOwner) {
-            implicitRedefinitions = this.handleImplicitParameterRedefinition(feature, behaviorOwner);
-        }
-        return implicitRedefinitions;
-    }
-
-    private List<Redefinition> handleImplicitParameterRedefinition(Feature feature, Step owner) {
-        List<Redefinition> implicitRedefinitions = new ArrayList<>();
-        int parameterIndex = owner.getParameter().indexOf(feature);
-        if (parameterIndex >= 0) {
-            implicitRedefinitions = owner.getOwnedSpecialization().stream()
-                    .map(Specialization::getGeneral)
-                    .filter(type -> type instanceof Behavior || type instanceof Step)
-                    .map(type -> this.createImplicitParameterRedefinition(feature, type, parameterIndex))
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .toList();
-        }
-        return implicitRedefinitions;
-    }
-
-    private List<Redefinition> handleImplicitParameterRedefinition(Feature feature, Behavior owner) {
-        List<Redefinition> implicitRedefinitions = new ArrayList<>();
-        int parameterIndex = owner.getParameter().indexOf(feature);
-        if (parameterIndex >= 0) {
-            implicitRedefinitions = owner.getOwnedSubclassification().stream()
-                    .map(Subclassification::getSuperclassifier)
-                    .filter(Behavior.class::isInstance)
-                    .map(classifier -> this.createImplicitParameterRedefinition(feature, classifier, parameterIndex))
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .toList();
-        }
-        return implicitRedefinitions;
-    }
-
-    /**
-     * Creates an implicit redefinition from {@code feature} to the {@code index} parameter of {@code type}.
-     * <p>
-     * This method creates the redefinition if:
-     * <ul>
-     * <li>The provided {@code type} contains parameters</li>
-     * <li>The {@code index} parameter of {@code type} exists</li>
-     * <li>The {@code index} parameter of {@code type} has the same direction as the provided {@code feature}.</li>
-     * </ul>
-     * </p>
-     *
-     * @param feature
-     *            the feature redefining the parameter
-     * @param type
-     *            the type containing the redefined parameter
-     * @param index
-     *            the index of the redefined parameter in {@code type}
-     * @return
-     */
-    private Optional<Redefinition> createImplicitParameterRedefinition(Feature feature, Type type, int index) {
-        Optional<Redefinition> result = Optional.empty();
-        List<Feature> parameters = new ArrayList<>();
-        if (type instanceof Behavior behavior) {
-            parameters = behavior.getParameter();
-        } else if (type instanceof Step step) {
-            parameters = step.getParameter();
-        }
-        if (parameters.size() > index) {
-            if (parameters.get(index).getDirection() == feature.getDirection()) {
-                result = Optional.ofNullable(this.implicitRedefinition(feature, parameters.get(index)));
-            }
-        }
-        return result;
     }
 }

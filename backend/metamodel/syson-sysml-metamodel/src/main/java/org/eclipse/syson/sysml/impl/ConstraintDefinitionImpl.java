@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2025 Obeo.
+* Copyright (c) 2023, 2026 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -24,7 +24,6 @@ import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Function;
-import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.Predicate;
 import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -84,14 +83,7 @@ public class ConstraintDefinitionImpl extends OccurrenceDefinitionImpl implement
      */
     @Override
     public EList<Feature> getParameter() {
-        List<Feature> features = this.getOwnedRelationship().stream()
-                .filter(ParameterMembership.class::isInstance)
-                .map(ParameterMembership.class::cast)
-                .flatMap(or -> or.getOwnedRelatedElement().stream())
-                .filter(Feature.class::isInstance)
-                .map(Feature.class::cast)
-                .toList();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getBehavior_Parameter(), features.size(), features.toArray());
+        return this.getEffectiveDirectedFeatures(SysmlPackage.eINSTANCE.getBehavior_Parameter());
     }
 
     /**

@@ -34,7 +34,6 @@ import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.Function;
 import org.eclipse.syson.sysml.LiteralBoolean;
 import org.eclipse.syson.sysml.OwningMembership;
-import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.Predicate;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.ResultExpressionMembership;
@@ -111,14 +110,7 @@ public class ConstraintUsageImpl extends OccurrenceUsageImpl implements Constrai
      */
     @Override
     public EList<Feature> getParameter() {
-        List<Feature> features = this.getOwnedRelationship().stream()
-                .filter(ParameterMembership.class::isInstance)
-                .map(ParameterMembership.class::cast)
-                .flatMap(or -> or.getOwnedRelatedElement().stream())
-                .filter(Feature.class::isInstance)
-                .map(Feature.class::cast)
-                .toList();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStep_Parameter(), features.size(), features.toArray());
+        return this.getEffectiveDirectedFeatures(SysmlPackage.eINSTANCE.getStep_Parameter());
     }
 
     /**

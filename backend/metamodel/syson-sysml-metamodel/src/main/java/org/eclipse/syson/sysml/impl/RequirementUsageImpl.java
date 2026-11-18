@@ -224,12 +224,14 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
      */
     @Override
     public EList<PartUsage> getStakeholderParameter() {
-        final List<PartUsage> stakeholders = this.getParameter().stream()
+        // SysML 2.0, 8.3.21.9 (deriveRequirementUsageStakeholderParameter) derives stakeholders from featureMembership,
+        // without filtering their direction as getParameter() does; direction conformance is a separate validation constraint.
+        final List<PartUsage> stakeholders = this.getFeature().stream()
                 .filter(PartUsage.class::isInstance)
                 .filter(parameter -> parameter.getOwningMembership() instanceof StakeholderMembership)
                 .map(PartUsage.class::cast)
                 .toList();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(), stakeholders.size(), stakeholders.toArray());
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), stakeholders.size(), stakeholders.toArray());
     }
 
     /**
