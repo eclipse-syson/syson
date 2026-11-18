@@ -52,6 +52,8 @@ class SysMLGrammarCoverageTest {
     private static final Path SERIALIZER_RESOURCES = Path.of(
             System.getProperty("syson.serializer.fixtures", "src/test/resources"));
 
+    private static final Path GRAMMAR_RECOVERY_FIXTURES = Path.of("src/test/grammar-coverage");
+
     private static final Path PARSER_RESOURCES = Path
             .of("../syson-sysml-parser/src/test/resources");
 
@@ -171,6 +173,10 @@ class SysMLGrammarCoverageTest {
             assertTrue(ruleIndex >= 0, () -> "Unknown parser rule " + fixture.grammarRuleName());
             inputs.add(new GrammarInput(fixture.sysmlPath(), ruleIndex, true, false));
         }
+        // The interpreter skips parser actions, including those that report recovery diagnostics.
+        // These inputs exercise recovery decisions without entering the serializer round-trip corpus.
+        sysmlFiles(GRAMMAR_RECOVERY_FIXTURES)
+                .forEach(path -> inputs.add(new GrammarInput(path, SysMLParser.RULE_rootNamespace, true, false)));
         sysmlFiles(PARSER_RESOURCES.resolve("rootNamespace"))
                 .forEach(path -> inputs.add(new GrammarInput(path,
                         SysMLParser.RULE_rootNamespace, false, false)));

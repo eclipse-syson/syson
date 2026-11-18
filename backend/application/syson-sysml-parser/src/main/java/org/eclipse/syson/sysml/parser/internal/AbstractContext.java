@@ -135,10 +135,16 @@ public abstract class AbstractContext implements IEObjectContext {
     }
 
     /**
-     * Creates the {@link EObject}.
+     * Tests whether parsing recorded any assignments or adapters for this object.
      *
-     * @return the created {@link EObject}
+     * @return whether deferred operations exist
      */
+    boolean hasDeferredOperations() {
+        return !this.operatorStack.isEmpty();
+    }
+
+    // Any EMF setter or notification listener can fail; all failures must undo the transaction.
+    @SuppressWarnings("checkstyle:IllegalCatch")
     @Override
     public EObject createEObject() {
         EObject res = this.getEObject();

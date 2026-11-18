@@ -241,6 +241,30 @@ public class SysMLParsingServiceTests {
         assertThat(result.messages()).anySatisfy(message -> assertThat(message.body()).contains("line 1:", "then"));
     }
 
+    @DisplayName("GIVEN a then succession without a semicolon, WHEN importing an action definition, THEN the succession target still resolves")
+    @Test
+    public void resolvesSuccessionTargetAfterMissingSemicolon() {
+        var result = this.parse(this.context(), null, """
+                package P {
+                  action def A {
+                    action x;
+                    then x
+                    action z;
+                  }
+                }
+                """);
+
+        assertThat(result.messages()).singleElement().satisfies(message -> assertThat(message.body()).contains("line 5:4:", "expecting {';', '{'}"));
+        var definition = this.all(result.root(), ActionDefinition.class).getFirst();
+        var target = this.all(definition, ActionUsage.class).stream().filter(action -> "x".equals(action.getDeclaredName())).findFirst().orElseThrow();
+        assertThat(this.all(definition, SuccessionAsUsage.class)).singleElement().satisfies(succession -> {
+            var ends = succession.getOwnedRelationship().stream().filter(EndFeatureMembership.class::isInstance).toList();
+            assertThat(ends).hasSize(2);
+            assertThat(this.all(ends.getLast(), ReferenceSubsetting.class)).singleElement()
+                    .satisfies(subsetting -> assertThat(subsetting.getReferencedFeature()).isSameAs(target));
+        });
+    }
+
     /**
      * Exported transition names must reparse to the same original standard-library targets.
      */

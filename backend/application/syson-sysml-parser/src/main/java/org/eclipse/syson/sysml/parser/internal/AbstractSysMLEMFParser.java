@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.StringJoiner;
 
 import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.BaseErrorListener;
@@ -64,6 +65,7 @@ import org.omg.sysml.lang.sysml.FeatureValue;
 import org.omg.sysml.lang.sysml.IndexExpression;
 import org.omg.sysml.lang.sysml.InvocationExpression;
 import org.omg.sysml.lang.sysml.OperatorExpression;
+import org.omg.sysml.lang.sysml.OwningMembership;
 import org.omg.sysml.lang.sysml.ParameterMembership;
 import org.omg.sysml.lang.sysml.PortionKind;
 import org.omg.sysml.lang.sysml.RequirementConstraintKind;
@@ -79,13 +81,18 @@ import org.omg.sysml.lang.sysml.VisibilityKind;
  * ANTLR parser base class that builds SysON EMF objects directly from grammar actions.
  * <p>
  * Temporary values are held on an operand stack while {@link IEObjectContext object contexts} delimit stable model
- * construction boundaries. Text adapters preserve syntax needed for serialization, whereas cross-reference targets
- * are recorded as {@link DanglingLink dangling links} for the separate linking pass.
+ * construction boundaries. Text adapters preserve syntax needed for serialization, whereas cross-reference targets are
+ * recorded as {@link DanglingLink dangling links} for the separate linking pass.
  * </p>
  *
- * @author ylussaud
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public abstract class AbstractSysMLEMFParser extends Parser {
+
+    /**
+     * The error message for misplaced 'accept'.
+     */
+    private static final String UNEXPECTED_ACCEPT_IN_STATE_BODY = "Unexpected 'accept' in state body, skipped text \"%s\"";
 
     /**
      * Converts ANTLR syntax errors into EMF diagnostics returned with the parse result.
@@ -140,6 +147,12 @@ public abstract class AbstractSysMLEMFParser extends Parser {
      * The stack used to hold {@link IEObjectContext} to be affected.
      */
     private final Deque<IEObjectContext> contextStack = new ArrayDeque<>();
+
+    /** Recovery results with no parsed assignments, and their otherwise empty owning memberships. */
+    private final Set<EObject> emptyRecoveryResults = new HashSet<>();
+
+    /** Object contexts whose nested grammar rules reported syntax errors. */
+    private final Set<IEObjectContext> contextsWithSyntaxErrors = new HashSet<>();
 
     /**
      * The factory used to create SysML objects with textual defaults.
@@ -589,10 +602,33 @@ public abstract class AbstractSysMLEMFParser extends Parser {
      *            the completed parser-rule context
      */
     public void end(ParserRuleContext ctx) {
+        if (this.contextStack.isEmpty() || !(this.contextStack.getLast() instanceof AbstractContext objectContext)
+                || objectContext.getRuleContext() != ctx) {
+            this.internalDiagnostics.add(new BasicDiagnostic(Diagnostic.ERROR, null, 0,
+                    "Object context does not belong to the completed parser rule", new Object[] { ctx }));
+            return;
+        }
         // free memory
         ctx.children = null;
 
+        boolean hadSyntaxErrors = this.contextsWithSyntaxErrors.remove(objectContext);
+        // A restarted context already has an object, even when its body records no operations.
+        boolean emptyFailedResult = hadSyntaxErrors && objectContext instanceof StartContext && !objectContext.hasDeferredOperations();
         EObject eObject = this.contextStack.removeLast().createEObject();
+        if (emptyFailedResult) {
+            this.emptyRecoveryResults.add(eObject);
+        }
+        if (!this.emptyRecoveryResults.isEmpty()) {
+            if (eObject instanceof Element element) {
+                element.getOwnedRelationship().removeIf(this.emptyRecoveryResults::remove);
+            }
+            if (eObject instanceof OwningMembership membership) {
+                boolean removed = membership.getOwnedRelatedElement().removeIf(this.emptyRecoveryResults::remove);
+                if (removed && membership.getOwnedRelatedElement().isEmpty()) {
+                    this.emptyRecoveryResults.add(membership);
+                }
+            }
+        }
         this.attachLeadingComments(ctx, eObject);
         this.attachTrailingComments(ctx, eObject);
         this.attachBodyTrailingComments(ctx, eObject);
@@ -601,6 +637,75 @@ public abstract class AbstractSysMLEMFParser extends Parser {
         this.attachNumericLiteralFormat(ctx, eObject);
         this.attachStringLiteralFormat(ctx, eObject);
         this.operandStack.addLast(eObject);
+    }
+
+    /**
+     * Completes partial objects before control returns to the caller after ANTLR recovery skips a rule's end action.
+     * The caller can then attach the partial result to its own object context.
+     */
+    @Override
+    public void exitRule() {
+        ParserRuleContext ruleContext = this.getContext();
+        if (ruleContext.exception != null && !this.contextStack.isEmpty()) {
+            // ANTLR can suppress a repeated error notification while it is already recovering.
+            this.contextsWithSyntaxErrors.add(this.contextStack.getLast());
+        }
+        try {
+            while (!this.contextStack.isEmpty() && this.contextStack.getLast() instanceof AbstractContext objectContext
+                    && objectContext.getRuleContext() == ruleContext) {
+                this.end(ruleContext);
+            }
+        } finally {
+            super.exitRule();
+        }
+    }
+
+    /** Tracks errors in helper rules that do not themselves create an object context. */
+    @Override
+    public void notifyErrorListeners(Token offendingToken, String message, RecognitionException exception) {
+        if (!this.contextStack.isEmpty()) {
+            this.contextsWithSyntaxErrors.add(this.contextStack.getLast());
+        }
+        super.notifyErrorListeners(offendingToken, message, exception);
+    }
+
+    /**
+     * This method recovers from a misplaced 'accept' keyword. It consumes tokens until it reaches a token that
+     * structure the language (';' or '}'). Nested blocks are ignored because their parent element won't be in the
+     * resulting model.
+     *
+     * @param accept
+     *            the 'accept' token to recover.
+     */
+    protected void recoverMisplacedStateAccept(Token accept) {
+        int bodyDepth = 0;
+        StringJoiner skippedText = new StringJoiner(" ");
+        skippedText.add(accept.getText());
+        while (this.getCurrentToken().getType() != Token.EOF) {
+            String token = this.getCurrentToken().getText();
+            // Leave the enclosing state body's closing brace for its grammar rule.
+            if (bodyDepth == 0 && "}".equals(token)) {
+                String message = String.format(UNEXPECTED_ACCEPT_IN_STATE_BODY, skippedText.toString());
+                this.notifyErrorListeners(accept, message, null);
+                return;
+            }
+            skippedText.add(token);
+            this.consume();
+            if ("{".equals(token)) {
+                bodyDepth++;
+            } else if ("}".equals(token)) {
+                bodyDepth--;
+                if (bodyDepth == 0) {
+                    String message = String.format(UNEXPECTED_ACCEPT_IN_STATE_BODY, skippedText.toString());
+                    this.notifyErrorListeners(accept, message, null);
+                    return;
+                }
+            } else if (bodyDepth == 0 && ";".equals(token)) {
+                String message = String.format(UNEXPECTED_ACCEPT_IN_STATE_BODY, skippedText.toString());
+                this.notifyErrorListeners(accept, message, null);
+                return;
+            }
+        }
     }
 
     protected void attachSameLineFollowingComments(ParserRuleContext ctx) {

@@ -1942,7 +1942,11 @@ stateDefBody:
 ;
 
 stateBodyPart:
-	stateBodyItem*
+	(
+	stateBodyItem
+	// this alternative recovers from a misplaced 'accept' keyword
+	| misplacedAccept='accept' {recoverMisplacedStateAccept($misplacedAccept);}
+	)*
 ;
 
 stateBodyItem:

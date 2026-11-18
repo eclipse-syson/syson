@@ -1,0 +1,3 @@
+state active {
+    accept
+}

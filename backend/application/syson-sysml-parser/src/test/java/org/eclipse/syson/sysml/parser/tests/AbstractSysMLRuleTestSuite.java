@@ -268,8 +268,9 @@ public abstract class AbstractSysMLRuleTestSuite {
                 resource.getContents().add((EObject) model);
                 ((EObject) model).eResource().save(stream, options);
                 xmi = stream.toString();
-            } catch (IOException | NullPointerException e) {
+            } catch (IOException e) {
                 LOGGER.error(e.getMessage(), e);
+                fail(e);
             }
             res = xmi;
         } else if (model instanceof Enumerator) {
