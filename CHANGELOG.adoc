@@ -19,6 +19,7 @@ Textual import and expression editing no longer require Node.js; structural KerM
 - https://github.com/eclipse-syson/syson/issues/2637[#2637] [explorer] Remove the unused `IRepresentationMetadataSearchService` constructor parameter from `SysONDefaultExplorerServices`.
 Downstream code constructing this service directly must omit that argument; Spring injection updates automatically.
 Callers of `hasChildren` must supply the current editing context's representation metadata through `existingRepresentations`.
+- https://github.com/eclipse-syson/syson/issues/2631[#2631] [import] Syntax error in a nested body leaves the context stack unbalanced (AssertionError / wrong root type)
 
 === Dependency update
 
