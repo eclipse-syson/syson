@@ -19,6 +19,11 @@ Textual import and expression editing no longer require Node.js; structural KerM
 - https://github.com/eclipse-syson/syson/issues/2637[#2637] [explorer] Remove the unused `IRepresentationMetadataSearchService` constructor parameter from `SysONDefaultExplorerServices`.
 Downstream code constructing this service directly must omit that argument; Spring injection updates automatically.
 Callers of `hasChildren` must supply the current editing context's representation metadata through `existingRepresentations`.
+- https://github.com/eclipse-syson/syson/issues/2620[#2620] [metamodel] `Behavior#getParameter()` and `Step#getParameter()`, including their SysML overrides, now return effective owned and inherited directed features instead of only locally declared parameters.
+Undirected features are excluded from constraint parameter lists as well.
+Consumers needing only local parameters should filter `getOwnedFeature()` with `directionOf(feature) != null`.
+`Feature#getOwnedRedefinition()` now also returns virtual implicit positional parameter redefinitions.
+Consumers needing only stored redefinitions should filter `getOwnedRelationship()` for `Redefinition` instances.
 
 === Dependency update
 
@@ -44,6 +49,12 @@ Connector tools now use the Sirius Web handler to preserve graphical events in _
 - https://github.com/eclipse-syson/syson/issues/2649[#2649] [import] Infer the original port of a SysML port conjugation from containment.
 - https://github.com/eclipse-syson/syson/issues/2659[#2659] [import] Preserve parenthesized connector ends, explicit typing of unnamed payloads, and the position of `nonunique` in payload declarations.
 Discard captured comment and textual representation bodies when edited, and provide a resource adapter for retaining original reference spellings after linking.
+- https://github.com/eclipse-syson/syson/issues/2620[#2620] [diagrams] Use owned stakeholders for local compartment items and nesting edges.
+Inherited stakeholders keep their separate compartment item.
+- https://github.com/eclipse-syson/syson/issues/2620[#2620] [metamodel] Include inherited directed features in behavior and step parameter queries, and expose implicit positional parameter redefinitions to naming and inheritance without persisting the inferred relationships.
+Infer missing positional targets across behavior parents, including when one target is explicit.
+Match results independently of ordinary parameters and evaluate directions in the destination context.
+The derived stakeholder list on a requirement usage now identifies its owning EMF property as `RequirementUsage::stakeholderParameter`.
 
 === Improvements
 

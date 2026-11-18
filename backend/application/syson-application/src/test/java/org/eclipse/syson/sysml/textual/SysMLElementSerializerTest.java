@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.textual;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -22,6 +23,7 @@ import java.util.List;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.syson.data.ClasspathXmiModelLoader;
 import org.eclipse.syson.data.generator.SysMLResourceSetProvider;
+import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
@@ -1670,6 +1672,30 @@ public class SysMLElementSerializerTest {
                     }
                 }""", this.loadModelFromFile("models/SimpleTransitionUsageModel.xmi"));
 
+    }
+
+    @Test
+    @DisplayName("GIVEN an inherited receiver with a value, WHEN exporting the child accept action, THEN the receiver is absent from the syntax")
+    public void serializeAcceptActionWithoutInheritedReceiverArgument() {
+        AcceptActionUsage parent = this.builder.createWithName(AcceptActionUsage.class, "parent");
+        ReferenceUsage payload = this.builder.createInWithName(ReferenceUsage.class, this.builder.createIn(ParameterMembership.class, parent), "payload");
+        payload.setDirection(FeatureDirectionKind.INOUT);
+        ReferenceUsage receiver = this.builder.createInWithName(ReferenceUsage.class, this.builder.createIn(ParameterMembership.class, parent), "receiver");
+        receiver.setDirection(FeatureDirectionKind.IN);
+        FeatureValue binding = this.builder.createIn(FeatureValue.class, receiver);
+        LiteralInteger value = this.fact.createLiteralInteger();
+        value.setValue(5);
+        binding.getOwnedRelatedElement().add(value);
+        AcceptActionUsage child = this.builder.createWithName(AcceptActionUsage.class, "child");
+        Subsetting specialization = this.builder.createIn(Subsetting.class, child);
+        specialization.setSubsettingFeature(child);
+        specialization.setSubsettedFeature(parent);
+        ReferenceUsage localPayload = this.builder.createInWithName(ReferenceUsage.class, this.builder.createIn(ParameterMembership.class, child), "localPayload");
+        localPayload.setDirection(FeatureDirectionKind.INOUT);
+
+        assertThat(child.getParameter()).contains(receiver);
+        assertThat(child.getReceiverArgument()).isNull();
+        this.assertTextualFormEquals("action child :> parent accept localPayload;", child);
     }
 
     @DisplayName("GIVEN a model with TransitionUsage with accept part, WHEN serializing this model, THEN the transition are properly serialized.")

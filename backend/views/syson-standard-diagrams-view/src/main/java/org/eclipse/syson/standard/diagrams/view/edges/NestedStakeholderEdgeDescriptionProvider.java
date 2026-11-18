@@ -70,7 +70,8 @@ public class NestedStakeholderEdgeDescriptionProvider extends AbstractEdgeDescri
                 .sourceExpression(AQLConstants.AQL_SELF)
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetExpression(AQLConstants.AQL_SELF + "." + this.eReference.getName())
+                // Only the owning requirement can have a nesting edge to the stakeholder.
+                .targetExpression(AQLConstants.AQL_SELF + "." + this.eReference.getName() + "->select(stakeholder | stakeholder.owningType = self)")
                 .build();
     }
 

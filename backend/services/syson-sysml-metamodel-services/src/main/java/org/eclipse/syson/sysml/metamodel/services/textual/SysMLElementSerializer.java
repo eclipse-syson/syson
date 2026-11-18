@@ -2836,9 +2836,11 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private void appendAcceptParameterPart(Appender builder, AcceptActionUsage acceptActionUsage) {
-        EList<Feature> parameters = acceptActionUsage.getParameter();
-        if (!parameters.isEmpty()) {
-            ReferenceUsage payload = acceptActionUsage.getPayloadParameter();
+        Feature firstOwnedParameter = acceptActionUsage.getOwnedFeature().stream()
+                .filter(feature -> feature.getDirection() != null)
+                .findFirst()
+                .orElse(null);
+        if (firstOwnedParameter instanceof ReferenceUsage payload) {
             Appender payloadBuilder = this.newAppender();
             // Payload feature
             this.appendUsageDeclaration(payloadBuilder, payload);
@@ -2858,14 +2860,16 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 }
             }
 
-            this.childrenMembershipToSkip.add(parameters.get(0).getOwningMembership());
+            this.childrenMembershipToSkip.add(payload.getOwningMembership());
+        }
 
-            if (parameters.size() > 1) {
-                Expression expression = acceptActionUsage.getReceiverArgument();
-                if (expression != null) {
-                    builder.appendWithSpaceIfNeeded("via ").append(this.doSwitch(expression));
-                    this.childrenMembershipToSkip.add(parameters.get(1).getOwningMembership());
-                }
+        // The inherited receiver supplies the default "this" without a textual via clause.
+        Feature receiver = acceptActionUsage.inputParameter(2);
+        if (receiver != null) {
+            Expression expression = acceptActionUsage.getReceiverArgument();
+            if (expression != null) {
+                builder.appendWithSpaceIfNeeded("via ").append(this.doSwitch(expression));
+                this.childrenMembershipToSkip.add(receiver.getOwningMembership());
             }
         }
     }

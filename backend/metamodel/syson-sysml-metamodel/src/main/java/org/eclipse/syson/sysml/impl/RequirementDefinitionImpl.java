@@ -197,7 +197,9 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
      */
     @Override
     public EList<PartUsage> getStakeholderParameter() {
-        final List<PartUsage> stakeholders = this.getParameter().stream()
+        // SysML 2.0, 8.3.21.8 (deriveRequirementDefinitionStakeholderParameter) derives stakeholders from featureMembership,
+        // without filtering their direction as getParameter() does; direction conformance is a separate validation constraint.
+        final List<PartUsage> stakeholders = this.getFeature().stream()
                 .filter(PartUsage.class::isInstance)
                 .map(PartUsage.class::cast)
                 .filter(parameter -> parameter.getOwningMembership() instanceof StakeholderMembership)

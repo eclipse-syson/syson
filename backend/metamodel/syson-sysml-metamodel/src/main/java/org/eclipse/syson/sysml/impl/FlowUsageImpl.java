@@ -44,7 +44,6 @@ import org.eclipse.syson.sysml.StateSubactionKind;
 import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.Type;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Flow Usage</b></em>'. <!-- end-user-doc -->
@@ -276,19 +275,7 @@ public class FlowUsageImpl extends ConnectorAsUsageImpl implements FlowUsage {
      */
     @Override
     public EList<Feature> getParameter() {
-        List<Feature> data = this.getOwnedFeature().stream()
-                .filter(this::isParameter)
-                .toList();
-        // The list should contain the inherited parameters, it is not the case for now.
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStep_Parameter(), data.size(), data.toArray());
-    }
-
-    /**
-     * @generated NOT
-     */
-    private boolean isParameter(Feature feature) {
-        Type owningType = feature.getOwningType();
-        return (owningType instanceof Behavior || owningType instanceof Step) && feature.getDirection() != null;
+        return this.getEffectiveDirectedFeatures(SysmlPackage.eINSTANCE.getStep_Parameter());
     }
 
     /**
@@ -485,7 +472,7 @@ public class FlowUsageImpl extends ConnectorAsUsageImpl implements FlowUsage {
      */
     @Override
     public EList<Feature> inputParameters() {
-        var parameters = this.getParameter().stream()
+        List<Feature> parameters = this.getOwnedFeature().stream()
                 .filter(f -> (f.getDirection() == FeatureDirectionKind.IN || f.getDirection() == FeatureDirectionKind.INOUT))
                 .toList();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStep_Parameter(), parameters.size(), parameters.toArray());
