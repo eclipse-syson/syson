@@ -26,6 +26,7 @@ Textual import and expression editing no longer require Node.js; structural KerM
 - [releng] Update to https://github.com/ObeoNetwork/react-trello/releases/tag/v2.5.2[@obeonetwork/react-trello 2.5.2]
 - [releng] Update to https://github.com/ObeoNetwork/gantt-task-react/releases/tag/v0.7.2[@obeonetwork/gantt-task-react 0.7.2]
 - [releng] Remove useless `@types/react-router-dom` from dependencies
+- https://github.com/eclipse-syson/syson/issues/2635[#2635] [releng] Align ANTLR generator and runtime versions on 4.13.2 and regenerate the SysML parser.
 
 === Bug fixes
 

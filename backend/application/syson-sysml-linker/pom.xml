@@ -26,9 +26,7 @@
 	<description>SysON SysMLv2 Linker</description>
 
 	<properties>
-		<antlr.version>4.13.1</antlr.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<junit4.version>4.13.2</junit4.version>
 	</properties>
 
 	<dependencies>
@@ -53,7 +51,6 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit4.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

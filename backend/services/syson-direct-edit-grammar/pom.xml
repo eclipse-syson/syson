@@ -25,15 +25,10 @@
 	<name>syson-direct-edit-grammar</name>
 	<description>SysON Direct Edit Grammar</description>
 
-	<properties>
-		<antlr.version>4.13.2</antlr.version>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>antlr4-runtime</artifactId>
-			<version>${antlr.version}</version>
 		</dependency>
 	</dependencies>
 
