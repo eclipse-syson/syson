@@ -25,10 +25,6 @@
 	<name>syson-services</name>
 	<description>SysON Services</description>
 
-	<properties>
-		<antlr.version>4.10.1</antlr.version>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
