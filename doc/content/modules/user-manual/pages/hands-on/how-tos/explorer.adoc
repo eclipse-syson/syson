@@ -29,6 +29,19 @@ image::hands-on-expand-all.png[Expand all]
 
 This action expands the selected element and all its children recursively, offering a detailed view of the hierarchical structure.
 
+[#collapse-all]
+== Collapse all
+
+To collapse a branch in the {explorer}:
+
+. Open the {explorer-menu} of an item with children.
+. Click `Collapse all`.
+
+This action collapses the selected item and its descendants, preserving the expansion of unrelated branches.
+When you expand the item again, its descendants remain collapsed.
+
+The operation traverses the selected hierarchy and may take longer for large models or library directories.
+
 [#explorer-filter]
 == Filter elements in the {explorer}
 

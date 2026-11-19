@@ -31,12 +31,10 @@ import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.trees.TreeItem;
-import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Type;
@@ -51,7 +49,6 @@ import org.eclipse.syson.tree.explorer.services.api.ISysONDefaultExplorerService
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFragment;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -66,8 +63,6 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
 
     private final IContentService contentService;
 
-    private final IRepresentationMetadataSearchService representationMetadataSearchService;
-
     private final IExplorerServices explorerServices;
 
     private final ILabelService labelService;
@@ -78,11 +73,20 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
 
     private final MetamodelQueryElementService metamodelQueryElementService;
 
-    public SysONDefaultExplorerServices(IIdentityService identityService, IContentService contentService, IRepresentationMetadataSearchService representationMetadataSearchService,
+    /**
+     * Creates the default Explorer services using representation metadata supplied by the tree render.
+     *
+     * @param identityService the object identity service
+     * @param contentService the object content service
+     * @param explorerServices the default Sirius Web Explorer services
+     * @param labelService the object label service
+     * @param filterService the SysON Explorer filter service
+     * @param readOnlyObjectPredicate the read-only object predicate
+     */
+    public SysONDefaultExplorerServices(IIdentityService identityService, IContentService contentService,
             IExplorerServices explorerServices, ILabelService labelService, ISysONExplorerFilterService filterService, final IReadOnlyObjectPredicate readOnlyObjectPredicate) {
         this.identityService = Objects.requireNonNull(identityService);
         this.contentService = Objects.requireNonNull(contentService);
-        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.explorerServices = Objects.requireNonNull(explorerServices);
         this.labelService = Objects.requireNonNull(labelService);
         this.filterService = Objects.requireNonNull(filterService);
@@ -185,6 +189,11 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @implNote Representation-only children are checked against the render's metadata snapshot to avoid per-element database access.
+     */
     @Override
     public boolean hasChildren(Object self, IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds) {
         boolean hasChildren = false;
@@ -195,20 +204,23 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
         } else if (self instanceof Element element) {
             List<Object> contents = this.filterService.applyFilters(editingContext, this.contentService.getContents(self), activeFilterIds);
             hasChildren = !contents.isEmpty() && contents.stream().anyMatch(e -> !(e instanceof EAnnotation))
-                    || this.hasRepresentation(element, editingContext);
+                    || this.hasRepresentation(element, existingRepresentations);
         } else {
             hasChildren = this.explorerServices.hasChildren(self, editingContext, existingRepresentations);
         }
         return hasChildren;
     }
 
-    private boolean hasRepresentation(EObject self, IEditingContext editingContext) {
-        var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
-        if (optionalSemanticDataId.isPresent()) {
-            String id = this.identityService.getId(self);
-            return this.representationMetadataSearchService.existAnyRepresentationMetadataForSemanticDataAndTargetObjectId(AggregateReference.to(optionalSemanticDataId.get()), id);
-        }
-        return false;
+    /**
+     * Checks the render's representation metadata instead of querying the database for each element.
+     *
+     * @param self the semantic element
+     * @param existingRepresentations the representations in the current editing context
+     * @return whether a representation targets the element
+     */
+    private boolean hasRepresentation(EObject self, List<RepresentationMetadata> existingRepresentations) {
+        String id = this.identityService.getId(self);
+        return existingRepresentations.stream().anyMatch(representation -> Objects.equals(representation.getTargetObjectId(), id));
     }
 
     @Override
@@ -256,9 +268,14 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @implNote SysON's synthetic library directories must resolve too, so navigation queries can traverse their descendants.
+     */
     @Override
     public Object getTreeItemObject(String treeItemId, IEditingContext editingContext) {
-        final Object result;
+        Object result;
         Optional<Resource> optionalResource = Optional.ofNullable(editingContext)
                 .filter(IEMFEditingContext.class::isInstance)
                 .map(IEMFEditingContext.class::cast)
@@ -271,6 +288,19 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
             result = optionalResource.get();
         } else {
             result = this.explorerServices.getTreeItemObject(treeItemId, editingContext);
+        }
+        if (result == null && editingContext instanceof EditingContext) {
+            var libraries = new LibrariesDirectory("Libraries", editingContext, this.filterService);
+            if (Objects.equals(libraries.getId(), treeItemId)) {
+                result = libraries;
+            } else {
+                result = libraries.getChildren(editingContext, List.of(), List.of(), List.of()).stream()
+                        .filter(ISysONExplorerFragment.class::isInstance)
+                        .map(ISysONExplorerFragment.class::cast)
+                        .filter(directory -> Objects.equals(directory.getId(), treeItemId))
+                        .findFirst()
+                        .orElse(null);
+            }
         }
         return result;
     }

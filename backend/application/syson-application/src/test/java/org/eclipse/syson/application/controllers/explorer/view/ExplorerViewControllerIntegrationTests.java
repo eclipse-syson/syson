@@ -293,6 +293,9 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
                 .verify(Duration.ofSeconds(10));
     }
 
+    /**
+     * Checks that navigation tools remain available while editing a read-write user library.
+     */
     @DisplayName("GIVEN the SysON Explorer View, WHEN we try to create a new element in an imported read-write user library, THEN a new element is added to the user library")
     @GivenSysONServer({ WithUserLibrariesTestProjectData.SCRIPT_PATH })
     @Test
@@ -312,13 +315,13 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
                 WithUserLibrariesTestProjectData.EDITING_CONTEXT_ID,
                 treeRepresentationId,
                 WithUserLibrariesTestProjectData.SemanticIds.RW_USER_LIBRARY_PACKAGE_ID)
-                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(5)
-                        .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(6)
+                        .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, ExplorerTreeItemContextMenuEntryProvider.COLLAPSE_ALL)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT)
                         .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID))
-                .hasPaletteEntriesLabels(entries -> assertThat(entries).hasSize(5)
+                .hasPaletteEntriesLabels(entries -> assertThat(entries).hasSize(6)
                         .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_LABEL));
 
         Runnable createChildRunnable = () -> {
@@ -345,6 +348,9 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
                 .verify(Duration.ofSeconds(10));
     }
 
+    /**
+     * Checks navigation tools on a read-only library and its directory without mutation tools.
+     */
     @DisplayName("GIVEN the SysON Explorer View, WHEN we request the contextual menu of a tree item in an imported read-only user library, THEN the contextual menu does not contain entry to mutate the library")
     @GivenSysONServer({ WithUserLibrariesTestProjectData.SCRIPT_PATH })
     @Test
@@ -364,12 +370,21 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
                 WithUserLibrariesTestProjectData.EDITING_CONTEXT_ID,
                 treeRepresentationId,
                 WithUserLibrariesTestProjectData.SemanticIds.RO_USER_LIBRARY_PACKAGE_ID)
-                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(1)
-                        .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL));
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(2)
+                        .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, ExplorerTreeItemContextMenuEntryProvider.COLLAPSE_ALL))
+                .hasPaletteEntriesLabels(entries -> assertThat(entries).contains("Collapse all"));
+
+        Runnable getUserLibrariesDirectoryMenu = () -> this.treeItemPaletteExecutor.execute(
+                WithUserLibrariesTestProjectData.EDITING_CONTEXT_ID,
+                treeRepresentationId,
+                UserLibrariesDirectory.USER_LIBRARIES_DIRECTORY_ID)
+                .hasPaletteEntriesIds(entries -> assertThat(entries).containsExactly(ExplorerTreeItemContextMenuEntryProvider.COLLAPSE_ALL))
+                .hasPaletteEntriesLabels(entries -> assertThat(entries).containsExactly("Collapse all"));
 
         StepVerifier.create(treeFlux)
                 .consumeNextWith(hasProjectContent)
                 .then(getContextualMenuRunnable)
+                .then(getUserLibrariesDirectoryMenu)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

@@ -122,6 +122,15 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemP
         return this.getPalette(editingContext, treeDescription, tree, treeItem);
     }
 
+    /**
+     * Returns the item's palette, including collapse all for every item with children, independently of expand-all eligibility.
+     *
+     * @param editingContext the editing context
+     * @param treeDescription the tree description
+     * @param tree the explorer tree
+     * @param treeItem the item whose palette is requested
+     * @return the item's palette
+     */
     public Palette getPalette(IEditingContext editingContext, TreeDescription treeDescription, Tree tree, TreeItem treeItem) {
         List<IPaletteEntry> result = new ArrayList<>();
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
@@ -132,6 +141,9 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemP
         }
         if (this.sysonExplorerService.canExpandAll(treeItem, editingContext)) {
             result.add(new SingleClickTreeItemTool(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, this.messageService.treeToolExpandAll(), List.of(), false, List.of()));
+        }
+        if (treeItem.isHasChildren()) {
+            result.add(new SingleClickTreeItemTool(ExplorerTreeItemContextMenuEntryProvider.COLLAPSE_ALL, this.messageService.treeToolCollapseAll(), List.of(), false, List.of()));
         }
         return new Palette("", List.of(), result);
     }

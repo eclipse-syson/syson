@@ -16,6 +16,9 @@ Downstream applications importing these classes must update their imports and de
 - [services] Move `FormQueryElementService#getFeatureValue` to `MetamodelQueryElementService`.
 - https://github.com/eclipse-syson/syson/issues/2622 [import] Remove the SysIDE runtime and the `org.eclipse.syson.syside.path` application option.
 Textual import and expression editing no longer require Node.js; structural KerML constructs outside the Java parser's SysML v2 grammar are reported as unsupported input.
+- https://github.com/eclipse-syson/syson/issues/2637[#2637] [explorer] Remove the unused `IRepresentationMetadataSearchService` constructor parameter from `SysONDefaultExplorerServices`.
+Downstream code constructing this service directly must omit that argument; Spring injection updates automatically.
+Callers of `hasChildren` must supply the current editing context's representation metadata through `existingRepresentations`.
 
 === Dependency update
 
@@ -50,6 +53,10 @@ Connector tools now use the Sirius Web handler to preserve graphical events in _
 - https://github.com/eclipse-syson/syson/issues/2622 [import] Add new parser and linker modules for uploads, text insertion, and expression editing.
 References resolve against the current project's models and libraries through an isolated OMG-metamodel workspace, preserving the original SysON objects and their identities.
 String literal escapes are decoded into semantic values, and large documents no longer pass through an intermediate JSON AST.
+- https://github.com/eclipse-syson/syson/issues/2637[#2637] [explorer] Add `Collapse all` to every _Explorer_ view item with children, including library directories, using Sirius Web's existing action.
+Reuse the render's representation metadata when checking _Explorer_ view children, avoiding a database query per leaf during expand/collapse traversal.
+Resolve synthetic library directories in navigation queries so their descendants are also collapsed.
+Compute _Explorer_ view paths through the existing service extension instead of copying the visited-ID list for every item.
 
 
 == v2026.11.0
