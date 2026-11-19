@@ -43,6 +43,7 @@ This menu provides functionalities based on the selected item:
 ** xref:hands-on/how-tos/model-management.adoc#create-element[Create a new child element].
 ** xref:hands-on/how-tos/representation-operations.adoc#create-representation[Create a new representation].
 ** xref:hands-on/how-tos/explorer.adoc#expand-all[Expand all child elements].
+** xref:hands-on/how-tos/explorer.adoc#collapse-all[Collapse all child elements].
 ** xref:hands-on/how-tos/model-management.adoc#rename-element[Rename the element].
 ** xref:hands-on/how-tos/model-management.adoc#delete-element[Delete the element].
 * For Representations, users can:

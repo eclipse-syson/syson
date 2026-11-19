@@ -320,6 +320,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
+    /**
+     * Checks collapse-all availability on the model and standard-library directories.
+     */
     @DisplayName("GIVEN an empty SysML Project, WHEN context menu is queried, THEN the menu is returned")
     @GivenSysONServer({ GeneralViewEmptyTestProjectData.SCRIPT_PATH })
     @Test
@@ -366,25 +369,28 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 explorerRepresentationId,
                 sysmlModelTreeItemId.get())
-                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(3).anyMatch(entry -> Objects.equals(entry, ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)));
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(4).contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, ExplorerTreeItemContextMenuEntryProvider.COLLAPSE_ALL));
 
         Runnable librariesDirectoryContextMenu = () -> this.treeItemPaletteExecutor.execute(
                 GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 explorerRepresentationId,
                 librariesDirectoryTreeItemId.get())
-                .hasPaletteEntriesIds(entries -> assertThat(entries).isEmpty());
+                .hasPaletteEntriesIds(entries -> assertThat(entries).containsExactly(ExplorerTreeItemContextMenuEntryProvider.COLLAPSE_ALL))
+                .hasPaletteEntriesLabels(entries -> assertThat(entries).containsExactly("Collapse all"));
 
         Runnable kermlDirectoryContextMenu = () -> this.treeItemPaletteExecutor.execute(
                 GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 explorerRepresentationId,
                 kermlDirectoryTreeItemId.get())
-                .hasPaletteEntriesIds(entries -> assertThat(entries).isEmpty());
+                .hasPaletteEntriesIds(entries -> assertThat(entries).containsExactly(ExplorerTreeItemContextMenuEntryProvider.COLLAPSE_ALL))
+                .hasPaletteEntriesLabels(entries -> assertThat(entries).containsExactly("Collapse all"));
 
         Runnable sysmlDirectoryContextMenu = () -> this.treeItemPaletteExecutor.execute(
                 GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID,
                 explorerRepresentationId,
                 sysmlDirectoryTreeItemId.get())
-                .hasPaletteEntriesIds(entries -> assertThat(entries).isEmpty());
+                .hasPaletteEntriesIds(entries -> assertThat(entries).containsExactly(ExplorerTreeItemContextMenuEntryProvider.COLLAPSE_ALL))
+                .hasPaletteEntriesLabels(entries -> assertThat(entries).containsExactly("Collapse all"));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialExplorerContentConsumer)
@@ -568,6 +574,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
+    /**
+     * Checks the palette of an imported library containing a library package.
+     */
     @DisplayName("GIVEN a SysML Project with a dependency to a library containing one LibraryPackage, WHEN the explorer is displayed, THEN the library model is visible under the user libraries directory of the explorer")
     @GivenSysONServer({ ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.SCRIPT_PATH })
     @Test
@@ -608,9 +617,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.EDITING_CONTEXT,
                 treeId.get(),
                 userLibId.get())
-                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(4)
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(5)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT)
-                        .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)
+                        .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, ExplorerTreeItemContextMenuEntryProvider.COLLAPSE_ALL)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.UPDATE_LIBRARY));
 
@@ -622,6 +631,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
+    /**
+     * Checks the palette of an imported library containing a comment and library package.
+     */
     @DisplayName("GIVEN a SysML Project with a dependency to a library containing a Comment and a LibraryPackage, WHEN the explorer is displayed, THEN the library model is visible under the user libraries directory of the explorer")
     @GivenSysONServer({ ProjectWithLibraryDependencyContainingCommentAndLibraryPackageTestProjectData.SCRIPT_PATH })
     @Test
@@ -662,9 +674,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 ProjectWithLibraryDependencyContainingCommentAndLibraryPackageTestProjectData.EDITING_CONTEXT,
                 treeId.get(),
                 userLibId.get())
-                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(4)
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(5)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT)
-                        .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)
+                        .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, ExplorerTreeItemContextMenuEntryProvider.COLLAPSE_ALL)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.UPDATE_LIBRARY));
 
@@ -729,6 +741,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
+    /**
+     * Checks navigation tools on parent items and their absence on representation leaves.
+     */
     @DisplayName("GIVEN the SysON Explorer, WHEN tree item context menu is requested, THEN the returned tree items are the appropriate one.")
     @GivenSysONServer({ GeneralViewEmptyTestProjectData.SCRIPT_PATH })
     @Test
@@ -769,41 +784,41 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         });
 
         Runnable getDocumentContextMenuActions = () -> this.treeItemPaletteExecutor.execute(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, treeId.get(), GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID)
-                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(3)
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(4)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_ROOT_OBJECT)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT)
-                        .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL));
+                        .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, ExplorerTreeItemContextMenuEntryProvider.COLLAPSE_ALL));
 
         Runnable getRootNSContextMenuActions = () -> this.treeItemPaletteExecutor.execute(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, treeId.get(), GeneralViewEmptyTestProjectData.SemanticIds.ROOT_NS_ID)
-                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(5)
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(6)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION)
                         .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID)
-                        .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)
+                        .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, ExplorerTreeItemContextMenuEntryProvider.COLLAPSE_ALL)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT))
-                .hasPaletteEntriesLabels(entries -> assertThat(entries).hasSize(5)
+                .hasPaletteEntriesLabels(entries -> assertThat(entries).hasSize(6)
                         .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_LABEL));
 
         Runnable getPackageElementContextMenuActions = () -> this.treeItemPaletteExecutor.execute(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, treeId.get(), GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID)
-                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(5)
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(6)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION)
                         .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID)
-                        .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)
+                        .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, ExplorerTreeItemContextMenuEntryProvider.COLLAPSE_ALL)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT))
-                .hasPaletteEntriesLabels(entries -> assertThat(entries).hasSize(5)
+                .hasPaletteEntriesLabels(entries -> assertThat(entries).hasSize(6)
                         .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_LABEL));
 
         Runnable getViewUsageElementContextMenuActions = () -> this.treeItemPaletteExecutor.execute(GeneralViewEmptyTestProjectData.EDITING_CONTEXT_ID, treeId.get(), GeneralViewEmptyTestProjectData.SemanticIds.VIEW_USAGE_ID)
                 // no NewRepresentation on a ViewUsage which already contains a standard diagram or requirements-table
                 // but New Expression is available
-                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(5)
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(6)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT)
                         .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID)
-                        .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)
+                        .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, ExplorerTreeItemContextMenuEntryProvider.COLLAPSE_ALL)
                         .contains(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT)
                         .contains(SysONExplorerTreeItemContextMenuEntryProvider.CREATE_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID))
-                .hasPaletteEntriesLabels(entries -> assertThat(entries).hasSize(5)
+                .hasPaletteEntriesLabels(entries -> assertThat(entries).hasSize(6)
                         .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_LABEL)
                         .contains(SysONExplorerTreeItemContextMenuEntryProvider.CREATE_EXPRESSION_MENU_ENTRY_LABEL));
 
@@ -822,6 +837,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
+    /**
+     * Checks expression labels and navigation tools on their owning state.
+     */
     @DisplayName("GIVEN the SysON Explorer, WHEN displaying an Expression item, THEN the item's label shows the textual representation of the expression")
     @GivenSysONServer({ ActionTransitionUsagesProjectData.SCRIPT_PATH })
     @Test
@@ -871,7 +889,8 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         });
 
         Runnable getDocumentContextMenuActions = () -> this.treeItemPaletteExecutor.execute(ActionTransitionUsagesProjectData.EDITING_CONTEXT_ID, treeId.get(), ActionTransitionUsagesProjectData.SemanticIds.S1_ID)
-                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(7)
+                .hasPaletteEntriesIds(entries -> assertThat(entries).hasSize(8)
+                        .contains(ExplorerTreeItemContextMenuEntryProvider.COLLAPSE_ALL)
                         .contains(SysONExplorerTreeItemContextMenuEntryProvider.EDIT_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID)
                         .contains(SysONExplorerTreeItemContextMenuEntryProvider.DELETE_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID))
                 .hasPaletteEntriesLabels(entries -> assertThat(entries)

@@ -14,6 +14,8 @@
 package org.eclipse.syson.tree.explorer.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Map;
@@ -42,10 +44,14 @@ import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerServices;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.syson.application.services.SysONResourceService;
 import org.eclipse.syson.services.api.ISysONResourceService;
+import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.tree.explorer.fragments.LibrariesDirectory;
+import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFragment;
 import org.eclipse.syson.tree.explorer.services.api.ISysONDefaultExplorerService;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
 import org.junit.jupiter.api.BeforeAll;
@@ -112,6 +118,40 @@ public class SysONDefaultExplorerServicesTest {
         assertThat(this.defaultExplorerService.canCreateNewObjectsFromText(null)).isFalse();
     }
 
+    /**
+     * Checks representation-only children using the supplied metadata snapshot, including empty and unrelated snapshots.
+     */
+    @Test
+    @DisplayName("When service 'hasChildren' is called on a SysML element, representation children are determined from the supplied metadata")
+    public void hasChildrenUsesExistingRepresentations() {
+        var element = SysmlFactory.eINSTANCE.createPartUsage();
+        var unrelated = mock(RepresentationMetadata.class);
+        when(unrelated.getTargetObjectId()).thenReturn("another-element");
+        var attached = mock(RepresentationMetadata.class);
+        when(attached.getTargetObjectId()).thenReturn(new IIdentityService.NoOp().getId(element));
+
+        assertThat(this.defaultExplorerService.hasChildren(element, editingContext, List.of(), List.of(), List.of())).isFalse();
+        assertThat(this.defaultExplorerService.hasChildren(element, editingContext, List.of(unrelated), List.of(), List.of())).isFalse();
+        assertThat(this.defaultExplorerService.hasChildren(element, editingContext, List.of(unrelated, attached), List.of(), List.of())).isTrue();
+    }
+
+    /**
+     * Checks that navigation can resolve the synthetic library directories and their parent links.
+     */
+    @Test
+    @DisplayName("When service 'getTreeItemObject' is called on library directory IDs, the directories and their parent links are resolved")
+    public void resolvesLibraryDirectories() {
+        var libraries = (LibrariesDirectory) this.defaultExplorerService.getTreeItemObject(LibrariesDirectory.LIBRARIES_DIRECTORY_ID, editingContext);
+        assertThat(libraries.getParent()).isSameAs(editingContext);
+        for (var child : libraries.getChildren(editingContext, List.of(), List.of(), List.of())) {
+            var directory = (ISysONExplorerFragment) child;
+            var resolved = (ISysONExplorerFragment) this.defaultExplorerService.getTreeItemObject(directory.getId(), editingContext);
+            assertThat(resolved.getKind()).isEqualTo(directory.getKind());
+            assertThat(((ISysONExplorerFragment) resolved.getParent()).getId()).isEqualTo(libraries.getId());
+        }
+        assertThat(this.defaultExplorerService.getTreeItemObject("missing-object", editingContext)).isNull();
+    }
+
     @Test
     @DisplayName("When service 'canCreateNewObjectsFromText' is called on non-SysML model elements, the result is always negative")
     public void testNonSysMLElements() {
@@ -154,7 +194,7 @@ public class SysONDefaultExplorerServicesTest {
 
         ISysONExplorerFilterService filterService = new SysONExplorerFilterService(sysONResourceService);
 
-        return new SysONDefaultExplorerServices(identityService, contentService, representationMetadataSearchService, explorerServices, labelService, filterService, readOnlyObjectPredicate);
+        return new SysONDefaultExplorerServices(identityService, contentService, explorerServices, labelService, filterService, readOnlyObjectPredicate);
     }
 
     private List<EClass> getAllConcreteEClasses(final EPackage ePackage) {

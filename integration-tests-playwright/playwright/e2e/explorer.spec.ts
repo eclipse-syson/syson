@@ -15,7 +15,7 @@ import { expect, test } from '@playwright/test';
 import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
 import { PlaywrightProject } from '../helpers/PlaywrightProject';
 
-test.describe('explorer - Insert Textual SysMLv2 Menu', () => {
+test.describe('explorer', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
     await page.addInitScript(() => {
@@ -42,5 +42,44 @@ test.describe('explorer - Insert Textual SysMLv2 Menu', () => {
     await playwrightExplorer.insertTextualSysMLv2('Package1', 'state def InitialState');
 
     await expect(await playwrightExplorer.explorerLocator.locator(`[data-treeitemlabel="InitialState"]`)).toBeVisible();
+  });
+
+  test('Collapse all resets descendants and preserves unrelated expanded branches', async ({ page }) => {
+    const explorer = new PlaywrightExplorer(page);
+    await explorer.insertTextualSysMLv2(
+      'Package1',
+      'package CollapseBranch { package NestedBranch { part CollapseLeaf; } } package OtherBranch { part OtherLeaf; }'
+    );
+    await explorer.expandAll('Package1');
+    await expect(explorer.explorerLocator.getByTestId('CollapseLeaf')).toBeVisible();
+    await expect(explorer.explorerLocator.getByTestId('OtherLeaf')).toBeVisible();
+
+    await explorer.collapseAll('CollapseBranch');
+    await expect(explorer.explorerLocator.getByTestId('NestedBranch')).toBeHidden();
+    await expect(explorer.explorerLocator.getByTestId('OtherLeaf')).toBeVisible();
+
+    await explorer.expand('CollapseBranch');
+    await expect(explorer.explorerLocator.getByTestId('NestedBranch')).toBeVisible();
+    await expect(explorer.explorerLocator.getByTestId('CollapseLeaf')).toBeHidden();
+
+    await explorer.explorerLocator.getByTestId('OtherLeaf-more').click();
+    await expect(page.getByTestId('Palette').getByTestId('collapse-all')).toHaveCount(0);
+  });
+
+  test('Collapse all is available on library directories without enabling Expand all', async ({ page }) => {
+    const explorer = new PlaywrightExplorer(page);
+    await explorer.expand('Libraries');
+    const kerml = explorer.explorerLocator.locator('[data-treeitemkind="KerMLStandardLibraryDirectory"]');
+    await expect(kerml).toBeVisible();
+    await kerml.dblclick();
+    await expect(kerml).toHaveAttribute('data-expanded', 'true');
+    await explorer.explorerLocator.getByTestId('Libraries-more').click();
+    await expect(page.getByTestId('Palette').getByTestId('expand-all')).toHaveCount(0);
+    await page.getByTestId('Palette').getByTestId('collapse-all').click();
+    await expect(kerml).toBeHidden();
+    await expect(explorer.explorerLocator.getByTestId('Package1')).toBeVisible();
+    await explorer.expand('Libraries');
+    await expect(kerml).toBeVisible();
+    await expect(kerml).toHaveAttribute('data-expanded', 'false');
   });
 });

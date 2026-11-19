@@ -6,6 +6,8 @@
 
 == New features
 
+* In the Explorer, `Collapse all` collapses an item and its descendants.
+
 == Bug fixes
 
 * In SysML models:

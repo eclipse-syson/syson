@@ -78,6 +78,11 @@ export class PlaywrightExplorer {
     await this.page.getByTestId('expand-all').click();
   }
 
+  async collapseAll(treeItemLabel: string) {
+    await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
+    await this.page.getByTestId('Palette').getByTestId('collapse-all').click();
+  }
+
   async uploadDocument(fileName: string) {
     await this.page.getByTestId('upload-document-icon').click();
     await this.page.locator('input[name="file"]').setInputFiles(`./playwright/resources/${fileName}`);
