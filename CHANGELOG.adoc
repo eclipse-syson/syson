@@ -15,8 +15,13 @@ Downstream applications importing these classes must update their imports and de
 
 === Dependency update
 
-- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.11.1].
-- [releng] Remove `@types/react-router-dom` from dependencies
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.11.2].
+- [releng] Update to https://github.com/react/react/releases#release-v19.2.8[React 19.2.8]
+- [releng] Update to notistack 3.0.2
+- [releng] Update to react-draggable 4.7.1
+- [releng] Update to https://github.com/ObeoNetwork/react-trello/releases/tag/v2.5.2[@obeonetwork/react-trello 2.5.2]
+- [releng] Update to https://github.com/ObeoNetwork/gantt-task-react/releases/tag/v0.7.2[@obeonetwork/gantt-task-react 0.7.2]
+- [releng] Remove useless `@types/react-router-dom` from dependencies
 
 === Bug fixes
 
