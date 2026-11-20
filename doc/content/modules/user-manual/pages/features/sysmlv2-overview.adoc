@@ -1,6 +1,6 @@
 = Overview of {sysmlv2}
 
-Building upon the understanding of {product}, it's imperative to delve into the foundational concepts of {sysmlv2}, the modeling language that {product} operates within.
+This overview introduces the core concepts of {sysmlv2}, the modeling language supported by [SysON](https://mbse-syson.org/).
 
 == What's {sysmlv2}?
 
@@ -76,3 +76,11 @@ Future plans include the integration of a text editor into {product}, leveraging
 SysIDE provides {sysmlv2} language support in Visual Studio Code.
 SysIDE includes a language server for {sysmlv2} and {kerml} specifications.
 Ongoing collaboration with the SysIDE project ensures future compatibility and seamless integration of the textual editor within {product}.
+
+== Applying SysML v2 with the Arcadia method
+
+SysML v2 provides a language for describing systems. A methodology helps engineering teams decide what to model at each stage, which viewpoints to use, and how to organize their work.
+
+Capella for SysON is an initiative to bring the Arcadia methodology to SysML v2 modeling in SysON. Its goal is to guide engineers through modeling activities using Arcadia concepts and Capella-inspired views. 
+
+Learn more about the [Capella for SysON](https://mbse-capella.org/capella-for-syson.html) initiative.
