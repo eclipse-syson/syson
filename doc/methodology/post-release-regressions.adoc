@@ -1,0 +1,269 @@
+= SysON post-release regressions
+:syson: https://github.com/eclipse-syson/syson
+:sirius: https://github.com/eclipse-sirius/sirius-web
+
+Review period: *2026-01-01 through 2026-11-20*. Last reviewed through: *2026-11-20*.
+
+The initial snapshot covers public reports available on the cutoff date, across all published SysON versions, including 2025 releases and intermediate patches.
+It reflects observable public reports. Reports shared only through private channels fall outside its scope.
+See link:post-release-regression-methodology.adoc[the collection methodology and monthly Codex prompt].
+
+== Indicators
+
+* *25 cases with a verified published fix*.
+** 15 confirmed regressions. The behavior worked in an earlier version.
+** 10 cases marked `To verify`. We still need to check whether these are regressions.
+* *5 cases awaiting a verified published fix*.
+** 5 cases marked `To verify`. We still need evidence that the behavior worked in an earlier version.
+* *0 ruled-out cases*.
+** These are cases where the evidence rules out a regression, for example by showing the bug was present from the start.
+
+[cols="1,1",options="header"]
+|===
+| First report month | Confirmed
+| 2026-01 | 3
+| 2026-02 | 2
+| 2026-03 | 1
+| 2026-04 | 1
+| 2026-05 | 0
+| 2026-06 | 1
+| 2026-07 | 3
+| 2026-08 | 1
+| 2026-09 | 2
+| 2026-10 | 1
+| 2026-11 through 2026-11-20 | 0
+|===
+
+[cols="2,1",options="header"]
+|===
+| Functional area | Confirmed
+| Diagrams | 8
+| Expressions | 2
+| Textual import | 2
+| Deployment | 1
+| Details view | 1
+| Direct edit | 1
+|===
+
+== Register
+
+First report:: The date the problem was first reported publicly.
+Area:: The part of SysON affected by the problem.
+Symptom:: What users observe when the problem occurs.
+Affected SysON:: The SysON versions in which the evidence shows the problem was present. `Unknown` means the affected version still needs checking.
+Status:: `Confirmed` means the evidence shows the behavior worked before it degraded in a published version. `To verify` means more evidence is needed to tell whether the problem was a regression.
+Report and evidence:: Links to the public report and the evidence used to assess the case.
+First published fix:: The earliest published SysON version verified to contain the fix, including patch releases. `Unknown` means a possible fix has been identified and the review still needs to check which published SysON version, if any, contains it. `None verified` means the review has found no candidate for a published fix.
+Regression test:: A link to a test that covers the reported scenario. `Not identified` means a matching test has yet to be found.
+
+=== Cases awaiting a verified published fix
+
+These cases are waiting for a fix to ship or for evidence that it shipped.
+
+[cols="1,1,2,1,1,3,2,2",options="header"]
+|===
+| First report | Area | Symptom | Affected SysON | Status | Report and evidence | First published fix | Regression test
+
+| 2026-01-21 | Diagrams | Moving a part by its interconnection compartment removes nested parts from the view.
+| `2025.12.0` | To verify
+| {syson}/discussions/1880[Discussion #1880], {sirius}/issues/5924[related Sirius Web fix]. Verify the earlier behavior and the first SysON version with the fix.
+| Unknown | Not identified
+
+| 2026-09-21 | Textual export | Exporting a succession to an anonymous control node emits an invalid targetless `then;`.
+| `2026.9.0` | To verify
+| {syson}/issues/2528[#2528] cites earlier work on decision-node export. Verify the exact scenario in a published predecessor.
+| None verified | Not identified
+
+| 2026-10-26 | Diagrams | Alignment helper lines do not activate from the top or left resize handles.
+| Unknown | To verify
+| {syson}/issues/2566[#2566]. Verify the earlier behavior and retest with the {syson}/pull/2623[Sirius Web update shipped in 2026.11.1].
+| Unknown | Not identified
+
+| 2026-11-18 | Requirements table | Reopening a saved table hides its requirements until _Expand all_ is invoked.
+| `2026.11.0` | To verify
+| {syson}/issues/2627[#2627]. Verify the saved-table behavior in an earlier release.
+| None verified | Not identified
+
+| 2026-11-20 | Explorer | Expanding a large subtree can repeatedly disconnect the Explorer subscription.
+| Unknown | To verify
+| {syson}/issues/2639[#2639] documents the Sirius Web `2026.11.2` buffer limit. Verify affected and earlier working SysON versions.
+| None verified | Not identified
+|===
+
+=== Fixed cases marked `To verify`
+
+We verified a published fix for each case and are still checking whether these problems were regressions.
+
+[cols="1,1,2,1,1,3,2,2",options="header"]
+|===
+| First report | Area | Symptom | Affected SysON | Status | Report and evidence | First published fix | Regression test
+
+| 2026-01-08 | Diagrams | Opening some diagrams in SVG viewer mode hangs the browser.
+| Unknown | To verify
+| {syson}/issues/1812[#1812], {sirius}/issues/6029[Sirius Web #6029]. The earlier working version is unknown.
+| `2025.12.6` {syson}/issues/1812#issuecomment-3799489057[verified in Chrome and Firefox]
+| Not identified
+
+| 2026-01-19 | Textual import | Typing certain characters in _New objects from text_ removes focus from the input.
+| Unknown | To verify
+| {syson}/issues/1865[#1865], {sirius}/issues/5675[Sirius Web #5675]. Verify affected and earlier working SysON versions.
+| `2026.1.0` {syson}/commit/b628d3c7c[fix]
+| Not identified
+
+| 2026-05-20 | Textual import | An imported relationship annotation has no target and is missing from the owned-annotation query.
+| Unknown | To verify
+| {syson}/issues/2226[#2226] links the behavior to {syson}/issues/2034[#2034]. Verify a published version where the affected query returned the annotation.
+| `2026.7.3` {syson}/commit/00dc41472[fix]
+| {syson}/commit/00dc41472[ImportSysMLModelTest.metadataUsageOnExposeMembership]
+
+| 2026-07-02 | Diagrams | Connector tools appear in the ordinary node palette.
+| Unknown | To verify
+| {syson}/issues/2330[#2330], {sirius}/issues/6646[Sirius Web #6646]. Verify which published SysON version introduced the change.
+| `2026.5.5` {sirius}/pull/6649[upstream fix]
+| Not identified
+
+| 2026-08-25 | Textual import | References across documents fail after reloading a file uploaded with a directory in its name.
+| Unknown | To verify
+| {sirius}/issues/6852[Sirius Web #6852 first documents SysON impact], {syson}/issues/2486[SysON #2486]. Verify a published version that resolved directory-qualified uploads.
+| `2026.7.4` {syson}/pull/2487[SysON workaround]
+| {syson}/commit/73f77d8cd[SysONResourceLoaderTest]
+
+| 2026-08-26 | Direct edit | The legacy expression grammar intercepts an equals sign entered while renaming a diagram element.
+| `2026.7.0` (reported onset) | To verify
+| {syson}/issues/2468[#2468], {syson}/issues/2478[#2478]. Verify the same rename in an earlier release.
+| `2026.7.4` {syson}/commit/2ffdbd75d[fix]
+| Not identified
+
+| 2026-09-04 | Explorer | Searching the tree palette hides _New objects from text_.
+| Unknown | To verify
+| {syson}/issues/2507[#2507] identifies a missing label. Verify an earlier release where the tool could be found by search.
+| `2026.9.0` {syson}/commit/9493d9d62[fix]
+| {syson}/commit/9493d9d62[Explorer palette tests]
+
+| 2026-09-21 | Textual export | Exporting chained connector ends can emit an invalid `connect to` statement.
+| `2026.9.0` | To verify
+| {syson}/issues/2527[#2527]. {syson}/issues/2264[#2264] addressed a similar symptom. Verify the same connector shape in an earlier release.
+| `2026.9.3` {syson}/commit/dfe1313c0[fix]
+| {syson}/commit/dfe1313c0[ImportExportTests and SysMLElementSerializerTest]
+
+| 2026-10-19 | Details view | The _Typed by_ field remains blank after an action is typed.
+| Unknown | To verify
+| {syson}/issues/2557[#2557]. {syson}/issues/2557#issuecomment-6290926511[Comparison with 2026.7.0] suggests a regression. Identify the published affected version.
+| `2026.9.6` {syson}/issues/2557#issuecomment-6626416788[fix confirmation]
+| Not identified
+
+| 2026-10-26 | Diagrams | Nesting a part in Interconnection View can leave the moved element hidden.
+| Unknown | To verify
+| {syson}/issues/2568[#2568], {sirius}/issues/7120[related upstream graphical-event defect]. Verify that the same Interconnection View workflow previously kept the element visible.
+| `2026.9.6` {syson}/commit/4c3807259[fix]
+| {syson}/commit/4c3807259[IVNestedUsageCompartmentRevealTests]
+|===
+
+=== Confirmed regressions with a verified published fix
+
+The evidence shows what used to work, what went wrong, and which published version contains the fix.
+
+[cols="1,1,2,1,1,3,2,2",options="header"]
+|===
+| First report | Area | Symptom | Affected SysON | Status | Report and evidence | First published fix | Regression test
+
+| 2026-01-19 | Diagrams | Dropping an already visible element gives no feedback in General View.
+| `2025.10.0`, `2025.12.0` | Confirmed
+| {syson}/issues/1863[#1863]. {syson}/issues/1863#issuecomment-3895574205[Worked in 2025.8.0]. {syson}/issues/2056[#2056] covers the follow-up in a package node.
+| `2026.1.4` {syson}/commit/d1aca8abc[fix]. Package-node follow-up in `2026.1.6`.
+| {syson}/commit/d1aca8abc[GVDropFromExplorerTests]
+
+| 2026-01-19 | Direct edit | Valid label shortcuts such as clearing a type display a spurious parse error.
+| `2025.12.5` | Confirmed
+| {syson}/issues/1864[#1864]. {syson}/pull/1829[PR #1829] introduced user-visible parser errors in `2025.12.5`.
+| `2025.12.6` {syson}/commit/68c30a986[fix]
+| Not identified
+
+| 2026-01-30 | Diagrams | Creating a flow between two action parameters fails.
+| `2026.1.0` | Confirmed
+| {syson}/issues/1938[#1938] records the same workflow working in `2025.12.0`.
+| `2026.1.6` {syson}/commit/0e18073f1[fix]
+| {syson}/commit/0e18073f1[GVFlowUsageTests]
+
+| 2026-02-12 | Diagrams | Dropping an already visible part definition resets its open compartments.
+| `2026.1.2` | Confirmed
+| {syson}/issues/1863#issuecomment-3889985924[First report], {syson}/issues/1863#issuecomment-3895574205[version comparison]. {syson}/commit/394d22285[The change shipped in 2026.1.2].
+| `2026.1.6` {syson}/commit/8c54701b4[removed the drop event consumer]
+| Not identified
+
+| 2026-02-24 | Details view | Removing or clearing feature typing in _Typed by_ times out.
+| `2025.12.0`, `2026.1.0`, `2026.3.8` | Confirmed
+| {syson}/issues/2021[#2021 first report] and {syson}/issues/2195#issuecomment-4395397256[#2195 comparison with 2025.10.0]. {syson}/commit/386289cc6[Introducing change].
+| `2026.9.6` {syson}/commit/cf9ba6ec[dedicated clear operation]
+| Not identified
+
+| 2026-03-11 | Textual import | Inserting a snippet with an unresolved unit leaves a project that cannot be duplicated or restored from a download.
+| `2026.1.3`, `2026.1.4` | Confirmed
+| {syson}/issues/2058[#2058]. {syson}/issues/2058#issuecomment-4074778230[Copy and re-upload worked in 2026.1.2]. {syson}/pull/1975[Introducing change].
+| `2026.1.6` {syson}/commit/956f883af[fix]
+| {syson}/commit/956f883af[ImportSysMLModelTest.referenceToUnknownUnit]
+
+| 2026-04-21 | Deployment | The bundled Docker Compose configuration starts the previous release by default.
+| `2026.3.0` | Confirmed
+| {syson}/discussions/2156[Discussion #2156]. {syson}/blob/v2026.1.0/docker-compose.yml[2026.1.0] defaults to its own image. {syson}/blob/v2026.3.0/docker-compose.yml[2026.3.0] still defaults to that image.
+| `2026.3.8` {syson}/commit/0256465dd[fix]
+| Not identified
+
+| 2026-06-15 | Diagrams | Wrapped list items can overlap after _Adjust size_.
+| `2026.5.2` | Confirmed
+| {syson}/issues/2280[#2280] compares the same diagram in `2025.6.1` and `2026.5.2`. {sirius}/issues/6599[Sirius Web #6599] tracks the upstream cause.
+| `2026.5.3` {syson}/issues/2280#issuecomment-4830171356[verified after the dependency update]
+| Not identified for overlap. {sirius}/pull/6601[Related sizing tests]
+
+| 2026-07-01 | Expressions | The expression editor cannot set the default or initial value flags available through direct edit.
+| `2026.5.1` (introducing change) | Confirmed
+| {syson}/issues/2325[#2325]. {syson}/commit/d9aba9f48[The expression editor shipped in 2026.5.1] and replaced that direct-edit workflow.
+| `2026.5.5` {syson}/commit/690847122[fix]
+| {syson}/commit/690847122[ExpressionsControllersIntegrationTests]
+
+| 2026-07-02 | Textual import | Inserting a textual requirement creates the wrong membership or reports success without creating the requirement.
+| `2026.5.1` | Confirmed
+| {syson}/issues/2329[#2329]. {syson}/issues/2329#issuecomment-4863016043[Worked in 2026.5.0].
+| `2026.5.5` {syson}/pull/2328[fix]
+| {syson}/commit/42af53435[MutationInsertTextualSysMLv2DataFetcherTests]
+
+| 2026-07-02 | Diagrams | The _New Interface_ tool displays a broken icon.
+| `2025.12.5` (introducing change) | Confirmed
+| {syson}/issues/2331[#2331]. {syson}/commit/2bcb6807f[The change shipped in 2025.12.5] and replaced the valid icon path with an object string.
+| `2026.5.5` {syson}/commit/990b4ffc4[fix]
+| Not identified
+
+| 2026-08-26 | Expressions | Entering an expression with a unit such as `g` requires an explicit `SI` qualifier or import.
+| `2026.5.1` (introducing change) | Confirmed
+| {syson}/issues/2473[#2473]. {syson}/pull/1805[Direct edit previously resolved unqualified units]. {syson}/commit/d9aba9f48[The replacement editor shipped in 2026.5.1].
+| `2026.7.4` {syson}/commit/a787bdbdf[fix]
+| {syson}/commit/a787bdbdf[GVItemAndAttributeExpressionTests.setExpressionUsingUnimportedNamespaceName]
+
+| 2026-09-21 | Diagrams | The connector palette offers edge creation tools that do not accept the target node.
+| `2026.7.3`, `2026.9.0` | Confirmed
+| {syson}/issues/2526[#2526] compares the palette with `2026.7.2`. {syson}/issues/2526#issuecomment-5761142354[Also observed in 2026.9.0].
+| `2026.9.3` {syson}/commit/0e5bae89e[fix]
+| {syson}/commit/0e5bae89e[GVEdgeCreationTests and SDVConnectorPaletteTargetFilterTest]
+
+| 2026-09-24 | Diagrams | Target-dependent edge tools can disappear from the node palette following the Sirius Web update.
+| `2026.9.2` | Confirmed
+| {sirius}/issues/6997[Sirius Web #6997], {syson}/pull/2544[SysON PR #2544] documents the missing context after the `2026.9.2` update.
+| `2026.9.3` {syson}/commit/d68679e87[SysON workaround]
+| {syson}/commit/d68679e87[GVEdgeCreationTests.nodePaletteProvidesTargetSpecificEdgeTools]
+
+| 2026-10-26 | Diagrams | The _Duplicate Element_ action is missing for interface usages and definitions.
+| `2025.12.5` (introducing change) | Confirmed
+| {syson}/issues/2565[#2565]. {syson}/commit/f473860bb[The exclusion of relationship elements shipped in 2025.12.5] and also blocked interface nodes.
+| `2026.9.6` {syson}/pull/2576[fix]
+| {syson}/commit/bc24fcc36[GVDuplicateNodeTest]
+|===
+
+== Ruled-out cases
+
+Record each ruled-out case as a bullet with the public report link, the symptom, and a short reason it was ruled out as a regression.
+
+== Sources reviewed
+
+* Screened 393 public issues and 477 PRs updated during the review window, including 53 issues opened before 2026, and checked 387 issue and PR comments for relevant new evidence. {syson}/issues[SysON issues], {syson}/pulls[SysON pull requests]
+* Screened the public discussions index and opened relevant threads. Checked the upstream reports and fixes linked to SysON incidents. {syson}/discussions[SysON discussions], {sirius}/issues[Sirius Web issues]
+* Cross-checked shipped fixes against the changelog, Git tags, GitHub publications and Docker Hub images. link:../../CHANGELOG.adoc[SysON changelog], {syson}/tags[Git tags], {syson}/releases[GitHub Releases], https://hub.docker.com/r/eclipsesyson/syson/tags[Docker Hub tags]

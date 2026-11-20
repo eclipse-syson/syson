@@ -1,0 +1,54 @@
+= Post-release regression methodology
+
+Track public reports of previously working behavior that degraded in a published SysON version.
+Use the first public report date to decide whether a case falls in the register's review period. Consider every published SysON version, including older releases and patches.
+
+== Collect and qualify
+
+. Review open and closed https://github.com/eclipse-syson/syson/issues[issues], comments, https://github.com/eclipse-syson/syson/discussions[discussions], https://github.com/eclipse-syson/syson/pulls[fix PRs], and link:../../CHANGELOG.adoc[the changelog].
+. Include updates to older reports and upstream issues with documented impact in SysON.
+. Confirm a regression if the first public report follows publication of the affected release and a version comparison or the introducing change shows that the behavior previously worked.
+. Verify publication dates using https://github.com/eclipse-syson/syson/releases[GitHub Releases] and https://hub.docker.com/r/eclipsesyson/syson/tags[Docker Hub]. Use Git tags to verify shipped changes.
+. Record one entry per case in link:post-release-regressions.adoc[the register]. Merge duplicate reports and keep distinct regressions reported in a shared ticket.
+. Cite the report, evidence, fix, and scenario-specific test when available. Use the date of the relevant comment if it first reports a distinct regression.
+. Use `To verify` for plausible cases with incomplete evidence and `Unknown` for unresolved affected versions. Record the earliest verified published fix, including patch releases.
+. In the fix column, use `Unknown` for a possible fix whose publication still needs checking. Use `None verified` when the review has found no candidate for a published fix.
+
+== Review monthly
+
+. Review activity since the recorded cutoff, including new reports against old releases. Revisit pending evidence, fixes, and tests.
+. List cases awaiting a verified published fix first, fixed cases marked `To verify` second, and confirmed regressions with a published fix third. Move entries as their fix or confirmation status changes.
+. Move cases ruled out as regressions to the link:post-release-regressions.adoc#_ruled_out_cases[Ruled-out cases] section. Record the report link, symptom, and reason for ruling the case out. Reopen it only if new evidence challenges that reason.
+. Introduce each register table with one sentence explaining which cases it contains. Keep the shared column guide aligned with the table headers.
+. Calculate the first two indicator totals from the tables, with a short, plain-language sub-bullet for each confirmation status present. In the third bullet, count entries in `Ruled-out cases` and explain that status in a short sub-bullet.
+. Count confirmed entries by original report month and functional area. Include months with zero confirmed cases and show the cutoff date for a partial month.
+. In the monthly PR, report the share of confirmed regressions with a published fix that have a test for the reported scenario. Use `N/A` if there are no confirmed regressions with a published fix.
+. Record the sources reviewed and the cutoff in the register. Summarize indicator changes and significant fixes with test gaps in the monthly PR.
+
+Open the SysON repository in Codex and run the prompt below with editing enabled. Review the resulting diff before sharing it.
+
+== Codex update prompt
+
+[source,text]
+----
+Read doc/methodology/post-release-regression-methodology.adoc and apply it to update
+doc/methodology/post-release-regressions.adoc. Limit file edits to the register.
+
+Use the last day of the most recently completed calendar month as the target cutoff
+unless I provide another date. If the target is earlier than the recorded cutoff,
+report that the register already covers that date and stop. Otherwise review public
+activity from the recorded cutoff through the target date, including both days.
+Consider reports against every published SysON version, including older releases.
+Revisit existing cases awaiting confirmation, a published fix, or test evidence.
+Check for the same case in the ruled-out list, including when it appears in a duplicate
+report. Move it back to the appropriate table only if new evidence challenges the recorded reason.
+
+Merge duplicate reports into the existing entry, preserve the first public report date,
+and link the evidence for each change. Check that each case appears once and recalculate
+the indicators. Record the sources reviewed. Advance the review period end and the last
+reviewed date together only after checking the agreed sources through the target cutoff.
+
+Review the diff and give me a summary for the monthly PR with indicator changes, new
+confirmations and exclusions, published fixes, test coverage, and significant fixes
+with test gaps. Flag missing evidence and sources you could not review.
+----
