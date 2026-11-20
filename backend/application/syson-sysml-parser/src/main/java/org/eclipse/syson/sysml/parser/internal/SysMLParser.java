@@ -524,7 +524,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(namespace__());
+			start(_localctx, namespace__());
 			{
 			setState(1086);
 			_errHandler.sync(this);
@@ -733,7 +733,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(dependency__());
+			start(_localctx, dependency__());
 			{
 			setState(1127);
 			_errHandler.sync(this);
@@ -861,7 +861,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(annotation__());
+			start(_localctx, annotation__());
 			{
 			setState(1168);
 			qualifiedName();
@@ -898,7 +898,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(annotation__());
+			start(_localctx, annotation__());
 			{
 			{
 			setState(1174);
@@ -940,7 +940,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(owningMembership__());
+			start(_localctx, owningMembership__());
 			{
 			setState(1180);
 			memberPrefix();
@@ -1067,7 +1067,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(comment__());
+			start(_localctx, comment__());
 			{
 			setState(1213);
 			_errHandler.sync(this);
@@ -1181,7 +1181,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(documentation__());
+			start(_localctx, documentation__());
 			{
 			setState(1226);
 			match(T__12);
@@ -1252,7 +1252,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(textualRepresentation__());
+			start(_localctx, textualRepresentation__());
 			{
 			setState(1246);
 			_errHandler.sync(this);
@@ -1440,7 +1440,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(metadataDefinition__());
+			start(_localctx, metadataDefinition__());
 			{
 			setState(1270);
 			_errHandler.sync(this);
@@ -1503,7 +1503,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(annotation__());
+			start(_localctx, annotation__());
 			{
 			setState(1284);
 			match(T__19);
@@ -1544,7 +1544,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(owningMembership__());
+			start(_localctx, owningMembership__());
 			{
 			setState(1291);
 			match(T__19);
@@ -1585,7 +1585,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(metadataUsage__());
+			start(_localctx, metadataUsage__());
 			{
 			attachPrefixMetadata();
 			{
@@ -1644,7 +1644,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(metadataUsage__());
+			start(_localctx, metadataUsage__());
 			{
 			setState(1308);
 			_errHandler.sync(this);
@@ -1797,7 +1797,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureTyping__());
+			start(_localctx, featureTyping__());
 			{
 			{
 			setState(1344);
@@ -1958,7 +1958,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			{
 			setState(1373);
@@ -2007,7 +2007,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(referenceUsage__());
+			start(_localctx, referenceUsage__());
 			{
 			setState(1381);
 			_errHandler.sync(this);
@@ -2113,7 +2113,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(package__());
+			start(_localctx, package__());
 			{
 			setState(1408);
 			_errHandler.sync(this);
@@ -2176,7 +2176,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(libraryPackage__());
+			start(_localctx, libraryPackage__());
 			{
 			setState(1419);
 			_errHandler.sync(this);
@@ -2536,7 +2536,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(owningMembership__());
+			start(_localctx, owningMembership__());
 			{
 			setState(1483);
 			memberPrefix();
@@ -2597,7 +2597,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(elementFilterMembership__());
+			start(_localctx, elementFilterMembership__());
 			{
 			setState(1495);
 			memberPrefix();
@@ -2657,7 +2657,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(membership__());
+			start(_localctx, membership__());
 			{
 			setState(1505);
 			memberPrefix();
@@ -2803,7 +2803,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 				}
 				break;
 			}
-			restart();
+			restart(_localctx);
 			setState(1541);
 			relationshipBody();
 			end(_localctx);
@@ -2840,7 +2840,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(membershipImport__());
+			start(_localctx, membershipImport__());
 			{
 			setState(1545);
 			importPrefix();
@@ -2936,7 +2936,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(namespaceImport__());
+			start(_localctx, namespaceImport__());
 			{
 			setState(1559);
 			importPrefix();
@@ -3054,7 +3054,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(package__());
+			start(_localctx, package__());
 			{
 			{
 			setState(1579);
@@ -3156,7 +3156,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(membershipImport__());
+			start(_localctx, membershipImport__());
 			{
 			setState(1596);
 			importedMembership();
@@ -3192,7 +3192,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(namespaceImport__());
+			start(_localctx, namespaceImport__());
 			{
 			setState(1600);
 			importedNamespace();
@@ -3231,7 +3231,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(elementFilterMembership__());
+			start(_localctx, elementFilterMembership__());
 			{
 			{
 			setState(1604);
@@ -3847,7 +3847,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(subclassification__());
+			start(_localctx, subclassification__());
 			{
 			{
 			setState(1682);
@@ -4916,7 +4916,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 				enterOuterAlt(_localctx, 1);
 				{
 				{
-				start(featureTyping__()); attachTypingClauseStart();
+				start(_localctx, featureTyping__()); attachTypingClauseStart();
 				setState(1830);
 				((OwnedFeatureTypingContext)_localctx).target = qualifiedName();
 				setLink(featureTyping_Type(), type__()); if (((OwnedFeatureTypingContext)_localctx).target.quoted) attachQuotedName();
@@ -4928,7 +4928,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 				enterOuterAlt(_localctx, 2);
 				{
 				{
-				start(featureTyping__()); attachTypingClauseStart();
+				start(_localctx, featureTyping__()); attachTypingClauseStart();
 				setState(1835);
 				ownedFeatureChain();
 				add(relationship_OwnedRelatedElement());
@@ -4975,7 +4975,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 				enterOuterAlt(_localctx, 1);
 				{
 				{
-				start(subsetting__());
+				start(_localctx, subsetting__());
 				setState(1842);
 				((OwnedSubsettingContext)_localctx).target = qualifiedName();
 				setLink(subsetting_SubsettedFeature(), feature__()); if (((OwnedSubsettingContext)_localctx).target.quoted) attachQuotedName();
@@ -4987,7 +4987,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 				enterOuterAlt(_localctx, 2);
 				{
 				{
-				start(subsetting__());
+				start(_localctx, subsetting__());
 				setState(1847);
 				ownedFeatureChain();
 				add(relationship_OwnedRelatedElement());
@@ -5035,7 +5035,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 				enterOuterAlt(_localctx, 1);
 				{
 				{
-				start(referenceSubsetting__());
+				start(_localctx, referenceSubsetting__());
 				setState(1854);
 				((OwnedReferenceSubsettingContext)_localctx).reference = qualifiedName();
 				setLink(referenceSubsetting_ReferencedFeature(), feature__()); ((OwnedReferenceSubsettingContext)_localctx).quoted =  ((OwnedReferenceSubsettingContext)_localctx).reference.quoted; if (((OwnedReferenceSubsettingContext)_localctx).reference.quoted) attachQuotedName();
@@ -5047,7 +5047,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 				enterOuterAlt(_localctx, 2);
 				{
 				{
-				start(referenceSubsetting__());
+				start(_localctx, referenceSubsetting__());
 				setState(1859);
 				ownedFeatureChain();
 				add(relationship_OwnedRelatedElement());
@@ -5094,7 +5094,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 				enterOuterAlt(_localctx, 1);
 				{
 				{
-				start(crossSubsetting__());
+				start(_localctx, crossSubsetting__());
 				setState(1866);
 				((OwnedCrossSubsettingContext)_localctx).target = qualifiedName();
 				setLink(crossSubsetting_CrossedFeature(), feature__()); if (((OwnedCrossSubsettingContext)_localctx).target.quoted) attachQuotedName();
@@ -5106,7 +5106,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 				enterOuterAlt(_localctx, 2);
 				{
 				{
-				start(crossSubsetting__());
+				start(_localctx, crossSubsetting__());
 				setState(1871);
 				ownedFeatureChain();
 				add(relationship_OwnedRelatedElement());
@@ -5211,7 +5211,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 				enterOuterAlt(_localctx, 1);
 				{
 				{
-				start(redefinition__());
+				start(_localctx, redefinition__());
 				setState(1888);
 				((OwnedRedefinitionContext)_localctx).target = qualifiedName();
 				setLink(redefinition_RedefinedFeature(), feature__()); if (((OwnedRedefinitionContext)_localctx).target.quoted) attachQuotedName();
@@ -5223,7 +5223,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 				enterOuterAlt(_localctx, 2);
 				{
 				{
-				start(redefinition__());
+				start(_localctx, redefinition__());
 				setState(1893);
 				ownedFeatureChain();
 				add(relationship_OwnedRelatedElement());
@@ -5261,7 +5261,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(owningMembership__());
+			start(_localctx, owningMembership__());
 			{
 			{
 			setState(1900);
@@ -5304,7 +5304,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(multiplicityRange__());
+			start(_localctx, multiplicityRange__());
 			{
 			setState(1906);
 			match(T__35);
@@ -5365,7 +5365,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(owningMembership__());
+			start(_localctx, owningMembership__());
 			{
 			{
 			setState(1923);
@@ -5858,7 +5858,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(owningMembership__());
+			start(_localctx, owningMembership__());
 			{
 			setState(1995);
 			memberPrefix();
@@ -5903,7 +5903,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(variantMembership__());
+			start(_localctx, variantMembership__());
 			{
 			setState(2002);
 			memberPrefix();
@@ -5951,7 +5951,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			setState(2010);
 			memberPrefix();
@@ -5997,7 +5997,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			setState(2017);
 			memberPrefix();
@@ -6043,7 +6043,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			setState(2024);
 			memberPrefix();
@@ -6088,7 +6088,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			setState(2031);
 			memberPrefix();
@@ -6586,7 +6586,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(owningMembership__());
+			start(_localctx, owningMembership__());
 			{
 			{
 			setState(2093);
@@ -6628,7 +6628,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(referenceUsage__());
+			start(_localctx, referenceUsage__());
 			{
 			setState(2099);
 			basicUsagePrefix();
@@ -6858,7 +6858,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureValue__());
+			start(_localctx, featureValue__());
 			{
 			setState(2136);
 			_errHandler.sync(this);
@@ -7049,7 +7049,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(referenceUsage__());
+			start(_localctx, referenceUsage__());
 			{
 			setState(2151);
 			_errHandler.sync(this);
@@ -7119,7 +7119,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(referenceUsage__());
+			start(_localctx, referenceUsage__());
 			{
 			setState(2165);
 			_errHandler.sync(this);
@@ -7193,7 +7193,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(referenceUsage__());
+			start(_localctx, referenceUsage__());
 			{
 			{
 			setState(2174);
@@ -8008,7 +8008,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(definition__());
+			start(_localctx, definition__());
 			{
 			setState(2260);
 			_errHandler.sync(this);
@@ -8080,7 +8080,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(usage__());
+			start(_localctx, usage__());
 			{
 			setState(2273);
 			unextendedUsagePrefix();
@@ -8233,7 +8233,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(attributeDefinition__());
+			start(_localctx, attributeDefinition__());
 			{
 			setState(2291);
 			definitionPrefix();
@@ -8279,7 +8279,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(attributeUsage__());
+			start(_localctx, attributeUsage__());
 			{
 			setState(2298);
 			usagePrefix();
@@ -8427,7 +8427,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(enumerationDefinition__());
+			start(_localctx, enumerationDefinition__());
 			{
 			setState(2315);
 			_errHandler.sync(this);
@@ -8577,7 +8577,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(variantMembership__());
+			start(_localctx, variantMembership__());
 			{
 			setState(2343);
 			memberPrefix();
@@ -8629,7 +8629,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(enumerationUsage__());
+			start(_localctx, enumerationUsage__());
 			{
 			setState(2353);
 			_errHandler.sync(this);
@@ -8696,7 +8696,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(enumerationUsage__());
+			start(_localctx, enumerationUsage__());
 			{
 			setState(2365);
 			usagePrefix();
@@ -8887,7 +8887,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(occurrenceDefinition__());
+			start(_localctx, occurrenceDefinition__());
 			{
 			setState(2394);
 			occurrenceDefinitionPrefix();
@@ -8940,7 +8940,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(occurrenceDefinition__());
+			start(_localctx, occurrenceDefinition__());
 			{
 			setState(2402);
 			_errHandler.sync(this);
@@ -9013,7 +9013,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(owningMembership__());
+			start(_localctx, owningMembership__());
 			{
 			{
 			setState(2423);
@@ -9049,7 +9049,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(multiplicity__());
+			start(_localctx, multiplicity__());
 			{
 			}
 			end(_localctx);
@@ -9269,7 +9269,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(occurrenceUsage__());
+			start(_localctx, occurrenceUsage__());
 			{
 			setState(2454);
 			occurrenceUsagePrefix();
@@ -9319,7 +9319,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(occurrenceUsage__());
+			start(_localctx, occurrenceUsage__());
 			{
 			setState(2461);
 			basicUsagePrefix();
@@ -9390,7 +9390,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(occurrenceUsage__());
+			start(_localctx, occurrenceUsage__());
 			{
 			setState(2477);
 			basicUsagePrefix();
@@ -9520,7 +9520,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(eventOccurrenceUsage__());
+			start(_localctx, eventOccurrenceUsage__());
 			{
 			setState(2502);
 			occurrenceUsagePrefix();
@@ -9603,7 +9603,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			{
 			setState(2521);
@@ -9645,7 +9645,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(successionAsUsage__());
+			start(_localctx, successionAsUsage__());
 			{
 			setState(2527);
 			match(T__70);
@@ -9691,7 +9691,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(endFeatureMembership__());
+			start(_localctx, endFeatureMembership__());
 			{
 			{
 			setState(2537);
@@ -9731,7 +9731,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(referenceUsage__());
+			start(_localctx, referenceUsage__());
 			{
 			setState(2546);
 			_errHandler.sync(this);
@@ -9776,7 +9776,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(endFeatureMembership__());
+			start(_localctx, endFeatureMembership__());
 			{
 			{
 			setState(2551);
@@ -9812,7 +9812,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(referenceUsage__());
+			start(_localctx, referenceUsage__());
 			{
 			}
 			end(_localctx);
@@ -9947,7 +9947,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(itemDefinition__());
+			start(_localctx, itemDefinition__());
 			{
 			setState(2568);
 			occurrenceDefinitionPrefix();
@@ -9993,7 +9993,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(itemUsage__());
+			start(_localctx, itemUsage__());
 			{
 			setState(2575);
 			occurrenceUsagePrefix();
@@ -10134,7 +10134,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(partDefinition__());
+			start(_localctx, partDefinition__());
 			{
 			setState(2589);
 			occurrenceDefinitionPrefix();
@@ -10180,7 +10180,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(partUsage__());
+			start(_localctx, partUsage__());
 			{
 			setState(2596);
 			occurrenceUsagePrefix();
@@ -10292,7 +10292,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(portDefinition__());
+			start(_localctx, portDefinition__());
 			{
 			setState(2608);
 			definitionPrefix();
@@ -10337,7 +10337,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(owningMembership__());
+			start(_localctx, owningMembership__());
 			{
 			{
 			setState(2617);
@@ -10376,7 +10376,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(conjugatedPortDefinition__());
+			start(_localctx, conjugatedPortDefinition__());
 			{
 			{
 			setState(2623);
@@ -10412,7 +10412,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(portConjugation__());
+			start(_localctx, portConjugation__());
 			{
 			}
 			end(_localctx);
@@ -10446,7 +10446,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(conjugatedPortTyping__()); attachTypingClauseStart();
+			start(_localctx, conjugatedPortTyping__()); attachTypingClauseStart();
 			{
 			{
 			setState(2633);
@@ -10560,7 +10560,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(portUsage__());
+			start(_localctx, portUsage__());
 			{
 			setState(2645);
 			occurrenceUsagePrefix();
@@ -10601,7 +10601,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(endFeatureMembership__());
+			start(_localctx, endFeatureMembership__());
 			{
 			{
 			setState(2653);
@@ -10650,7 +10650,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(referenceUsage__());
+			start(_localctx, referenceUsage__());
 			{
 			setState(2662);
 			_errHandler.sync(this);
@@ -10715,7 +10715,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(owningMembership__());
+			start(_localctx, owningMembership__());
 			{
 			{
 			setState(2677);
@@ -10754,7 +10754,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(feature__());
+			start(_localctx, feature__());
 			{
 			{
 			setState(2683);
@@ -10838,7 +10838,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(bindingConnectorAsUsage__());
+			start(_localctx, bindingConnectorAsUsage__());
 			{
 			setState(2691);
 			usagePrefix();
@@ -10956,7 +10956,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(successionAsUsage__());
+			start(_localctx, successionAsUsage__());
 			{
 			setState(2714);
 			usagePrefix();
@@ -11098,7 +11098,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(connectionDefinition__());
+			start(_localctx, connectionDefinition__());
 			{
 			setState(2740);
 			occurrenceDefinitionPrefix();
@@ -11219,7 +11219,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(connectionUsage__());
+			start(_localctx, connectionUsage__());
 			{
 			setState(2752);
 			occurrenceUsagePrefix();
@@ -11476,7 +11476,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(endFeatureMembership__());
+			start(_localctx, endFeatureMembership__());
 			{
 			{
 			setState(2805);
@@ -11512,7 +11512,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(referenceUsage__());
+			start(_localctx, referenceUsage__());
 			{
 			}
 			end(_localctx);
@@ -11618,7 +11618,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(interfaceDefinition__());
+			start(_localctx, interfaceDefinition__());
 			{
 			setState(2820);
 			occurrenceDefinitionPrefix();
@@ -11852,7 +11852,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			setState(2865);
 			memberPrefix();
@@ -11974,7 +11974,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			setState(2879);
 			memberPrefix();
@@ -12073,7 +12073,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(portUsage__());
+			start(_localctx, portUsage__());
 			{
 			{
 			setState(2891);
@@ -12155,7 +12155,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(interfaceUsage__());
+			start(_localctx, interfaceUsage__());
 			{
 			setState(2901);
 			occurrenceUsagePrefix();
@@ -12453,7 +12453,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(endFeatureMembership__());
+			start(_localctx, endFeatureMembership__());
 			{
 			{
 			setState(2958);
@@ -12502,7 +12502,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(portUsage__());
+			start(_localctx, portUsage__());
 			{
 			setState(2967);
 			_errHandler.sync(this);
@@ -12636,7 +12636,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(allocationDefinition__());
+			start(_localctx, allocationDefinition__());
 			{
 			setState(2987);
 			occurrenceDefinitionPrefix();
@@ -12743,7 +12743,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(allocationUsage__());
+			start(_localctx, allocationUsage__());
 			{
 			setState(2998);
 			occurrenceUsagePrefix();
@@ -12934,7 +12934,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(flowDefinition__());
+			start(_localctx, flowDefinition__());
 			{
 			setState(3025);
 			occurrenceDefinitionPrefix();
@@ -13012,7 +13012,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(flowUsage__());
+			start(_localctx, flowUsage__());
 			{
 			setState(3034);
 			occurrenceUsagePrefix();
@@ -13178,7 +13178,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(parameterMembership__());
+			start(_localctx, parameterMembership__());
 			{
 			{
 			setState(3074);
@@ -13217,7 +13217,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(eventOccurrenceUsage__());
+			start(_localctx, eventOccurrenceUsage__());
 			{
 			{
 			setState(3080);
@@ -13265,7 +13265,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(flowUsage__());
+			start(_localctx, flowUsage__());
 			{
 			setState(3086);
 			occurrenceUsagePrefix();
@@ -13353,7 +13353,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(successionFlowUsage__());
+			start(_localctx, successionFlowUsage__());
 			{
 			setState(3097);
 			occurrenceUsagePrefix();
@@ -13519,7 +13519,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			{
 			setState(3137);
@@ -13558,7 +13558,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(payloadFeature__());
+			start(_localctx, payloadFeature__());
 			{
 			setState(3143);
 			payload();
@@ -13840,7 +13840,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(endFeatureMembership__());
+			start(_localctx, endFeatureMembership__());
 			{
 			{
 			setState(3196);
@@ -13882,7 +13882,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(flowEnd__());
+			start(_localctx, flowEnd__());
 			{
 			setState(3205);
 			_errHandler.sync(this);
@@ -13939,7 +13939,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				start(referenceSubsetting__());
+				start(_localctx, referenceSubsetting__());
 				{
 				setState(3213);
 				qualifiedName();
@@ -13953,7 +13953,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				start(referenceSubsetting__());
+				start(_localctx, referenceSubsetting__());
 				{
 				setState(3220);
 				featureChainPrefix();
@@ -13996,7 +13996,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			start(feature__());
+			start(_localctx, feature__());
 			{
 			setState(3233); 
 			_errHandler.sync(this);
@@ -14062,7 +14062,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			{
 			setState(3245);
@@ -14101,7 +14101,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(referenceUsage__());
+			start(_localctx, referenceUsage__());
 			{
 			{
 			setState(3251);
@@ -14140,7 +14140,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(redefinition__());
+			start(_localctx, redefinition__());
 			{
 			{
 			setState(3257);
@@ -14251,7 +14251,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(actionDefinition__());
+			start(_localctx, actionDefinition__());
 			{
 			setState(3268);
 			occurrenceDefinitionPrefix();
@@ -14597,7 +14597,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(membership__());
+			start(_localctx, membership__());
 			{
 			setState(3347);
 			memberPrefix();
@@ -14646,7 +14646,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			setState(3358);
 			memberPrefix();
@@ -14690,7 +14690,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			setState(3365);
 			memberPrefix();
@@ -14734,7 +14734,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			setState(3372);
 			memberPrefix();
@@ -14816,7 +14816,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(actionUsage__());
+			start(_localctx, actionUsage__());
 			{
 			setState(3381);
 			occurrenceUsagePrefix();
@@ -14864,7 +14864,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(performActionUsage__());
+			start(_localctx, performActionUsage__());
 			{
 			setState(3389);
 			occurrenceUsagePrefix();
@@ -15264,7 +15264,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(acceptActionUsage__());
+			start(_localctx, acceptActionUsage__());
 			{
 			setState(3438);
 			occurrenceUsagePrefix();
@@ -15407,7 +15407,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(parameterMembership__());
+			start(_localctx, parameterMembership__());
 			{
 			{
 			setState(3461);
@@ -15460,7 +15460,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				start(referenceUsage__());
+				start(_localctx, referenceUsage__());
 				setState(3467);
 				payload();
 				end(_localctx);
@@ -15469,7 +15469,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				start(referenceUsage__());
+				start(_localctx, referenceUsage__());
 				setState(3472);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
@@ -15560,7 +15560,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureValue__());
+			start(_localctx, featureValue__());
 			{
 			{
 			setState(3486);
@@ -15613,7 +15613,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case T__95:
 				enterOuterAlt(_localctx, 1);
 				{
-				start(triggerInvocationExpression__());
+				start(_localctx, triggerInvocationExpression__());
 				{
 				setState(3492);
 				timeTriggerKind();
@@ -15630,7 +15630,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case T__96:
 				enterOuterAlt(_localctx, 2);
 				{
-				start(triggerInvocationExpression__());
+				start(_localctx, triggerInvocationExpression__());
 				{
 				setState(3501);
 				changeTriggerKind();
@@ -15752,7 +15752,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(parameterMembership__());
+			start(_localctx, parameterMembership__());
 			{
 			{
 			setState(3521);
@@ -15791,7 +15791,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(feature__());
+			start(_localctx, feature__());
 			{
 			{
 			setState(3527);
@@ -15830,7 +15830,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureValue__());
+			start(_localctx, featureValue__());
 			{
 			{
 			setState(3533);
@@ -15885,7 +15885,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(sendActionUsage__());
+			start(_localctx, sendActionUsage__());
 			{
 			setState(3539);
 			occurrenceUsagePrefix();
@@ -16158,7 +16158,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(parameterMembership__());
+			start(_localctx, parameterMembership__());
 			{
 			{
 			setState(3594);
@@ -16197,7 +16197,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(referenceUsage__());
+			start(_localctx, referenceUsage__());
 			{
 			{
 			setState(3600);
@@ -16236,7 +16236,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureValue__());
+			start(_localctx, featureValue__());
 			{
 			{
 			setState(3606);
@@ -16281,7 +16281,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(assignmentActionUsage__());
+			start(_localctx, assignmentActionUsage__());
 			{
 			setState(3612);
 			occurrenceUsagePrefix();
@@ -16390,7 +16390,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(parameterMembership__());
+			start(_localctx, parameterMembership__());
 			{
 			{
 			setState(3633);
@@ -16432,7 +16432,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(referenceUsage__());
+			start(_localctx, referenceUsage__());
 			{
 			setState(3644);
 			_errHandler.sync(this);
@@ -16486,7 +16486,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			{
 			setState(3652);
@@ -16525,7 +16525,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(referenceUsage__());
+			start(_localctx, referenceUsage__());
 			{
 			{
 			setState(3658);
@@ -16564,7 +16564,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			{
 			setState(3664);
@@ -16603,7 +16603,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureValue__());
+			start(_localctx, featureValue__());
 			{
 			{
 			setState(3670);
@@ -16838,7 +16838,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(parameterMembership__());
+			start(_localctx, parameterMembership__());
 			{
 			{
 			setState(3733);
@@ -16889,7 +16889,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(ifActionUsage__());
+			start(_localctx, ifActionUsage__());
 			{
 			setState(3739);
 			actionNodePrefix();
@@ -16966,7 +16966,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(parameterMembership__());
+			start(_localctx, parameterMembership__());
 			{
 			{
 			setState(3759);
@@ -17015,7 +17015,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(actionUsage__());
+			start(_localctx, actionUsage__());
 			{
 			setState(3770);
 			_errHandler.sync(this);
@@ -17088,7 +17088,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(parameterMembership__());
+			start(_localctx, parameterMembership__());
 			{
 			{
 			setState(3784);
@@ -17140,7 +17140,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(whileLoopActionUsage__());
+			start(_localctx, whileLoopActionUsage__());
 			{
 			setState(3790);
 			actionNodePrefix();
@@ -17235,7 +17235,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(forLoopActionUsage__());
+			start(_localctx, forLoopActionUsage__());
 			{
 			setState(3815);
 			actionNodePrefix();
@@ -17290,7 +17290,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			{
 			setState(3830);
@@ -17329,7 +17329,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(referenceUsage__());
+			start(_localctx, referenceUsage__());
 			{
 			setState(3836);
 			usageDeclaration();
@@ -17375,7 +17375,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(terminateActionUsage__());
+			start(_localctx, terminateActionUsage__());
 			{
 			setState(3840);
 			occurrenceUsagePrefix();
@@ -17597,7 +17597,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(mergeNode__());
+			start(_localctx, mergeNode__());
 			{
 			setState(3878);
 			controlNodePrefix();
@@ -17657,7 +17657,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(decisionNode__());
+			start(_localctx, decisionNode__());
 			{
 			setState(3890);
 			controlNodePrefix();
@@ -17717,7 +17717,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(joinNode__());
+			start(_localctx, joinNode__());
 			{
 			setState(3902);
 			controlNodePrefix();
@@ -17777,7 +17777,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(forkNode__());
+			start(_localctx, forkNode__());
 			{
 			setState(3914);
 			controlNodePrefix();
@@ -17830,7 +17830,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(parameterMembership__());
+			start(_localctx, parameterMembership__());
 			{
 			{
 			setState(3926);
@@ -17866,7 +17866,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(referenceUsage__());
+			start(_localctx, referenceUsage__());
 			{
 			}
 			end(_localctx);
@@ -17934,7 +17934,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			default:
 				throw new NoViableAltException(this);
 			}
-			restart();
+			restart(_localctx);
 			setState(3941);
 			usageBody();
 			end(_localctx);
@@ -17971,7 +17971,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(successionAsUsage__());
+			start(_localctx, successionAsUsage__());
 			{
 			{
 			setState(3945);
@@ -18023,7 +18023,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(transitionUsage__());
+			start(_localctx, transitionUsage__());
 			{
 			{
 			setState(3955);
@@ -18077,7 +18077,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(transitionUsage__());
+			start(_localctx, transitionUsage__());
 			{
 			{
 			setState(3968);
@@ -18143,7 +18143,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(transitionUsage__());
+			start(_localctx, transitionUsage__());
 			{
 			setState(3983);
 			_errHandler.sync(this);
@@ -18288,7 +18288,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(stateDefinition__());
+			start(_localctx, stateDefinition__());
 			{
 			setState(4009);
 			occurrenceDefinitionPrefix();
@@ -18694,7 +18694,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(stateSubactionMembership__());
+			start(_localctx, stateSubactionMembership__());
 			{
 			setState(4097);
 			memberPrefix();
@@ -18776,7 +18776,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(stateSubactionMembership__());
+			start(_localctx, stateSubactionMembership__());
 			{
 			setState(4110);
 			memberPrefix();
@@ -18858,7 +18858,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(stateSubactionMembership__());
+			start(_localctx, stateSubactionMembership__());
 			{
 			setState(4123);
 			memberPrefix();
@@ -18940,7 +18940,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			setState(4136);
 			memberPrefix();
@@ -19031,7 +19031,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 				{
 				setState(4153);
 				performedActionUsage();
-				restart();
+				restart(_localctx);
 				attachTrailingComments();
 				setState(4156);
 				actionBody();
@@ -19067,7 +19067,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(actionUsage__());
+			start(_localctx, actionUsage__());
 			{
 			}
 			end(_localctx);
@@ -19114,7 +19114,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				start(performActionUsage__());
+				start(_localctx, performActionUsage__());
 				setState(4166);
 				performActionUsageDeclaration();
 				end(_localctx);
@@ -19123,7 +19123,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				start(acceptActionUsage__());
+				start(_localctx, acceptActionUsage__());
 				setState(4170);
 				acceptNodeDeclaration();
 				end(_localctx);
@@ -19132,7 +19132,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				start(sendActionUsage__());
+				start(_localctx, sendActionUsage__());
 				setState(4174);
 				sendNodeDeclaration();
 				end(_localctx);
@@ -19141,7 +19141,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				start(assignmentActionUsage__());
+				start(_localctx, assignmentActionUsage__());
 				setState(4178);
 				assignmentNodeDeclaration();
 				end(_localctx);
@@ -19180,7 +19180,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			setState(4184);
 			memberPrefix();
@@ -19224,7 +19224,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			setState(4191);
 			memberPrefix();
@@ -19306,7 +19306,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(stateUsage__());
+			start(_localctx, stateUsage__());
 			{
 			setState(4200);
 			occurrenceUsagePrefix();
@@ -19433,7 +19433,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(exhibitStateUsage__());
+			start(_localctx, exhibitStateUsage__());
 			{
 			setState(4221);
 			occurrenceUsagePrefix();
@@ -19585,7 +19585,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(transitionUsage__());
+			start(_localctx, transitionUsage__());
 			{
 			setState(4246);
 			transitionUsageKeyword();
@@ -19723,7 +19723,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(transitionUsage__());
+			start(_localctx, transitionUsage__());
 			{
 			{
 			setState(4287);
@@ -19869,7 +19869,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				start(membership__());
+				start(_localctx, membership__());
 				{
 				setState(4337);
 				qualifiedName();
@@ -19881,7 +19881,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				start(owningMembership__());
+				start(_localctx, owningMembership__());
 				{
 				setState(4343);
 				ownedFeatureChain();
@@ -19923,7 +19923,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(transitionFeatureMembership__());
+			start(_localctx, transitionFeatureMembership__());
 			{
 			{
 			setState(4351);
@@ -19998,7 +19998,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(acceptActionUsage__());
+			start(_localctx, acceptActionUsage__());
 			{
 			setState(4363);
 			((TriggerActionContext)_localctx).part = acceptParameterPart();
@@ -20038,7 +20038,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(transitionFeatureMembership__());
+			start(_localctx, transitionFeatureMembership__());
 			{
 			{
 			setState(4368);
@@ -20115,7 +20115,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(transitionFeatureMembership__());
+			start(_localctx, transitionFeatureMembership__());
 			{
 			{
 			setState(4380);
@@ -20223,7 +20223,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 				_la = _input.LA(1);
 				if (_la==T__3) {
 					{
-					restart();
+					restart(_localctx);
 					setState(4394);
 					match(T__3);
 					attachBodyBlock();
@@ -20282,7 +20282,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(owningMembership__());
+			start(_localctx, owningMembership__());
 			{
 			{
 			setState(4411);
@@ -20324,7 +20324,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(successionAsUsage__());
+			start(_localctx, successionAsUsage__());
 			{
 			{
 			setState(4417);
@@ -20440,7 +20440,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(calculationDefinition__());
+			start(_localctx, calculationDefinition__());
 			{
 			setState(4431);
 			occurrenceDefinitionPrefix();
@@ -20654,7 +20654,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(returnParameterMembership__());
+			start(_localctx, returnParameterMembership__());
 			{
 			setState(4465);
 			memberPrefix();
@@ -20700,7 +20700,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(resultExpressionMembership__());
+			start(_localctx, resultExpressionMembership__());
 			{
 			setState(4473);
 			memberPrefix();
@@ -20782,7 +20782,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(calculationUsage__());
+			start(_localctx, calculationUsage__());
 			{
 			setState(4482);
 			occurrenceUsagePrefix();
@@ -20896,7 +20896,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(constraintDefinition__());
+			start(_localctx, constraintDefinition__());
 			{
 			setState(4495);
 			occurrenceDefinitionPrefix();
@@ -20979,7 +20979,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(constraintUsage__());
+			start(_localctx, constraintUsage__());
 			{
 			setState(4505);
 			occurrenceUsagePrefix();
@@ -21037,7 +21037,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(assertConstraintUsage__());
+			start(_localctx, assertConstraintUsage__());
 			{
 			setState(4513);
 			occurrenceUsagePrefix();
@@ -21250,7 +21250,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(requirementDefinition__());
+			start(_localctx, requirementDefinition__());
 			{
 			setState(4547);
 			occurrenceDefinitionPrefix();
@@ -21481,7 +21481,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(subjectMembership__());
+			start(_localctx, subjectMembership__());
 			{
 			setState(4589);
 			memberPrefix();
@@ -21529,7 +21529,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(referenceUsage__());
+			start(_localctx, referenceUsage__());
 			{
 			setState(4596);
 			match(T__124);
@@ -21587,7 +21587,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(requirementConstraintMembership__());
+			start(_localctx, requirementConstraintMembership__());
 			{
 			setState(4608);
 			memberPrefix();
@@ -21704,7 +21704,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case UNRESTRICTED_NAME:
 				enterOuterAlt(_localctx, 1);
 				{
-				start(constraintUsage__());
+				start(_localctx, constraintUsage__());
 				{
 				setState(4624);
 				ownedReferenceSubsetting();
@@ -21729,7 +21729,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case T__120:
 				enterOuterAlt(_localctx, 2);
 				{
-				start(constraintUsage__());
+				start(_localctx, constraintUsage__());
 				setState(4650);
 				_errHandler.sync(this);
 				switch ( getInterpreter().adaptivePredict(_input,303,_ctx) ) {
@@ -21819,7 +21819,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(framedConcernMembership__());
+			start(_localctx, framedConcernMembership__());
 			{
 			setState(4659);
 			memberPrefix();
@@ -21921,7 +21921,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case UNRESTRICTED_NAME:
 				enterOuterAlt(_localctx, 1);
 				{
-				start(concernUsage__());
+				start(_localctx, concernUsage__());
 				{
 				setState(4672);
 				((FramedConcernUsageContext)_localctx).reference = ownedReferenceSubsetting();
@@ -21946,7 +21946,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case T__131:
 				enterOuterAlt(_localctx, 2);
 				{
-				start(concernUsage__());
+				start(_localctx, concernUsage__());
 				setState(4696);
 				_errHandler.sync(this);
 				switch ( getInterpreter().adaptivePredict(_input,308,_ctx) ) {
@@ -22033,7 +22033,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(actorMembership__());
+			start(_localctx, actorMembership__());
 			{
 			setState(4705);
 			memberPrefix();
@@ -22081,7 +22081,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(partUsage__());
+			start(_localctx, partUsage__());
 			{
 			setState(4712);
 			match(T__128);
@@ -22137,7 +22137,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(stakeholderMembership__());
+			start(_localctx, stakeholderMembership__());
 			{
 			setState(4724);
 			memberPrefix();
@@ -22185,7 +22185,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(partUsage__());
+			start(_localctx, partUsage__());
 			{
 			setState(4731);
 			match(T__129);
@@ -22278,7 +22278,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(requirementUsage__());
+			start(_localctx, requirementUsage__());
 			{
 			setState(4745);
 			occurrenceUsagePrefix();
@@ -22342,7 +22342,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(satisfyRequirementUsage__());
+			start(_localctx, satisfyRequirementUsage__());
 			{
 			setState(4753);
 			occurrenceUsagePrefix();
@@ -22473,7 +22473,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(subjectMembership__());
+			start(_localctx, subjectMembership__());
 			{
 			{
 			setState(4790);
@@ -22512,7 +22512,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(referenceUsage__());
+			start(_localctx, referenceUsage__());
 			{
 			{
 			setState(4796);
@@ -22551,7 +22551,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureValue__());
+			start(_localctx, featureValue__());
 			{
 			{
 			setState(4802);
@@ -22590,7 +22590,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureReferenceExpression__());
+			start(_localctx, featureReferenceExpression__());
 			{
 			{
 			setState(4808);
@@ -22701,7 +22701,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(concernDefinition__());
+			start(_localctx, concernDefinition__());
 			{
 			setState(4819);
 			occurrenceDefinitionPrefix();
@@ -22784,7 +22784,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(concernUsage__());
+			start(_localctx, concernUsage__());
 			{
 			setState(4829);
 			occurrenceUsagePrefix();
@@ -22898,7 +22898,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(caseDefinition__());
+			start(_localctx, caseDefinition__());
 			{
 			setState(4842);
 			occurrenceDefinitionPrefix();
@@ -23106,7 +23106,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(objectiveMembership__());
+			start(_localctx, objectiveMembership__());
 			{
 			setState(4879);
 			memberPrefix();
@@ -23159,7 +23159,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(requirementUsage__());
+			start(_localctx, requirementUsage__());
 			{
 			setState(4890);
 			_errHandler.sync(this);
@@ -23252,7 +23252,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(caseUsage__());
+			start(_localctx, caseUsage__());
 			{
 			setState(4901);
 			occurrenceUsagePrefix();
@@ -23398,7 +23398,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(analysisCaseDefinition__());
+			start(_localctx, analysisCaseDefinition__());
 			{
 			setState(4916);
 			occurrenceDefinitionPrefix();
@@ -23449,7 +23449,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(analysisCaseUsage__());
+			start(_localctx, analysisCaseUsage__());
 			{
 			setState(4924);
 			occurrenceUsagePrefix();
@@ -23595,7 +23595,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(verificationCaseDefinition__());
+			start(_localctx, verificationCaseDefinition__());
 			{
 			setState(4939);
 			occurrenceDefinitionPrefix();
@@ -23646,7 +23646,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(verificationCaseUsage__());
+			start(_localctx, verificationCaseUsage__());
 			{
 			setState(4947);
 			occurrenceUsagePrefix();
@@ -23694,7 +23694,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(requirementVerificationMembership__());
+			start(_localctx, requirementVerificationMembership__());
 			{
 			setState(4955);
 			memberPrefix();
@@ -23798,7 +23798,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case UNRESTRICTED_NAME:
 				enterOuterAlt(_localctx, 1);
 				{
-				start(requirementUsage__()); attachDeclarationKeywordOmitted();
+				start(_localctx, requirementUsage__()); attachDeclarationKeywordOmitted();
 				{
 				setState(4968);
 				ownedReferenceSubsetting();
@@ -23827,7 +23827,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case T__123:
 				enterOuterAlt(_localctx, 2);
 				{
-				start(requirementUsage__());
+				start(_localctx, requirementUsage__());
 				setState(4995);
 				_errHandler.sync(this);
 				switch ( getInterpreter().adaptivePredict(_input,327,_ctx) ) {
@@ -24016,7 +24016,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(useCaseDefinition__());
+			start(_localctx, useCaseDefinition__());
 			{
 			setState(5012);
 			occurrenceDefinitionPrefix();
@@ -24067,7 +24067,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(useCaseUsage__());
+			start(_localctx, useCaseUsage__());
 			{
 			setState(5020);
 			occurrenceUsagePrefix();
@@ -24128,7 +24128,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(includeUseCaseUsage__());
+			start(_localctx, includeUseCaseUsage__());
 			{
 			setState(5028);
 			occurrenceUsagePrefix();
@@ -24293,7 +24293,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(viewDefinition__());
+			start(_localctx, viewDefinition__());
 			{
 			setState(5055);
 			occurrenceDefinitionPrefix();
@@ -24470,7 +24470,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(viewRenderingMembership__());
+			start(_localctx, viewRenderingMembership__());
 			{
 			setState(5084);
 			memberPrefix();
@@ -24535,7 +24535,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case UNRESTRICTED_NAME:
 				enterOuterAlt(_localctx, 1);
 				{
-				start(renderingUsage__()); attachDeclarationKeywordOmitted();
+				start(_localctx, renderingUsage__()); attachDeclarationKeywordOmitted();
 				{
 				setState(5092);
 				ownedReferenceSubsetting();
@@ -24560,7 +24560,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case T__141:
 				enterOuterAlt(_localctx, 2);
 				{
-				start(renderingUsage__());
+				start(_localctx, renderingUsage__());
 				setState(5116);
 				_errHandler.sync(this);
 				switch ( getInterpreter().adaptivePredict(_input,339,_ctx) ) {
@@ -24686,7 +24686,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(viewUsage__());
+			start(_localctx, viewUsage__());
 			{
 			setState(5126);
 			occurrenceUsagePrefix();
@@ -24979,7 +24979,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 				}
 				break;
 			}
-			restart();
+			restart(_localctx);
 			setState(5174);
 			relationshipBody();
 			end(_localctx);
@@ -25016,7 +25016,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(membershipExpose__());
+			start(_localctx, membershipExpose__());
 			{
 			setState(5178);
 			exposePrefix();
@@ -25060,7 +25060,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(namespaceExpose__());
+			start(_localctx, namespaceExpose__());
 			{
 			setState(5184);
 			exposePrefix();
@@ -25219,7 +25219,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(viewpointDefinition__());
+			start(_localctx, viewpointDefinition__());
 			{
 			setState(5201);
 			occurrenceDefinitionPrefix();
@@ -25270,7 +25270,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(viewpointUsage__());
+			start(_localctx, viewpointUsage__());
 			{
 			setState(5209);
 			occurrenceUsagePrefix();
@@ -25381,7 +25381,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(renderingDefinition__());
+			start(_localctx, renderingDefinition__());
 			{
 			setState(5222);
 			occurrenceDefinitionPrefix();
@@ -25459,7 +25459,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(renderingUsage__());
+			start(_localctx, renderingUsage__());
 			{
 			setState(5231);
 			occurrenceUsagePrefix();
@@ -25499,7 +25499,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(expression__());
+			start(_localctx, expression__());
 			{
 			setState(5238);
 			calculationBody();
@@ -25535,7 +25535,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			{
 			setState(5242);
@@ -25606,7 +25606,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureReferenceExpression__());
+			start(_localctx, featureReferenceExpression__());
 			{
 			{
 			setState(5250);
@@ -25688,7 +25688,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case T__101:
 				enterOuterAlt(_localctx, 2);
 				{
-				start(operatorExpression__());
+				start(_localctx, operatorExpression__());
 				{
 				setState(5257);
 				conditionalOperator();
@@ -25877,7 +25877,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureReferenceExpression__());
+			start(_localctx, featureReferenceExpression__());
 			{
 			{
 			setState(5297);
@@ -25916,7 +25916,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			{
 			setState(5303);
@@ -26054,7 +26054,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureReferenceExpression__());
+			start(_localctx, featureReferenceExpression__());
 			{
 			{
 			setState(5327);
@@ -26093,7 +26093,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			{
 			setState(5333);
@@ -26294,7 +26294,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureReferenceExpression__());
+			start(_localctx, featureReferenceExpression__());
 			{
 			{
 			setState(5368);
@@ -26333,7 +26333,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			{
 			setState(5374);
@@ -26630,7 +26630,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureReferenceExpression__());
+			start(_localctx, featureReferenceExpression__());
 			{
 			{
 			setState(5427);
@@ -26669,7 +26669,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			{
 			setState(5433);
@@ -26949,7 +26949,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				start(operatorExpression__());
+				start(_localctx, operatorExpression__());
 				{
 				setState(5485);
 				selfReferenceExpression();
@@ -26971,7 +26971,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				start(operatorExpression__());
+				start(_localctx, operatorExpression__());
 				{
 				setState(5497);
 				metadataReference();
@@ -26993,7 +26993,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				start(operatorExpression__());
+				start(_localctx, operatorExpression__());
 				{
 				setState(5509);
 				selfReferenceExpression();
@@ -27039,7 +27039,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				start(operatorExpression__());
+				start(_localctx, operatorExpression__());
 				{
 				setState(5534);
 				metadataReference();
@@ -27232,7 +27232,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(metadataAccessExpression__());
+			start(_localctx, metadataAccessExpression__());
 			{
 			{
 			setState(5565);
@@ -27271,7 +27271,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(parameterMembership__());
+			start(_localctx, parameterMembership__());
 			{
 			{
 			setState(5571);
@@ -27310,7 +27310,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(returnParameterMembership__());
+			start(_localctx, returnParameterMembership__());
 			{
 			{
 			setState(5577);
@@ -27349,7 +27349,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(feature__());
+			start(_localctx, feature__());
 			{
 			{
 			setState(5583);
@@ -27388,7 +27388,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureTyping__());
+			start(_localctx, featureTyping__());
 			{
 			{
 			setState(5589);
@@ -27427,7 +27427,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureReferenceExpression__());
+			start(_localctx, featureReferenceExpression__());
 			{
 			{
 			setState(5595);
@@ -27466,7 +27466,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(returnParameterMembership__());
+			start(_localctx, returnParameterMembership__());
 			{
 			{
 			setState(5601);
@@ -27502,7 +27502,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(feature__());
+			start(_localctx, feature__());
 			{
 			}
 			end(_localctx);
@@ -28068,7 +28068,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 				enterOuterAlt(_localctx, 1);
 				{
 				{
-				start(operatorExpression__());
+				start(_localctx, operatorExpression__());
 				setState(5710);
 				unaryOperator();
 				set(operatorExpression_Operator());
@@ -28205,7 +28205,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 				enterOuterAlt(_localctx, 1);
 				{
 				{
-				start(operatorExpression__());
+				start(_localctx, operatorExpression__());
 				setState(5731);
 				match(T__30);
 				set(operatorExpression_Operator(), "all");
@@ -28501,7 +28501,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureReferenceExpression__());
+			start(_localctx, featureReferenceExpression__());
 			{
 			{
 			setState(5819);
@@ -28540,7 +28540,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			{
 			setState(5825);
@@ -28579,7 +28579,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(expression__());
+			start(_localctx, expression__());
 			{
 			{
 			setState(5831);
@@ -28627,7 +28627,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 				enterOuterAlt(_localctx, 1);
 				{
 				{
-				start(membership__());
+				start(_localctx, membership__());
 				setState(5837);
 				((FeatureChainMemberContext)_localctx).member = qualifiedName();
 				setLink(membership_MemberElement(), feature__()); if (((FeatureChainMemberContext)_localctx).member.quoted) attachQuotedName();
@@ -28638,7 +28638,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				start(owningMembership__());
+				start(_localctx, owningMembership__());
 				{
 				setState(5842);
 				ownedFeatureChain();
@@ -28677,7 +28677,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(feature__());
+			start(_localctx, feature__());
 			{
 			setState(5849);
 			featureChain();
@@ -28827,7 +28827,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureReferenceExpression__());
+			start(_localctx, featureReferenceExpression__());
 			{
 			{
 			setState(5868);
@@ -28866,7 +28866,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureMembership__());
+			start(_localctx, featureMembership__());
 			{
 			{
 			setState(5874);
@@ -28905,7 +28905,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(parameterMembership__());
+			start(_localctx, parameterMembership__());
 			{
 			setState(5880);
 			match(T__54);
@@ -28946,7 +28946,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(feature__());
+			start(_localctx, feature__());
 			{
 			{
 			setState(5887);
@@ -29046,7 +29046,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureReferenceExpression__());
+			start(_localctx, featureReferenceExpression__());
 			{
 			{
 			setState(5906);
@@ -29086,7 +29086,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(membership__());
+			start(_localctx, membership__());
 			{
 			{
 			setState(5912);
@@ -29125,7 +29125,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(metadataAccessExpression__());
+			start(_localctx, metadataAccessExpression__());
 			{
 			{
 			setState(5918);
@@ -29169,7 +29169,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(membership__());
+			start(_localctx, membership__());
 			{
 			{
 			setState(5927);
@@ -29211,7 +29211,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(invocationExpression__());
+			start(_localctx, invocationExpression__());
 			{
 			{
 			setState(5933);
@@ -29255,7 +29255,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(constructorExpression__());
+			start(_localctx, constructorExpression__());
 			{
 			setState(5941);
 			match(T__168);
@@ -29301,7 +29301,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(returnParameterMembership__());
+			start(_localctx, returnParameterMembership__());
 			{
 			{
 			setState(5951);
@@ -29340,7 +29340,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(feature__());
+			start(_localctx, feature__());
 			{
 			setState(5957);
 			argumentList();
@@ -29384,7 +29384,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 				enterOuterAlt(_localctx, 1);
 				{
 				{
-				start(membership__());
+				start(_localctx, membership__());
 				setState(5961);
 				qualifiedName();
 				setLink(membership_MemberElement(), type__());
@@ -29396,7 +29396,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 				enterOuterAlt(_localctx, 2);
 				{
 				{
-				start(owningMembership__());
+				start(_localctx, owningMembership__());
 				setState(5966);
 				ownedFeatureChain();
 				add(relationship_OwnedRelatedElement());
@@ -29499,7 +29499,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureChaining__());
+			start(_localctx, featureChaining__());
 			{
 			{
 			setState(5984);
@@ -29651,7 +29651,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(parameterMembership__());
+			start(_localctx, parameterMembership__());
 			{
 			{
 			setState(6011);
@@ -29691,7 +29691,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(feature__());
+			start(_localctx, feature__());
 			{
 			{
 			setState(6017);
@@ -29788,7 +29788,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(parameterMembership__());
+			start(_localctx, parameterMembership__());
 			{
 			{
 			setState(6035);
@@ -29830,7 +29830,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(feature__());
+			start(_localctx, feature__());
 			{
 			{
 			setState(6041);
@@ -29877,7 +29877,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(redefinition__());
+			start(_localctx, redefinition__());
 			{
 			{
 			setState(6051);
@@ -29916,7 +29916,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(featureValue__());
+			start(_localctx, featureValue__());
 			{
 			{
 			setState(6057);
@@ -29952,7 +29952,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(nullExpression__());
+			start(_localctx, nullExpression__());
 			{
 			setState(6067);
 			_errHandler.sync(this);
@@ -30085,7 +30085,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(literalBoolean__());
+			start(_localctx, literalBoolean__());
 			{
 			{
 			setState(6079);
@@ -30169,7 +30169,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(literalString__());
+			start(_localctx, literalString__());
 			{
 			{
 			setState(6091);
@@ -30207,7 +30207,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(literalInteger__());
+			start(_localctx, literalInteger__());
 			{
 			{
 			setState(6097);
@@ -30246,7 +30246,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(literalRational__());
+			start(_localctx, literalRational__());
 			{
 			{
 			setState(6103);
@@ -30355,7 +30355,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			start(literalInfinity__());
+			start(_localctx, literalInfinity__());
 			{
 			setState(6117);
 			match(T__33);

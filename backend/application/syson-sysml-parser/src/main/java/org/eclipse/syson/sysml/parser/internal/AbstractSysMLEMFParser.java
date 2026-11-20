@@ -64,6 +64,7 @@ import org.omg.sysml.lang.sysml.FeatureValue;
 import org.omg.sysml.lang.sysml.IndexExpression;
 import org.omg.sysml.lang.sysml.InvocationExpression;
 import org.omg.sysml.lang.sysml.OperatorExpression;
+import org.omg.sysml.lang.sysml.OwningMembership;
 import org.omg.sysml.lang.sysml.ParameterMembership;
 import org.omg.sysml.lang.sysml.PortionKind;
 import org.omg.sysml.lang.sysml.RequirementConstraintKind;
@@ -79,11 +80,11 @@ import org.omg.sysml.lang.sysml.VisibilityKind;
  * ANTLR parser base class that builds SysON EMF objects directly from grammar actions.
  * <p>
  * Temporary values are held on an operand stack while {@link IEObjectContext object contexts} delimit stable model
- * construction boundaries. Text adapters preserve syntax needed for serialization, whereas cross-reference targets
- * are recorded as {@link DanglingLink dangling links} for the separate linking pass.
+ * construction boundaries. Text adapters preserve syntax needed for serialization, whereas cross-reference targets are
+ * recorded as {@link DanglingLink dangling links} for the separate linking pass.
  * </p>
  *
- * @author ylussaud
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public abstract class AbstractSysMLEMFParser extends Parser {
 
@@ -140,6 +141,12 @@ public abstract class AbstractSysMLEMFParser extends Parser {
      * The stack used to hold {@link IEObjectContext} to be affected.
      */
     private final Deque<IEObjectContext> contextStack = new ArrayDeque<>();
+
+    /** Recovery results with no parsed assignments, and their otherwise empty owning memberships. */
+    private final Set<EObject> emptyRecoveryResults = new HashSet<>();
+
+    /** Object contexts whose nested grammar rules reported syntax errors. */
+    private final Set<IEObjectContext> contextsWithSyntaxErrors = new HashSet<>();
 
     /**
      * The factory used to create SysML objects with textual defaults.
@@ -560,10 +567,29 @@ public abstract class AbstractSysMLEMFParser extends Parser {
      *            the completed parser-rule context
      */
     public void end(ParserRuleContext ctx) {
+        if (this.contextStack.isEmpty() || !(this.contextStack.getLast() instanceof AbstractContext objectContext)
+                || objectContext.getRuleContext() != ctx) {
+            this.internalDiagnostics.add(new BasicDiagnostic(Diagnostic.ERROR, null, 0,
+                    "Object context does not belong to the completed parser rule", new Object[] { ctx }));
+            return;
+        }
         // free memory
         ctx.children = null;
 
+        boolean emptyFailedResult = this.contextsWithSyntaxErrors.remove(objectContext) && !objectContext.hasDeferredOperations();
         EObject eObject = this.contextStack.removeLast().createEObject();
+        if (emptyFailedResult) {
+            this.emptyRecoveryResults.add(eObject);
+        }
+        if (eObject instanceof Element element) {
+            element.getOwnedRelationship().removeIf(this.emptyRecoveryResults::remove);
+        }
+        if (eObject instanceof OwningMembership membership) {
+            boolean removed = membership.getOwnedRelatedElement().removeIf(this.emptyRecoveryResults::remove);
+            if (removed && membership.getOwnedRelatedElement().isEmpty()) {
+                this.emptyRecoveryResults.add(membership);
+            }
+        }
         this.attachLeadingComments(ctx, eObject);
         this.attachTrailingComments(ctx, eObject);
         this.attachBodyTrailingComments(ctx, eObject);
@@ -572,6 +598,36 @@ public abstract class AbstractSysMLEMFParser extends Parser {
         this.attachNumericLiteralFormat(ctx, eObject);
         this.attachStringLiteralFormat(ctx, eObject);
         this.operandStack.addLast(eObject);
+    }
+
+    /**
+     * Completes partial objects before control returns to the caller after ANTLR recovery skips a rule's end action.
+     * The caller can then attach the partial result to its own object context.
+     */
+    @Override
+    public void exitRule() {
+        ParserRuleContext ruleContext = this.getContext();
+        if (ruleContext.exception != null && !this.contextStack.isEmpty()) {
+            // ANTLR can suppress a repeated error notification while it is already recovering.
+            this.contextsWithSyntaxErrors.add(this.contextStack.getLast());
+        }
+        try {
+            while (!this.contextStack.isEmpty() && this.contextStack.getLast() instanceof AbstractContext objectContext
+                    && objectContext.getRuleContext() == ruleContext) {
+                this.end(ruleContext);
+            }
+        } finally {
+            super.exitRule();
+        }
+    }
+
+    /** Tracks errors in helper rules that do not themselves create an object context. */
+    @Override
+    public void notifyErrorListeners(Token offendingToken, String message, RecognitionException exception) {
+        if (!this.contextStack.isEmpty()) {
+            this.contextsWithSyntaxErrors.add(this.contextStack.getLast());
+        }
+        super.notifyErrorListeners(offendingToken, message, exception);
     }
 
     protected void attachSameLineFollowingComments(ParserRuleContext ctx) {
@@ -951,20 +1007,24 @@ public abstract class AbstractSysMLEMFParser extends Parser {
     /**
      * Starts an {@link IEObjectContext} for the given {@link EClass}.
      *
+     * @param ruleContext
+     *            the current {@link ParserRuleContext}.
      * @param eCls
      *            the {@link EClass}
      */
-    protected void start(EClass eCls) {
-        this.contextStack.addLast(new StartContext(eCls, this.operandStack, this.danglingLinks, this.textAdapted, this.getInternalDiagnostics(), this.sysMLFactory));
+    protected void start(ParserRuleContext ruleContext, EClass eCls) {
+        this.contextStack.addLast(new StartContext(ruleContext, eCls, this.operandStack, this.danglingLinks, this.textAdapted, this.getInternalDiagnostics(), this.sysMLFactory));
     }
 
     /**
      * Restarts an {@link IEObjectContext} for the current {@link EObject} operand.
      *
+     * @param ruleContext
+     *            the current {@link ParserRuleContext}.
      */
-    protected void restart() {
+    protected void restart(ParserRuleContext ruleContext) {
         try {
-            this.contextStack.addLast(new RestartContext(this.operandStack, this.danglingLinks, this.textAdapted, this.getInternalDiagnostics()));
+            this.contextStack.addLast(new RestartContext(ruleContext, this.operandStack, this.danglingLinks, this.textAdapted, this.getInternalDiagnostics()));
         } catch (Exception e) {
             BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, null, 0, e.getMessage(), new Object[] { e });
             this.getInternalDiagnostics().add(diagnostic);
@@ -976,7 +1036,7 @@ public abstract class AbstractSysMLEMFParser extends Parser {
      */
     protected void startOperatorExpression() {
         try {
-            this.start(this.operatorExpression__());
+            this.start(this.getContext(), this.operatorExpression__());
 
             Expression operande = (Expression) this.operandStack.removeLast();
 
@@ -1002,7 +1062,7 @@ public abstract class AbstractSysMLEMFParser extends Parser {
      */
     protected void startFeatureChainExpression() {
         try {
-            this.start(this.featureChainExpression__());
+            this.start(this.getContext(), this.featureChainExpression__());
 
             Expression operande = (Expression) this.operandStack.removeLast();
 
@@ -1028,7 +1088,7 @@ public abstract class AbstractSysMLEMFParser extends Parser {
      */
     protected void startIndexExpression() {
         try {
-            this.start(this.indexExpression__());
+            this.start(this.getContext(), this.indexExpression__());
 
             Expression operande = (Expression) this.operandStack.removeLast();
 
@@ -1054,7 +1114,7 @@ public abstract class AbstractSysMLEMFParser extends Parser {
      */
     protected void startInvocationExpression() {
         try {
-            this.start(this.invocationExpression__());
+            this.start(this.getContext(), this.invocationExpression__());
 
             Expression operande = (Expression) this.operandStack.removeLast();
 
@@ -1080,7 +1140,7 @@ public abstract class AbstractSysMLEMFParser extends Parser {
      */
     protected void startCollectExpression() {
         try {
-            this.start(this.collectExpression__());
+            this.start(this.getContext(), this.collectExpression__());
 
             Expression operande = (Expression) this.operandStack.removeLast();
 
@@ -1106,7 +1166,7 @@ public abstract class AbstractSysMLEMFParser extends Parser {
      */
     protected void startSelectExpression() {
         try {
-            this.start(this.selectExpression__());
+            this.start(this.getContext(), this.selectExpression__());
 
             Expression operande = (Expression) this.operandStack.removeLast();
 

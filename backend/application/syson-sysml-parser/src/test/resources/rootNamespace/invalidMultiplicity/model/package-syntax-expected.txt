@@ -1,0 +1,2 @@
+3:10 - no viable alternative at input '[('
+3:12 - mismatched input ')' expecting {';', '{', '=', ':=', 'default'}
