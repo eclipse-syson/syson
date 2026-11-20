@@ -1,6 +1,9 @@
 site:
   title: SysON Docs
   start_page: v2026.11.0@syson::index.adoc
+  keys:
+    umamiWebsiteId: f71198d5-7d90-4dd5-bb4b-d76da1702261
+    umamiDomains: doc.mbse-syson.org
 
 output:
   clean: true
