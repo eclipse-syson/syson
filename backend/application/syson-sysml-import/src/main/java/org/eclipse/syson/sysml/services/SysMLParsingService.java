@@ -14,7 +14,6 @@ package org.eclipse.syson.sysml.services;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
@@ -24,7 +23,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.Token;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -47,7 +45,6 @@ import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
 import org.eclipse.syson.sysml.parser.ISysMLParseResult;
 import org.eclipse.syson.sysml.parser.SysMLModelParser;
 import org.eclipse.syson.sysml.parser.internal.StructuralModelCompletionService;
-import org.eclipse.syson.sysml.parser.internal.SysMLLexer;
 import org.omg.sysml.lang.sysml.Feature;
 import org.omg.sysml.lang.sysml.Membership;
 import org.omg.sysml.lang.sysml.NamespaceImport;
@@ -86,11 +83,7 @@ public class SysMLParsingService {
         Map<Namespace, Set<Namespace>> importsToAdd = new LinkedHashMap<>();
         Namespace result = null;
         try {
-            String text = new String(input.readAllBytes(), StandardCharsets.UTF_8);
-            if (parent != null && !this.isTerminated(text)) {
-                text += "\n;";
-            }
-            ISysMLParseResult<?> parsed = new SysMLModelParser().parseRootNamespace(new SysMLImportLexer(CharStreams.fromString(text)));
+            ISysMLParseResult<?> parsed = new SysMLModelParser().parseRootNamespace(new SysMLImportLexer(CharStreams.fromStream(input)));
             this.addDiagnostics(parsed.diagnostic(), messages);
             if (parsed.model() instanceof org.omg.sysml.lang.sysml.Namespace parsedRoot) {
                 result = this.linkAndConvert(context, parent, parsedRoot, parsed, messages, importsToAdd);
@@ -104,22 +97,6 @@ public class SysMLParsingService {
             importsToAdd.clear();
         }
         return new SysMLParsingResult(result, List.copyOf(messages), Map.copyOf(importsToAdd));
-    }
-
-    /**
-     * Checks the last substantive token so optional editor semicolons remain outside trailing comments.
-     *
-     * @param text the textual fragment
-     * @return whether the fragment is empty or already ends with a delimiter
-     */
-    private boolean isTerminated(String text) {
-        var lexer = new SysMLLexer(CharStreams.fromString(text));
-        lexer.removeErrorListeners();
-        var tokens = lexer.getAllTokens().stream()
-                .filter(token -> token.getChannel() == Token.DEFAULT_CHANNEL)
-                .filter(token -> token.getType() != SysMLLexer.REGULAR_COMMENT && token.getType() != SysMLLexer.ML_NOTE && token.getType() != SysMLLexer.SL_NOTE)
-                .toList();
-        return tokens.isEmpty() || List.of(";", "}").contains(tokens.getLast().getText());
     }
 
     /**
