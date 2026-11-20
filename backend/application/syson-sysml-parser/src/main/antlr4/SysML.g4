@@ -36,7 +36,7 @@ import KerMLExpressions;
 
 rootNamespace:
 	{start(_localctx, namespace__());} (
-	packageBodyElement*
+	packageBodyElement* EOF
 	) {attachTrailingComments();} {end(_localctx);}
 ;
 

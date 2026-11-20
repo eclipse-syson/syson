@@ -9,4 +9,7 @@
       </ownedRelationship>
     </ownedRelatedElement>
   </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:PartUsage" declaredName="ignored" isComposite="true"/>
+  </ownedRelationship>
 </sysml:Namespace>
