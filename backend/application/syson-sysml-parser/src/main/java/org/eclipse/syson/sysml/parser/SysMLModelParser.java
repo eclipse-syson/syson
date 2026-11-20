@@ -25,7 +25,6 @@ import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.DefaultErrorStrategy;
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.atn.PredictionMode;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -170,12 +169,7 @@ public class SysMLModelParser {
      * @return the root namespace and diagnostics, including any unconsumed input
      */
     public ISysMLParseResult<Namespace> parseRootNamespace(SysMLLexer lexer) {
-        SysMLParseResult<?> result = this.parse(lexer, parser -> {
-            parser.rootNamespace();
-            if (parser.getCurrentToken().getType() != Token.EOF) {
-                parser.notifyErrorListeners("Unexpected trailing input '" + parser.getCurrentToken().getText() + "'");
-            }
-        });
+        SysMLParseResult<?> result = this.parse(lexer, parser -> parser.rootNamespace());
         Namespace root;
         if (result.model() instanceof Namespace namespace && result.internalDiagnostic().getSeverity() < Diagnostic.ERROR) {
             root = namespace;

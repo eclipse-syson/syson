@@ -339,7 +339,7 @@ public class SysMLParsingServiceTests {
     public void reportsTrailingInputAtOriginalLocation() {
         var result = this.parse(this.context(), null, "import Missing::*;\nimport Other::*;\n}");
 
-        assertThat(result.messages()).anySatisfy(message -> assertThat(message.body()).contains("line 3:0: Unexpected trailing input '}'"));
+        assertThat(result.messages()).anySatisfy(message -> assertThat(message.body()).contains("line 3:0: extraneous input '}' expecting"));
     }
 
     /**
