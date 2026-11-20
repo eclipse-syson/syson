@@ -2,6 +2,9 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id={{this}}"></script>
     <script>function gtag(){dataLayer.push(arguments)};window.dataLayer=window.dataLayer||[];gtag('js',new Date());gtag('config','{{this}}')</script>
     {{/with}}
+    {{#with site.keys.umamiWebsiteId}}
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="{{this}}"{{#with @root.site.keys.umamiDomains}} data-domains="{{this}}"{{/with}}></script>
+    {{/with}}
     {{!--
     <script>var uiRootPath = '{{{uiRootPath}}}'</script>
     --}}
