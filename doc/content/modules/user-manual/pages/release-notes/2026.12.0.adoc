@@ -11,10 +11,10 @@
 
 * In diagrams:
 
-** A new _Redefine a nested feature_ tool is available in the _Structure_ section of diagram palettes for `Usage` and `Definition` graphical nodes.
-This initial implementation opens a selection dialog listing configurable feature paths.
-Confirming a selection closes the dialog without modifying the model.
-Actual feature redefinition will be added in a subsequent change.
+** A new _Redefine a nested feature_ tool is available in the _Structure_ section of diagram palettes for `Usage` and `Definition` nodes.
+Users can select a feature path to create the required local redefinitions in one operation.
+The resulting feature is revealed in the Model Explorer.
+See xref:features/general-view.adoc#redefine-nested-feature[Redefine a nested feature] for instructions and an example.
 
 * For application developers:
 

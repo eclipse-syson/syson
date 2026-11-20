@@ -27,6 +27,8 @@ Undirected features are excluded from constraint parameter lists as well.
 Consumers needing only local parameters should filter `getOwnedFeature()` with `directionOf(feature) != null`.
 `Feature#getOwnedRedefinition()` now also returns virtual implicit positional parameter redefinitions.
 Consumers needing only stored redefinitions should filter `getOwnedRelationship()` for `Redefinition` instances.
+- https://github.com/eclipse-syson/syson/issues/2590[#2590] [services] `TreeMutationAQLService` now requires a `TreeMutationSelectionDialogService` constructor argument instead of providing a public no-argument constructor.
+Downstream code constructing this service directly must supply a `TreeMutationSelectionDialogService`, which requires an `IFeedbackMessageService` to receive feature chain redefinition errors; dependency injection must provide these services as well.
 
 === Dependency update
 
@@ -91,6 +93,7 @@ It writes SysML v2 models as normalized text, round-trip text that preserves syn
 Imported reference spellings remain available while the model is loaded. After a reload, serialization uses the stored model.
 Downstream callers can migrate from the deprecated `SysMLElementSerializer` to `SysONTextSerializer` for SysON model elements.
 - https://github.com/eclipse-syson/syson/issues/2590[#2590] [diagrams] Add `Redefine a nested feature` tool in diagrams.
+Confirming a selected feature path materializes the required local redefinition chain and selects its last feature, revealing it in the Model Explorer and displaying it in Details.
 
 - https://github.com/eclipse-syson/syson/issues/2654[#2654] [services] Add `redefineFeatureChain` to materialize and reuse local SysML usages along a selected path.
 Support positional parameter redefinitions in feature chains, including multiple inheritance and separate return positions.

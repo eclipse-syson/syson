@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { ApolloLink } from '@apollo/client';
 import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
 import {
   DIAGRAM_REPRESENTATION_KIND,
@@ -68,6 +69,10 @@ import { NewExpressionDiagramToolOverriddenContribution } from '../expressions/N
 import { NewExpressionExplorerToolOverriddenContribution } from '../expressions/NewExpressionExplorerToolOverriddenContribution';
 import { NewSysMLExpressionMenuContribution } from '../expressions/NewSysMLExpressionMenuContribution';
 import { InsertTextualSysMLv2ExplorerToolOverriddenContribution } from '../InsertTextualSysMLv2ExplorerToolOverriddenContribution';
+import {
+  RedefineNestedFeatureSelection,
+  redefineNestedFeatureSelectionLink,
+} from '../redefineNestedFeature/RedefineNestedFeatureSelection';
 import { InsertTextualSysMLMenuContribution } from '../InsertTextualSysMLv2MenuContribution';
 import { SysONNavigationBarMenuIcon } from '../navigationBarMenu/SysONNavigationBarMenuIcon';
 import { PublishProjectSysMLContentsAsLibraryCommand } from '../omnibox/PublishProjectSysMLContentsAsLibraryCommand';
@@ -104,12 +109,20 @@ const apolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOpt
     : sysMLNodesStyleDocumentTransform;
   return {
     ...currentOptions,
+    link: currentOptions.link
+      ? ApolloLink.from([redefineNestedFeatureSelectionLink, currentOptions.link])
+      : redefineNestedFeatureSelectionLink,
     documentTransform: newDocumentTransform,
   };
 };
 sysONExtensionRegistry.putData(apolloClientOptionsConfigurersExtensionPoint, {
   identifier: `syson_${apolloClientOptionsConfigurersExtensionPoint.identifier}`,
   data: [apolloClientOptionsConfigurer],
+});
+
+sysONExtensionRegistry.addComponent(diagramToolbarActionExtensionPoint, {
+  identifier: `syson_${diagramToolbarActionExtensionPoint.identifier}_RedefineNestedFeatureSelection`,
+  Component: RedefineNestedFeatureSelection,
 });
 
 sysONExtensionRegistry.addComponent(diagramToolbarActionExtensionPoint, {

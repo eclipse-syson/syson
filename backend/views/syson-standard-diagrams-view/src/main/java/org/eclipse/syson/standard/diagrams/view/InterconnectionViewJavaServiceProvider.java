@@ -24,6 +24,7 @@ import org.eclipse.syson.representation.services.aql.RepresentationMutationAQLSe
 import org.eclipse.syson.representation.services.aql.RepresentationQueryAQLService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.standard.diagrams.view.services.InterconnectionViewCreateService;
+import org.eclipse.syson.tree.services.aql.TreeMutationAQLService;
 import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
 import org.springframework.context.annotation.Configuration;
 
@@ -50,7 +51,8 @@ public class InterconnectionViewJavaServiceProvider implements IJavaServiceProvi
                     ModelQueryAQLService.class,
                     RepresentationMutationAQLService.class,
                     RepresentationQueryAQLService.class,
-                    TreeQueryAQLService.class);
+                    TreeQueryAQLService.class,
+                    TreeMutationAQLService.class);
         }
         return List.of();
     }

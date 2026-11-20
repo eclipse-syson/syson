@@ -32,6 +32,46 @@ The palette is displayed, and users can select the desired creation tool from a 
 
 image::manage-elements-fromParentCompartment-creation.png[Creation from Parent Compartment, width=70%,height=70%]
 
+[#redefine-nested-feature]
+=== Redefine a nested feature
+
+The _Redefine a nested feature_ tool allows users to customize an inherited feature within a specific _Usage_ or _Definition_, including features nested several levels deep.
+The original features remain unchanged.
+
+Consider the following model:
+
+image::redefine-nested-feature-model.png[Example model, width=70%, align=center]
+
+The `vehicle` part inherits the `engine` part from `Vehicle`, and `engine` provides the `power` attribute through its `Engine` definition.
+To customize `power` for this vehicle, users can redefine the `engine.power` feature chain directly from the `vehicle` node.
+
+To redefine a nested feature:
+
+. Right-click the `vehicle` node to open its palette.
+. In the _Structure_ section, select _Redefine a nested feature_.
+. In the dialog, select `engine.power`.
+. Confirm the selection.
+
+image::redefine-nested-feature-dialog.png[Feature selection dialog, width=80%, align=center]
+
+{product} creates the local redefinitions needed along the selected path.
+Existing local features or redefinitions are reused.
+
+In the example above, the tool creates a local redefinition of `engine` inside `vehicle`, then a local redefinition of `power` inside that engine.
+If `engine` is already locally redefined, only the missing redefinition of `power` is created.
+
+The last feature in the resulting chain is selected and revealed in the Model Explorer.
+Users can then edit its properties in the Details view.
+
+image::redefine-nested-feature-result.png[Redefine result, width=70%, align=center]
+
+[NOTE]
+====
+The dialog lists accessible feature chains that still require at least one local redefinition.
+Features declared in the SysML and KerML standard libraries are excluded.
+Fully local chains are no longer listed.
+====
+
 === Delete element
 
 Users can delete a graphical element from the diagram without removing it from the model.

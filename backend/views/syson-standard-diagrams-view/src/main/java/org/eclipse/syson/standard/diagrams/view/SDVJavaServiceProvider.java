@@ -25,6 +25,7 @@ import org.eclipse.syson.representation.services.aql.RepresentationMutationAQLSe
 import org.eclipse.syson.representation.services.aql.RepresentationQueryAQLService;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.tree.services.aql.TreeMutationAQLService;
 import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
 import org.springframework.context.annotation.Configuration;
 
@@ -52,7 +53,8 @@ public class SDVJavaServiceProvider implements IJavaServiceProvider {
                     ModelQueryAQLService.class,
                     RepresentationMutationAQLService.class,
                     RepresentationQueryAQLService.class,
-                    TreeQueryAQLService.class);
+                    TreeQueryAQLService.class,
+                    TreeMutationAQLService.class);
         }
         return List.of();
     }
