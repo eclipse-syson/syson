@@ -20,6 +20,10 @@ Chain selection filters receive the root context and complete paths, with a reus
 
 * In SysML models:
 
+** Actions and other behaviors now correctly include inherited parameters.
+Unnamed parameter redefinitions inherit the original parameter's name, and replaced parameters are no longer listed alongside their replacements.
+When an action parameter explicitly redefines one parent's input, SysON also recognizes the corresponding input from another parent. Return parameters match independently of input order.
+
 ** Redefined features now replace their originals in the features available on a `Definition` or `Usage`, including when a redefinition changes the feature name or is inherited through multiple specialization paths.
 
 == Improvements

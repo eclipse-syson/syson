@@ -31,6 +31,7 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.UniqueEList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreEList;
@@ -183,12 +184,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Feature> getDirectedFeature() {
-        List<Feature> directedFeatures = new ArrayList<>();
-        this.getFeature().stream()
-                .filter(Objects::nonNull)
-                .filter(f -> this.directionOf(f) != null)
-                .forEach(directedFeatures::add);
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_DirectedFeature(), directedFeatures.size(), directedFeatures.toArray());
+        return this.getEffectiveDirectedFeatures(SysmlPackage.eINSTANCE.getType_DirectedFeature());
     }
 
     /**
@@ -839,6 +835,24 @@ public class TypeImpl extends NamespaceImpl implements Type {
             return true;
         }).toList();
         return new BasicEList<>(result);
+    }
+
+    /**
+     * Returns the owned and inherited features that have a direction in this type's context.
+     * KerML 8.3.4.6.2 and 8.3.4.6.3 derives Behavior and Step parameters from these features. Their getters
+     * share this implementation because some metaclasses delegate {@code getDirectedFeature()} to {@code getParameter()}.
+     *
+     * @param reference
+     *            the derived EMF property exposed by the caller
+     * @return its read-only list of directed features in effective feature order
+     * @generated NOT
+     */
+    protected EList<Feature> getEffectiveDirectedFeatures(EReference reference) {
+        Feature[] features = this.getFeature().stream()
+                .filter(Objects::nonNull)
+                .filter(feature -> this.directionOf(feature) != null)
+                .toArray(Feature[]::new);
+        return new EcoreEList.UnmodifiableEList<>(this, reference, features.length, features);
     }
 
     /**

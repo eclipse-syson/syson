@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementUsage;
@@ -72,6 +73,8 @@ public class RequirementUsageImplTest {
         final List<PartUsage> stakeholderParameterValue = REQUIREMENT_USAGE.getStakeholderParameter();
         assertNotNull(stakeholderParameterValue);
         assertIterableEquals(STAKEHOLDER_PART_USAGES, stakeholderParameterValue);
+        EStructuralFeature.Setting setting = (EStructuralFeature.Setting) stakeholderParameterValue;
+        assertEquals(SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), setting.getEStructuralFeature());
     }
 
     @Test

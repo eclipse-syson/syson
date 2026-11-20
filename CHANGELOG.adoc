@@ -10,6 +10,10 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-syson/syson/issues/2620[#2620] [metamodel] `Behavior#getParameter()` and `Step#getParameter()`, including their SysML overrides, now return effective owned and inherited directed features instead of only locally declared parameters.
+Undirected features are excluded from constraint parameter lists as well.
+Consumers needing only local parameters should filter `getOwnedFeature()` with `directionOf(feature) != null`.
+`Feature#getOwnedRedefinition()` now also returns virtual implicit positional parameter redefinitions; consumers needing only stored redefinitions should filter `getOwnedRelationship()` for `Redefinition` instances.
 - https://github.com/eclipse-syson/syson/issues/2582[#2582] [details] Extract the Details view providers into the new `syson-details-view` module.
 `SysONDetailsViewDescriptionProvider`, `SysONDetailsViewJavaServiceProvider`, `SysONDetailsViewProvider`, and `SysONReferenceWidgetRootCandidateSearchProvider` have moved from `org.eclipse.syson.application.configuration` to `org.eclipse.syson.details.view`.
 Downstream applications importing these classes must update their imports and depend on `syson-details-view`, which is included by `syson-starter`.
@@ -33,6 +37,9 @@ Callers of `hasChildren` must supply the current editing context's representatio
 
 === Bug fixes
 
+- https://github.com/eclipse-syson/syson/issues/2620[#2620] [metamodel] Include inherited directed features in behavior and step parameter queries, and expose implicit positional parameter redefinitions to naming and inheritance without persisting the inferred relationships.
+Infer missing positional targets across behavior parents, including when one target is explicit. Match results independently of ordinary parameters and evaluate directions in the destination context.
+The derived stakeholder list on a requirement usage now identifies its owning EMF property as `RequirementUsage::stakeholderParameter`.
 - https://github.com/eclipse-syson/syson/issues/2588[#2588] [metamodel] Fix inherited feature memberships to exclude features replaced by local or inherited redefinitions, including renamed and transitive redefinitions and diamond inheritance.
 - https://github.com/eclipse-syson/syson/issues/2603[#2603] [metamodel] Preserve owned and inherited homonyms unless explicitly redefined, and validate name and short-name conflicts in definitions and typed occurrences.
 Connector creation preserves unrelated homonyms when materializing inherited feature chains; flow-end redefinitions identify their owning reference as the redefining feature.

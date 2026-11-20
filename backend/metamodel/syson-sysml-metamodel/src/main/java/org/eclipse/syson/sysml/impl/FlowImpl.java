@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2025 Obeo.
+* Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,6 @@ import org.eclipse.syson.sysml.Interaction;
 import org.eclipse.syson.sysml.PayloadFeature;
 import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 
 /**
@@ -93,19 +92,7 @@ public class FlowImpl extends ConnectorImpl implements Flow {
      */
     @Override
     public EList<Feature> getParameter() {
-        List<Feature> data = this.getOwnedFeature().stream()
-                .filter(this::isParameter)
-                .toList();
-        // The list should contain the inherited parameters, it is not the case for now.
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStep_Parameter(), data.size(), data.toArray());
-    }
-
-    /**
-     * @generated NOT
-     */
-    private boolean isParameter(Feature feature) {
-        Type owningType = feature.getOwningType();
-        return (owningType instanceof Behavior || owningType instanceof Step) && feature.getDirection() != null;
+        return this.getEffectiveDirectedFeatures(SysmlPackage.eINSTANCE.getStep_Parameter());
     }
 
     /**

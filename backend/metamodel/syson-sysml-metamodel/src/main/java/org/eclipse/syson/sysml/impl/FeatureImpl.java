@@ -51,8 +51,10 @@ import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.TypeFeaturing;
+import org.eclipse.syson.sysml.helper.ImplicitSpecializationSwitch;
 import org.eclipse.syson.sysml.util.ILibraryNamespaceProvider;
 import org.eclipse.syson.sysml.util.LibraryNamespaceProvider;
+import org.eclipse.syson.sysml.util.VirtualLinkAdapter;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Feature</b></em>'. <!-- end-user-doc -->
@@ -748,9 +750,20 @@ public class FeatureImpl extends TypeImpl implements Feature {
      */
     @Override
     public EList<Redefinition> getOwnedRedefinition() {
-        List<Redefinition> ownedRedefinitions = new ArrayList<>();
-        for (var relationship : this.getOwnedRelationship()) {
-            if (relationship instanceof Redefinition redefinition) {
+        List<Redefinition> ownedRedefinitions = this.getOwnedRelationship().stream()
+                .filter(Redefinition.class::isInstance).map(Redefinition.class::cast).collect(Collectors.toCollection(ArrayList::new));
+        if (this.getDirection() != null) {
+            ILibraryNamespaceProvider nsProvider = LibraryNamespaceProvider.getFrom(this);
+            if (nsProvider == null) {
+                nsProvider = new LibraryNamespaceProvider(this);
+            }
+            ImplicitSpecializationSwitch implicitSpecializationSwitch = new ImplicitSpecializationSwitch(new ArrayList<>(ownedRedefinitions), nsProvider);
+            // Positional matching needs no name lookup. The full ImplicitSpecializationSwitch also resolves Views::View::viewRendering
+            // by name, which can ask an anonymous rendering for its namingFeature() and re-enter this getter.
+            // shortcut: other implied redefinitions are visible only via getOwnedSpecialization() until name lookup is cycle-safe.
+            for (Redefinition redefinition : implicitSpecializationSwitch.createImplicitParameterRedefinitions(this)) {
+                // Preserve virtual ownership without adding the inferred relationship to the stored model.
+                redefinition.eAdapters().add(new VirtualLinkAdapter(this, SysmlPackage.eINSTANCE.getRelationship_OwningRelatedElement().getName()));
                 ownedRedefinitions.add(redefinition);
             }
         }

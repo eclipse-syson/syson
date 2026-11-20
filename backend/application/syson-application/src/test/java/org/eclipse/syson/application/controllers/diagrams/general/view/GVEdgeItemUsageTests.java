@@ -13,6 +13,7 @@
 package org.eclipse.syson.application.controllers.diagrams.general.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
 
@@ -22,7 +23,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
@@ -202,8 +202,9 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
         });
 
         Runnable semanticCheck = this.semanticCheckerService.checkElement(ActionUsage.class, () -> GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID, actionUsage -> {
-            EList<Feature> parameters = actionUsage.getParameter();
-            assertThat(parameters).hasSize(1).allMatch(p -> (ITEM1 + kind).equals(p.getDeclaredName()) && p.getDirection() == FeatureDirectionKind.get(kind.toLowerCase()));
+            assertThat(actionUsage.getParameter()).filteredOn(parameter -> parameter.getOwningType() == actionUsage)
+                    .extracting(Feature::getDeclaredName, Feature::getDirection)
+                    .containsExactly(tuple(ITEM1 + kind, FeatureDirectionKind.get(kind.toLowerCase())));
         });
 
         StepVerifier.create(flux)
@@ -262,9 +263,10 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
                     .hasTargetObjectKind("siriusComponents://semantic?domain=sysml&entity=ItemUsage");
         });
 
-        Runnable semanticCheck = this.semanticCheckerService.checkElement(ActionDefinition.class, () -> GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_DEFINITION_ID, actionUsage -> {
-            EList<Feature> parameters = actionUsage.getParameter();
-            assertThat(parameters).hasSize(1).allMatch(p -> "item1".equals(p.getDeclaredName()) && p.getDirection() == FeatureDirectionKind.get(kind.toLowerCase()));
+        Runnable semanticCheck = this.semanticCheckerService.checkElement(ActionDefinition.class, () -> GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_DEFINITION_ID, actionDefinition -> {
+            assertThat(actionDefinition.getParameter()).filteredOn(parameter -> parameter.getOwningType() == actionDefinition)
+                    .extracting(Feature::getDeclaredName, Feature::getDirection)
+                    .containsExactly(tuple(ITEM1, FeatureDirectionKind.get(kind.toLowerCase())));
         });
 
         StepVerifier.create(flux)
