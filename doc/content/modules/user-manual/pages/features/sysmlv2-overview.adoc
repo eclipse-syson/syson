@@ -1,11 +1,13 @@
 = Overview of {sysmlv2}
 
-This overview introduces the core concepts of {sysmlv2}, the modeling language supported by [SysON](https://mbse-syson.org/).
+This overview introduces the core concepts of {sysmlv2}, the modeling language supported by https://mbse-syson.org/[SysON].
 
 == What's {sysmlv2}?
 
 {sysmlv2} is an industry-standard modeling language designed for the specification, analysis, design, verification, and validation of complex systems.
 Developed by the OMG, {sysmlv2} builds upon its predecessor, {sysmlv1}, aiming to address the evolving needs of the {mbse} - `MBSE` community.
+
+For the full specification, see the official https://www.omg.org/spec/SysML/2.0/[OMG SysML v2 specification].
 
 == Key aspects of {sysmlv2}
 
@@ -83,4 +85,4 @@ SysML v2 provides a language for describing systems. A methodology helps enginee
 
 Capella for SysON is an initiative to bring the Arcadia methodology to SysML v2 modeling in SysON. Its goal is to guide engineers through modeling activities using Arcadia concepts and Capella-inspired views. 
 
-Learn more about the [Capella for SysON](https://mbse-capella.org/capella-for-syson.html) initiative.
+Learn more about the https://mbse-capella.org/capella-for-syson.html[Capella for SysON] initiative.
