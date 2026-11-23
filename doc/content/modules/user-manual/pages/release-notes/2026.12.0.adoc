@@ -7,6 +7,8 @@
 
 == New features
 
+* A new _Configurations Table View_ displays configurable nested feature paths within a `Usage` or `Definition`.
+
 * In the Explorer, `Collapse all` collapses an item and its descendants.
 
 * In diagrams:
