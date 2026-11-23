@@ -1,0 +1,151 @@
+:author: Guillaume Coutable <guillaume.coutable@obeo.fr>
+:date: 2026-11-18
+:status: proposed
+:consulted: Axel Richard <axel.richard@obeo.fr>
+:informed: Axel Richard <axel.richard@obeo.fr>
+:deciders: Axel Richard <axel.richard@obeo.fr>
+:pitch: doc/shapes/2026.12/experimental_sysmlv2_textual_editor.adoc
+:issue:
+
+= ADR-004 - Safely reconciling SysML v2 textual edits with concurrent model changes
+
+== Context and Problem Statement
+
+The textual editor needs to reconcile a draft with the current model through a three-way comparison.
+This comparison requires three EMF models: the common ancestor, the candidate built from the draft, and the current model.
+If the common ancestor is stored as text, it must also be converted to EMF.
+
+SysON includes a standalone SysMLSerializer that generates SysML v2 text from elements of the OMG SysML v2 metamodel.
+The textual representation must surface any blocking serialization diagnostics to the user.
+
+`SysMLParsingService` coordinates the current conversion pipeline.
+`SysMLModelParser` parses the SysML v2 text into an EMF model based on the OMG SysML v2 metamodel and returns parsing diagnostics.
+The service uses `SysMLMetamodelCopier` to copy the supplied project and library resources into a temporary context based on the same metamodel.
+`SysMLLinker` resolves references in the parsed model against that context.
+`SysMLMetamodelCopier` then converts the parsed content to the SysON metamodel and reconnects references to existing SysON elements where applicable.
+`SysMLParsingService` reports unresolved references as warnings and maps any parser or linker diagnostic it forwards to `MessageLevel.WARNING`, even when the original diagnostic is an error.
+
+The current model may have changed since the original text was generated.
+For example, if the definition `B::D` was renamed to `B::E` in the current model, a reference to `B::D` may no longer resolve.
+Reconstructing the common ancestor from the original text in that context would drop the reference, even though it was valid when the text was generated.
+The same problem can affect the draft if it still contains that reference.
+
+How can we preserve the information needed to resolve historical references when preparing the EMF models for three-way comparison?
+
+== Decision Drivers
+
+* Preserve the meaning of historical references.
+The common ancestor must represent the model state that produced the text the user started editing.
+A reference left unchanged in the draft must still identify its original target if that target was renamed in the current model.
+* Enable reliable three-way matching.
+The three EMF models must allow EMF Compare and the SysML v2 matcher to identify corresponding elements and distinguish draft edits from concurrent model changes.
+* Reject unsafe saves.
+Reject the save if the historical context is unavailable or if diagnostics report a syntax error, an unresolved reference, or potential information loss.
+These diagnostics are blocking even when reported as warnings.
+Reject the save while a blocking serialization diagnostic is active, even if it is reported as a warning.
+Display the diagnostic, preserve the draft, and leave the current model unchanged.
+* Limit memory usage for large projects and concurrent drafts.
+When retaining the common ancestor and preparing the comparison, avoid duplicating models and standard libraries where possible.
+
+== Considered Options
+
+=== Preserve the common ancestor as an EMF snapshot
+
+The common ancestor is an EMF snapshot of the model state that produced the text the user started editing.
+It includes all project documents and the non-standard library resources available to the project at that time.
+The snapshot remains unchanged for as long as the draft exists.
+
+Resolve references in a separate linking context derived from the snapshot.
+In that context, the draft replaces the historical version of the edited document.
+Other project documents and non-standard libraries remain available at their snapshot versions.
+The common ancestor remains unchanged for the three-way comparison.
+
+Immutable SysML standard library resources remain outside the snapshot and are shared across the three model versions.
+References to these resources may point directly to loaded library objects or use proxy URIs, depending on which approach preserves the references through comparison and merge.
+
+
+=== Preserve the common ancestor as text
+
+The common ancestor is stored as the original SysML v2 text from which the draft was created.
+This avoids keeping an EMF snapshot in memory while the draft is open.
+
+On save, the original text must be parsed and linked to reconstruct the EMF model needed for comparison.
+When references are resolved against the current model, a reference that was valid in the original text may fail to resolve if its target has since been renamed.
+
+== Decision Outcome
+
+In the context of saving SysML v2 textual edits, facing the risk of losing historical references as the current model evolves, we decided to use an EMF snapshot as the common ancestor for three-way comparison to preserve the original reference targets and resolve the draft's references in their original context.
+
+For example, if a referenced element has been renamed in the current model, an unchanged reference in the draft can still be resolved to its original target in the snapshot.
+This gives EMF Compare and the SysML v2 matcher a reliable basis for distinguishing draft edits from concurrent model changes.
+
+We accept the memory cost of retaining the snapshot for as long as the draft exists.
+
+== Consequences
+
+=== Advantages
+
+* The snapshot preserves the original reference targets.
+An unchanged reference in the draft can still resolve to its original target if that element has been renamed in the current model.
+* The common ancestor is already available as an EMF model, so each save attempt can reuse it directly for comparison.
+* The snapshot can avoid duplicating standard library resources if their references are preserved through comparison and merge.
+
+=== Drawbacks
+
+* Keeping a snapshot of all project documents and non-standard library resources in memory for as long as the draft exists increases memory usage.
+The cost is higher when several drafts are based on different versions of a large project.
+* A save may be rejected if the draft refers to an element added to the current model after the snapshot was taken.
+That element is absent from the historical context used to resolve the draft's references.
+* If a model refresh is still in flight, a user may start editing text that reflects an earlier state of the model.
+
+== More Information
+
+=== Implementation
+
+Gate the experimental textual representation behind a feature flag controlled by an environment variable.
+Start from the read-only version of the representation.
+The following steps build on one another.
+Each stage reports its diagnostics to the editor.
+A blocking diagnostic stops processing before the merge.
+
+. *Enable draft editing:* Allow the user to edit the displayed text and create a draft.
+Verify that the backend retains an EMF snapshot of the model state that produced the draft's starting text.
+Another ADR will cover how the first edit binds the draft to the snapshot that produced the text displayed in the editor, how long that snapshot is retained, and what happens if it is unavailable.
+At this stage, edits remain in the draft.
+. *Add a Validate action:* Parse the draft, build its EMF model, and resolve its references in the context of the snapshot.
+Treat syntax errors, unresolved references, and diagnostics indicating potential information loss as blocking, even when they are reported as warnings.
+Display the diagnostic in the editor and stop before the three-way comparison.
+Return the validation result to the editor while leaving the editing context unchanged.
+. *Add three-way comparison to Validate:* Use EMF Compare and the SysML v2 matcher to compare the snapshot, the draft model, and the current model.
+Report conflicts in the editor.
+At this stage, Validate stops after comparison.
+. *Replace Validate with Save:* Merge the draft changes into the current model only if validation succeeds and the three-way comparison completes successfully without conflicts.
+Verify that independent model changes and the Sirius Web identifiers of retained elements are preserved.
+Emit a semantic change only after the merge succeeds.
+If the merge fails, leave the editing context in its pre-merge state, return an error diagnostic, and preserve the draft.
+
+=== Decision Details
+
+* The snapshot-based approach still needs to be validated in SysON once the SysML v2 matcher has been integrated.
+** Verify that an unchanged reference survives a concurrent rename made in the model
+Start a draft containing a reference to `B::D`.
+Rename `D` to `E` in the current model and make an unrelated edit in the draft.
+The three-way comparison must match `D` and `E` as the same element and report no change to the reference.
+Saving must apply the draft edit, keep the rename, and preserve the reference target, its Sirius Web identifier, and the existing diagram layout.
+** Verify that an unchanged reference survives a concurrent rename made in the textual representation
+Start with a simple model with two parts `B` and `D`
+A diagram displaying both graphical nodes
+Rename `D` to `E` in the textual representation.
+The three-way comparison must match `D` and `E` as the same element and report no change to the reference.
+Saving must apply the rename, and preserve its Sirius Web identifier, and the existing diagram layout.
+A single `Undo` in the workbench must restore the original name `D` and its diagram layout.
+If the comparison cannot reliably determine whether `D` and `E` represent the same element, `Save` must reject the change and preserve the draft.
+* Revisit this decision if validation shows that the snapshot-based approach cannot preserve historical references, or if retaining snapshots becomes impractical for large projects with several active drafts.
+* If the user starts editing while a refresh is in progress, the visible text may still reflect an earlier model state.
+
+=== References
+
+* https://github.com/eclipse-emf-compare/emf-compare/pull/47[EMF Compare PR #47 -- Content-based hash matching for EObjects]
+This change introduces content-based matching for EMF objects.
+Evaluate it with the SysML v2 matcher when validating the three-way comparison of the ancestor, the draft, and the current model.
+This contribution is already available with `3.5.3-SNAPSHOT` (verified in build `3.5.3-20261028.160018-3`).

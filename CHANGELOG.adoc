@@ -8,6 +8,8 @@
 
 === Architectural decision records
 
+- [ADR-004] Safely reconciling SysML v2 textual edits with concurrent model changes
+
 === Breaking changes
 
 - https://github.com/eclipse-syson/syson/issues/2582[#2582] [details] Extract the Details view providers into the new `syson-details-view` module.
