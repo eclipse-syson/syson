@@ -20,6 +20,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.syson.sysml.AllocationUsage;
+import org.eclipse.syson.sysml.Association;
+import org.eclipse.syson.sysml.AssertConstraintUsage;
+import org.eclipse.syson.sysml.AttributeDefinition;
+import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.Connector;
@@ -42,15 +46,20 @@ import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.metamodel.services.redefine.FeatureChainRedefinitionComputer;
+import org.eclipse.syson.sysml.metamodel.services.redefine.FeatureChainRedefinitionResult;
+import org.eclipse.syson.sysml.metamodel.services.redefine.RedefinitionStatus;
 
 /**
  * Element-related services doing mutations. This class should not depend on sirius-web services or other spring
@@ -65,7 +74,6 @@ public class MetamodelMutationElementService {
     public MetamodelMutationElementService() {
         this.elementInitializerSwitch = new ElementInitializerSwitch();
     }
-
 
     /**
      * Create the appropriate {@link Membership} child according to the given {@link Element}.
@@ -387,6 +395,52 @@ public class MetamodelMutationElementService {
     }
 
     /**
+     * Initializes the properties of a newly created redefining feature without attaching it to its owner.
+     * The caller supplies its destination owner and establishes the Redefinition relationship separately.
+     *
+     * @param local
+     *            the new feature to initialize
+     * @param source
+     *            the feature being redefined
+     * @param owner
+     *            the intended owning type
+     * @return success, or an explanation of incompatible properties without changing the feature
+     */
+    public RedefinitionStatus initializeRedefiningFeature(Feature local, Feature source, Type owner) {
+        String error = null;
+        if (local == null) {
+            error = "No redefining feature was provided.";
+        } else if (source == null) {
+            error = "No redefined feature was provided.";
+        } else if (owner == null) {
+            error = "No destination owner was provided.";
+        }
+        RedefinitionStatus status;
+        if (error != null) {
+            status = RedefinitionStatus.failure(error);
+        } else {
+            status = this.initializeRedefiningFeatureProperties(local, source, owner);
+        }
+        return status;
+    }
+
+    /**
+     * Materializes a selected chain of SysML usages, reusing existing local features. New features are anonymous
+     * and retain the source's exact metaclass and membership role.
+     * Each new membership is attached before resolving the next segment. On failure, memberships created by this
+     * call are removed in reverse order. EMF listeners can observe both additions and removals.
+     * The caller must provide a writable context without concurrent model modifications.
+     *
+     * @param context
+     *            the context to configure
+     * @param chain
+     *            the selected relative feature chain
+     * @return the operation status, immutable local chain on success, or user-facing messages on failure
+     */
+    public FeatureChainRedefinitionResult redefineFeatureChain(Type context, List<Feature> chain) {
+        return new FeatureChainRedefinitionComputer(this).compute(context, chain);
+    }
+    /**
      * Add an Element in a parent using the proper {@link Membership}.
      *
      * @param parent
@@ -563,5 +617,80 @@ public class MetamodelMutationElementService {
         this.elementInitializerSwitch.doSwitch(connectorInstance);
         this.setConnectorEnds(connectorInstance, source, target, sourceContainer, targetContainer, newConnectorContainer);
         return connectorInstance;
+    }
+
+    /**
+     * Initialize a redefinition by propagating some required attribute from the redefinedFeature to the redefiningFeature feature.
+     *
+     * @param redefiningFeature the specific part of the specialization
+     * @param redefinedFeature the general part of the specialization
+     * @param owner the owning Type of the redefinition
+     * @return a {@link RedefinitionStatus}
+     */
+    private RedefinitionStatus initializeRedefiningFeatureProperties(Feature redefiningFeature, Feature redefinedFeature, Type owner) {
+        FeatureDirectionKind direction = owner.directionOf(redefinedFeature);
+        if (direction == null) {
+            direction = redefiningFeature.getDirection();
+        }
+        boolean isEnd = redefiningFeature.isIsEnd() || redefinedFeature.isIsEnd() && (owner instanceof Association || owner instanceof Connector);
+        boolean isVariable = redefiningFeature.isIsVariable() || redefinedFeature.isIsVariable() || redefiningFeature.isIsConstant();
+        RedefinitionStatus status;
+        boolean invalidEnd = direction != null || redefiningFeature.isIsDerived() || redefiningFeature.isIsAbstract();
+        invalidEnd = invalidEnd || redefiningFeature.isIsPortion();
+        if (isEnd && invalidEnd) {
+            status = RedefinitionStatus.failure("The redefining end feature cannot be directed, derived, abstract or a portion (KerML 8.3.3.3.2).");
+        } else {
+            // KerML 1.1 Beta 2, 7.4.3 and 7.3.4.5: a non-variable feature cannot subset or redefine a variable feature.
+            // KerML 8.3.3.3.2, validateFeatureConstantIsVariable: a constant feature must also be variable.
+            redefiningFeature.setIsVariable(isVariable);
+            // KerML 1.1 Beta 2, 8.3.3.3.8, validateRedefinitionDirectionConformance: use the direction relative to the destination type.
+            // Setting null would mark the EMF property as set and alter flow endpoint initialization.
+            if (direction != null) {
+                redefiningFeature.setDirection(direction);
+            }
+            // KerML 1.1 Beta 2, 8.3.3.3.8, validateRedefinitionEndConformance: association/connector ends must remain ends.
+            redefiningFeature.setIsEnd(isEnd);
+            // KerML 1.1 Beta 2, 7.3.4.4-5: a subsetting, including a redefinition, of an ordered feature must be ordered.
+            if (redefinedFeature.isIsOrdered()) {
+                redefiningFeature.setIsOrdered(true);
+            }
+            // KerML 1.1 Beta 2, 8.3.3.3.10, validateSubsettingUniquenessConformance: a unique redefinedFeature requires a unique target.
+            if (redefinedFeature.isIsUnique()) {
+                redefiningFeature.setIsUnique(true);
+            }
+            // KerML 1.1 Beta 2, 8.3.3.3.10/8.3.3.3.2: a variable target must be constant if its redefinedFeature is constant or it is an end.
+            if (isVariable && (redefinedFeature.isIsConstant() || isEnd)) {
+                redefiningFeature.setIsConstant(true);
+            }
+            // SysML 2.1 Beta 2, 8.2.2.6.2 and 8.3.6.4: preserve the redefinedFeature's ref/composite choice only where the destination permits it (policy, not a copy requirement).
+            redefiningFeature.setIsComposite(this.isRedefinitionComposite(redefiningFeature, redefinedFeature, owner, direction, isEnd));
+            if (redefiningFeature instanceof AssertConstraintUsage localAssertion && redefinedFeature instanceof AssertConstraintUsage sourceAssertion) {
+                // SysML 2.0, 8.3.20.2: retain the asserted constraint's truth requirement, including negation.
+                localAssertion.setIsNegated(sourceAssertion.isIsNegated());
+            }
+            if (redefiningFeature instanceof StateUsage localState && redefinedFeature instanceof StateUsage sourceState) {
+                // SysML 2.0, 8.3.18.6: isParallel determines substate classification. Preserve it as service policy.
+                localState.setIsParallel(sourceState.isIsParallel());
+            }
+            status = RedefinitionStatus.success();
+        }
+        return status;
+    }
+
+    private boolean isRedefinitionComposite(Feature local, Feature source, Type owner, FeatureDirectionKind direction, boolean isEnd) {
+        // KerML 8.3.3.3.2; SysML 8.3.7.2-3: ends and features of attributes cannot be composite.
+        boolean isComposite = source.isIsComposite() && !isEnd && !(owner instanceof AttributeDefinition || owner instanceof AttributeUsage);
+        if (local instanceof Usage) {
+            // SysML 8.3.6.3-4/8.3.7.3: reference usages, attributes and directed usages must be referential.
+            isComposite = isComposite && direction == null && !(local instanceof ReferenceUsage || local instanceof AttributeUsage);
+            // SysML 8.3.12.5-6: ports are referential outside ports; non-port features within ports are non-composite.
+            boolean portOwner = owner instanceof PortDefinition || owner instanceof PortUsage;
+            if (local instanceof PortUsage) {
+                isComposite = isComposite && portOwner;
+            } else {
+                isComposite = isComposite && !portOwner;
+            }
+        }
+        return isComposite;
     }
 }
