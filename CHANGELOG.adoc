@@ -89,6 +89,8 @@ Imported reference spellings remain available while the model is loaded. After a
 Downstream callers can migrate from the deprecated `SysMLElementSerializer` to `SysONTextSerializer` for SysON model elements.
 - https://github.com/eclipse-syson/syson/issues/2590[#2590] [diagrams] Add `Redefine a nested feature` tool in diagrams.
 
+- https://github.com/eclipse-syson/syson/issues/2654[#2654] [services] Add `redefineFeatureChain` to materialize and reuse local SysML usages along a selected path.
+
 == v2026.11.0
 
 === Pitches

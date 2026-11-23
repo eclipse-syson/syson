@@ -29,6 +29,8 @@ It writes OMG SysML models as normalized text, round-trip text that preserves pa
 Use `SysONTextSerializer` for SysON model elements in place of the deprecated `SysMLElementSerializer`.
 See the xref:developer-guide:textual-sysml.adoc[Textual SysML developer guide].
 
+** Applications can now create local redefinitions along a selected feature path before configuring its usages.
+
 == Bug fixes
 
 * In SysML models:
