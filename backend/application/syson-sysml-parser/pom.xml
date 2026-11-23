@@ -93,15 +93,6 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<useModulePath>false</useModulePath>
-					<includes>
-						<include>org/eclipse/syson/sysml/parser/tests/AllSysMLTests.class</include>
-					</includes>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.antlr</groupId>
 				<artifactId>antlr4-maven-plugin</artifactId>
 				<version>${antlr.version}</version>

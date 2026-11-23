@@ -296,20 +296,16 @@ public class StructuralModelCompletionService extends SysMLSwitch<Boolean> {
         return STOP_SUPERTYPE_PROCESSING;
     }
 
+    /**
+     * Infers the original port from containment and continues with general conjugation completion.
+     */
     @Override
     public Boolean casePortConjugation(PortConjugation object) {
-        // Source: org.omg.sysml.adapter.PortConjugationAdapter#postProcess().
-        // Infer the original port from the owner of the conjugated port definition.
-        if (this.isNotSet(object, SysMLPackage.Literals.PORT_CONJUGATION__ORIGINAL_PORT_DEFINITION)) {
-            ConjugatedPortDefinition conjugatedPortDefinition = this.unresolvedReference(object,
-                    SysMLPackage.Literals.PORT_CONJUGATION__CONJUGATED_PORT_DEFINITION,
-                    ConjugatedPortDefinition.class);
-            Element owner = this.owningRelatedElementOf(conjugatedPortDefinition);
-            if (owner instanceof PortDefinition original) {
-                object.setOriginalPortDefinition(original);
-            }
+        if (this.isNotSet(object, SysMLPackage.Literals.PORT_CONJUGATION__ORIGINAL_PORT_DEFINITION)
+                && object.getOwningRelatedElement() instanceof ConjugatedPortDefinition conjugatedPort
+                && this.owningRelatedElementOf(conjugatedPort) instanceof PortDefinition original) {
+            object.setOriginalPortDefinition(original);
         }
-        // Returning null reproduces the source adapter's call to ConjugationAdapter.
         return null;
     }
 
@@ -586,14 +582,6 @@ public class StructuralModelCompletionService extends SysMLSwitch<Boolean> {
 
     private boolean isNotSet(Element object, EReference reference) {
         return !this.referenceSetChecker.isSet(object, reference);
-    }
-
-    private <T extends Element> T unresolvedReference(Element object, EReference reference, Class<T> type) {
-        Object value = object.eGet(reference, false);
-        if (type.isInstance(value)) {
-            return type.cast(value);
-        }
-        return null;
     }
 
     private Element owningRelatedElementOf(Element element) {
