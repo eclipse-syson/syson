@@ -441,18 +441,19 @@ public class StructuralModelCompletionService extends SysMLSwitch<Boolean> {
         return STOP_SUPERTYPE_PROCESSING;
     }
 
+    /**
+     * Completes the referenced feature. The inherited target references alias this feature, and the source is derived
+     * from containment.
+     */
     @Override
     public Boolean caseReferenceSubsetting(ReferenceSubsetting object) {
-        // Source: org.omg.sysml.adapter.ReferenceSubsettingAdapter#postProcess().
-        // Infer the referenced feature from the end of a feature chain.
         if (this.isNotSet(object, SysMLPackage.Literals.REFERENCE_SUBSETTING__REFERENCED_FEATURE)) {
             Feature target = this.lastOwnedRelatedElement(object, Feature.class);
             if (target != null) {
                 object.setReferencedFeature(target);
             }
         }
-        // Continue to Subsetting and Specialization, matching ReferenceSubsettingParserPostProcessor#postProcess().
-        return null;
+        return STOP_SUPERTYPE_PROCESSING;
     }
 
     @Override

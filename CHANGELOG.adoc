@@ -40,6 +40,7 @@ Connector creation preserves unrelated homonyms when materializing inherited fea
 - https://github.com/eclipse-syson/syson/issues/2614[#2614] [services] Fix studio color palette loading independently of View metamodel initialization order.
 - [cleanup] Remove `SDVConnectorToolEventHandler` and its dedicated tests now that https://github.com/eclipse-sirius/sirius-web/issues/7120[Sirius Web #7120] is fixed in 2026.11.1.
 Connector tools now use the Sirius Web handler to preserve graphical events in _Interconnection View_ diagrams.
+- https://github.com/eclipse-syson/syson/issues/2648[#2648] [import] Prevent recursive containment in SysML reference subsetting and preserve explicit targets until the linker resolves them.
 
 === Improvements
 

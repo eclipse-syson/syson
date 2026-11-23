@@ -22,12 +22,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.syson.sysml.parser.tests.delegate.NotSetSettingDelegateFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.omg.sysml.delegate.invocation.OperationInvocationDelegateFactory;
 import org.omg.sysml.lang.sysml.Annotation;
 import org.omg.sysml.lang.sysml.ConjugatedPortDefinition;
 import org.omg.sysml.lang.sysml.Conjugation;
@@ -85,13 +87,21 @@ public class StructuralModelCompletionServiceTest {
     private final StructuralModelCompletionService service = new StructuralModelCompletionService(
             (object, reference) -> object.eGet(reference, false) != null);
 
+    /**
+     * Registers the model delegates before creating fixtures, including when this class runs on its own.
+     */
     @BeforeClass
     public static void setUp() {
+        EOperation.Internal.InvocationDelegate.Factory.Registry.INSTANCE
+                .putIfAbsent(SYSML_DELEGATE_URI, new OperationInvocationDelegateFactory());
         EStructuralFeature.Internal.SettingDelegate.Factory.Registry.INSTANCE
                 .put(SYSML_DELEGATE_URI, SETTING_FACTORY);
         SysMLPackage.eINSTANCE.eClass();
     }
 
+    /**
+     * Checks target inference and preservation of containment for a detached reference subsetting.
+     */
     @Test
     public void infersLastFeatureTargets() {
         Differencing differencing = FACTORY.createDifferencing();
@@ -111,8 +121,12 @@ public class StructuralModelCompletionServiceTest {
 
         ReferenceSubsetting referenceSubsetting = FACTORY.createReferenceSubsetting();
         Feature referencedFeature = addFeatureTarget(referenceSubsetting);
+
         this.service.complete(referenceSubsetting);
+
         assertSame(referencedFeature, referenceSubsetting.getReferencedFeature());
+        assertNull(referenceSubsetting.eContainer());
+        assertSame(referenceSubsetting, referencedFeature.eContainer());
     }
 
     @Test
@@ -334,6 +348,9 @@ public class StructuralModelCompletionServiceTest {
         assertTrue(unresolved.eIsProxy());
     }
 
+    /**
+     * Checks that specialized relationships run the completion cases required for their references.
+     */
     @Test
     public void specializedRelationshipsProcessSupertypeCases() {
         Set<EStructuralFeature> checkedReferences = new HashSet<>();
@@ -355,10 +372,7 @@ public class StructuralModelCompletionServiceTest {
 
         checkedReferences.clear();
         trackingService.complete(FACTORY.createReferenceSubsetting());
-        assertTrue(checkedReferences.contains(SysMLPackage.Literals.SUBSETTING__SUBSETTED_FEATURE));
-        assertTrue(checkedReferences.contains(SysMLPackage.Literals.SUBSETTING__SUBSETTING_FEATURE));
-        assertTrue(checkedReferences.contains(SysMLPackage.Literals.SPECIALIZATION__GENERAL));
-        assertTrue(checkedReferences.contains(SysMLPackage.Literals.SPECIALIZATION__SPECIFIC));
+        assertEquals(Set.of(SysMLPackage.Literals.REFERENCE_SUBSETTING__REFERENCED_FEATURE), checkedReferences);
 
         checkedReferences.clear();
         trackingService.complete(FACTORY.createFeatureTyping());
