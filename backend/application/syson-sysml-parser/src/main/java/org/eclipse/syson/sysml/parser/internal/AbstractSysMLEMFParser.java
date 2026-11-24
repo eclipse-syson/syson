@@ -255,6 +255,13 @@ public abstract class AbstractSysMLEMFParser extends Parser {
         this.attach(ITextAdapter.INTERFACE_CONNECTOR_DECLARATION);
     }
 
+    /**
+     * Records that the connector ends were written as a parenthesized list.
+     */
+    protected void attachNaryConnectorPart() {
+        this.attach(ITextAdapter.NARY_CONNECTOR_PART);
+    }
+
     protected void attachMessageUsage() {
         this.attach(ITextAdapter.MESSAGE_USAGE);
     }
@@ -327,6 +334,28 @@ public abstract class AbstractSysMLEMFParser extends Parser {
 
     protected void attachMetadataColon() {
         this.attach(ITextAdapter.METADATA_COLON);
+    }
+
+    /**
+     * Marks an unnamed payload whose specialization part starts with a typing clause, possibly after its multiplicity.
+     *
+     * @param specializationPart
+     *            the first token of the specialization part
+     */
+    protected void attachPayloadTypingClause(Token specializationPart) {
+        Token token = specializationPart;
+        int depth = 0;
+        while (token != null && ("[".equals(token.getText()) || depth > 0)) {
+            if ("[".equals(token.getText())) {
+                depth++;
+            } else if ("]".equals(token.getText())) {
+                depth--;
+            }
+            token = this.nextDefaultToken(token.getTokenIndex());
+        }
+        if (token != null && (":".equals(token.getText()) || "defined".equals(token.getText()))) {
+            this.attach(ITextAdapter.PAYLOAD_TYPING_CLAUSE);
+        }
     }
 
     protected void attachConnectionKeyword() {

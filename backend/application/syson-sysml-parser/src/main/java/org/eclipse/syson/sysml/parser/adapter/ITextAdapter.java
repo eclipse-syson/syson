@@ -139,6 +139,20 @@ public interface ITextAdapter extends Adapter {
     KeywordAdapter INTERFACE_CONNECTOR_DECLARATION = new KeywordAdapter();
 
     /**
+     * A connector whose ends were written in the parenthesized n-ary form, even when there are only two of them.
+     *
+     * <p>
+     * Examples: <code>connect (a, b);</code>, <code>allocate (l ::&gt; a, p ::&gt; b);</code>
+     * </p>
+     *
+     * <p>
+     * Both forms build the same model, so without this marker a two-end connector can only be written back in the
+     * binary <code>a to b</code> form.
+     * </p>
+     */
+    KeywordAdapter NARY_CONNECTOR_PART = new KeywordAdapter();
+
+    /**
      * A flow usage introduced by the <code>"message"</code> keyword.
      *
      * <p>
@@ -367,6 +381,20 @@ public interface ITextAdapter extends Adapter {
 
     /** An anonymous metadata usage with an explicit type separator. */
     KeywordAdapter METADATA_COLON = new KeywordAdapter();
+
+    /**
+     * An unnamed payload whose type is written as a typing clause rather than as the bare type.
+     *
+     * <p>
+     * Examples: <code>flow of : Signal from a to b;</code>, <code>flow of [1] defined by Signal;</code>
+     * </p>
+     *
+     * <p>
+     * The bare form <code>flow of Signal from a to b;</code> builds the same model, so without this marker the typing
+     * clause can only be written back as the bare type.
+     * </p>
+     */
+    KeywordAdapter PAYLOAD_TYPING_CLAUSE = new KeywordAdapter();
 
     /** A connection usage with an explicit <code>connection</code> keyword. */
     KeywordAdapter CONNECTION_KEYWORD = new KeywordAdapter();

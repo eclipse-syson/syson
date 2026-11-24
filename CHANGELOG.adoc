@@ -42,6 +42,8 @@ Connector creation preserves unrelated homonyms when materializing inherited fea
 Connector tools now use the Sirius Web handler to preserve graphical events in _Interconnection View_ diagrams.
 - https://github.com/eclipse-syson/syson/issues/2648[#2648] [import] Prevent recursive containment in SysML reference subsetting and preserve explicit targets until the linker resolves them.
 - https://github.com/eclipse-syson/syson/issues/2649[#2649] [import] Infer the original port of a SysML port conjugation from containment.
+- https://github.com/eclipse-syson/syson/issues/2659[#2659] [import] Preserve parenthesized connector ends, explicit typing of unnamed payloads, and the position of `nonunique` in payload declarations.
+Discard captured comment and textual representation bodies when edited, and provide a resource adapter for retaining original reference spellings after linking.
 
 === Improvements
 

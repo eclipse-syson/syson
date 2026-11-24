@@ -5,5 +5,6 @@ numeric literal 1
 /@ownedRelatedElement.0/@ownedRelationship.3/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
 numeric literal 3
 /@ownedRelatedElement.0:
+late nonunique
 nonunique after ordered
 =>
