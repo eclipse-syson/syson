@@ -92,6 +92,7 @@ Downstream callers can migrate from the deprecated `SysMLElementSerializer` to `
 - https://github.com/eclipse-syson/syson/issues/2590[#2590] [diagrams] Add `Redefine a nested feature` tool in diagrams.
 
 - https://github.com/eclipse-syson/syson/issues/2654[#2654] [services] Add `redefineFeatureChain` to materialize and reuse local SysML usages along a selected path.
+Support positional parameter redefinitions in feature chains, including multiple inheritance and separate return positions.
 
 == v2026.11.0
 
