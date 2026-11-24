@@ -55,6 +55,7 @@ typing clause start
 /@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0/@ownedRelationship.5/@ownedRelatedElement.0:
 ::>
 /@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.10/@ownedRelatedElement.0:
+n-ary connector part
 late nonunique
 /@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
 #
@@ -66,6 +67,8 @@ late nonunique
 ::>
 /@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
 ::>
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.11/@ownedRelatedElement.0:
+n-ary connector part
 /@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.16/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
 #
 /@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.16/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
@@ -112,6 +115,8 @@ late nonunique
 ::>
 /@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.21/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
 #
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.21/@ownedRelatedElement.0:
+n-ary connector part
 /@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.22/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
 #
 /@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.23/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:

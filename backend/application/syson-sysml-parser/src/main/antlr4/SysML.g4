@@ -1193,7 +1193,7 @@ binaryConnectorPart:
 ;
 
 naryConnectorPart:
-	'(' (connectorEndMember {add(element_OwnedRelationship());}) ',' (connectorEndMember {add(element_OwnedRelationship());}) (
+	'(' {attachNaryConnectorPart();} (connectorEndMember {add(element_OwnedRelationship());}) ',' (connectorEndMember {add(element_OwnedRelationship());}) (
 		',' (connectorEndMember {add(element_OwnedRelationship());})
 	)*
 	 ')'
@@ -1441,14 +1441,14 @@ payloadFeature:
 ;
 
 payload:
-	identification? payloadFeatureSpecializationPart valuePart?
+	id=identification? part=payloadFeatureSpecializationPart {if ($id.ctx == null) attachPayloadTypingClause($part.start);} valuePart?
 	| identification? valuePart
 	| (ownedFeatureTyping {add(element_OwnedRelationship());}) (ownedMultiplicity {add(element_OwnedRelationship());})?
 	| (ownedMultiplicity {add(element_OwnedRelationship());}) (ownedFeatureTyping {add(element_OwnedRelationship());})
 ;
 
 payloadFeatureSpecializationPart:
-	featureSpecialization+ multiplicityPart? featureSpecialization*
+	featureSpecialization+ multiplicityPart? {attachLateNonUnique();} featureSpecialization*
 	| multiplicityPart featureSpecialization+
 ;
 

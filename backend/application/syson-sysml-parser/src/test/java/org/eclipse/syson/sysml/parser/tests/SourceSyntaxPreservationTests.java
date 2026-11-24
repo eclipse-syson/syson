@@ -25,11 +25,13 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.parser.ISysMLParseResult;
 import org.eclipse.syson.sysml.parser.SysMLModelParser;
 import org.eclipse.syson.sysml.parser.adapter.ICommentAdapter;
+import org.eclipse.syson.sysml.parser.adapter.ICommentBodyAdapter;
 import org.eclipse.syson.sysml.parser.adapter.ITextAdapter;
 import org.eclipse.syson.sysml.parser.adapter.ParsedComment;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.omg.sysml.lang.sysml.Comment;
 import org.omg.sysml.lang.sysml.ConnectionUsage;
 import org.omg.sysml.lang.sysml.Feature;
 import org.omg.sysml.lang.sysml.FeatureTyping;
@@ -197,6 +199,32 @@ public class SourceSyntaxPreservationTests {
         assertEquals(2, arguments.size());
         assertEquals(List.of("//* first */"), trailingCommentText(arguments.get(0)));
         assertEquals(List.of("//* second */"), trailingCommentText(arguments.get(1)));
+    }
+
+    /**
+     * Checks that assigning the same body preserves its source layout until the body is edited.
+     */
+    @Test
+    public void dropsTheCapturedCommentBodyOnceTheBodyChanges() throws Exception {
+        ISysMLParseResult<Namespace> parsed = new SysMLModelParser().parseRootNamespace(
+                input("package P { /* captured\n   * layout */ }"), StandardCharsets.UTF_8);
+        assertEquals(Diagnostic.OK, parsed.diagnostic().getSeverity());
+        Comment comment = (Comment) parsed.model().getOwnedRelationship().get(0).getOwnedRelatedElement().get(0)
+                .getOwnedRelationship().get(0).getOwnedRelatedElement().get(0);
+        assertTrue(hasCapturedBody(comment));
+
+        comment.setBody(comment.getBody());
+        assertTrue(hasCapturedBody(comment));
+
+        comment.setBody("edited");
+        assertFalse(hasCapturedBody(comment));
+    }
+
+    /**
+     * Returns whether the comment still carries its original source body.
+     */
+    private static boolean hasCapturedBody(Comment comment) {
+        return comment.eAdapters().stream().anyMatch(ICommentBodyAdapter.class::isInstance);
     }
 
     private static List<String> trailingCommentText(EObject element) {

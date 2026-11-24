@@ -5,5 +5,6 @@ typing clause start
 /@ownedRelationship.2/@ownedRelatedElement.0:
 ::>
 /:
+n-ary connector part
 late nonunique
 explicit declaration keyword

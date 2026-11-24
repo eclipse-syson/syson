@@ -502,6 +502,7 @@ public abstract class AbstractSysMLRuleTestSuite {
         descriptions.put(ITextAdapter.DEFINED_BY, "defined by");
         descriptions.put(ITextAdapter.BODY_BLOCK, "{...}");
         descriptions.put(ITextAdapter.INTERFACE_CONNECTOR_DECLARATION, "interface connector declaration");
+        descriptions.put(ITextAdapter.NARY_CONNECTOR_PART, "n-ary connector part");
         descriptions.put(ITextAdapter.MESSAGE_USAGE, "message");
         descriptions.put(ITextAdapter.PARENTHESIZED_FEATURE_VALUE_EXPRESSION, "parenthesized feature value");
         descriptions.put(ITextAdapter.PARENTHESIZED_EXPRESSION, "parenthesized expression");
@@ -526,6 +527,7 @@ public abstract class AbstractSysMLRuleTestSuite {
         descriptions.put(ITextAdapter.COMPACT_INDIVIDUAL_USAGE, "individual");
         descriptions.put(ITextAdapter.METADATA_AT_SIGN, "@");
         descriptions.put(ITextAdapter.METADATA_COLON, "metadata colon");
+        descriptions.put(ITextAdapter.PAYLOAD_TYPING_CLAUSE, "payload typing clause");
         descriptions.put(ITextAdapter.CONNECTION_KEYWORD, "connection");
         descriptions.put(ITextAdapter.PREFIX_METADATA, "#");
         descriptions.put(ITextAdapter.QUOTED_NAME, "quoted name");
