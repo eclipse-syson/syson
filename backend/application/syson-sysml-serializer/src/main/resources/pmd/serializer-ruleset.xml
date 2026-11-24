@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="SysML serializer PMD rules"
+        xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0
+                            https://pmd.github.io/schema/ruleset_2_0_0.xsd">
+    <description>
+        Actionable correctness, readability, and method-complexity rules for
+        production serializer code.
+    </description>
+
+    <rule ref="category/java/bestpractices.xml/UnusedAssignment" />
+    <rule ref="category/java/bestpractices.xml/UnusedLocalVariable" />
+    <rule ref="category/java/bestpractices.xml/UnusedPrivateField" />
+    <rule ref="category/java/bestpractices.xml/UnusedPrivateMethod" />
+
+    <rule ref="category/java/codestyle.xml/LambdaCanBeMethodReference" />
+    <rule ref="category/java/codestyle.xml/UnnecessaryFullyQualifiedName" />
+    <rule ref="category/java/codestyle.xml/VariableCanBeInlined" />
+
+    <rule ref="category/java/design.xml/CollapsibleIfStatements" />
+    <rule ref="category/java/design.xml/SimplifiedTernary" />
+    <rule ref="category/java/design.xml/SimplifyBooleanReturns" />
+
+    <rule ref="category/java/design.xml/AvoidDeeplyNestedIfStmts" />
+    <rule ref="category/java/design.xml/CognitiveComplexity" />
+    <rule ref="category/java/design.xml/CyclomaticComplexity">
+        <properties>
+            <!-- Cohesion is reviewed directly; this check targets actionable methods. -->
+            <property name="classReportLevel" value="1000" />
+        </properties>
+    </rule>
+    <rule ref="category/java/design.xml/NPathComplexity" />
+
+    <rule ref="category/java/errorprone.xml/EmptyCatchBlock" />
+</ruleset>

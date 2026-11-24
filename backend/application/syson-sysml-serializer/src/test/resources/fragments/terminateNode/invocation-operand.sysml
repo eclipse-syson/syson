@@ -1,0 +1,1 @@
+terminate f(a + b);

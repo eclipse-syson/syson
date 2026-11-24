@@ -1,0 +1,3 @@
+concern def ConcernWithSubject {
+    subject;
+}

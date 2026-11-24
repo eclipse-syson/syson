@@ -1,0 +1,9 @@
+package pk1 {
+      part part1 {
+          attribute a1 = "A \\\\ B";
+          attribute a2 = "A \\"a\\"";
+          attribute a3 = "A \\n a";
+          attribute a4 = "A \\t a";
+      }
+  }
+                

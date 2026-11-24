@@ -35,6 +35,7 @@
 		<module>syson-sysml-import</module>
 		<module>syson-sysml-export</module>
 		<module>syson-sysml-parser</module>
+		<module>syson-sysml-serializer</module>
 		<module>syson-sysml-linker</module>
 		<module>syson-sysml-validation</module>
 	</modules>

@@ -1,0 +1,1 @@
+holder.option : holder.selectedType;

@@ -44,6 +44,14 @@
 			<artifactId>syson-sysml-metamodel-edit</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.omg.sysml</groupId>
+			<artifactId>org.omg.sysml.model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.omg.sysml</groupId>
+			<artifactId>org.omg.sysml.logic</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-application-configuration</artifactId>
 		</dependency>
@@ -78,6 +86,10 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-linker</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.syson</groupId>
+			<artifactId>syson-sysml-serializer</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>

@@ -1,0 +1,21 @@
+# Entry point	Parser resource path	Reason for excluding exact-text comparison only
+parseAndExpression	andExpression/missingAndKeyword/sysml/missingAndKeyword.sysml	Missing operator keyword: the rule accepts a prefix and leaves trailing input; semantic round-trip remains covered.
+parseAndExpression	andExpression/missingFirstAndKeyword/sysml/missingFirstAndKeyword.sysml	Missing operator keyword: the rule accepts a prefix and leaves trailing input; semantic round-trip remains covered.
+parseConditionalExpression	conditionalExpression/missingIfKeyword/sysml/missingIfKeyword.sysml	Missing operator keyword: the rule accepts a prefix and leaves trailing input; semantic round-trip remains covered.
+parseImpliesExpression	impliesExpression/missingFirstImpliesKeyword/sysml/missingFirstImpliesKeyword.sysml	Missing operator keyword: the rule accepts a prefix and leaves trailing input; semantic round-trip remains covered.
+parseImpliesExpression	impliesExpression/missingImpliesKeyword/sysml/missingImpliesKeyword.sysml	Missing operator keyword: the rule accepts a prefix and leaves trailing input; semantic round-trip remains covered.
+parseLiteralInteger	literalInteger/real/sysml/real.sysml	A real-number fixture is parsed with the integer rule, which leaves trailing input; semantic round-trip remains covered.
+parseOrExpression	orExpression/missingFirstOrKeyword/sysml/missingFirstOrKeyword.sysml	Missing operator keyword: the rule accepts a prefix and leaves trailing input; semantic round-trip remains covered.
+parseOrExpression	orExpression/missingOrKeyword/sysml/missingOrKeyword.sysml	Missing operator keyword: the rule accepts a prefix and leaves trailing input; semantic round-trip remains covered.
+parseOwnedCrossFeature	ownedCrossFeature/abstract/sysml/abstract.sysml	The standalone cross-feature rule leaves trailing input for this fixture; semantic round-trip remains covered.
+parseOwnedCrossFeature	ownedCrossFeature/emptyBody/sysml/emptyBody.sysml	The standalone cross-feature rule leaves trailing input for this fixture; semantic round-trip remains covered.
+parseOwnedCrossFeature	ownedCrossFeature/simple/sysml/simple.sysml	The standalone cross-feature rule leaves trailing input for this fixture; semantic round-trip remains covered.
+parseOwnedCrossFeature	ownedCrossFeature/variation/sysml/variation.sysml	The standalone cross-feature rule leaves trailing input for this fixture; semantic round-trip remains covered.
+parseOwnedCrossFeature	ownedCrossFeature/withCrosses/sysml/withCrosses.sysml	The standalone cross-feature rule leaves trailing input for this fixture; semantic round-trip remains covered.
+parseOwnedCrossFeature	ownedCrossFeature/withRedefinitions/sysml/withRedefinitions.sysml	The standalone cross-feature rule leaves trailing input for this fixture; semantic round-trip remains covered.
+parseOwnedCrossFeature	ownedCrossFeature/withReferences/sysml/withReferences.sysml	The standalone cross-feature rule leaves trailing input for this fixture; semantic round-trip remains covered.
+parseOwnedCrossFeature	ownedCrossFeature/withSubsettings/sysml/withSubsettings.sysml	The standalone cross-feature rule leaves trailing input for this fixture; semantic round-trip remains covered.
+parseOwnedCrossFeature	ownedCrossFeature/withTypings/sysml/withTypings.sysml	The standalone cross-feature rule leaves trailing input for this fixture; semantic round-trip remains covered.
+parseTargetExpression	targetExpression/featureChainExpression/sysml/featureChainExpression.sysml	The target-expression rule stops before the complete feature-chain fixture; semantic round-trip remains covered.
+parseXorExpression	xorExpression/missingFirstXorKeyword/sysml/missingFirstXorKeyword.sysml	Missing operator keyword: the rule accepts a prefix and leaves trailing input; semantic round-trip remains covered.
+parseXorExpression	xorExpression/missingXorKeyword/sysml/missingXorKeyword.sysml	Missing operator keyword: the rule accepts a prefix and leaves trailing input; semantic round-trip remains covered.
