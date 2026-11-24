@@ -129,7 +129,14 @@ public class GeneralPurposeTests {
             "ParserUtils",
             "SysMLParser",
             "NumericLiteralFormatAdapter",
-            "RootNamespaceRecoveryTests"
+            "RootNamespaceRecoveryTests",
+            "SpecializationRenderer",
+            "SysMLTypeRendererRegistry",
+            "ParserRuleFixtureDiscovery",
+            "SerializerHtmlFixtureGenerator",
+            "SysMLSerializationPerformanceIT",
+            "ProxyAndResolvedReferenceSerializationTest",
+            "SerializerRoundTripTestSupport"
     );
 
     /**

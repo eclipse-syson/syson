@@ -1,0 +1,1 @@
+attribute myAttribute = "value";

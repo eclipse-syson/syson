@@ -61,13 +61,15 @@ String literal escapes are decoded into semantic values, and large documents no 
 Reuse the render's representation metadata when checking _Explorer_ view children, avoiding a database query per leaf during expand/collapse traversal.
 Resolve synthetic library directories in navigation queries so their descendants are also collapsed.
 Compute _Explorer_ view paths through the existing service extension instead of copying the visited-ID list for every item.
-
 - https://github.com/eclipse-syson/syson/issues/2589[#2589] [services] Add `getAllFeatureChains` and `streamFeatureChains` to `org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService`.
 These services return feature paths relative to a `Type` context, including nested owned and inherited features, while respecting effective redefinitions and bounding cycles per branch.
 Optional predicates control branch traversal and terminal selection; the stream API supports lazy consumption and pagination with `skip` and `limit`.
 Chain selection receives the root `Type` and a complete, unmodifiable `List<Feature>` snapshot; `RequiresRedefinitionFeatureChainPredicate` excludes fully local chains while preserving traversal of their inherited descendants.
 The collecting API requires a non-negative `maxResults` parameter and stops traversal once this result limit is reached.
 `NonStandardLibraryFeaturePredicate` prunes features declared in standard SysML or KerML library resources, regardless of their inheritance path.
+- https://github.com/eclipse-syson/syson/issues/2660[#2660] [export] Add the standalone `syson-sysml-serializer` module and include it in `syson-starter`.
+It writes SysML v2 models as normalized text, round-trip text that preserves syntax captured by the parser, or standalone HTML with syntax highlighting.
+
 
 == v2026.11.0
 
