@@ -44,6 +44,7 @@ Return parameters match independently of input order.
 
 ** A _Requirement_ or _Concern_ graphical node shows each inherited _Stakeholder_ once, with the `^` marker.
 ** A nesting graphical edge is displayed only for a locally owned _Stakeholder_, preventing an inherited _Stakeholder_ from being shown as locally contained.
+** Undoing the `Add existing elements` tool doesn't remove graphical nodes that were present before applying the tool anymore.
 
 == Improvements
 

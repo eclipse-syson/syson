@@ -13,6 +13,7 @@
 package org.eclipse.syson.application.controllers.diagrams.general.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 import java.text.MessageFormat;
@@ -41,10 +42,13 @@ import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunction
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
+import org.eclipse.sirius.web.application.undo.dto.UndoInput;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.undoredo.UndoMutationRunner;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.GeneralViewAddExistingElementsActionFlowCompartmentTestProjectData;
+import org.eclipse.syson.application.data.GeneralViewAddExistingElementsNonEmptyDiagramTestProjectData;
 import org.eclipse.syson.application.data.GeneralViewAddExistingElementsTestProjectData;
 import org.eclipse.syson.application.data.GeneralViewEdgeOnEdgeTestProjectData;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -99,6 +103,8 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
 
     private static final String NODE_SHOULD_BE_ON_DIAGRAM_MESSAGE = "Node {0} should exist on the diagram";
 
+    private static final String ADD_EXISTING_ELEMENTS_TOOL_NAME = "Add existing elements";
+
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
@@ -119,6 +125,9 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
 
     @Autowired
     private ExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
+
+    @Autowired
+    private UndoMutationRunner undoMutationRunner;
 
     private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
@@ -147,7 +156,7 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        String addExistingElementsToolId = diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements");
+        String addExistingElementsToolId = diagramDescriptionIdProvider.getDiagramCreationToolId(ADD_EXISTING_ELEMENTS_TOOL_NAME);
 
         Runnable nodeCreationRunner = () -> this.nodeCreationTester.invokeTool(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram, addExistingElementsToolId);
 
@@ -168,6 +177,60 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(nodeCreationRunner)
                 .consumeNextWith(updatedDiagramConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a non empty GV diagram, WHEN adding existing elements then undoing the operation, THEN the appropriate elements are displayed")
+    @GivenSysONServer({ GeneralViewAddExistingElementsNonEmptyDiagramTestProjectData.SCRIPT_PATH })
+    @Test
+    public void undoAddExistingElementsOnNonEmptyDiagram() {
+        var input = new DiagramEventInput(UUID.randomUUID(), GeneralViewAddExistingElementsNonEmptyDiagramTestProjectData.EDITING_CONTEXT_ID,
+                GeneralViewAddExistingElementsNonEmptyDiagramTestProjectData.GraphicalIds.DIAGRAM_ID);
+        var flux = this.givenDiagramSubscription.subscribe(input);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagramReference = new AtomicReference<>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramReference.set(diagram);
+            assertThat(diagram.getNodes()).noneMatch(node -> Objects.equals(node.getTargetObjectId(), GeneralViewAddExistingElementsNonEmptyDiagramTestProjectData.SemanticIds.PART_1_ELEMENT_ID));
+            assertThat(diagram.getNodes()).anyMatch(node -> Objects.equals(node.getTargetObjectId(), GeneralViewAddExistingElementsNonEmptyDiagramTestProjectData.SemanticIds.COMMENT_1_ELEMENT_ID));
+        });
+
+        String addExistingElementsToolId = diagramDescriptionIdProvider.getDiagramCreationToolId(ADD_EXISTING_ELEMENTS_TOOL_NAME);
+
+        Runnable addExistingElementRunner = () -> this.nodeCreationTester.invokeTool(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagramReference, addExistingElementsToolId);
+
+        AtomicReference<UUID> addExistingElementInputId = new AtomicReference<>();
+
+        // We don't use assertRefreshedDiagramThat here because we need to get the ID of the payload (which is the ID of the last executed input).
+        Consumer<Object> addExistingElementDiagramConsumer = object -> Optional.of(object)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
+                .ifPresentOrElse(diagramPayload -> {
+                    addExistingElementInputId.set(diagramPayload.id());
+                    Diagram newDiagram = diagramPayload.diagram();
+                    assertThat(newDiagram.getNodes()).anyMatch(node -> Objects.equals(node.getTargetObjectId(), GeneralViewAddExistingElementsNonEmptyDiagramTestProjectData.SemanticIds.PART_1_ELEMENT_ID));
+                    assertThat(newDiagram.getNodes()).anyMatch(node -> Objects.equals(node.getTargetObjectId(), GeneralViewAddExistingElementsNonEmptyDiagramTestProjectData.SemanticIds.COMMENT_1_ELEMENT_ID));
+                }, () -> fail("Missing diagram"));
+
+        Runnable undoRunner = () -> this.undoMutationRunner.run(new UndoInput(UUID.randomUUID(), GeneralViewAddExistingElementsNonEmptyDiagramTestProjectData.EDITING_CONTEXT_ID, addExistingElementInputId.get()));
+
+        Consumer<Object> undoDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
+            assertThat(newDiagram.getNodes()).noneMatch(node -> Objects.equals(node.getTargetObjectId(), GeneralViewAddExistingElementsNonEmptyDiagramTestProjectData.SemanticIds.PART_1_ELEMENT_ID));
+            assertThat(newDiagram.getNodes()).anyMatch(node -> Objects.equals(node.getTargetObjectId(), GeneralViewAddExistingElementsNonEmptyDiagramTestProjectData.SemanticIds.COMMENT_1_ELEMENT_ID));
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(addExistingElementRunner)
+                .consumeNextWith(addExistingElementDiagramConsumer)
+                .then(undoRunner)
+                .consumeNextWith(undoDiagramConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -394,7 +457,7 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        String addExistingElementsOnDiagramToolId = diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements");
+        String addExistingElementsOnDiagramToolId = diagramDescriptionIdProvider.getDiagramCreationToolId(ADD_EXISTING_ELEMENTS_TOOL_NAME);
         Runnable addExistingElementsOnDiagram = () -> this.nodeCreationTester.invokeTool(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram, addExistingElementsOnDiagramToolId);
 
         Consumer<Object> diagramWithTopNodesConsumer = assertRefreshedDiagramThat(newDiagram -> {
@@ -403,7 +466,7 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
             action1NodeId.set(this.getNodeIdWithLabel(newDiagram, ACTION1));
         });
 
-        String addExistingElementsGroupToolId = diagramDescriptionIdProvider.getGroupNodeToolId("Add existing elements");
+        String addExistingElementsGroupToolId = diagramDescriptionIdProvider.getGroupNodeToolId(ADD_EXISTING_ELEMENTS_TOOL_NAME);
         Runnable addExistingElementsOnMultiSelection = () -> this.nodeCreationTester.invokeTool(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram.get().getId(),
                 List.of(part1NodeId.get(), action1NodeId.get()), addExistingElementsGroupToolId, List.of());
 
@@ -438,7 +501,7 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        String addExistingElementsOnDiagramToolId = diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements");
+        String addExistingElementsOnDiagramToolId = diagramDescriptionIdProvider.getDiagramCreationToolId(ADD_EXISTING_ELEMENTS_TOOL_NAME);
         Runnable addExistingElementsOnDiagram = () -> this.nodeCreationTester.invokeTool(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram, addExistingElementsOnDiagramToolId);
 
         Consumer<Object> diagramWithTopNodesConsumer = assertRefreshedDiagramThat(newDiagram -> {
@@ -490,7 +553,7 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
         });
 
         String addExistingElementToolId = diagramDescriptionIdProvider.getNodeToolId(
-                this.descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction()), "Add existing elements");
+                this.descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction()), ADD_EXISTING_ELEMENTS_TOOL_NAME);
 
         Runnable addExistingElementTool = () -> this.nodeCreationTester.invokeTool(GeneralViewAddExistingElementsActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID, diagram.get().getId(),
                 GeneralViewAddExistingElementsActionFlowCompartmentTestProjectData.GraphicalIds.ACTION_1_ACTIONFLOW_COMPARTMENT_NODE_ID, addExistingElementToolId, List.of());
