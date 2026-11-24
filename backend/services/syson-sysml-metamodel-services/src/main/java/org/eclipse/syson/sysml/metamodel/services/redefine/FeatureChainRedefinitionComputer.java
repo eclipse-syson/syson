@@ -126,7 +126,7 @@ public final class FeatureChainRedefinitionComputer {
     private SegmentResult redefineSegment(Type owner, Feature source, FeatureMembershipChanges created) {
         String error = this.validateRedefinitionSegment(source);
         if (error == null && this.isParameterSelection(owner, source)) {
-            error = "select a feature outside the parameter list.";
+            return new ParameterRedefinitionComputer(owner, source, created).redefine();
         }
         Feature local = null;
         if (error == null) {
@@ -140,12 +140,14 @@ public final class FeatureChainRedefinitionComputer {
             } else if (owner.getFeatureMembership().stream().noneMatch(membership -> membership.getOwnedMemberFeature() == source)) {
                 error = "the feature is not accessible from this context. Select an accessible feature chain again.";
             } else {
-                local = this.createRedefiningFeature(source);
-                RedefinitionStatus status = this.metamodelMutationElementService.initializeRedefiningFeature(local, source, owner);
-                if (!status.isSuccess()) {
-                    return new SegmentResult(null, status.message());
+                Feature redefiningFeature = this.createRedefiningFeature(source);
+                RedefinitionStatus status = this.metamodelMutationElementService.initializeRedefiningFeature(redefiningFeature, source, owner);
+                if (status.isSuccess()) {
+                    created.attach(owner, redefiningFeature, source, owner.getOwnedRelationship().size());
+                    local = redefiningFeature;
+                } else {
+                    error = status.message();
                 }
-                created.attach(owner, local, source, owner.getOwnedRelationship().size());
             }
         }
         return new SegmentResult(local, error);
@@ -154,7 +156,7 @@ public final class FeatureChainRedefinitionComputer {
     /**
      * Resolves segments against successive local owners, reusing existing features and attaching missing ones.
      * Adds the selected segment and root context to a failure cause before returning it to the caller.
-     * Stops at the first failure; the returned chain contains only the selected segments.
+     * Stops at the first failure; the returned chain contains only the selected segments, excluding additional parameters.
      */
     private FeatureChainRedefinitionResult redefineSegments(Type context, List<Feature> chain, FeatureMembershipChanges created) {
         List<Feature> localChain = new ArrayList<Feature>();
@@ -218,12 +220,4 @@ public final class FeatureChainRedefinitionComputer {
         }
         return error;
     }
-    /**
-     * Holds the local feature resolved for one segment, or the failure cause without segment and context labels.
-     *
-     * @author Arthur Daussy
-     */
-    private record SegmentResult(Feature feature, String error) {
-    }
-
 }

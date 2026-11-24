@@ -34,7 +34,7 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.VisibilityKind;
 
 /**
- * Derives the implicit positional redefinitions of one parameter.
+ * Computes positional parameter inheritance and implicit redefinitions.
  *
  * @author Arthur Daussy
  */
@@ -85,12 +85,7 @@ public final class ImplicitParameterRedefinition {
         if (position < 0) {
             return List.of();
         }
-        // A cyclic traversal can produce branch-dependent partial results. Reuse lookups only in an acyclic hierarchy.
-        LookupCache cache = new LookupCache(!this.hasSpecializationCycle(owner, new HashSet<>(), new HashSet<>()), new HashMap<>());
-        List<Feature> targets = this.findDirectParameterSupertypes(owner).stream()
-                .flatMap(parent -> this.findParametersAtPosition(parent, position, 0, new HashSet<>(Set.of(owner)), cache).stream())
-                .distinct()
-                .toList();
+        List<Feature> targets = this.findInheritedParameterTargets(owner, position);
         List<Feature> existingTargets = existing.stream()
                 .map(Redefinition::getRedefinedFeature)
                 .toList();
@@ -109,6 +104,26 @@ public final class ImplicitParameterRedefinition {
             }
         }
         return inferred;
+    }
+
+    /**
+     * Finds the inheritable sources of one parameter position in the direct parents of a destination type.
+     * Private memberships and replaced prefixes are handled by the same lookup used for implicit redefinitions.
+     * This query reads the model without creating parameters or relationships and does not filter target directions.
+     *
+     * @param owner
+     *            the destination type whose inherited positions are requested
+     * @param position
+     *            the zero-based ordinary position, or Integer.MAX_VALUE to request return parameters separately
+     * @return the matching sources in supertype traversal order, without duplicates, or an empty list
+     */
+    public List<Feature> findInheritedParameterTargets(Type owner, int position) {
+        // A cyclic traversal can produce branch-dependent partial results. Reuse lookups only in an acyclic hierarchy.
+        LookupCache cache = new LookupCache(!this.hasSpecializationCycle(owner, new HashSet<>(), new HashSet<>()), new HashMap<>());
+        return this.findDirectParameterSupertypes(owner).stream()
+                .flatMap(parent -> this.findParametersAtPosition(parent, position, 0, new HashSet<>(Set.of(owner)), cache).stream())
+                .distinct()
+                .toList();
     }
 
     /**

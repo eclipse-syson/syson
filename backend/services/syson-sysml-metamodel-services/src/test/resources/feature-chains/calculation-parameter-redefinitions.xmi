@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+package ComplexParameterRedefinitions {
+    calc def Compute {
+        in attribute operand;
+        out attribute trace;
+        return attribute result;
+    }
+    calc def OtherCompute {
+        in attribute otherOperand;
+        return attribute otherResult;
+    }
+    calc def CombinedCompute :> Compute, OtherCompute;
+    calc calculation : Compute;
+    calc combinedCalculation : CombinedCompute;
+}
+-->
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="http://www.eclipse.org/syson/sysml" xmi:id="8426a8cf-b831-4aa5-ac3f-2eab586aea60" elementId="8426a8cf-b831-4aa5-ac3f-2eab586aea60">
+  <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="34ab3bb3-5b89-459b-bd70-6426de437236" elementId="34ab3bb3-5b89-459b-bd70-6426de437236">
+    <ownedRelatedElement xsi:type="sysml:Package" xmi:id="592315c4-d1e7-4429-bf02-e1590c993ee1" declaredName="ComplexParameterRedefinitions" elementId="592315c4-d1e7-4429-bf02-e1590c993ee1">
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="0c1454d1-db01-4314-923c-5cb95b1ee64c" elementId="0c1454d1-db01-4314-923c-5cb95b1ee64c">
+        <ownedRelatedElement xsi:type="sysml:CalculationDefinition" xmi:id="4ebacb6a-a893-464a-960a-9fe7bfe66c55" declaredName="Compute" elementId="4ebacb6a-a893-464a-960a-9fe7bfe66c55">
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="5fb3be54-c55f-4f19-9e86-3eb8732594d0" elementId="5fb3be54-c55f-4f19-9e86-3eb8732594d0">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="00ac0fef-16e6-4fc0-bb5d-6c54ae75342a" declaredName="operand" elementId="00ac0fef-16e6-4fc0-bb5d-6c54ae75342a" direction="in"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="3280e1f7-27d8-40cd-82f0-a7afc0e8cf5a" elementId="3280e1f7-27d8-40cd-82f0-a7afc0e8cf5a">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="55660ac2-15a0-49f7-8542-1f755115cc9d" declaredName="trace" elementId="55660ac2-15a0-49f7-8542-1f755115cc9d" direction="out"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="af4af390-b8fb-4a58-8fa4-03eeec74dd79" elementId="af4af390-b8fb-4a58-8fa4-03eeec74dd79">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="f63c9092-bccb-457d-955c-9c1a7935f5b1" declaredName="result" elementId="f63c9092-bccb-457d-955c-9c1a7935f5b1" direction="out"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="faaf0c85-1664-4b74-b916-c58cfd94fb9a" elementId="faaf0c85-1664-4b74-b916-c58cfd94fb9a">
+        <ownedRelatedElement xsi:type="sysml:CalculationDefinition" xmi:id="c8682569-adbd-4281-85b8-15c3ff509b18" declaredName="OtherCompute" elementId="c8682569-adbd-4281-85b8-15c3ff509b18">
+          <ownedRelationship xsi:type="sysml:FeatureMembership" xmi:id="400ecd5e-6ad6-45fa-b53d-0a94b6060b00" elementId="400ecd5e-6ad6-45fa-b53d-0a94b6060b00">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="ae584e7f-cd2d-42c7-aa3e-92fc38ef8bed" declaredName="otherOperand" elementId="ae584e7f-cd2d-42c7-aa3e-92fc38ef8bed" direction="in"/>
+          </ownedRelationship>
+          <ownedRelationship xsi:type="sysml:ReturnParameterMembership" xmi:id="2ebb0bda-5534-4033-aef3-fa5b980d4891" elementId="2ebb0bda-5534-4033-aef3-fa5b980d4891">
+            <ownedRelatedElement xsi:type="sysml:AttributeUsage" xmi:id="f2644729-f614-4cba-a473-b4fd6d48504b" declaredName="otherResult" elementId="f2644729-f614-4cba-a473-b4fd6d48504b" direction="out"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="0a7f7d4e-04e8-4e2c-8986-45e821379704" elementId="0a7f7d4e-04e8-4e2c-8986-45e821379704">
+        <ownedRelatedElement xsi:type="sysml:CalculationDefinition" xmi:id="72da9d0e-0a12-431d-a3ce-f8d3624d2278" declaredName="CombinedCompute" elementId="72da9d0e-0a12-431d-a3ce-f8d3624d2278">
+          <ownedRelationship xsi:type="sysml:Subclassification" xmi:id="04c3cf87-7989-488d-8095-b59eff92bb00" elementId="04c3cf87-7989-488d-8095-b59eff92bb00" subclassifier="72da9d0e-0a12-431d-a3ce-f8d3624d2278" superclassifier="4ebacb6a-a893-464a-960a-9fe7bfe66c55"/>
+          <ownedRelationship xsi:type="sysml:Subclassification" xmi:id="c7fe52fd-2769-4130-b92e-8215d79955cb" elementId="c7fe52fd-2769-4130-b92e-8215d79955cb" subclassifier="72da9d0e-0a12-431d-a3ce-f8d3624d2278" superclassifier="c8682569-adbd-4281-85b8-15c3ff509b18"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="a03b4545-c447-4e2d-b7ce-17b394078dec" elementId="a03b4545-c447-4e2d-b7ce-17b394078dec">
+        <ownedRelatedElement xsi:type="sysml:CalculationUsage" xmi:id="ed6483ce-23f6-405e-a8d9-69f6f6307d5f" declaredName="calculation" elementId="ed6483ce-23f6-405e-a8d9-69f6f6307d5f">
+          <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="4821beb8-85f7-48ad-9276-9a6c1b853eb7" elementId="4821beb8-85f7-48ad-9276-9a6c1b853eb7" type="4ebacb6a-a893-464a-960a-9fe7bfe66c55" typedFeature="ed6483ce-23f6-405e-a8d9-69f6f6307d5f"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+      <ownedRelationship xsi:type="sysml:OwningMembership" xmi:id="29badd8f-efd1-4e39-b0ce-62326c1bc6c5" elementId="29badd8f-efd1-4e39-b0ce-62326c1bc6c5">
+        <ownedRelatedElement xsi:type="sysml:CalculationUsage" xmi:id="1780a02a-310b-401e-8ddb-5a19d3f46ba6" declaredName="combinedCalculation" elementId="1780a02a-310b-401e-8ddb-5a19d3f46ba6">
+          <ownedRelationship xsi:type="sysml:FeatureTyping" xmi:id="51b22eef-7f0d-44ee-964c-e7563d014e25" elementId="51b22eef-7f0d-44ee-964c-e7563d014e25" type="72da9d0e-0a12-431d-a3ce-f8d3624d2278" typedFeature="1780a02a-310b-401e-8ddb-5a19d3f46ba6"/>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

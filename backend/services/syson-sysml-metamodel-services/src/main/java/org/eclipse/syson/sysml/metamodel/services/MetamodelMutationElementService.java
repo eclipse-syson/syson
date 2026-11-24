@@ -426,7 +426,10 @@ public class MetamodelMutationElementService {
 
     /**
      * Materializes a selected chain of SysML usages, reusing existing local features. New features are anonymous
-     * and retain the source's exact metaclass and membership role.
+     * and retain the source's exact metaclass and membership role. Parameter lists are completed in order, through
+     * the selected position for linear inheritance and across all positions for independent inheritance branches.
+     * Redundant direct supertypes and virtual standard-library defaults still constrain parameter matching.
+     * Return parameters are matched separately.
      * Each new membership is attached before resolving the next segment. On failure, memberships created by this
      * call are removed in reverse order. EMF listeners can observe both additions and removals.
      * The caller must provide a writable context without concurrent model modifications.
