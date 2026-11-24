@@ -58,6 +58,7 @@ Infer missing positional targets across behavior parents, including when one tar
 Match results independently of ordinary parameters and evaluate directions in the destination context.
 The derived stakeholder list on a requirement usage now identifies its owning EMF property as `RequirementUsage::stakeholderParameter`.
 - https://github.com/eclipse-syson/syson/issues/2665[#2665] [import] `SysMLImportLexer` Set initialization should be moved to a constant.
+- https://github.com/eclipse-syson/syson/issues/2658[#2658] [diagrams] Ensure undoing _add existing elements_ does not remove unsynchronized nodes that shouldn't be removed.
 
 === Improvements
 

@@ -273,13 +273,22 @@ public class DiagramMutationElementService {
                 .map(NodeDescription.class::cast)
                 .filter(nd -> Objects.equals(nd.getSynchronizationPolicy(), SynchronizationPolicy.UNSYNCHRONIZED));
         if (nodeDescription.isPresent()) {
-            request = ViewCreationRequest.newViewCreationRequest()
-                    .containmentKind(nodeKind)
-                    .descriptionId(descriptionId)
-                    .parentElementId(parentElementId)
-                    .targetObjectId(this.identityService.getId(element))
-                    .build();
-            diagramContext.viewCreationRequests().add(request);
+
+            String targetObjectId = this.identityService.getId(element);
+            String nodeId = new NodeIdProvider().getNodeId(parentElementId, descriptionId, nodeKind, targetObjectId);
+            NodeFinder nodeFinder = new NodeFinder(diagramContext.diagram());
+
+
+            if (nodeFinder.getOneNodeMatching(node -> Objects.equals(node.getId(), nodeId)).isEmpty()) {
+                // Don't create ViewCreationRequest if the node is already on the diagram, otherwise undoing the operation will remove nodes that were already on the diagram.
+                request = ViewCreationRequest.newViewCreationRequest()
+                        .containmentKind(nodeKind)
+                        .descriptionId(descriptionId)
+                        .parentElementId(parentElementId)
+                        .targetObjectId(targetObjectId)
+                        .build();
+                diagramContext.viewCreationRequests().add(request);
+            }
         }
         return request;
     }
@@ -408,7 +417,7 @@ public class DiagramMutationElementService {
      *            the diagram context
      * @return the identifier of {@code graphicalElement}'s parent
      */
-    private String getParentElementId(Object graphicalElement, DiagramContext diagramContext) {
+    public String getParentElementId(Object graphicalElement, DiagramContext diagramContext) {
         final String parentElementId;
         if (graphicalElement instanceof Node node) {
             parentElementId = node.getId();
