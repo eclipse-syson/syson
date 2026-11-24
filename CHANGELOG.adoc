@@ -55,6 +55,7 @@ Inherited stakeholders keep their separate compartment item.
 Infer missing positional targets across behavior parents, including when one target is explicit.
 Match results independently of ordinary parameters and evaluate directions in the destination context.
 The derived stakeholder list on a requirement usage now identifies its owning EMF property as `RequirementUsage::stakeholderParameter`.
+- https://github.com/eclipse-syson/syson/issues/2665[#2665] [import] `SysMLImportLexer` Set initialization should be moved to a constant.
 
 === Improvements
 

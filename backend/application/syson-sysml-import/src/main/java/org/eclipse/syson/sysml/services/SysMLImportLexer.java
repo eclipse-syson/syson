@@ -27,6 +27,11 @@ import org.eclipse.syson.sysml.parser.internal.SysMLLexer;
  */
 final class SysMLImportLexer extends SysMLLexer {
 
+    /**
+     * The {@link Set} of visibilities ('public', 'protected', 'private').
+     */
+    private static final Set<String> VISIBILITIES = Set.of("public", "protected", "private");
+
     private static final int PUBLIC_TOKEN_TYPE = new SysMLLexer(CharStreams.fromString("public")).nextToken().getType();
 
     private String previousToken = "";
@@ -55,7 +60,7 @@ final class SysMLImportLexer extends SysMLLexer {
             this.pendingImport = null;
         } else {
             token = super.nextToken();
-            if ("import".equals(token.getText()) && !Set.of("public", "protected", "private").contains(this.previousToken)) {
+            if ("import".equals(token.getText()) && !VISIBILITIES.contains(this.previousToken)) {
                 this.pendingImport = token;
                 var visibility = new CommonToken(token);
                 visibility.setType(PUBLIC_TOKEN_TYPE);
