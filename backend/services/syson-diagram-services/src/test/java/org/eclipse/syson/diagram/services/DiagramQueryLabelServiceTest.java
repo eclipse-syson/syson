@@ -14,9 +14,16 @@ package org.eclipse.syson.diagram.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 import java.util.List;
 
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Dependency;
@@ -36,6 +43,7 @@ import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.ResultExpressionMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
 import org.junit.jupiter.api.BeforeEach;
@@ -561,5 +569,50 @@ public class DiagramQueryLabelServiceTest {
         featureReferenceExpression.getOwnedRelationship().add(xFeatureReferenceMembership);
         xFeatureReferenceMembership.setMemberElement(usage);
         return featureChainExpression;
+    }
+
+    /** Display uses the literal's value, while the editor receives an escaped SysML string. */
+    @Test
+    void displaysAndEditsEscapedLiteral() {
+        var literal = SysmlFactory.eINSTANCE.createLiteralString();
+        literal.setValue("one\n\"two\"");
+        assertEquals("\"one\n\"two\"\"", this.labelService.getSysmlTextualRepresentation(literal, false));
+        assertEquals("\"one\\n\\\"two\\\"\"", this.labelService.getSysmlTextualRepresentation(literal, true));
+    }
+
+    /** Rendering a reference must leave the live proxy and unrelated resource contents untouched. */
+    @Test
+    void rendersCrossDocumentReferenceWithoutResolvingSource() {
+        var resources = new ResourceSetImpl();
+        var input = new XMIResourceImpl(URI.createURI("memory:/input.sysml"));
+        var library = new XMIResourceImpl(URI.createURI("memory:/library.sysml"));
+        var unrelated = spy(new XMIResourceImpl(URI.createURI("memory:/unrelated.sysml")));
+        resources.getResources().addAll(List.of(input, library));
+        var target = SysmlFactory.eINSTANCE.createAttributeUsage();
+        target.setDeclaredName("two words");
+        library.getContents().add(target);
+        library.setID(target, "attribute");
+        var expression = SysmlFactory.eINSTANCE.createFeatureReferenceExpression();
+        var membership = SysmlFactory.eINSTANCE.createMembership();
+        input.getContents().add(expression);
+        expression.getOwnedRelationship().add(membership);
+        var proxy = SysmlFactory.eINSTANCE.createAttributeUsage();
+        ((InternalEObject) proxy).eSetProxyURI(library.getURI().appendFragment("attribute"));
+        membership.setMemberElement(proxy);
+        resources.getResources().add(unrelated);
+        var adapters = List.copyOf(membership.eAdapters());
+
+        assertEquals("'two words'", this.labelService.getSysmlTextualRepresentation(expression, false));
+        assertEquals("'two words'", this.labelService.getSysmlTextualRepresentation(expression, true));
+        assertThat(membership.eGet(SysmlPackage.eINSTANCE.getMembership_MemberElement(), false)).isSameAs(proxy);
+        assertThat(proxy.eIsProxy()).isTrue();
+        assertThat(membership.eAdapters()).containsExactlyElementsOf(adapters);
+        assertThat(resources.getResources()).containsExactly(input, library, unrelated);
+        verify(unrelated, never()).getContents();
+
+        ((InternalEObject) proxy).eSetProxyURI(URI.createURI("memory:/missing.sysml#Unknown"));
+        assertEquals("Unknown", this.labelService.getSysmlTextualRepresentation(expression, true));
+        assertThat(resources.getResources()).containsExactly(input, library, unrelated);
+        assertThat(membership.eGet(SysmlPackage.eINSTANCE.getMembership_MemberElement(), false)).isSameAs(proxy);
     }
 }

@@ -122,10 +122,7 @@ public final class TransitionRenderer {
      *            the transition usage
      */
     public void serializeTransitionUsage(final Element transitionUsage) {
-        TransitionParts parts = this.transitionParts(transitionUsage);
-        if (this.shouldOmitImplicitActionSource(transitionUsage, parts)) {
-            parts = parts.withoutSource();
-        }
+        final TransitionParts parts = this.transitionParts(transitionUsage);
         final ParserFragment fragment = this.parserFragment(transitionUsage);
         final TextOutput output = this.context.output();
         this.writeTransitionDeclaration(transitionUsage, parts, fragment);
@@ -197,7 +194,7 @@ public final class TransitionRenderer {
     }
 
     /**
-     * Reads every clause of a transition once: name, source (as written, before any omission), trigger, guard, effect
+     * Reads every clause of a transition, omitting the implicit decision source for both dispatch and output: name, source, trigger, guard, effect
      * and target, each with the element it is traced to.
      */
     private TransitionParts transitionParts(final Element transitionUsage) {
@@ -208,12 +205,16 @@ public final class TransitionRenderer {
             trigger = this.actionRenderer.acceptActionText(triggerElement);
         }
         final Element effectElement = this.transitionEffectElement(transitionFeatures);
-        return new TransitionParts(this.referenceResolver.declaredName(transitionUsage),
+        final TransitionParts parts = new TransitionParts(this.referenceResolver.declaredName(transitionUsage),
                 this.transitionSource(transitionUsage), this.transitionSourceElement(transitionUsage),
                 trigger, triggerElement,
                 this.transitionGuard(transitionFeatures), this.firstGuardExpression(transitionFeatures),
                 effectElement,
                 this.transitionTarget(transitionUsage), this.transitionTargetElement(transitionUsage));
+        if (this.shouldOmitImplicitActionSource(transitionUsage, parts)) {
+            return parts.withoutSource();
+        }
+        return parts;
     }
 
     /** Identifies the standalone parser fragment, if any, whose grammar rule the transition is serialized for. */

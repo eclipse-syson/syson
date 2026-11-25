@@ -166,7 +166,9 @@ import org.eclipse.syson.sysml.util.SysmlSwitch;
  * Convert a SysML {@link Element} to its textual representation.
  *
  * @author Arthur Daussy
+ * @deprecated Use {@link SysONTextSerializer} for textual output from SysON models.
  */
+@Deprecated(forRemoval = false)
 public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private static final String SPACE = " ";

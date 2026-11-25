@@ -204,7 +204,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     }
                 }""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(input.replace("part p2 {", "ref part p2 {"))
                 .check();
     }
 
@@ -221,8 +221,18 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         attribute 'comment';
                     }
                 }""";
+        var expected = """
+                package Package1 {
+                    ref view view1 : StandardViewDefinitions::GeneralView {
+                        expose part1;
+                        expose part1::'comment';
+                    }
+                    ref part part1 {
+                        attribute 'comment';
+                    }
+                }""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(expected)
                 .check();
     }
 
@@ -246,8 +256,25 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     flow from p2.po1.item1 to p3.item2;
                     flow f1 from p2.po1.item1 to p3.item2;
                 }""";
+        var expected = """
+                part def P1Def {
+                    ref port po1 : PortDef1;
+                }
+                port def PortDef1 {
+                    out ref item item1 : P2Def;
+                }
+                part def P2Def;
+                part def P3Def {
+                    in ref item item2 : P3Def;
+                }
+                ref part p1 {
+                    part p2 : P1Def;
+                    part p3 : P3Def;
+                    flow from p2.po1.item1 to p3.item2;
+                    flow f1 from p2.po1.item1 to p3.item2;
+                }""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(expected)
                 .check();
     }
 
@@ -290,40 +317,39 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         flow of Fuel from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
                     }
                 }""";
-        // Expected difference : Multiplicity are always after Type
         var expected = """
                 package 'Port Example' {
                     attribute def Temp;
                     part def Fuel;
                     port def FuelOutPort {
                         attribute temperature : Temp;
-                        out item fuelSupply : Fuel;
-                        in item fuelReturn : Fuel;
+                        out ref item fuelSupply : Fuel;
+                        in ref item fuelReturn : Fuel;
                     }
                     port def FuelInPort {
                         attribute temperature : Temp;
-                        in item fuelSupply : Fuel;
-                        out item fuelReturn : Fuel;
+                        in ref item fuelSupply : Fuel;
+                        out ref item fuelReturn : Fuel;
                     }
                     part def FuelTankAssembly {
-                        port fuelTankPort : FuelOutPort;
+                        ref port fuelTankPort : FuelOutPort;
                     }
                     part def Engine {
-                        port engineFuelPort : FuelInPort;
+                        ref port engineFuelPort : FuelInPort;
                     }
                 }
                 package 'Flow Connection Interface Example' {
                     private import 'Port Example'::*;
                     part def Vehicle;
-                    part vehicle : Vehicle {
+                    ref part vehicle : Vehicle {
                         part tankAssy : FuelTankAssembly;
                         part eng : Engine;
                         flow of Fuel from tankAssy.fuelTankPort.fuelSupply to eng.engineFuelPort.fuelSupply;
                         flow of Fuel from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
-                        flow of Fuel [1] from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
+                        flow of [1] Fuel from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
                         flow of Fuel [1] from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
                         flow of fuel : Fuel from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
-                        flow of fuel : Fuel [1] from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
+                        flow of fuel [1] : Fuel from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
                         flow of Fuel from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
                     }
                 }""";
@@ -361,7 +387,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     require constraint c1 :>> c;
                 }""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(input.replace("requirement r1 {", "ref requirement r1 {").replace("constraint c : C;", "ref constraint c : C;"))
                 .check();
     }
 
@@ -382,7 +408,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     }
                 }""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(input.replace("requirement r1;", "ref requirement r1;").replace("requirement r3 {", "ref requirement r3 {"))
                 .check();
     }
 
@@ -401,7 +427,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     require #goal constraint c2;
                 }""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(input.replace("requirement goals : Goal;", "ref requirement goals : Goal;").replace("#goal requirement r2 {", "ref #goal requirement r2 {"))
                 .check();
     }
 
@@ -428,7 +454,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     first start then fork1;
                 }""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(input.replace("action action1 {", "ref action action1 {").replace("action action2 {", "ref action action2 {"))
                 .check();
     }
 
@@ -448,16 +474,8 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     first a2 then join1;
                     first join1 then done;
                 }""";
-        /**
-         * Here we have differences here because :
-         *
-         * <ul>
-         * <li>The construction of SuccessionAsUsage defining new ActionUsage is hard to detect so we chose to use the
-         * complete syntax "first source then target;"</li>
-         * <ul>
-         */
         var expected = """
-                action action1 {
+                ref action action1 {
                     action a1;
                     action a2;
                     fork fork1;
@@ -490,7 +508,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     first a2 then merge1;
                 }""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(input.replace("action action1 {", "ref action action1 {"))
                 .check();
     }
 
@@ -548,8 +566,24 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         render asTreeDiagram;
                     }
                 } """;
+        var expected = """
+                package AxleAssembly_1 {
+                    private import Views::*;
+                    part def AxleAssembly;
+                    part def Differential;
+                    ref part rearAxleAssembly : AxleAssembly {
+                        part differential : Differential;
+                        part rearAxle;
+                    }
+                    ref view 'First-Level-All' {
+                        expose rearAxleAssembly;
+                        expose rearAxleAssembly::rearAxle;
+                        expose rearAxleAssembly::differential;
+                        render asTreeDiagram;
+                    }
+                }""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(expected)
                 .check();
     }
 
@@ -577,8 +611,29 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         accept when b.f;
                     }
                 }""";
+        var expected = """
+                ref part part1 {
+                    private import SI::*;
+                    private import ScalarValues::*;
+                    action b {
+                        attribute f : Boolean;
+                    }
+                    action a1 {
+                        item def S1;
+                        item def S2;
+                        item def S3;
+                        ref port p1;
+                        ref port p2;
+                        ref port p3;
+                        action a1 accept s1 : S1 via p1;
+                        action a2 accept S2 via p2;
+                        accept S3 via p3;
+                        accept after 5 [min];
+                        accept when b.f;
+                    }
+                }""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(expected)
                 .check();
     }
 
@@ -606,8 +661,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     action a1;
                     action a2;
                     action a3;
-                    then d1;
-                    decide d1;
+                    then decide d1;
                     succession sd1 first d1 if x < 0 then a1;
                     succession sd2 first d1 if x == 0 then a2;
                     succession sd3 first d1 then a3;
@@ -653,8 +707,21 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     }
                 }""";
 
+        var expected = """
+                package Conjugated {
+                    attribute def Temp;
+                    port def TempPort {
+                        attribute temperature : Temp;
+                    }
+                    part def TempPortClassic {
+                        ref port tempPortClassic : TempPort;
+                    }
+                    part def TempPortConj {
+                        ref port tempPortConj : ~TempPort;
+                    }
+                }""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(expected)
                 .check();
     }
 
@@ -700,21 +767,12 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     then action a1;
                     then action a2;
                 }""";
-        /**
-         * Here we have differences here because :
-         *
-         * <ul>
-         * <li>The construction of SuccessionAsUsage defining new ActionUsage is hard to detect so we chose to use the
-         * complete syntax "first source then target;"</li>
-         * <ul>
-         */
         var expected = """
                 action def ActionDef1 {
                     action a0;
-                    then a1;
-                    action a1;
-                    then a2;
-                    action a2;
+                    first a0;
+                    then action a1;
+                    then action a2;
                 }""";
 
         this.checker.textToImport(input)
@@ -731,18 +789,11 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     first start;
                     then a2;
                 }""";
-        /**
-         * Here we have differences here because :
-         *
-         * <ul>
-         * <li>The strange construction of the Membership referencing 'start' is hard to detect so we chose to use the
-         * complete syntax "first source then target;"</li>
-         * <ul>
-         */
         var expected = """
                 action def ActionDef1 {
                     action a2;
-                    first start then a2;
+                    first start;
+                    then a2;
                 }""";
 
         this.checker.textToImport(input)
@@ -779,7 +830,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 }""";
 
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(input.replace("action 'a 2' : 'p 2'::'A 1';", "ref action 'a 2' : 'p 2'::'A 1';"))
                 .check();
     }
 
@@ -847,20 +898,20 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         objective {
                             /* Goal */
                         }
-                        include use case uc1 : UC1;
-                        include use case uc2 {
+                        ref include use case uc1 : UC1;
+                        ref include use case uc2 {
                             subject = system;
                             actor user = user;
                         }
                     }
                     use case def UC1;
-                    part user : User;
-                    use case uc2 {
+                    ref part user : User;
+                    ref use case uc2 {
                         actor :>> user;
                     }
-                    use case u : UseSystem;
-                    part system : System {
-                        include uc2;
+                    ref use case u : UseSystem;
+                    ref part system : System {
+                        ref include uc2;
                         perform u;
                     }
                 }""";
@@ -884,7 +935,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     port port1 : Port1;
                 }""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(input.replace("part part1 {", "ref part part1 {").replace("port port1 : Port1;", "ref port port1 : Port1;"))
                 .check();
     }
 
@@ -979,7 +1030,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         private import Pkg2::Pkg21::Pkg211::P211;
                         private import Pkg2::Pkg21::*;
                         private import Pkg2::Pkg21::Pkg211::*::**;
-                        part p11 : P211;
+                        ref part p11 : P211;
                         part def P12;
                     }
                     package Pkg2 {
@@ -1029,8 +1080,24 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     }
                 }""";
 
+        var expected = """
+                package root {
+                    part def PartDef1;
+                    concern def ConcernDef1 {
+                        stakeholder s : PartDef1;
+                    }
+                    ref concern concernUsage1 : ConcernDef1 {
+                        stakeholder s1;
+                    }
+                    requirement def R1Def {
+                        stakeholder s : PartDef1;
+                    }
+                    ref requirement r1 : R1Def {
+                        stakeholder s1;
+                    }
+                }""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(expected)
                 .check();
     }
 
@@ -1057,8 +1124,27 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         actor partU_1;
                     }
                 }""";
+        var expected = """
+                package root {
+                    ref part part1 {
+                        part part11;
+                        attribute attr;
+                        in ref part part22;
+                        ref part part13;
+                    }
+                    ref action a1 {
+                        action a11;
+                        action a12;
+                        succession suc1 first a11 then a12;
+                    }
+                    use case def ucd_1 {
+                        objective c;
+                        subject subject_1;
+                        actor partU_1;
+                    }
+                }""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(expected)
                 .check();
 
     }
@@ -1112,7 +1198,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         individual snapshot s : Ind;
                         timeslice t;
                     }
-                    occurrence occ : Occ {
+                    ref occurrence occ : Occ {
                         occurrence o1 : Occ;
                         ref occurrence o2 : Occ;
                         item z;
@@ -1121,12 +1207,12 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         snapshot s2;
                         timeslice t2;
                     }
-                    individual occurrence ind : Ind, Occ {
+                    ref individual occurrence ind : Ind, Occ {
                         snapshot s3;
                         individual timeslice t3;
                     }
-                    individual snapshot s4 : Ind;
-                    occurrence o1 {
+                    ref individual snapshot s4 : Ind;
+                    ref occurrence o1 {
                         occurrence o2;
                     }
                 }""";
@@ -1147,7 +1233,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     attribute :>> attr1;
                 }""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(input.replace("part p1 {", "ref part p1 {").replace("part p2 :> p1 {", "ref part p2 :> p1 {"))
                 .check();
     }
 
@@ -1160,7 +1246,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     abstract occurrence def Test;
                 }""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(input.replace("abstract occurrence test;", "abstract ref occurrence test;"))
                 .check();
     }
 
@@ -1187,10 +1273,10 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     <e1> enumeration1;
                     enumeration2;
                 }
-                part part1 {
+                ref part part1 {
                     attribute attribute1 : Enum1 = Enum1::enumeration1;
                     attribute attribute2 : Enum1 = Enum1::enumeration1;
-                    attribute attribute3 : Enum1 = Enum1::enumeration1;
+                    attribute attribute3 : Enum1 = Enum1::e1;
                     attribute attribute4 : Enum1 = Enum1::enumeration2;
                     attribute attribute5 = Enum1::enumeration1;
                 }""";
@@ -1214,7 +1300,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 }""";
 
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(input.replace("part p1;", "ref part p1;").replace("part part2 {", "ref part part2 {"))
                 .check();
     }
 
@@ -1230,10 +1316,10 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     attribute :>> a;
                 }""";
         var expected = """
-                part p {
+                ref part p {
                     attribute <a> anAttribute;
                 }
-                part p1 :> p {
+                ref part p1 :> p {
                     attribute :>> a;
                 }""";
 
@@ -1286,10 +1372,10 @@ public class ImportExportTests extends AbstractIntegrationTests {
                             part element;
                         }
                     }
-                    part l : Logical {
+                    ref part l : Logical {
                         part :>> component;
                     }
-                    part p : Physical {
+                    ref part p : Physical {
                         part :>> assembly {
                             part :>> element;
                         }
@@ -1300,9 +1386,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         end logical : Logical;
                         end physical : Physical;
                     }
-                    allocation allocation1 : Logical_to_Physical allocate l to p;
-                    allocation allocation2 : Logical_to_Physical allocate logical ::> l to physical ::> p;
-                    allocate l.component to p.assembly.element;
+                    ref allocation allocation1 : Logical_to_Physical allocate l to p;
+                    ref allocation allocation2 : Logical_to_Physical allocate (logical ::> l, physical ::> p);
+                    ref allocate l.component to p.assembly.element;
                 }""";
         this.checker.textToImport(input)
                 .expectedResult(expected)
@@ -1326,7 +1412,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
         var input = """
                 part myPart [1..2];""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult("ref part myPart [1..2];")
                 .check();
     }
 
@@ -1347,7 +1433,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     }
                 }""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(input.replace("part part1 {", "ref part part1 {").replace("part part2 {", "ref part part2 {"))
                 .check();
     }
 
@@ -1373,7 +1459,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
          */
         var expected = """
                 private import Metaobjects::SemanticMetadata;
-                part p;
+                ref part p;
                 metadata def MD :> SemanticMetadata {
                     :>> baseType = p meta SysML::Systems::PartUsage;
                 }
@@ -1397,7 +1483,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     attribute d : Boolean = not true;
                 }""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(input.replace("part p1 {", "ref part p1 {"))
                 .check();
     }
 
@@ -1420,22 +1506,21 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     satisfy Req1 by Context1;
                     satisfy requirement Req2 : REQ2 by Context1.'System 1';
                 }""";
-        // We use the strict BNF form of the SatisfyRequirementUsage that force the use of the "assert" keyword
         var expected = """
                 package Requirements {
-                    requirement <Req1> {
+                    ref requirement <Req1> {
                         doc /* Some doc */
                     }
                     requirement def REQ2;
                 }
-                part Context1 {
+                ref part Context1 {
                     part 'System 1';
                 }
                 package ReqSatisfactions {
                     private import Requirements::*;
-                    assert satisfy Req1 by Context1.'System 1';
-                    assert satisfy Req1 by Context1;
-                    assert satisfy requirement Req2 : REQ2 by Context1.'System 1';
+                    ref satisfy Req1 by Context1.'System 1';
+                    ref satisfy Req1 by Context1;
+                    ref satisfy requirement Req2 : REQ2 by Context1.'System 1';
                 }""";
         this.checker.textToImport(input)
                 .expectedResult(expected)
@@ -1465,8 +1550,28 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     connect (p1, p2, Parts::part3);
                     connect p1.po1 to p2.po2;
                 }""";
+        var expected = """
+                package Parts {
+                    ref part <p1> part1 {
+                        ref port po1;
+                    }
+                    ref part <p2> part2 {
+                        ref port po2;
+                    }
+                    ref part <p3> part3 {
+                        ref port po3;
+                    }
+                }
+                package Connections {
+                    private import Parts::part1;
+                    private import Parts::part2;
+                    ref connect p1 to p2;
+                    ref connect [1] p1 to [1] p2;
+                    ref connect (p1, p2, Parts::part3);
+                    ref connect p1.po1 to p2.po2;
+                }""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(expected)
                 .check();
     }
 
@@ -1490,7 +1595,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     }
                 }""";
         this.checker.textToImport(input)
-                .expectedResult(input)
+                .expectedResult(input.replace("requirement <Mre1>;", "ref requirement <Mre1>;").replace("requirement <Sre1>;", "ref requirement <Sre1>;"))
                 .check();
     }
 
@@ -1509,13 +1614,13 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 package P {
                     port def PI;
                     part def PD {
-                        port p : PI;
+                        ref port p : PI;
                     }
-                    part a {
+                    ref part a {
                         part b : PD;
                     }
-                    part c : PD;
-                    interface i connect a.b.p to c.p;
+                    ref part c : PD;
+                    ref interface i connect a.b.p to c.p;
                 }""";
         this.checker.textToImport(input)
                 .expectedResult(expected)
@@ -1545,8 +1650,8 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         x;
                     }
                     attribute def Exit;
-                    part p;
-                    action act;
+                    ref part p;
+                    ref action act;
                     state def S {
                         do action A;
                         entry ;
@@ -1556,15 +1661,15 @@ public class ImportExportTests extends AbstractIntegrationTests {
                             state S3;
                         }
                         transition S2 accept Exit then done;
-                        transition S1 accept s : Sig do action D then S2.S3;
+                        transition first S1 accept s : Sig do action D then S2.S3;
                         transition T first S2.S3 accept s : Sig via p if true do send s via subactions::this to p then S1;
                         exit act;
                         state S3 {
                             state S3a;
                         }
-                        transition S3.S3a then S1;
+                        transition first S3.S3a then S1;
                     }
-                    state s0 {
+                    ref state s0 {
                         state s1 {
                             state s2;
                         }
@@ -1573,15 +1678,15 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         }
                         transition t1 first s1.s2 then s3.s4;
                     }
-                    state s parallel {
+                    ref state s parallel {
                         state s1;
                         state s2;
                     }
-                    state s4 {
+                    ref state s4 {
                         do action a;
                         action c;
                     }
-                    state s5 :> s4 {
+                    ref state s5 :> s4 {
                         do action b :>> c;
                     }
                 }""";
@@ -1629,13 +1734,13 @@ public class ImportExportTests extends AbstractIntegrationTests {
                             requirementsSpecification : ItemDef0;
                         }
                         package 'JJ & GG' {
-                            item requirements : ItemDef0;
-                            item requirements : ItemDef0;
+                            ref item requirements : ItemDef0;
+                            ref item requirements : ItemDef0;
                         }
                     }
                     package 'CC & DD' {
                         private import 'AA & BB'::'JJ & GG'::*;
-                        requirement rec0 : 'AA & BB'::RecDef1 {
+                        ref requirement rec0 : 'AA & BB'::RecDef1 {
                             requirementsSpecification :> 'AA & BB'::RecDef1::requirementsSpecification = 'root && root'::'AA & BB'::'JJ & GG'::requirements;
                         }
                     }

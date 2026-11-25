@@ -616,9 +616,7 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
         });
 
         Runnable checkCreatedExpression = this.checkElementHasExpression(editingContextId, ExpressionSamplesProjectData.SemanticIds.THERMAL_CONTROL_TO_COOLING_TRANSITION_ID, TransitionUsage.class,
-                new AtomicReference<>(), "currentTemp >= targetTemp + tolerance * 0.9"); // Note that the "()" from the
-                                                                                         // source are lost in the
-                                                                                         // serialization
+                new AtomicReference<>(), "currentTemp >= targetTemp + (tolerance * 0.9)");
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTreeContentConsumer)
@@ -869,10 +867,10 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
         var checkPerformanceConcernAssumeConstraint = this.checkExpressionEditorState(editingContextId, ExpressionSamplesProjectData.SemanticIds.PERFORMANCE_CONCERN_ASSUME_ID, "", null,
                 null);
         var checkPerformanceConcernRequireConstraint = this.checkExpressionEditorState(editingContextId, ExpressionSamplesProjectData.SemanticIds.PERFORMANCE_CONCERN_REQUIRE_ID,
-                "s.samplingRate >= 50.0 & s.currentValue != 0.0 | s.errorCount == 0", null, null);
-        // require s.samplingRate >= 50.0 & s.currentValue != 0.0 | s.errorCount == 0
+                "s.samplingRate >= 50.0 & (s.currentValue != 0.0 | s.errorCount == 0)", null, null);
+        // require s.samplingRate >= 50.0 & (s.currentValue != 0.0 | s.errorCount == 0)
         var checkPerformanceConcernRequireConstraintExpression = this.checkExpressionEditorState(editingContextId,
-                ExpressionSamplesProjectData.SemanticIds.PERFORMANCE_CONCERN_REQUIRE_EXPRESSION_ID, "s.samplingRate >= 50.0 & s.currentValue != 0.0 | s.errorCount == 0", null, null);
+                ExpressionSamplesProjectData.SemanticIds.PERFORMANCE_CONCERN_REQUIRE_EXPRESSION_ID, "s.samplingRate >= 50.0 & (s.currentValue != 0.0 | s.errorCount == 0)", null, null);
         var checkHeatingTransition = this.checkExpressionEditorState(editingContextId, ExpressionSamplesProjectData.SemanticIds.THERMAL_CONTROL_TO_HEATING_TRANSITION_ID, "", null, null);
         var checkHeatingSuccession = this.checkExpressionEditorState(editingContextId, ExpressionSamplesProjectData.SemanticIds.THERMAL_CONTROL_TO_HEATING_SUCCESSION_ID, "", null,
                 null);

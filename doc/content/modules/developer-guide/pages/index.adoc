@@ -587,6 +587,12 @@ ServiceMethod.<ModelQueryAQLService, Element> of0(ModelQueryAQLService::isActor)
 ServiceMethod.of1(EObjectServices.class, EObjectServices::eGet, EObject.class, EStructuralFeature.class).aqlSelf(E_STRUCTURAL_FEATURE);
 ----
 
+[#textual_sysml]
+== Textual {sysmlv2}
+
+The parser, linker, and serializer handle the {sysmlv2} textual notation.
+The xref:developer-guide:textual-sysml.adoc[Textual SysML guide] describes how the modules fit together, how to reuse the serializer, and how {product} converts between its application metamodel and the OMG metamodel.
+
 [#generate_openapi]
 == Generate a new OpenAPI documentation of REST API
 

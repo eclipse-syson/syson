@@ -80,6 +80,9 @@ The collecting API requires a non-negative `maxResults` parameter and stops trav
 `NonStandardLibraryFeaturePredicate` prunes features declared in standard SysML or KerML library resources, regardless of their inheritance path.
 - https://github.com/eclipse-syson/syson/issues/2660[#2660] [export] Add the standalone `syson-sysml-serializer` module and include it in `syson-starter`.
 It writes SysML v2 models as normalized text, round-trip text that preserves syntax captured by the parser, or standalone HTML with syntax highlighting.
+- https://github.com/eclipse-syson/syson/issues/2661[#2661] [export] Use the new serializer for UTF-8 document downloads, expression text, diagram labels, and feedback messages.
+Imported reference spellings remain available while the model is loaded. After a reload, serialization uses the stored model.
+Downstream callers can migrate from the deprecated `SysMLElementSerializer` to `SysONTextSerializer` for SysON model elements.
 - https://github.com/eclipse-syson/syson/issues/2590[#2590] [diagrams] Add `Redefine a nested feature` tool in diagrams.
 
 == v2026.11.0

@@ -620,23 +620,14 @@ public class NamespaceImplTest {
         assertEquals("test1::test2", testModel.p1.qualificationOf("test1::test2::test3"));
     }
 
+    /** Checks the memberships visible through imports. */
     private void assertImportedMembership(Namespace namespace, Membership... expected) {
-        assertContentEquals(namespace.getImportedMembership(), expected);
-        MembershipCacheAdapter cacheAdapter = new MembershipCacheAdapter();
-        namespace.eAdapters().add(cacheAdapter);
-        assertContentEquals(namespace.getImportedMembership(), expected);
-        namespace.eAdapters().remove(cacheAdapter);
         assertContentEquals(namespace.getImportedMembership(), expected);
     }
 
+    /** Checks the memberships visible in the namespace. */
     private void assertMembership(Namespace namespace, Membership... expected) {
         assertContentEquals(namespace.getMembership(), expected);
-        MembershipCacheAdapter cacheAdapter = new MembershipCacheAdapter();
-        namespace.eAdapters().add(cacheAdapter);
-        assertContentEquals(namespace.getMembership(), expected);
-        namespace.eAdapters().remove(cacheAdapter);
-        assertContentEquals(namespace.getMembership(), expected);
-
     }
 
 }

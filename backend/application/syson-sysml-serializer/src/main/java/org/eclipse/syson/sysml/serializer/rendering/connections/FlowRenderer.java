@@ -364,7 +364,7 @@ public final class FlowRenderer {
     private void writeEndpointReference(final TextOutput output, final String reference,
             final Element contextElement) {
         if (!reference.isBlank()) {
-            this.referenceWriter.writeReferenceText(output, reference, contextElement);
+            output.referenceText(reference, () -> this.referenceWriter.referenceOccurrences(contextElement, reference));
         }
     }
 

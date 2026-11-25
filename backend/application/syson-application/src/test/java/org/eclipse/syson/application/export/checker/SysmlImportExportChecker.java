@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,6 +25,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.sirius.web.application.document.services.LoadingReport;
 import org.eclipse.sirius.web.application.document.services.api.ExternalResourceLoadingResult;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.syson.sysml.export.SysMLv2DocumentExporter;
@@ -92,10 +94,11 @@ public class SysmlImportExportChecker {
         return this;
     }
 
+    /** Checks the expected text and verifies that importing the download introduces no diagnostics. */
     public void check() throws IOException {
         Objects.requireNonNull(this.textToImport);
         Objects.requireNonNull(this.expectedResult);
-        try (var inputStream = new ByteArrayInputStream(this.textToImport.getBytes())) {
+        try (var inputStream = new ByteArrayInputStream(this.textToImport.getBytes(StandardCharsets.UTF_8))) {
             Optional<ExternalResourceLoadingResult> optExternalResourceLoadingResult = this.sysmlLoader.getResource(inputStream, this.createFakeURI(UUID.randomUUID()),
                     this.editingContext.getDomain().getResourceSet(),
                     false);
@@ -109,8 +112,14 @@ public class SysmlImportExportChecker {
             Optional<byte[]> bytes = this.exporter.getBytes(externalResourceLoadingResult.resource(), MediaType.TEXT_HTML.toString());
             assertTrue(bytes.isPresent());
 
-            String content = new String(bytes.get());
+            String content = new String(bytes.get(), StandardCharsets.UTF_8);
             assertEquals(this.normalize(this.expectedResult), this.normalize(content));
+            var resources = this.editingContext.getDomain().getResourceSet();
+            resources.getResources().remove(externalResourceLoadingResult.resource());
+            var reimported = this.sysmlLoader.getResource(new ByteArrayInputStream(bytes.get()), this.createFakeURI(UUID.randomUUID()), resources, false).orElseThrow();
+            var originalReport = (LoadingReport) externalResourceLoadingResult.loadingReport();
+            var reimportReport = (LoadingReport) reimported.loadingReport();
+            assertTrue(originalReport.content().containsAll(reimportReport.content()), () -> "Reimport diagnostics: " + reimportReport.content());
         }
     }
 

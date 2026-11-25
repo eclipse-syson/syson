@@ -12,123 +12,22 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.services;
 
-import java.util.IdentityHashMap;
 import java.util.Map;
-import java.util.Objects;
 
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.parser.adapter.ICommentBodyAdapter;
 
 /**
- * Copies stored SysML features between the SysON and OMG metamodels by name.
+ * Import-compatible name for the shared SysML metamodel copier.
  *
  * @author arichard
  */
-public class SysMLMetamodelCopier extends EcoreUtil.Copier {
+public class SysMLMetamodelCopier extends org.eclipse.syson.sysml.metamodel.services.textual.SysMLMetamodelCopier {
 
     private static final long serialVersionUID = 1L;
 
-    private final EPackage sourcePackage;
-
-    private final EPackage targetPackage;
-
-    private final Map<EObject, EObject> referenceTargets;
-
-    /**
-     * Creates a copier whose external reference targets are never copied or modified.
-     *
-     * @param sourcePackage the source metamodel
-     * @param targetPackage the target metamodel
-     * @param referenceTargets existing target objects indexed by their source counterparts
-     */
+    /** Creates a copier with the existing external reference mappings. */
     public SysMLMetamodelCopier(EPackage sourcePackage, EPackage targetPackage, Map<EObject, EObject> referenceTargets) {
-        super(false, false);
-        this.sourcePackage = sourcePackage;
-        this.targetPackage = targetPackage;
-        this.referenceTargets = new IdentityHashMap<>(referenceTargets);
-    }
-
-    @Override
-    protected EClass getTarget(EClass sourceClass) {
-        EClass target = null;
-        if (sourceClass.getEPackage() == this.sourcePackage) {
-            target = (EClass) this.targetPackage.getEClassifier(sourceClass.getName());
-        }
-        return Objects.requireNonNull(target,
-                () -> "Unsupported SysML classifier: " + sourceClass.getName());
-    }
-
-    @Override
-    protected EStructuralFeature getTarget(EStructuralFeature feature) {
-        EStructuralFeature target = null;
-        if (!feature.isTransient() && !feature.isDerived() && feature != EcorePackage.Literals.EMODEL_ELEMENT__EANNOTATIONS) {
-            target = Objects.requireNonNull(this.getTarget(feature.getEContainingClass()).getEStructuralFeature(feature.getName()),
-                    () -> "Unsupported SysML feature: " + feature.getEContainingClass().getName() + "." + feature.getName());
-        }
-        return target;
-    }
-
-    @Override
-    protected void copyAttribute(EAttribute attribute, EObject source, EObject target) {
-        EStructuralFeature targetFeature = this.getTarget(attribute);
-        if (targetFeature != null) {
-            if (attribute.getEAttributeType() instanceof EEnum) {
-                // Enum defaults and their numeric values differ between the two metamodels.
-                Object value = source.eGet(attribute, false);
-                boolean unset = (attribute.isUnsettable() || targetFeature.isUnsettable()) && !source.eIsSet(attribute);
-                if (value != null && !unset) {
-                    String literal = this.sourcePackage.getEFactoryInstance().convertToString(attribute.getEAttributeType(), value);
-                    EAttribute targetAttribute = (EAttribute) targetFeature;
-                    target.eSet(targetAttribute, this.targetPackage.getEFactoryInstance().createFromString(targetAttribute.getEAttributeType(), literal));
-                }
-            } else {
-                super.copyAttribute(attribute, source, target);
-                if (this.targetPackage == SysmlPackage.eINSTANCE && "body".equals(attribute.getName())) {
-                    // SysON keeps comment indentation; the OMG semantic body has already removed it.
-                    source.eAdapters().stream().filter(ICommentBodyAdapter.class::isInstance).map(ICommentBodyAdapter.class::cast).findFirst()
-                            .ifPresent(adapter -> target.eSet(targetFeature, adapter.getRawBody().substring(2, adapter.getRawBody().length() - 2).strip()));
-                }
-            }
-        }
-    }
-
-    @Override
-    protected void copyReference(EReference reference, EObject source, EObject target) {
-        if (this.getTarget(reference) != null && source.eIsSet(reference)) {
-            Object value = source.eGet(reference, false);
-            if (reference.isMany()) {
-                for (Object element : ((InternalEList<?>) value).basicList()) {
-                    Objects.requireNonNull(this.get(element), () -> "Reference target outside the SysML import context: " + reference.getName());
-                }
-            } else if (value != null) {
-                Objects.requireNonNull(this.get(value), () -> "Reference target outside the SysML import context: " + reference.getName());
-            }
-            super.copyReference(reference, source, target);
-        }
-    }
-
-    @Override
-    public EObject get(Object key) {
-        EObject result = super.get(key);
-        if (result == null) {
-            result = this.referenceTargets.get(key);
-        }
-        if (result == null && key instanceof EObject source && source.eIsProxy()) {
-            result = EcoreUtil.create(this.getTarget(source.eClass()));
-            ((InternalEObject) result).eSetProxyURI(((InternalEObject) source).eProxyURI());
-            this.referenceTargets.put(source, result);
-        }
-        return result;
+        super(sourcePackage, targetPackage, referenceTargets);
     }
 }

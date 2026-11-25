@@ -2,6 +2,7 @@
 
 == Key highlights
 
+* A new parser and serializer improve SysML v2 import and export, making it easier to bring models into SysON and share them as text.
 * Standard diagrams are now faster and more responsive.
 
 == New features
@@ -23,6 +24,11 @@ Collecting paths into a list requires an explicit maximum number of results.
 A reusable traversal predicate excludes features declared in standard libraries while retaining model and business library features.
 Chain selection filters receive the root context and complete paths, with a reusable predicate to exclude paths that need no further local redefinition.
 
+** The standalone `syson-sysml-serializer` module is included in `syson-starter`.
+It writes OMG SysML models as normalized text, round-trip text that preserves parser-recorded syntax, or standalone HTML with syntax highlighting.
+Use `SysONTextSerializer` for SysON model elements in place of the deprecated `SysMLElementSerializer`.
+See the xref:developer-guide:textual-sysml.adoc[Textual SysML developer guide].
+
 == Bug fixes
 
 * In SysML models:
@@ -37,7 +43,6 @@ Return parameters match independently of input order.
 * In diagrams:
 
 ** A _Requirement_ or _Concern_ graphical node shows each inherited _Stakeholder_ once, with the `^` marker.
-
 ** A nesting graphical edge is displayed only for a locally owned _Stakeholder_, preventing an inherited _Stakeholder_ from being shown as locally contained.
 
 == Improvements
@@ -45,6 +50,9 @@ Return parameters match independently of input order.
 * In diagrams:
 
 ** Creating elements in standard diagrams is faster, especially when inherited elements are displayed.
+
+* xref:user-manual:features/import-export-textual.adoc[Textual SysML downloads] now use a new serializer to produce text.
+Expression text, diagram labels and direct-edit text, and feedback messages use this new serializer.
 
 == Technical details
 

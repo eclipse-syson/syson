@@ -34,6 +34,8 @@ public final class ParserFragments {
 
     public static final String ACCEPT_NODE = "parseAcceptNode";
 
+    public static final String ACCEPT_PARAMETER_PART = "parseAcceptParameterPart";
+
     public static final String ACTION_BODY_PARAMETER = "parseActionBodyParameter";
 
     public static final String ACTION_NODE = "parseActionNode";

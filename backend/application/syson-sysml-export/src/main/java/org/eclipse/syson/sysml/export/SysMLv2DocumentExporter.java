@@ -12,21 +12,13 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.export;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.web.application.document.services.api.IDocumentExporter;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.impl.MembershipCacheAdapter;
-import org.eclipse.syson.sysml.metamodel.services.textual.SysMLElementSerializer;
-import org.eclipse.syson.sysml.metamodel.services.textual.SysMLSerializingOptions;
-import org.eclipse.syson.sysml.metamodel.services.textual.utils.FileNameDeresolver;
-import org.eclipse.syson.sysml.metamodel.services.textual.utils.Status;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.eclipse.syson.sysml.metamodel.services.textual.SysONTextSerializer;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
@@ -37,15 +29,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SysMLv2DocumentExporter implements IDocumentExporter {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SysMLv2DocumentExporter.class);
-
-    private static final SysMLSerializingOptions SYSML_TEXTUAL_FORMAT_OPTIONS = new SysMLSerializingOptions.Builder()
-            .lineSeparator(System.lineSeparator())
-            .nameDeresolver(new FileNameDeresolver())
-            .indentation("\t")
-            .needEscapeCharacter(true)
-            .build();
 
     @Override
     public boolean canHandle(Resource resource, String mediaType) {
@@ -59,43 +42,8 @@ public class SysMLv2DocumentExporter implements IDocumentExporter {
     @Override
     public Optional<byte[]> getBytes(Resource resource, String mediaType) {
         if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof Element element) {
-            MembershipCacheAdapter membershipCacheAdapter = new MembershipCacheAdapter();
-
-            this.installCacheAdapter(resource, membershipCacheAdapter);
-            try {
-                List<Status> status = new ArrayList<>();
-                String textualForm = new SysMLElementSerializer(SYSML_TEXTUAL_FORMAT_OPTIONS, status::add)
-                        .doSwitch(element);
-                if (textualForm == null) {
-                    textualForm = "";
-                }
-                for (Status s : status) {
-                    s.log(LOGGER);
-                }
-                return Optional.of(textualForm.getBytes());
-            } finally {
-                this.removeCacheAdapter(resource, membershipCacheAdapter);
-            }
+            return Optional.of(new SysONTextSerializer().serialize(element).getBytes(StandardCharsets.UTF_8));
         }
         return Optional.empty();
-    }
-
-    private void removeCacheAdapter(Resource resource, MembershipCacheAdapter membershipCacheAdapter) {
-        ResourceSet resourceSet = resource.getResourceSet();
-        if (resourceSet != null) {
-            resourceSet.eAdapters().remove(membershipCacheAdapter);
-        } else {
-            resource.eAdapters().remove(membershipCacheAdapter);
-        }
-    }
-
-    private ResourceSet installCacheAdapter(Resource resource, MembershipCacheAdapter membershipCacheAdapter) {
-        ResourceSet resourceSet = resource.getResourceSet();
-        if (resourceSet != null) {
-            resourceSet.eAdapters().add(membershipCacheAdapter);
-        } else {
-            resource.eAdapters().add(membershipCacheAdapter);
-        }
-        return resourceSet;
     }
 }

@@ -177,7 +177,7 @@ it contains no JUnit tests. `ParserRuleFixtureDiscovery` discovers parser entry
 points and resource folders. `SerializerHtmlFixtureGenerator` generates HTML for
 manual inspection.
 
-The integration with SysON textual document export is tracked in [#2661](https://github.com/eclipse-syson/syson/issues/2661).
+SysON converts its own model elements to temporary OMG elements in `SysONTextSerializer` before rendering document downloads and UI text.
 
 ## Test Corpus Strategy
 

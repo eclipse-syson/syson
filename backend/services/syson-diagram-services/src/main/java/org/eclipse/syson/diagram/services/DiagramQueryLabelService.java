@@ -59,14 +59,10 @@ import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.VariantMembership;
 import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
-import org.eclipse.syson.sysml.metamodel.services.textual.SysMLElementSerializer;
-import org.eclipse.syson.sysml.metamodel.services.textual.SysMLSerializingOptions;
+import org.eclipse.syson.sysml.metamodel.services.textual.SysONTextSerializer;
 import org.eclipse.syson.sysml.metamodel.services.textual.utils.Appender;
 import org.eclipse.syson.sysml.metamodel.services.textual.utils.FileNameDeresolver;
-import org.eclipse.syson.sysml.metamodel.services.textual.utils.INameDeresolver;
 import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -91,8 +87,6 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
      * The default separator used when printing a set of Effect Action for a TransitionUsage label
      */
     private static final String EFFECT_ACTION_SEPARATOR = ", ";
-
-    private final Logger logger = LoggerFactory.getLogger(DiagramQueryLabelService.class);
 
     private final MetamodelQueryElementService metamodelQueryElementService = new MetamodelQueryElementService();
 
@@ -232,7 +226,7 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
 
     @Override
     public String getSysmlTextualRepresentation(Element element, boolean resolvableName) {
-        return this.buildSerializer(resolvableName).doSwitch(element);
+        return this.buildSerializer(resolvableName).serialize(element);
     }
 
     /**
@@ -755,8 +749,8 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
     private void handleAcceptParameterPart(TransitionUsage transition, Appender appender, boolean directEditInput) {
         EList<AcceptActionUsage> triggerActions = transition.getTriggerAction();
         if (!triggerActions.isEmpty()) {
-            SysMLElementSerializer sysmlSerializer = this.buildSerializer(directEditInput);
-            String textGuardExpression = triggerActions.stream().map(sysmlSerializer::getAcceptParameterPart)
+            SysONTextSerializer sysmlSerializer = this.buildSerializer(directEditInput);
+            String textGuardExpression = triggerActions.stream().map(sysmlSerializer::acceptParameterPart)
                     .filter(Objects::nonNull)
                     .collect(joining(TRIGGER_ACTION_SEPARATOR));
             appender.append(textGuardExpression);
@@ -845,35 +839,12 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
         }
     }
 
-    /**
-     * Builds a SysMLSerializer.
-     *
-     * @param sysmlTextualFormatCompliant
-     *            holds <code>true</code> to build a Serializer that would produce a valid text that is fully compliant with SysML textual format (resolvable name, escaped character), otherwise
-     *            holds <code>false /code> to build a serializer that provides simple String representation (use simple name, do not escape character in LiteralString etc...). The second mode is
-     *            used to print elements in diagrams or in the detail view.
-     * @return a new {@link SysMLElementSerializer}.
-     */
-    private SysMLElementSerializer buildSerializer(boolean sysmlTextualFormatCompliant) {
-        final INameDeresolver nameDeresolver;
-        final boolean escapeChar;
-        if (sysmlTextualFormatCompliant) {
-            nameDeresolver = new FileNameDeresolver();
-            escapeChar = true;
-        } else {
-            nameDeresolver = new SimpleNameDeresolver();
-            escapeChar = false;
+    /** Selects readable display names or resolvable direct-edit names. */
+    private SysONTextSerializer buildSerializer(boolean directEdit) {
+        if (directEdit) {
+            return new SysONTextSerializer(FileNameDeresolver::new, false);
         }
-
-        SysMLSerializingOptions options = new SysMLSerializingOptions.Builder()
-                .lineSeparator("\n")
-                .nameDeresolver(nameDeresolver)
-                .indentation(" ")
-                .needEscapeCharacter(escapeChar)
-                .build();
-        return new SysMLElementSerializer(options, s -> {
-            this.logger.info(s.message());
-        });
+        return new SysONTextSerializer(SimpleNameDeresolver::new, true);
     }
 
     private String getFeatureValueRelationshipSymbol(FeatureValue featureValueMembership) {

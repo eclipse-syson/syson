@@ -49,10 +49,11 @@ public class GVStateTransitionUsageTests extends AbstractIntegrationTests {
     @Autowired
     private IGivenDiagramSubscription givenDiagramSubscription;
 
+    /** Checks trigger labels with and without a receiver target, and a guard-only label. */
     @GivenSysONServer({ GeneralViewStateTransitionUsageProjectData.SCRIPT_PATH })
     @Test
-    @DisplayName("GIVEN a General View with multiplicity range, WHEN the diagram is render, THEN the edge center label as an empty text")
-    public void checkMultiplicityLabel() {
+    @DisplayName("GIVEN a General View with state transitions, WHEN the diagram is rendered, THEN edge labels show triggers and guards")
+    public void checkTransitionLabels() {
         this.givenInitialServerState.initialize();
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
                 GeneralViewStateTransitionUsageProjectData.EDITING_CONTEXT_ID,
@@ -77,7 +78,7 @@ public class GVStateTransitionUsageTests extends AbstractIntegrationTests {
                     .filter(e -> GeneralViewStateTransitionUsageProjectData.GraphicalIds.ON_OFF_ID.equals(e.getId()))
                     .findFirst()
                     .get();
-            assertThat(onOffEdge.getCenterLabel().text()).isEqualTo("after 5 [min] via ");
+            assertThat(onOffEdge.getCenterLabel().text()).isEqualTo("after 5 [min]");
             assertThat(onOffEdge.getSourceId()).isEqualTo(GeneralViewStateTransitionUsageProjectData.GraphicalIds.ON_ID);
             assertThat(onOffEdge.getTargetId()).isEqualTo(GeneralViewStateTransitionUsageProjectData.GraphicalIds.OFF_ID);
             Edge onIdleEdge = diagram.getEdges().stream()
