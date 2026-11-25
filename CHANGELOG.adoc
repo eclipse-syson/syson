@@ -9,6 +9,7 @@
 === Architectural decision records
 
 - [ADR-004] Safely reconciling SysML v2 textual edits with concurrent model changes
+- [ADR-005] Viewing a SysMLv2 Document in the Workbench
 
 === Breaking changes
 
