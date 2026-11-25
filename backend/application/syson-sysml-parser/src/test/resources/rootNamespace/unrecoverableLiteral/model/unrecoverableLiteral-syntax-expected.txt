@@ -1,1 +1,1 @@
-Unable to recover the SysML model: For input string: "2147483648"
+6:22 Unable to set LiteralInteger.value to 2147483648

@@ -60,6 +60,7 @@ The derived stakeholder list on a requirement usage now identifies its owning EM
 - https://github.com/eclipse-syson/syson/issues/2665[#2665] [import] `SysMLImportLexer` Set initialization should be moved to a constant.
 - https://github.com/eclipse-syson/syson/issues/2658[#2658] [diagrams] Ensure undoing _add existing elements_ does not remove unsynchronized nodes that shouldn't be removed.
 - https://github.com/eclipse-syson/syson/issues/2631[#2631] [import] Syntax error in a nested body leaves the context stack unbalanced (AssertionError / wrong root type)
+- https://github.com/eclipse-syson/syson/issues/2675[#2675] [import] Integer overflow during value conversion
 
 === Improvements
 
