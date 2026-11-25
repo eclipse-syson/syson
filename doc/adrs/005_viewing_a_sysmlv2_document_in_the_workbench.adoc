@@ -1,0 +1,102 @@
+:author: Guillaume Coutable <guillaume.coutable@obeo.fr>
+:date: 2026-11-25
+:status: proposed
+:consulted: Axel Richard <axel.richard@obeo.fr>
+:informed: Axel Richard <axel.richard@obeo.fr>
+:deciders: Axel Richard <axel.richard@obeo.fr>
+:pitch: doc/shapes/2026.12/experimental_sysmlv2_textual_editor.adoc
+:issue:
+
+= ADR-005 - Viewing a SysMLv2 Document in the Workbench
+
+== Context and Problem Statement
+
+Users need to open a document in the central area of the workbench from a SysML v2 element it contains.
+This ADR covers displaying the text in read-only mode and refreshing it as the model changes.
+
+== Decision Drivers
+
+* Display the entire document and locate the target element's declaration.
+* Keep the element being read in view during a refresh, even when content is added above it.
+* Show SysML v2 syntax highlighting and line numbers.
+Let users select all text with `Ctrl+A`, copy the selection with `Ctrl+C`, and copy the entire text with the `Copy` button.
+* Show diagnostics while keeping the generated text visible and available to copy.
+
+== Considered Options
+
+=== First Option
+
+*Monaco Editor.*
+Support read-only display with syntax highlighting and line numbers and can be integrated with React 19.
+The `@monaco-editor/react` 4.7.0 wrapper declares support for React 19.
+https://github.com/suren-atoyan/monaco-react/blob/v4.7.0/package.json#L32-L36[Wrapper package manifest].
+
+We put this option first because a proof of concept has already been developed.
+The proof of concept used a Monarch tokenizer for SysMLv2 syntax highlighting.
+
+=== Second Option
+
+*CodeMirror 6.*
+It also supports read-only display with syntax highlighting and line numbers and can be integrated with React 19.
+The lexical rules from the proof of concept can be ported to `StreamLanguage`.
+https://codemirror.net/docs/extensions/[CodeMirror extensions].
+
+=== Third Option
+
+*Native text area.*
+It supports text selection and copying.
+Syntax highlighting and line numbers would require additional rendering.
+
+== Decision Outcome
+
+We propose a dedicated central representation that receives updates through a GraphQL subscription.
+We choose Monaco for this first version so we can reuse the integration and syntax highlighting from the proof of concept.
+We can switch to another editor later.
+
+The element from which the representation is created is its target.
+The representation displays the entire document and brings the target's declaration into view on creation, when the user returns to its tab, and when the representation is reopened.
+Refreshes keep the element being read in view as long as it is still present.
+How to locate a declaration in the generated text remains an open question.
+Deleting the target element also deletes the representation.
+
+A banner above the editor displays diagnostics.
+The generated text remains visible and available to copy, even if it is incomplete.
+If the target element's declaration is missing from the generated text, the editor shows the start of the document and the banner reports that the target element could not be found in the text.
+
+== Consequences
+
+=== Advantages
+
+* The representation remains consistent with the current behavior of other workbench representations: returning to its tab or reopening it restores the initial view around its target.
+* Users can read and copy the text even when serialization produces only part of the document.
+
+=== Drawbacks
+
+* Keeping the element in view requires locating its declaration in each new version of the text.
+* Returning to an open representation resets the view to its target instead of preserving the user's last reading position, unlike typical code editors.
+
+== More Information
+
+=== Implementation
+
+. Use the SysML v2 element as the representation's target and register the React component through `representationFactoryExtensionPoint`.
+Resolve the document containing the element when generating the text.
+. Serialize the document with `SysMLSerializer`.
+Publish the text and any available diagnostics through a GraphQL subscription when the representation opens and after semantic changes handled by `IRepresentationRefresher`.
+The new serializer returns only the text.
+How to produce diagnostics remains an open question.
+. Integrate Monaco in read-only mode with the diagnostics banner.
+Verify that the editor reveals the target declaration on creation, when returning to its tab, and on reopening.
+Test how the representation responds when another session adds content above the element being read, when the target is deleted, and when partial text omits the target declaration.
+
+=== Decision Details
+
+The following implementation analysis is based on Sirius Web `2026.11.2`, the version currently used by SysON.
+The source code for this version exposes `representationFactoryExtensionPoint`, `IRepresentationEventProcessorFactory`, `IRepresentationRefresher`, and `IEventProcessorSubscriptionProvider`.
+`DanglingRepresentationDeletionService` deletes representations whose targets are gone.
+The full workflow still needs to be validated in SysON.
+
+=== References
+
+* link:../shapes/2026.12/experimental_sysmlv2_textual_editor.adoc[Experimental SysML v2 textual editor pitch].
+* https://github.com/eclipse-sirius/sirius-web/releases/tag/v2026.11.2[Sirius Web 2026.11.2].
