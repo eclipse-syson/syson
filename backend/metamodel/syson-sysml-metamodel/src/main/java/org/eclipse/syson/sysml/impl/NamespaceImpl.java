@@ -33,7 +33,6 @@ import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.VisibilityKind;
-import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.MembershipComputer;
 import org.eclipse.syson.sysml.helper.NameConflictingFilter;
 import org.eclipse.syson.sysml.helper.NameHelper;
@@ -107,20 +106,13 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Computes the current memberships, including those supplied by the namespace subtype.
      *
      * @generated NOT
      */
     @Override
     public EList<Membership> getMembership() {
-        return EMFUtils.getAdapter(this, MembershipCacheAdapter.class)
-                .map(membershipCacheAdapter -> membershipCacheAdapter.getMembership(this)
-                        .orElseGet(() -> {
-                            EList<Membership> computedMembership = this.getMembership(new BasicEList<>());
-                            membershipCacheAdapter.addToCache(this, computedMembership);
-                            return computedMembership;
-                        }))
-                .orElseGet(() -> this.getMembership(new BasicEList<>()));
+        return this.getMembership(new BasicEList<>());
     }
 
     /**

@@ -20,10 +20,8 @@ import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.services.SimpleNameDeresolver;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.metamodel.services.textual.SysMLElementSerializer;
-import org.eclipse.syson.sysml.metamodel.services.textual.SysMLSerializingOptions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.metamodel.services.textual.SysONTextSerializer;
 
 /**
  * Label-related Java services used in diagrams.
@@ -31,8 +29,6 @@ import org.slf4j.LoggerFactory;
  * @author arichard
  */
 public class ViewLabelService {
-
-    private final Logger logger = LoggerFactory.getLogger(ViewLabelService.class);
 
     private final ShowDiagramsIconsService showDiagramsIconsService;
 
@@ -67,16 +63,12 @@ public class ViewLabelService {
      * @return the element itself
      */
     public Element sendMessageWithTextualRepresentation(String msg, String level, Element element) {
-        SysMLSerializingOptions options = new SysMLSerializingOptions.Builder()
-                .lineSeparator("\n")
-                .nameDeresolver(new SimpleNameDeresolver())
-                .indentation(" ")
-                .needEscapeCharacter(false)
-                .build();
-        var serializer = new SysMLElementSerializer(options, s -> {
-            this.logger.info(s.message());
-        });
-        this.feedbackMessageService.addFeedbackMessage(new Message(MessageFormat.format(msg, serializer.doSwitch(element)), MessageLevel.valueOf(level)));
+        var serializer = new SysONTextSerializer(SimpleNameDeresolver::new, true);
+        Element content = element;
+        if (element instanceof FeatureValue value) {
+            content = value.getValue();
+        }
+        this.feedbackMessageService.addFeedbackMessage(new Message(MessageFormat.format(msg, serializer.serialize(content)), MessageLevel.valueOf(level)));
         return element;
     }
 }

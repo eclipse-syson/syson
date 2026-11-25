@@ -1,0 +1,231 @@
+= Textual {sysmlv2} parser, linker, and serializer
+
+Three modules in `backend/application` read and write the {sysmlv2} textual notation using the `org.omg.sysml` metamodel.
+
+`syson-sysml-parser`:: Turns SysML text into a model.
+It uses an ANTLR grammar (`src/main/antlr4/SysML.g4` and `imports/KerMLExpressions.g4`), and the generated parser `SysMLParser` is committed.
+The parser builds model objects, captures syntax choices in EMF adapters, and records cross-reference spellings as `DanglingLink` objects in the parse result.
+`syson-sysml-linker`:: Resolves those spellings against the model and the libraries and installs the targets.
+`syson-sysml-serializer`:: Turns a model back into SysML text, or into a standalone HTML document with syntax highlighting.
+
+The application owns and edits `org.eclipse.syson.sysml` objects.
+The import module (`syson-sysml-import`) parses and links in an isolated OMG workspace, then converts the accepted elements to the application metamodel.
+Document export and UI text go through <<syson-integration>>.
+
+For the internal package layout and the test classes, read `backend/application/syson-sysml-serializer/README.md`.
+
+== Reusing the serializer
+
+The standalone serializer can also be used in command-line tools and other applications built on the OMG metamodel.
+
+* It depends only on the SysML metamodel (`org.omg.sysml.model`), the metamodel logic (`org.omg.sysml.logic`), EMF and `syson-sysml-parser`.
+From the parser, it uses the adapter types, `DanglingLink`, `ISysMLParseResult`, and the lexer, which gives the keywords to escape and the tokens to highlight in HTML.
+* Applications can supply their own behavior through functional interfaces (see <<consumer-hooks>>).
+* `SysMLSerializer` holds no state.
+Several threads can share an instance as long as each input model stays stable during serialization.
+
+Use an optional collaborator on `SerializationRequest` for features that need an application service.
+
+== Using the serializer
+
+[source,java]
+----
+SysMLSerializer serializer = new SysMLSerializer();
+
+// An OMG model without parser context.
+String normalized = serializer.serialize(omgElement);
+
+// A freshly parsed model: keep the parse result, it holds the spelling of the references the linker could not resolve.
+String roundTrip = serializer.serialize(parseResult, SerializationOptions.defaults().withMode(SerializationMode.ROUND_TRIP));
+
+// Every option, and HTML output.
+SerializationRequest request = SerializationRequest.forElement(root)
+        .withOptions(SerializationOptions.defaults())
+        .withDanglingReferences(DanglingReferenceIndex.from(danglingLinks))
+        .withContextualNames((target, context) -> shortestVisibleName(target, context))
+        .withReferencePaths(referencePathResolver);
+String text = serializer.serialize(request);
+String html = serializer.serializeToHtml(request.withHtmlLinks(target -> Optional.of(urlOf(target))));
+----
+
+The root can be any `org.omg.sysml.lang.sysml.Element`.
+References outside the subtree are written by name.
+A `null` root produces empty output.
+
+=== Modes
+
+`SerializationMode.NORMALIZED` (the default)::
+The text is derived from the model.
+The document export uses this mode for consistently formatted text.
+`SerializationMode.ROUND_TRIP`::
+The text preserves parser-recorded choices such as optional keywords, alternative notations, comment placement, literal spellings, and reference spellings.
+
+Normalized output can also use captured details such as quoted names and comment bodies.
+
+`SerializationOptions` also controls formatting and fragment syntax.
+
+* `FormattingOptions` sets the line separator, indentation unit, and token separator.
+* Set whether to omit reference keywords implied by their context.
+* Specify the parser entry point when serializing a fragment back to a specific parser rule.
+
+== EMF behavior a consumer should know about
+
+=== The serializer never changes the model
+
+The standalone renderer only reads the input model. Features, elements, adapters, caches, and element IDs remain untouched. It reads proxy URIs directly, so rendering requires no resource lookup or proxy resolution.
+
+Each call builds and discards its own name scopes, output buffers, and caches keyed by object identity.
+
+Reading a derived feature through SysML logic can resolve proxies, attach logic adapters and caches, or assign element IDs on first read.
+The renderer uses stored features and containment through `StoredModel` and `SafeEmfAccess.unresolvedValues`.
+
+* *References* are read without resolving proxies.
+A many-valued reference that the metamodel computes as a union, such as `Relationship::target`, is read through the stored references that redefine or subset it, such as `FeatureTyping::type`.
+* *Names and qualified names* are computed from declared names and containment.
+An unnamed feature takes its name from the target of its first owned redefinition, or from the referenced feature for a variant.
+* *Name lookups* that check whether a parser spelling still designates its target follow owned memberships only (`ContainmentNameLookup`).
+A spelling that is only visible through an import or an inherited membership is checked against the target's qualified name instead, or confirmed by your `ReferencePathResolver`.
+* *Element IDs* already stored on the elements supply the HTML anchors.
+
+`SideEffectFreeSerializationTest` exercises representative fixtures from the corpus with resolved targets and with unresolvable proxies.
+It fails on any lookup in the `ResourceSet`, any notification, and any change to a stored feature or to an adapter list.
+
+=== How references are named
+
+For each reference, `ReferenceTargets` uses the installed target and any spelling captured by the parser.
+
+* *The parser spelling*, taken from the `DanglingReferenceIndex`, when it still designates the target installed in the model.
+In round-trip mode this can preserve a short name, alias path, or quoted form.
+A spelling that designates another element is dropped, because the target was renamed or retargeted after parsing, and writing the old spelling would reparse into a different model.
+* *The installed target*, named by the caller's `ReferenceNameResolver` when one is supplied.
+Otherwise it is named by its qualified name, provided each step of that name is unambiguous, and else by its declared or effective name.
+* *The parser spelling alone*, when no target is installed, which is the case for a reference the linker could not resolve.
+Without these spellings, such a reference cannot be written back, so pass the parse result, or a `DanglingReferenceIndex`, whenever one exists.
+
+Proxies are named without being resolved:
+
+* The caller's `ReferenceNameResolver` can name the proxy.
+In normalized output, this lets a caller reflect a rename even when the parser captured an older spelling.
+Round-trip output can keep the recorded spelling for a proxy.
+* With neither a contextual name nor a retained spelling available, the serializer falls back to the proxy URI fragment.
+This gives a valid reference when the fragment is a name.
+A proxy whose fragment is an identifier produces that identifier, which the parser will not resolve.
+* In HTML output, the proxy itself is passed to the `HtmlReferenceLinkResolver`, and its URI is exposed as a data attribute.
+
+=== Relationships implied by the SysML logic
+
+Implied relationships, such as implicit specializations of library types, are recreated when the text is read.
+The serializer omits the implied relationships stored in the model (`isImplied`) and the elements they own, and never computes the ones the SysML logic derives on demand.
+It also omits the anonymous elements that the parser generates from a declaration, such as the features created for a feature chain, and writes the declaration instead.
+
+=== Incomplete or invalid models
+
+Models can be temporarily incomplete during editing, for example when an expression still needs operands or a relationship still needs a target.
+The renderer handles missing features where possible and treats model reads that fail with a runtime exception as missing data (`SafeEmfAccess.get`).
+
+=== Adapters do not survive persistence
+
+The parser keeps syntax choices in EMF adapters and cross-reference spellings in the parse result.
+These records live in memory and are absent from a model reloaded from storage.
+Round-trip output then falls back to normalized syntax and derives reference names from the stored model.
+
+=== Required initialization
+
+The parser, linker, and OMG model factory rely on the SysML logic.
+In a standalone application, call `SysMLLogicStandaloneSetup.doSetup()` before creating model objects.
+{product} registers the logic during application setup.
+
+[#consumer-hooks]
+== Integration hooks
+
+All hooks are optional and set on `SerializationRequest`.
+
+[cols="1,3"]
+|===
+| Hook | Purpose
+
+| `withDanglingReferences(DanglingReferenceIndex)`
+| Parser spellings of references, needed to write references that have no installed target and, in round-trip mode, to keep the original spelling.
+`forParseResult(...)` sets it from the parse result.
+The {product} integration rebuilds the index from spellings retained on the SysON objects.
+
+| `withContextualNames(ReferenceNameResolver)`
+| Chooses the name written for a target from a given context, typically the shortest name that the visible imports allow.
+The returned text is written verbatim, so it must be a valid, escaped reference that resolves back to the target.
+An empty answer keeps the default name.
+
+| `withReferencePaths(ReferencePathResolver)`
+| Confirms the target of each segment of a qualified reference, as the linker resolved it.
+It lets round-trip output keep alias paths, and lets HTML output link each segment.
+
+| `withHtmlLinks(HtmlReferenceLinkResolver)`
+| Makes references in HTML output navigable.
+Return a URL with a trusted scheme. The serializer applies attribute escaping when it writes the URL into `href`.
+|===
+
+== Changing the serializer
+
+=== Fixing a bug
+
+. Add a minimal `.sysml` file that shows the problem under `backend/application/syson-sysml-serializer/src/test/resources/testcases`.
+The corpus tests pick it up automatically:
+* `SysMLTextRoundTripTest` checks that round-trip output preserves the text, apart from whitespace.
+* `SysMLModelRoundTripTest` removes the text adapters, serializes, reparses and compares the canonical XMI.
+* `ProxyAndResolvedReferenceSerializationTest` replaces the target of each kind of reference with a proxy, then with a renamed resolved target, and checks that each reference is written and bound to the right target.
+. Check that the new test fails, fix the renderer, then run the whole module.
+. Report grammar bugs, such as a rule that drops or misplaces an element, against the parser.
+
+Add a parser fixture for each new or changed rule in `SysML.g4`. The serializer corpus tests also run on parser fixtures.
+For round-trip coverage of syntax choices outside the stored model, capture those choices in a parser adapter.
+
+=== Building and measuring
+
+Build the parser and serializer in the same Maven reactor to test the current versions together.
+Run from the repository root.
+
+[source,shell]
+----
+mvn -B -ntp -pl backend/application/syson-sysml-parser,backend/application/syson-sysml-serializer verify
+----
+
+The build runs Checkstyle and a module-specific PMD rule set (`src/main/resources/pmd/serializer-ruleset.xml`).
+
+Run `SysMLSerializationPerformanceIT` explicitly to measure parsing and serialization on large fixtures.
+
+[source,shell]
+----
+mvn -B -ntp -pl backend/application/syson-sysml-parser,backend/application/syson-sysml-serializer \
+  -Dtest=SysMLSerializationPerformanceIT -Dsurefire.failIfNoSpecifiedTests=false \
+  -Dsyson.serializer.performance.warmups=1 \
+  -Dsyson.serializer.performance.iterations=3 test
+----
+
+Compare revisions over several runs with the same warmup and iteration counts.
+
+[#syson-integration]
+== Serializing SysON model elements
+
+Use `org.eclipse.syson.sysml.metamodel.services.textual.SysONTextSerializer` from `syson-sysml-metamodel-services` for SysON elements.
+It replaces the deprecated `SysMLElementSerializer` in document export, expression text, diagram labels and direct editing, and feedback messages.
+
+[source,java]
+----
+String text = new SysONTextSerializer().serialize(sysonElement);
+String label = new SysONTextSerializer(SimpleNameDeresolver::new, true).serialize(sysonElement);
+----
+
+Each call copies the requested containment subtree with the shared `SysMLMetamodelCopier` and wires references in a second pass.
+External targets become typed OMG proxies in the temporary model.
+The contextual naming hook maps those targets and the referencing scope back to SysON.
+It looks up proxy targets only in already loaded resources and leaves the original references in place.
+`FileNameDeresolver` chooses names visible from the original scope for export and editing, including aliases and library names.
+`SimpleNameDeresolver` supplies concise display names.
+For diagram transitions, `acceptParameterPart` renders the payload and optional receiver so the caller can format the trigger label.
+
+During import and textual editing, the copier attaches parser reference spellings to their converted SysON owners.
+Serialization maps those records to the temporary OMG owners and builds a fresh `DanglingReferenceIndex`.
+An unresolved name such as `MissingType` can be exported while the imported model is loaded.
+Assigning a target, changing its namespace name, or clearing a previously resolved reference takes precedence over a recorded spelling.
+After reload, export uses the stored semantic model.
+
+Use `ImportedReferenceExportTests` to check the SysON upload, export, and reimport path, including the identity of the reimported target.

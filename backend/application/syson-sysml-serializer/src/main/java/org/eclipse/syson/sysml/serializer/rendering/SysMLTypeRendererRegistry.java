@@ -53,6 +53,7 @@ import org.eclipse.syson.sysml.serializer.rendering.relationships.MembershipSynt
 import org.eclipse.syson.sysml.serializer.rendering.relationships.RelationshipRenderer;
 import org.eclipse.syson.sysml.serializer.rendering.relationships.RequirementRenderer;
 import org.eclipse.syson.sysml.serializer.syntax.CommentRenderer;
+import org.eclipse.syson.sysml.serializer.syntax.ParserFragments;
 import org.omg.sysml.lang.sysml.AssignmentActionUsage;
 import org.omg.sysml.lang.sysml.BindingConnectorAsUsage;
 import org.omg.sysml.lang.sysml.Comment;
@@ -249,9 +250,12 @@ public final class SysMLTypeRendererRegistry {
      * declaration instead of the fragment's syntax.
      */
     private List<ElementRenderer> parserEntryPointRenderers() {
-        return List.of(this.parserOnly(this.renderer(
-                this.compactFragmentRenderer::canSerializeSimpleFragment,
-                this.compactFragmentRenderer::serializeSimpleFragment)),
+        return List.of(this.parserOnly(this.renderer(SysMLPackage.eINSTANCE.getAcceptActionUsage(),
+                element -> ParserFragments.ACCEPT_PARAMETER_PART.equals(this.context.options().parserEntryPoint()),
+                element -> this.context.output().raw(this.actionRenderer.acceptParameterText(element)))),
+                this.parserOnly(this.renderer(
+                        this.compactFragmentRenderer::canSerializeSimpleFragment,
+                        this.compactFragmentRenderer::serializeSimpleFragment)),
                 this.parserOnly(this.renderer(
                         this.structuredFragmentRenderer::canSerializeMessageEvent,
                         this.structuredFragmentRenderer::serializeMessageEvent)),

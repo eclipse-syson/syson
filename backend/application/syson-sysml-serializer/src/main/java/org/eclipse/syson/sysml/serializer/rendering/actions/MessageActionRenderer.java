@@ -205,12 +205,17 @@ final class MessageActionRenderer {
      * @return the accept text
      */
     String acceptActionText(final Element acceptActionUsage) {
+        return SysMLTokens.ACCEPT_PREFIX + this.acceptParameterText(acceptActionUsage);
+    }
+
+    /** Writes just the payload and optional receiver for a standalone accept parameter part. */
+    String acceptParameterText(final Element acceptActionUsage) {
         final AcceptActionFacts facts = this.acceptActionFacts(acceptActionUsage);
         final String payload = facts.payload();
         if (facts.receiver().isBlank()) {
-            return SysMLTokens.ACCEPT_PREFIX + payload;
+            return payload;
         }
-        return SysMLTokens.ACCEPT_PREFIX + payload + SysMLTokens.VIA_INFIX
+        return payload + SysMLTokens.VIA_INFIX
                 + facts.receiver();
     }
 

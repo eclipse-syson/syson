@@ -175,7 +175,14 @@ public final class ReferenceTargets {
         String name = parsedName;
         if (!this.preserveParsedReferenceNames || name.isBlank()
                 || !this.parsedNameDesignates(importRelationship, this.importReferenceName(importRelationship), parsedName, target)) {
-            final String modelName = SafeEmfAccess.get(() -> resolvedName.apply(target), "");
+            String modelName = "";
+            if (target != null) {
+                modelName = Objects.toString(this.referenceNameResolver.resolve(target, importRelationship), "");
+            }
+            boolean unresolvedWithSpelling = target != null && target.eIsProxy() && !parsedName.isBlank();
+            if (modelName.isBlank() && !unresolvedWithSpelling) {
+                modelName = SafeEmfAccess.get(() -> resolvedName.apply(target), "");
+            }
             if (!modelName.isBlank()) {
                 name = modelName;
             }
@@ -342,12 +349,17 @@ public final class ReferenceTargets {
      */
     boolean shouldUseParsedReferenceName(final Element context, final String referenceName, final String parsedName, final Element target,
             final String resolvedName) {
-        if (target.eIsProxy() || resolvedName.contains(UNNAMED_QUALIFIED_NAME_SUFFIX)
-                || resolvedName.contains(QUALIFIED_QUOTED_CONJUGATION_MARKER)) {
-            return true;
+        final boolean useParsedName;
+        if (target.eIsProxy()) {
+            // A caller may know the current identity behind a proxy, including a renamed external namespace.
+            useParsedName = this.preserveParsedReferenceNames || Objects.toString(this.referenceNameResolver.resolve(target, context), "").isBlank();
+        } else if (resolvedName.contains(UNNAMED_QUALIFIED_NAME_SUFFIX) || resolvedName.contains(QUALIFIED_QUOTED_CONJUGATION_MARKER)) {
+            useParsedName = true;
+        } else {
+            final boolean preservesSpelling = this.preserveParsedReferenceNames || this.hasMatchingReferenceLeaf(parsedName, target, resolvedName);
+            useParsedName = preservesSpelling && this.parsedNameMatchesTarget(context, referenceName, parsedName, target);
         }
-        final boolean preservesSpelling = this.preserveParsedReferenceNames || this.hasMatchingReferenceLeaf(parsedName, target, resolvedName);
-        return preservesSpelling && this.parsedNameMatchesTarget(context, referenceName, parsedName, target);
+        return useParsedName;
     }
 
     /** Returns the parser spelling of a named reference, falling back to the fallback name of its first model target. */

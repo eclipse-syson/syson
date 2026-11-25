@@ -92,3 +92,7 @@ image::export-textual-download.png[Textual Export Download context menu, width=5
 ====
 The document must be suffixed by ".sysml" to be downloaded as a textual {sysmlv2} file.
 ====
+
+The download contains normalized UTF-8 text generated from the current model. Edits to names and reference targets are reflected in the file.
+If an import reported an unresolved name, such as `MissingType` in `part pump : MissingType;`, the download can retain that spelling while the imported model is loaded on the server.
+After the project is reloaded from storage, export uses the references saved in the model.

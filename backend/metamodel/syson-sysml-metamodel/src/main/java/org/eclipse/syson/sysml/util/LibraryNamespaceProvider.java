@@ -84,7 +84,7 @@ public class LibraryNamespaceProvider extends AdapterImpl implements ILibraryNam
     @Override
     public Namespace getNamespaceFromLibrary(String qualifiedName) {
         Namespace result = this.immutableLibraryNamespaces.get(qualifiedName);
-        if (result == null) {
+        if (result == null && !NonResolvingReads.isActive()) {
             result = this.resolve(qualifiedName);
         }
         return result;

@@ -202,6 +202,7 @@ public class SysMLParsingService {
             }
         }
         backward.copyReferences();
+        backward.retainReferenceText(parsed.danglingLinks());
         for (NamespaceImport namespaceImport : addedImports) {
             if (originals.get(namespaceImport.eContainer()) instanceof Namespace owner
                     && originals.get(namespaceImport.getImportedNamespace()) instanceof Namespace library) {

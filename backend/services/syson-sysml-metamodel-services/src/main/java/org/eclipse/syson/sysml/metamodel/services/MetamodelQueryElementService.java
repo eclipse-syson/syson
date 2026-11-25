@@ -63,9 +63,7 @@ import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
-import org.eclipse.syson.sysml.metamodel.services.textual.SysMLElementSerializer;
-import org.eclipse.syson.sysml.metamodel.services.textual.SysMLSerializingOptions;
-import org.eclipse.syson.sysml.metamodel.services.textual.utils.FileNameDeresolver;
+import org.eclipse.syson.sysml.metamodel.services.textual.SysONTextSerializer;
 
 /**
  * Element-related services doing queries. This class should not depend on sirius-web services or other spring services.
@@ -393,29 +391,14 @@ public class MetamodelQueryElementService {
     }
 
     /**
-     * Returns the textual representation of an {@link Expression expression}.
+     * Returns editable SysML for the expression in its original referencing scope.
      *
      * @param expression
      *            an expression.
-     * @return its textual representation/serialization.
+     * @return the expression fragment, or an empty string for a missing expression.
      */
     public String getExpressionTextualRepresentation(Expression expression) {
-        String result = "";
-        if (expression != null) {
-            SysMLSerializingOptions options = new SysMLSerializingOptions.Builder()
-                    .lineSeparator("\n")
-                    .nameDeresolver(new FileNameDeresolver())
-                    .indentation("\t")
-                    .needEscapeCharacter(false)
-                    .build();
-            String textualFormat = new SysMLElementSerializer(options, s -> {
-                // Do nothing for now
-            }).doSwitch(expression);
-            if (textualFormat != null) {
-                result = textualFormat;
-            }
-        }
-        return result;
+        return new SysONTextSerializer().serialize(expression);
     }
 
     /**

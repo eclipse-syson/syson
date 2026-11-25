@@ -446,6 +446,11 @@ public final class ActionRenderer {
         return this.context.modelQueries().navigation().isMetaclass(action, SysMLPackage.eINSTANCE.getSendActionUsage());
     }
 
+    /** Returns the payload and optional receiver for a standalone accept parameter part. */
+    public String acceptParameterText(final Element action) {
+        return this.messageRenderer.acceptParameterText(action);
+    }
+
     private boolean isAcceptOrAssignmentAction(final Element action) {
         return this.context.modelQueries().navigation().isMetaclass(action, SysMLPackage.eINSTANCE.getAcceptActionUsage())
                 || action instanceof AssignmentActionUsage;

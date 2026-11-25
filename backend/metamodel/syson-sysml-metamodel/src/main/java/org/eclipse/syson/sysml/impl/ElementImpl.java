@@ -21,6 +21,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.EModelElementImpl;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -39,6 +40,7 @@ import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.helper.NameHelper;
+import org.eclipse.syson.sysml.util.NonResolvingReads;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Element</b></em>'. <!-- end-user-doc -->
@@ -69,6 +71,16 @@ import org.eclipse.syson.sysml.helper.NameHelper;
  * @generated
  */
 public abstract class ElementImpl extends EModelElementImpl implements Element {
+
+    /** Keeps derived getters from replacing a stored proxy during a non-resolving query. */
+    @Override
+    public EObject eResolveProxy(InternalEObject proxy) {
+        if (NonResolvingReads.isActive()) {
+            return proxy;
+        }
+        return super.eResolveProxy(proxy);
+    }
+
     /**
      * The cached value of the '{@link #getAliasIds() <em>Alias Ids</em>}' attribute list. <!-- begin-user-doc --> <!--
      * end-user-doc -->

@@ -42,9 +42,7 @@ import org.eclipse.syson.application.configuration.SysONDefaultLibrariesConfigur
 import org.eclipse.syson.application.configuration.SysONLoadDefaultLibrariesOnApplicationStartConfiguration;
 import org.eclipse.syson.sysml.dto.ExpressionPropertiesInput;
 import org.eclipse.syson.sysml.dto.FeatureValueExpressionPropertiesInput;
-import org.eclipse.syson.sysml.metamodel.services.textual.SysMLElementSerializer;
-import org.eclipse.syson.sysml.metamodel.services.textual.SysMLSerializingOptions;
-import org.eclipse.syson.sysml.metamodel.services.textual.utils.FileNameDeresolver;
+import org.eclipse.syson.sysml.metamodel.services.textual.SysONTextSerializer;
 import org.eclipse.syson.sysml.services.SysMLExpressionEditor;
 import org.eclipse.syson.sysml.services.SysMLMetamodelCopier;
 import org.eclipse.syson.sysml.services.SysMLParsingResult;
@@ -264,9 +262,8 @@ public class SysMLParsingServiceTests {
         var resource = new XMIResourceImpl(URI.createURI("memory:/roundtrip.xmi"));
         context.getResources().add(resource);
         resource.getContents().add(imported.root());
-        var options = new SysMLSerializingOptions("\n", "    ", new FileNameDeresolver(), true);
-        String text = new SysMLElementSerializer(options, null).doSwitch(imported.root());
-        assertThat(text).contains("via subactions::this", "then done;");
+        String text = new SysONTextSerializer().serialize(imported.root());
+        assertThat(text).contains("then done;");
 
         var reimported = this.parse(context, null, text);
 

@@ -226,7 +226,7 @@ public final class SpecializationTargetNames {
     public List<String> directReferenceSubsettingTargetNames(final Element element, final DanglingReferenceIndex danglingReferences,
             final Function<Element, String> resolvedName) {
         return this.relationshipNames(element, this::isExactReferenceSubsetting,
-                relationship -> this.directReferenceSubsettingTargetName(relationship, danglingReferences, resolvedName));
+                relationship -> this.directReferenceSubsettingTargetName((ReferenceSubsetting) relationship, danglingReferences, resolvedName));
     }
 
     private boolean isPlainSubsetting(final Relationship relationship) {
@@ -270,16 +270,20 @@ public final class SpecializationTargetNames {
     }
 
     /** Names the target of one reference subsetting, using the proxy leaf when the target is unresolved. */
-    private String directReferenceSubsettingTargetName(final Relationship relationship, final DanglingReferenceIndex danglingReferences,
+    private String directReferenceSubsettingTargetName(final ReferenceSubsetting relationship, final DanglingReferenceIndex danglingReferences,
             final Function<Element, String> resolvedName) {
         String name = this.referencedFeatureName(relationship, danglingReferences, resolvedName);
-        if (relationship instanceof final ReferenceSubsetting referenceSubsetting) {
-            final Element referencedFeature = StoredModel.value(referenceSubsetting, SysMLPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature());
-            if (referencedFeature instanceof final InternalEObject proxy && proxy.eIsProxy() && name.isBlank()) {
-                name = this.referenceTargets.proxyLeafName(proxy);
-            } else if (referencedFeature != null) {
-                name = this.preferredReferenceName(relationship, name, referencedFeature, resolvedName.apply(referencedFeature));
+        final Element referencedFeature = StoredModel.value(relationship, SysMLPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature());
+        if (referencedFeature != null && referencedFeature.eContainer() == relationship) {
+            final List<String> segments = this.nestedTargets.directFeatureChainNames(referencedFeature, danglingReferences);
+            if (!segments.isEmpty()) {
+                return String.join(".", segments);
             }
+        }
+        if (referencedFeature instanceof final InternalEObject proxy && proxy.eIsProxy() && name.isBlank()) {
+            name = this.referenceTargets.proxyLeafName(proxy);
+        } else if (referencedFeature != null) {
+            name = this.preferredReferenceName(relationship, name, referencedFeature, resolvedName.apply(referencedFeature));
         }
         return name;
     }
