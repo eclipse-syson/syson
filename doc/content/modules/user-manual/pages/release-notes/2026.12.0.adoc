@@ -51,7 +51,9 @@ Return parameters match independently of input order.
 
 ** Creating elements in standard diagrams is faster, especially when inherited elements are displayed.
 
-* xref:user-manual:features/import-export-textual.adoc[Textual SysML downloads] now use a new serializer to produce text.
+* In export:
+
+** xref:user-manual:features/import-export-textual.adoc[Textual SysML downloads] now use a new serializer to produce text.
 Expression text, diagram labels and direct-edit text, and feedback messages use this new serializer.
 
 == Technical details
