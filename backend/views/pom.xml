@@ -33,6 +33,7 @@
 		<module>syson-diagram-common-view</module>
 		<module>syson-standard-diagrams-view</module>
 		<module>syson-table-requirements-view</module>
+		<module>syson-textual-view</module>
 		<module>syson-tree-explorer-view</module>
 		<module>syson-diagram-tests</module>
 	</modules>

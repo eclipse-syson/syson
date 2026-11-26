@@ -11,7 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { DataExtension, ExtensionRegistryMergeStrategy } from '@eclipse-sirius/sirius-components-core';
+import {
+  DataExtension,
+  ExtensionRegistryMergeStrategy,
+  representationFactoryExtensionPoint,
+} from '@eclipse-sirius/sirius-components-core';
 import { widgetContributionExtensionPoint } from '@eclipse-sirius/sirius-components-forms';
 import { omniboxCommandOverrideContributionExtensionPoint } from '@eclipse-sirius/sirius-components-omnibox';
 import {
@@ -33,6 +37,9 @@ export class SysONExtensionRegistryMergeStrategy
     existingValues: DataExtension<any>,
     newValues: DataExtension<any>
   ): DataExtension<any> {
+    if (identifier === representationFactoryExtensionPoint.identifier) {
+      return { identifier: newValues.identifier, data: [...existingValues.data, ...newValues.data] };
+    }
     if (identifier === apolloClientOptionsConfigurersExtensionPoint.identifier) {
       return this.mergeApolloClientContributions(existingValues, newValues);
     }
