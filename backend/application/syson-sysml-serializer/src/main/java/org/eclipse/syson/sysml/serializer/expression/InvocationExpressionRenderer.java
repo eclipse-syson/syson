@@ -441,7 +441,10 @@ final class InvocationExpressionRenderer {
                                 .anyMatch(member -> !(member instanceof ReferenceUsage) && !(member instanceof Comment))));
     }
 
-    /** Writes the lambda parameter declaration with its direction, explicit {@code ref} and inline body comments. */
+    /**
+     * Writes the lambda parameter declaration with the notes before it, its direction, explicit {@code ref} and inline
+     * body comments.
+     */
     private String lambdaVariableText(final Element variable) {
         final String variableName = this.referenceResolver.declaredName(variable);
         final String type = this.specializationTargets.featureTypeNames(variable,
@@ -469,7 +472,8 @@ final class InvocationExpressionRenderer {
         if (variableBody.isBlank()) {
             terminator = SysMLTokens.STATEMENT_SEPARATOR;
         }
-        return prefix + variableName + typeText + variableBody + terminator;
+        return this.expressionRenderer.expressionLeadingCommentText(variable) + prefix + variableName + typeText + variableBody
+                + terminator;
     }
 
     /** Collects the documentation comments of the lambda subtree, outside its parameters' own subtrees. */
