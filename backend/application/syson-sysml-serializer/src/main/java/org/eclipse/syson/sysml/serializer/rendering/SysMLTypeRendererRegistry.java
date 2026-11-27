@@ -506,9 +506,10 @@ public final class SysMLTypeRendererRegistry {
 
     /**
      * Writes an expression parsed or serialized as a standalone element on its own line; blank text writes nothing.
+     * Element dispatch already wrote the comments attached before it.
      */
     private void serializeExpression(final Expression expression) {
-        final String text = this.referenceWriter.expressionText(expression);
+        final String text = this.referenceWriter.standaloneExpressionText(expression);
         if (!text.isBlank()) {
             this.referenceWriter.writeExpression(this.context.output(), expression, text).newline();
         }

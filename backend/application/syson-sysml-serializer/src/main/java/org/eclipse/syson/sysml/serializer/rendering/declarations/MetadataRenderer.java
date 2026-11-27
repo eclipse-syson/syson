@@ -17,7 +17,6 @@ import java.util.List;
 import org.eclipse.syson.sysml.parser.adapter.ITextAdapter;
 import org.eclipse.syson.sysml.serializer.ElementDispatch;
 import org.eclipse.syson.sysml.serializer.SerializationContext;
-import org.eclipse.syson.sysml.serializer.SerializationMode;
 import org.eclipse.syson.sysml.serializer.model.ElementSyntaxQueries;
 import org.eclipse.syson.sysml.serializer.model.ModelFlags;
 import org.eclipse.syson.sysml.serializer.model.ModelNavigation;
@@ -299,24 +298,19 @@ public final class MetadataRenderer {
 
     /**
      * Writes one metadata field following {@code metadataBodyUsage}: the redefined name, the specialization part, the value
-     * with its source operator, then <code>{ ... }</code> when it has nested fields or {@code ;}. In normalized mode,
-     * reference usage fields use the full generic declaration instead of the compact form.
+     * with its source operator, then <code>{ ... }</code> when it has nested fields or {@code ;}. Normalized output uses
+     * the same form: a generic declaration would group the redefinitions as <code>:>> a, b</code>, which
+     * {@code metadataBodyUsage} rejects.
      */
     private void serializeMetadataField(final MetadataFieldRenderingPlan plan) {
         final TextOutput output = this.context.output();
         final Element field = plan.field();
         this.declarations.serializeLeadingComments(field);
-        if (this.context.options().mode() == SerializationMode.NORMALIZED
-                && this.navigation.isMetaclass(field,
-                        SysMLPackage.eINSTANCE.getReferenceUsage())) {
-            this.dispatch.serializeDeclaration(field);
-            return;
-        }
         if (this.flags.hasExplicitRefPrefix(field)) {
             output.token(SysMLTokens.REF_KEYWORD).space();
         }
         this.referenceWriter.writeReferenceText(output, plan.name(), field);
-        this.writeMetadataBodyUsageSpecializationsAndValue(field, List.of());
+        this.writeMetadataBodyUsageSpecializationsAndValue(field, plan.redefinitionsAfterName());
         if (!plan.hasBody()) {
             output.token(SysMLTokens.STATEMENT_TERMINATOR).newline();
             return;
@@ -360,35 +354,43 @@ public final class MetadataRenderer {
                 .stream().filter(feature -> !feature.equals(prefix)).toList();
     }
 
-    /** Collects a field's name and whether it has a body before choosing its {@code ;} or block form. */
-    private MetadataFieldRenderingPlan metadataFieldPlan(final Element field) {
-        return new MetadataFieldRenderingPlan(field, this.metadataFieldName(field),
-                this.syntax.hasSerializableBody(field));
-    }
-
     /**
-     * Returns the field name: the redefined features with the source {@code :>>} or {@code redefines} spelling, or the declared
-     * name when the field redefines nothing.
+     * Collects a field's name, the redefinitions written after it and whether it has a body before choosing its {@code ;} or
+     * block form. Only the first redefinition can be the name: {@code metadataBodyUsage} takes a single {@code ownedRedefinition}
+     * there, the others belong to its {@code featureSpecializationPart} (<code>:>> a :>> b</code>, never <code>:>> a, b</code>).
      */
-    private String metadataFieldName(final Element field) {
+    private MetadataFieldRenderingPlan metadataFieldPlan(final Element field) {
         final List<String> redefinedFeatures = this.specializationTargets.redefinedFeatureNames(
                 field, this.context.danglingReferenceIndex(),
                 this.context.nameRenderer()::referenceName);
+        List<String> redefinitionsAfterName = List.of();
+        if (redefinedFeatures.size() > 1) {
+            redefinitionsAfterName = redefinedFeatures.subList(1, redefinedFeatures.size());
+        }
+        return new MetadataFieldRenderingPlan(field, this.metadataFieldName(field, redefinedFeatures),
+                redefinitionsAfterName, this.syntax.hasSerializableBody(field));
+    }
+
+    /**
+     * Returns the field name: the first redefined feature with the source {@code :>>} or {@code redefines} spelling, or the
+     * declared name when the field redefines nothing.
+     */
+    private String metadataFieldName(final Element field, final List<String> redefinedFeatures) {
         if (redefinedFeatures.isEmpty()) {
             return this.referenceResolver.declaredName(field);
         }
-        final String names = this.referenceResolver.referenceNames(redefinedFeatures);
+        final String name = this.referenceResolver.referenceName(redefinedFeatures.getFirst());
         String operator = "";
         if (this.adapters.hasTextAdapter(field, ITextAdapter.REDEFINES_SYMBOL)) {
             operator = SysMLTokens.REDEFINITION_OPERATOR + SysMLTokens.SPACE;
         } else if (this.adapters.hasTextAdapter(field, ITextAdapter.REDEFINES)) {
             operator = SysMLTokens.REDEFINES_PREFIX;
         }
-        return operator + names;
+        return operator + name;
     }
 
-    /** Field name and body presence collected before choosing {@code ;} or block syntax. */
-    private record MetadataFieldRenderingPlan(Element field, String name, boolean hasBody) {
+    /** Field name, redefinitions written after it and body presence collected before choosing {@code ;} or block syntax. */
+    private record MetadataFieldRenderingPlan(Element field, String name, List<String> redefinitionsAfterName, boolean hasBody) {
 
         private boolean hasText() {
             return !this.name.isBlank();

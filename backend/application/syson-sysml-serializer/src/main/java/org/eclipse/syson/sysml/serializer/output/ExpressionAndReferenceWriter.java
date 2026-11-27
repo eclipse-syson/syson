@@ -418,6 +418,18 @@ public final class ExpressionAndReferenceWriter {
     }
 
     /**
+     * Renders an expression written as an element without the comments that its dispatch already wrote before it.
+     *
+     * @param expression
+     *            the expression to render, or {@code null}
+     * @return the rendered text, empty for {@code null}
+     * @see ExpressionRenderer#standaloneExpressionText(Expression)
+     */
+    public String standaloneExpressionText(final Expression expression) {
+        return this.expressions.standaloneExpressionText(expression);
+    }
+
+    /**
      * Renders the expression bound as the source of an assignment target, grouped when the grammar requires it.
      *
      * @param source

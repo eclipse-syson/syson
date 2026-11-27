@@ -14,9 +14,9 @@ package org.eclipse.syson.sysml.serializer.rendering.connections;
 
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 
 import org.eclipse.syson.sysml.parser.adapter.ITextAdapter;
+import org.eclipse.syson.sysml.parser.adapter.CommentKind;
 import org.eclipse.syson.sysml.parser.adapter.ParsedComment;
 import org.eclipse.syson.sysml.serializer.SerializationContext;
 import org.eclipse.syson.sysml.serializer.model.ModelFlags;
@@ -94,7 +94,7 @@ public final class ConnectorEndRenderer {
 
     /**
      * Writes an end of the binary {@code connect a to b} form (grammar {@code connectorEnd}) as {@code [mult] path} or
-     * {@code [mult] name references path}, keeping {@code ::>} when the source wrote it.
+     * {@code [mult] name references path}, keeping {@code ::>} when the source wrote it, then the notes that followed it.
      *
      * @param output
      *            the output to write to
@@ -105,11 +105,13 @@ public final class ConnectorEndRenderer {
         this.writeConnectorEndMultiplicity(output, end);
         this.writeEndNameAndTarget(output, end, this.referenceKeyword(end, SysMLTokens.REFERENCES_KEYWORD),
                 this.connectorEndpointPath(end));
+        this.writeFollowingComments(output, end);
     }
 
     /**
      * Writes an end of the n-ary {@code connect (a, n ::> b, ...)} form (grammar {@code connectorEnd}) as
-     * {@code [mult] path} or {@code [mult] name ::> path}, keeping {@code references} when the source wrote it.
+     * {@code [mult] path} or {@code [mult] name ::> path}, keeping {@code references} when the source wrote it, then the
+     * notes that followed it.
      *
      * @param output
      *            the output to write to
@@ -120,6 +122,7 @@ public final class ConnectorEndRenderer {
         this.writeConnectorEndMultiplicity(output, end);
         this.writeEndNameAndTarget(output, end, this.referenceKeyword(end, SysMLTokens.REFERENCE_SUBSETTING_OPERATOR),
                 this.connectorEndpointPath(end));
+        this.writeFollowingComments(output, end);
     }
 
     /**
@@ -185,19 +188,33 @@ public final class ConnectorEndRenderer {
         this.writeInterfaceEnd(output, end);
     }
 
+    /**
+     * Writes the notes the parser attached right after a connector end, such as the line note of
+     * <code>connect a // note</code> before {@code to b}, so that they stay between the ends.
+     */
+    private void writeFollowingComments(final TextOutput output, final Element end) {
+        final String comments = this.terminatedCommentText(this.adapters.trailingComments(end));
+        if (!comments.isBlank()) {
+            output.space().raw(comments);
+        }
+    }
+
     /** Returns the parser comments attached before an end; a line comment is terminated so it does not swallow the end. */
     private String leadingCommentText(final Element end) {
-        final String comments = this.adapters.leadingComments(end).stream()
-                .map(ParsedComment::text)
-                .collect(Collectors.joining());
-        String text = comments;
-        if (comments.isBlank()) {
-            text = "";
-        } else if (comments.trim().startsWith(SysMLTokens.LINE_COMMENT_PREFIX)
-                && !comments.endsWith(SysMLTokens.LINE_FEED) && !comments.endsWith(SysMLTokens.CARRIAGE_RETURN)) {
-            text = comments + SysMLTokens.LINE_FEED;
+        return this.terminatedCommentText(this.adapters.leadingComments(end));
+    }
+
+    /** Joins parser comments, terminating a final line comment so that it does not swallow the text that follows. */
+    private String terminatedCommentText(final List<ParsedComment> parsedComments) {
+        final StringBuilder text = new StringBuilder();
+        for (final ParsedComment comment : parsedComments) {
+            text.append(comment.text());
+            if (comment.kind() == CommentKind.LINE && !comment.text().endsWith(SysMLTokens.LINE_FEED)
+                    && !comment.text().endsWith(SysMLTokens.CARRIAGE_RETURN)) {
+                text.append(SysMLTokens.LINE_FEED);
+            }
         }
-        return text;
+        return text.toString();
     }
 
     /**
@@ -216,6 +233,7 @@ public final class ConnectorEndRenderer {
         }
         this.writeEndNameAndTarget(output, end, this.referenceKeyword(end, SysMLTokens.REFERENCE_SUBSETTING_OPERATOR),
                 this.referenceResolver.endpointPath(end));
+        this.writeFollowingComments(output, end);
     }
 
     /**

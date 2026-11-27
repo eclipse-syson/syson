@@ -130,7 +130,7 @@ public final class ElementBodyRenderer {
         final TextOutput output = this.context.output();
         final boolean hasMembers = relationships.stream().anyMatch(this::hasBodyMember);
         if (!hasMembers && !this.syntax.hasStatementBody(element)) {
-            output.token(SysMLTokens.STATEMENT_TERMINATOR).newline();
+            this.writeStatementTerminator(element);
             return;
         }
         output.space().beginBlock();
@@ -159,12 +159,17 @@ public final class ElementBodyRenderer {
         if (this.syntax.hasStatementBody(element, includeFeatureBindings)) {
             this.serializeStatementBody(element, includeFeatureBindings);
             this.context.output().newline();
-        } else if (this.isUnterminatedStatementFragment(element)) {
-            this.context.output().newline();
         } else {
-            this.context.output().token(SysMLTokens.STATEMENT_TERMINATOR)
-                    .newline();
+            this.writeStatementTerminator(element);
         }
+    }
+
+    private void writeStatementTerminator(final Element element) {
+        final TextOutput output = this.context.output();
+        if (!this.isUnterminatedStatementFragment(element)) {
+            output.token(SysMLTokens.STATEMENT_TERMINATOR);
+        }
+        output.newline();
     }
 
     /**

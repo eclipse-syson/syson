@@ -62,6 +62,7 @@ late nonunique
 ref
 /@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0/@ownedRelationship.1/@ownedRelatedElement.0:
 {...}
+portion kind before usage keyword
 /@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.4/@ownedRelatedElement.0:
 {...}
 late nonunique

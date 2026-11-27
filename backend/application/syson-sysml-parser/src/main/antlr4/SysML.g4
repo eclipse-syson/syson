@@ -926,7 +926,7 @@ occurrenceUsageKeyword:
 occurrenceUsagePrefix:
 	(
 		endUsagePrefix
-		| basicUsagePrefix ('individual' {setTrue(occurrenceUsage_IsIndividual());})? (portionKind {set(occurrenceUsage_PortionKind());})?
+		| basicUsagePrefix ('individual' {setTrue(occurrenceUsage_IsIndividual());})? (portionKind {set(occurrenceUsage_PortionKind());} {attachPortionKindBeforeUsageKeyword();})?
 	) usageExtensionKeyword*
 ;
 
@@ -1108,8 +1108,8 @@ connectorEnd:
 	(ownedCrossMultiplicityMember {add(element_OwnedRelationship());})? (
 		(name {set(element_DeclaredName());}) referencesKeyword
 	)?
-	 (ownedReferenceSubsetting {add(element_OwnedRelationship());})
-	) {end(_localctx);}
+	 (target=ownedReferenceSubsetting {add(element_OwnedRelationship());})
+	) {attachFollowingComments($target.ctx);} {end(_localctx);}
 ;
 
 ownedCrossMultiplicityMember:

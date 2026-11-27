@@ -367,6 +367,20 @@ public interface ITextAdapter extends Adapter {
     KeywordAdapter COMPACT_INDIVIDUAL_USAGE = new KeywordAdapter();
 
     /**
+     * A snapshot or timeslice portion kind followed by a usage keyword, as opposed to the compact portion usage form
+     * where the portion kind alone declares an occurrence usage.
+     *
+     * <p>
+     * Examples:
+     * </p>
+     * <ul>
+     * <li><code>timeslice occurrence phase : Session;</code></li>
+     * <li><code>snapshot part captured;</code></li>
+     * </ul>
+     */
+    KeywordAdapter PORTION_KIND_BEFORE_USAGE_KEYWORD = new KeywordAdapter();
+
+    /**
      * A metadata usage introduced by the annotation shorthand <code>"@"</code>.
      *
      * <p>

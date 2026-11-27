@@ -37,6 +37,7 @@ import org.eclipse.syson.sysml.serializer.names.NameRenderer;
 import org.eclipse.syson.sysml.serializer.output.StringTextOutput;
 import org.eclipse.syson.sysml.serializer.output.TextOutput;
 import org.eclipse.syson.sysml.serializer.references.ReferenceResolver;
+import org.eclipse.syson.sysml.serializer.rendering.SysMLTextRenderer;
 import org.eclipse.syson.sysml.serializer.syntax.CommentRenderer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -426,7 +427,7 @@ class ExpressionReferenceCollectorTest {
     private ExpressionReferenceCollector createReferenceCollector(final SerializationContext context) {
         final ReferenceResolver referenceResolver = new ReferenceResolver(context);
         final CommentRenderer comments = new CommentRenderer(referenceResolver, context);
-        final ExpressionRenderer expressions = new ExpressionRenderer(referenceResolver, comments, context);
+        final ExpressionRenderer expressions = new ExpressionRenderer(referenceResolver, comments, context, new SysMLTextRenderer(context)::relationshipsText);
         return new ExpressionReferenceCollector(expressions::expressionText, referenceResolver, context);
     }
 }

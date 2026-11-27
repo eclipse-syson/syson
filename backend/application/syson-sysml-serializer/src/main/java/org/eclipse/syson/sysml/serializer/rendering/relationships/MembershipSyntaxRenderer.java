@@ -182,12 +182,19 @@ public final class MembershipSyntaxRenderer {
      * siblings). Model-built perform actions with a body get the full {@code action ...} declaration; other perform
      * actions get their {@code PerformActionUsageDeclaration} and regular action body; send, accept and assignment
      * subactions are written inline. The empty entry placeholder is written as {@code entry ;}, matching the spelling
-     * of the reference corpus.
+     * of the reference corpus. The notes of the membership surround the subaction.
      *
      * @param membership
      *            the state subaction membership
      */
     void serializeStateSubactionMembership(final StateSubactionMembership membership) {
+        this.declarations.serializeLeadingComments(membership);
+        this.writeStateSubaction(membership);
+        this.declarations.serializeTrailingComments(membership);
+    }
+
+    /** Writes the {@code entry}, {@code do} or {@code exit} subaction of a state subaction membership, then ends the line. */
+    private void writeStateSubaction(final StateSubactionMembership membership) {
         final TextOutput output = this.context.output();
         this.declarations.serializeMembershipVisibility(membership);
         output.token(membership.getKind().getName());

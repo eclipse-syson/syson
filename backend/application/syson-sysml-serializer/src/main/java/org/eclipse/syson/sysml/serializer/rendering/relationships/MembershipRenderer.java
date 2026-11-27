@@ -373,10 +373,12 @@ public final class MembershipRenderer {
     /**
      * Writes an unnamed reference usage that only references another feature ({@code ref ::> target { ... }}). It
      * has no clause the generated-element test looks for, yet the user wrote it: its declaration keeps the
-     * {@code ref} keyword, the multiplicity and the body. Writes nothing when it references nothing.
+     * {@code ref} keyword, the multiplicity and the body, after the notes the parser attached to it (the forced
+     * declaration does not write them). Writes nothing when it references nothing.
      */
     private void serializeAnonymousReferenceUsage(final Element referenceUsage) {
         if (!this.referenceResolver.directReferencedElementTarget(referenceUsage).isBlank()) {
+            this.declarations.serializeLeadingComments(referenceUsage);
             this.dispatch.serializeDeclaration(referenceUsage);
         }
     }

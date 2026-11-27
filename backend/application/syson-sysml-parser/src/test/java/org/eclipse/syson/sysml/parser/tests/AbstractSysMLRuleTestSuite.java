@@ -526,6 +526,7 @@ public abstract class AbstractSysMLRuleTestSuite {
         descriptions.put(ITextAdapter.FLOW_FROM, "from");
         descriptions.put(ITextAdapter.COMPACT_INDIVIDUAL_DEFINITION, "individual def");
         descriptions.put(ITextAdapter.COMPACT_INDIVIDUAL_USAGE, "individual");
+        descriptions.put(ITextAdapter.PORTION_KIND_BEFORE_USAGE_KEYWORD, "portion kind before usage keyword");
         descriptions.put(ITextAdapter.METADATA_AT_SIGN, "@");
         descriptions.put(ITextAdapter.METADATA_COLON, "metadata colon");
         descriptions.put(ITextAdapter.PAYLOAD_TYPING_CLAUSE, "payload typing clause");
