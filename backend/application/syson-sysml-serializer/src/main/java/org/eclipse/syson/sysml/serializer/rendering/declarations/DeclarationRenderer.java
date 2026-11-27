@@ -229,8 +229,8 @@ public final class DeclarationRenderer {
 
     /**
      * Writes the leading notes of a membership once, then each non-generated element it owns as
-     * {@code [visibility] keyword declaration}, with a membership keyword such as {@code variant} or {@code verify}.
-     * Implied memberships produce no text.
+     * {@code [visibility] keyword declaration}, with a membership keyword such as {@code variant} or {@code verify}, then
+     * the trailing notes of the membership. Implied memberships produce no text.
      */
     public void serializePrefixedMembership(final String prefix,
             final Relationship membership) {
@@ -246,6 +246,7 @@ public final class DeclarationRenderer {
                 this.dispatch.serializeElement(related);
             }
         }
+        this.comments.serializeTrailingComments(membership);
     }
 
     /**
