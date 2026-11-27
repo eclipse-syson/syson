@@ -160,6 +160,11 @@ public abstract class AbstractSysMLEMFParser extends Parser {
     private final SysMLFactory sysMLFactory = new SysMLParsingFactoryImpl();
 
     /**
+     * The {@link Diagnostic} {@link List}.
+     */
+    private List<Diagnostic> diagnostics;
+
+    /**
      * The internal {@link Diagnostic} {@link List}.
      */
     private List<Diagnostic> internalDiagnostics;
@@ -537,6 +542,16 @@ public abstract class AbstractSysMLEMFParser extends Parser {
     }
 
     /**
+     * Sets the {@link Diagnostic} {@link List}.
+     *
+     * @param diagnostics
+     *            the {@link Diagnostic} {@link List}
+     */
+    public void setDiagnostics(List<Diagnostic> diagnostics) {
+        this.diagnostics = diagnostics;
+    }
+
+    /**
      * Sets the internal {@link Diagnostic} {@link List}.
      *
      * @param internalDiagnostics
@@ -544,6 +559,15 @@ public abstract class AbstractSysMLEMFParser extends Parser {
      */
     public void setInternalDiagnostics(List<Diagnostic> internalDiagnostics) {
         this.internalDiagnostics = internalDiagnostics;
+    }
+
+    /**
+     * Gets the {@link Diagnostic} {@link List}.
+     *
+     * @return the {@link Diagnostic} {@link List}
+     */
+    public List<Diagnostic> getDiagnostics() {
+        return this.diagnostics;
     }
 
     /**
@@ -1311,21 +1335,6 @@ public abstract class AbstractSysMLEMFParser extends Parser {
     }
 
     /**
-     * Adds the given {@link Token} value to the given {@link EAttribute}.
-     *
-     * @param attribute
-     *            the {@link EAttribute}
-     * @param token
-     *            the {@link Token}
-     */
-    protected void set(EAttribute attribute, Token token) {
-        if (token.getTokenIndex() != -1) {
-            Object value = EcoreUtil.createFromString((EDataType) attribute.getEType(), token.getText());
-            this.set(attribute, value);
-        }
-    }
-
-    /**
      * Sets the given {@link Token} string value to the given {@link EAttribute}.
      *
      * @param attribute
@@ -1360,16 +1369,23 @@ public abstract class AbstractSysMLEMFParser extends Parser {
     }
 
     /**
-     * Gets the given {@link EDataType} value from the given {@link String}.
+     * Sets the given {@link ParserRuleContext} to the given {@link EAttribute}.
      *
-     * @param type
-     *            the {@link EDataType}
-     * @param value
-     *            the {@link String} value
-     * @return the given {@link EDataType} value from the given {@link String}
+     * @param attribute
+     *            the {@link EAttribute}
+     * @param ctx
+     *            the {@link ParserRuleContext}
      */
-    protected Object fromString(EDataType type, String value) {
-        return EcoreUtil.createFromString(type, value);
+    protected void setFromContext(EAttribute attribute, ParserRuleContext ctx) {
+        String text = this.currentContextText(ctx);
+        try {
+            Object value = EcoreUtil.createFromString((EDataType) attribute.getEType(), text);
+            this.set(attribute, value);
+        } catch (Exception e) {
+            String message = ctx.getStart().getLine() + ":" + ctx.getStart().getCharPositionInLine() + " Unable to set " + attribute.getEContainingClass().getName() + "." + attribute.getName()
+                    + " to " + text;
+            this.diagnostics.add(new BasicDiagnostic(Diagnostic.ERROR, null, 0, message, null));
+        }
     }
 
     /**

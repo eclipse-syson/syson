@@ -97,6 +97,7 @@ public class SysMLModelParser {
         // configure diagnostic listener
         List<Diagnostic> diagnostics = new ArrayList<>();
         List<Diagnostic> internalDiagnostics = new ArrayList<>();
+        parser.setDiagnostics(diagnostics);
         parser.setInternalDiagnostics(internalDiagnostics);
         ANTLRErrorListener errorListener = parser.getErrorListener(diagnostics);
         lexer.removeErrorListeners();
@@ -113,6 +114,7 @@ public class SysMLModelParser {
             parser.setBuildParseTree(false);
             diagnostics = new ArrayList<>();
             internalDiagnostics = new ArrayList<>();
+            parser.setDiagnostics(diagnostics);
             parser.setInternalDiagnostics(internalDiagnostics);
             errorListener = parser.getErrorListener(diagnostics);
             lexer.removeErrorListeners();

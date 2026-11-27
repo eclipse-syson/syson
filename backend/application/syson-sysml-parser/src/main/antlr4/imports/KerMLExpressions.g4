@@ -571,13 +571,13 @@ literalString:
 
 literalInteger:
 	{start(_localctx, literalInteger__());} (
-	(value=DECIMAL_VALUE {set(literalInteger_Value(), _localctx.value);})
+	(DECIMAL_VALUE {setFromContext(literalInteger_Value(), _localctx);})
 	) {end(_localctx);}
 ;
 
 literalReal:
 	{start(_localctx, literalRational__());} (
-	(realValue  {set(literalRational_Value(), fromString(eDouble(), currentContextText(_localctx)));})
+	(realValue  {setFromContext(literalRational_Value(), _localctx);})
 	) {end(_localctx);}
 ;
 

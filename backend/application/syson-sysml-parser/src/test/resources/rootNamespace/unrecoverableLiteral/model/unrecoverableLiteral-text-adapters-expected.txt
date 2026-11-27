@@ -1,0 +1,8 @@
+/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0:
+public
+/@ownedRelationship.0/@ownedRelatedElement.0:
+{...}
+/@ownedRelationship.1/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0/@ownedRelationship.0/@ownedRelatedElement.0:
+numeric literal 2147483648
+/@ownedRelationship.1/@ownedRelatedElement.0:
+{...}

@@ -1,1 +1,26 @@
-null
+<?xml version="1.0" encoding="UTF-8"?>
+<sysml:Namespace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sysml="https://www.omg.org/spec/SysML/20250201">
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="Before">
+      <ownedRelationship xsi:type="sysml:NamespaceImport" visibility="public"/>
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="value">
+          <ownedRelationship xsi:type="sysml:FeatureValue">
+            <ownedRelatedElement xsi:type="sysml:LiteralString" value="discarded"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+  <ownedRelationship xsi:type="sysml:OwningMembership">
+    <ownedRelatedElement xsi:type="sysml:Package" declaredName="Failed">
+      <ownedRelationship xsi:type="sysml:OwningMembership">
+        <ownedRelatedElement xsi:type="sysml:AttributeUsage" declaredName="value">
+          <ownedRelationship xsi:type="sysml:FeatureValue">
+            <ownedRelatedElement xsi:type="sysml:LiteralInteger"/>
+          </ownedRelationship>
+        </ownedRelatedElement>
+      </ownedRelationship>
+    </ownedRelatedElement>
+  </ownedRelationship>
+</sysml:Namespace>

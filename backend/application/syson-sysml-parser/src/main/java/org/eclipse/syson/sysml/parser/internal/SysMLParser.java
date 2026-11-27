@@ -30301,7 +30301,6 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class LiteralIntegerContext extends ParserRuleContext {
-		public Token value;
 		public TerminalNode DECIMAL_VALUE() { return getToken(SysMLParser.DECIMAL_VALUE, 0); }
 		public LiteralIntegerContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -30319,8 +30318,8 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			{
 			{
 			setState(6102);
-			((LiteralIntegerContext)_localctx).value = match(DECIMAL_VALUE);
-			set(literalInteger_Value(), _localctx.value);
+			match(DECIMAL_VALUE);
+			setFromContext(literalInteger_Value(), _localctx);
 			}
 			}
 			end(_localctx);
@@ -30359,7 +30358,7 @@ public class SysMLParser extends AbstractSysMLEMFParser {
 			{
 			setState(6108);
 			realValue();
-			set(literalRational_Value(), fromString(eDouble(), currentContextText(_localctx)));
+			setFromContext(literalRational_Value(), _localctx);
 			}
 			}
 			end(_localctx);
