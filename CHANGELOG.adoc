@@ -5,6 +5,7 @@
 === Pitches
 
 - Add support for an experimental SysML v2 textual editor.
+- Add new Delete with impact analysis tool.
 
 === Architectural decision records
 
