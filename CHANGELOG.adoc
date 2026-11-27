@@ -62,6 +62,8 @@ The derived stakeholder list on a requirement usage now identifies its owning EM
 - https://github.com/eclipse-syson/syson/issues/2658[#2658] [diagrams] Ensure undoing _add existing elements_ does not remove unsynchronized nodes that shouldn't be removed.
 - https://github.com/eclipse-syson/syson/issues/2631[#2631] [import] Syntax error in a nested body leaves the context stack unbalanced (AssertionError / wrong root type)
 - https://github.com/eclipse-syson/syson/issues/2632[#2632] [import] Unparsable top-level input is silently dropped (rootNamespace does not consume EOF)
+- https://github.com/eclipse-syson/syson/issues/2697[#2697] [metamodel] Prevent stack overflow when computing featuring types through cyclic feature chains.
+Preserve explicit and implicit contexts, duplicates and traversal order without modifying the model.
 
 === Improvements
 

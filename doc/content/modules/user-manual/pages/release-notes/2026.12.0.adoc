@@ -42,6 +42,8 @@ Unnamed parameter redefinitions inherit the original parameter's name, and repla
 When an action parameter explicitly redefines one parent's input, SysON also recognizes the corresponding input from another parent.
 Return parameters match independently of input order.
 
+** Computing the featuring types of a _Feature_ now terminates even when its feature chain contains a cycle, preventing a stack overflow while inspecting an inconsistent model.
+
 * In diagrams:
 
 ** A _Requirement_ or _Concern_ graphical node shows each inherited _Stakeholder_ once, with the `^` marker.
