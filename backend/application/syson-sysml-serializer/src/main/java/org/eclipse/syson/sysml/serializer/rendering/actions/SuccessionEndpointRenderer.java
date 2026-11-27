@@ -109,45 +109,19 @@ public final class SuccessionEndpointRenderer {
 
     /**
      * Writes the endpoint multiplicity between spaces, so that it stays apart from the endpoint that follows
-     * ({@code then [2] b}). The implicit {@code [1]} is omitted unless the caller asks for it, since end features default
-     * to it.
+     * ({@code then [2] b}). A {@code [1]} is written too: the parser only creates the cross multiplicity of a connector
+     * end from text, so leaving it out would drop it from the model.
      *
      * @param endpoint
      *            the end feature
-     * @param renderUnitMultiplicity
-     *            whether {@code [1]} must be written
      */
-    public void writeMultiplicity(final Element endpoint,
-            final boolean renderUnitMultiplicity) {
+    public void writeMultiplicity(final Element endpoint) {
         final String multiplicity = this.multiplicity(endpoint);
-        if (!multiplicity.isBlank() && (renderUnitMultiplicity
-                || !SysMLTokens.UNIT_MULTIPLICITY.equals(multiplicity))) {
+        if (!multiplicity.isBlank()) {
             this.referenceWriter.writeReferenceText(
                     this.context.output().space(), multiplicity, endpoint);
             this.context.output().space();
         }
-    }
-
-    /**
-     * Tells whether a source {@code [1]} must be written explicitly because the target has a different multiplicity, as
-     * in {@code first [1] a then [*] b}; otherwise the default {@code [1]} is left implicit.
-     *
-     * @param ends
-     *            the succession ends, source first
-     * @return {@code true} when the source {@code [1]} must be written
-     */
-    public boolean shouldRenderUnitSourceMultiplicity(
-            final List<Element> ends) {
-        boolean renderUnitMultiplicity = false;
-        if (ends.size() > 1) {
-            final String sourceMultiplicity = this.multiplicity(ends.get(0));
-            final String targetMultiplicity = this.multiplicity(ends.get(1));
-            renderUnitMultiplicity = SysMLTokens.UNIT_MULTIPLICITY
-                    .equals(sourceMultiplicity) && !targetMultiplicity.isBlank()
-                    && !SysMLTokens.UNIT_MULTIPLICITY
-                            .equals(targetMultiplicity);
-        }
-        return renderUnitMultiplicity;
     }
 
     /**

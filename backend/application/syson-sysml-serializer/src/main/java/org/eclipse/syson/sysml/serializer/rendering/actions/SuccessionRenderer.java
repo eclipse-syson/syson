@@ -136,7 +136,7 @@ public final class SuccessionRenderer {
     /** Writes the transition-succession fragment form, which is only the target endpoint with its multiplicity. */
     private void serializeParserTransitionSuccession(
             final SuccessionAsUsage successionAsUsage, final Element target) {
-        this.endpointRenderer.writeMultiplicity(target, false);
+        this.endpointRenderer.writeMultiplicity(target);
         this.context.output().space();
         this.endpointRenderer.write(target);
         this.declarations.serializeStatementEnd(successionAsUsage);
@@ -156,7 +156,7 @@ public final class SuccessionRenderer {
         }
         this.context.output().token(SysMLTokens.THEN_KEYWORD).space();
         if (ends.size() >= 2) {
-            this.endpointRenderer.writeMultiplicity(ends.get(1), false);
+            this.endpointRenderer.writeMultiplicity(ends.get(1));
             this.endpointRenderer.write(ends.get(1));
         }
         this.declarations.serializeStatementEnd(successionAsUsage);
@@ -216,8 +216,7 @@ public final class SuccessionRenderer {
         }
         final TextOutput output = this.context.output();
         output.token(SysMLTokens.FIRST_KEYWORD).space();
-        this.endpointRenderer.writeMultiplicity(ends.get(0),
-                this.endpointRenderer.shouldRenderUnitSourceMultiplicity(ends));
+        this.endpointRenderer.writeMultiplicity(ends.get(0));
         this.endpointRenderer.write(ends.get(0));
         output.space();
     }
@@ -243,10 +242,10 @@ public final class SuccessionRenderer {
         if (inlineTargetDeclaration) {
             output.token(this.referenceResolver.declaredName(ends.get(1)));
         } else if (target.equals(this.nextSiblingTargetName(successionAsUsage))) {
-            this.endpointRenderer.writeMultiplicity(ends.get(1), false);
+            this.endpointRenderer.writeMultiplicity(ends.get(1));
             this.referenceWriter.writeReferenceText(output, target, successionAsUsage);
         } else {
-            this.endpointRenderer.writeMultiplicity(ends.get(1), false);
+            this.endpointRenderer.writeMultiplicity(ends.get(1));
             this.endpointRenderer.write(ends.get(1));
         }
         this.writeBodyOrStatementEnd(successionAsUsage, ends);

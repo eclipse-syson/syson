@@ -322,7 +322,7 @@ public final class TransitionRenderer {
         if (targetElement == null) {
             this.referenceWriter.writeReferenceText(output.space(), parts.target(), transitionUsage);
         } else if (fragment.isSuccessionFragment()) {
-            this.endpointRenderer.writeMultiplicity(targetElement, false);
+            this.endpointRenderer.writeMultiplicity(targetElement);
             output.space();
             if (fragment.targetTransitionRoot()) {
                 this.writeParserTargetTransitionTarget(targetElement);
