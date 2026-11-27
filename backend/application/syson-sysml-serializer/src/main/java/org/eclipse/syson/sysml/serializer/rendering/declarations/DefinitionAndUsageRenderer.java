@@ -174,7 +174,7 @@ public final class DefinitionAndUsageRenderer {
     }
 
     /**
-     * Writes direction and prefix modifiers, and returns the keyword the declaration should use: the metaclass keyword,
+     * Writes direction and prefix modifiers, except for an end feature, and returns the keyword the declaration should use: the metaclass keyword,
      * adjusted for {@code assert not}, portion kinds ({@code snapshot}, {@code timeslice}), {@code end}, and parser fragments that imply or
      * omit it.
      */
@@ -185,11 +185,9 @@ public final class DefinitionAndUsageRenderer {
                 && this.flags.isNegated(element)) {
             keyword = SysMLTokens.ASSERT_NOT_CONSTRAINT;
         }
-        final String direction = this.flags.direction(element);
-        if (!direction.isBlank()) {
-            output.token(direction).space();
+        if (!this.flags.isEnd(element)) {
+            this.writeDirectionAndPrefixModifiers(element, output);
         }
-        this.declarations.serializePrefixModifiers(element);
         final String portionKind = this.flags.portionKind(element);
         if (!portionKind.isBlank()) {
             keyword = this.portionDeclarationKeyword(portionKind, keyword);
@@ -198,6 +196,20 @@ public final class DefinitionAndUsageRenderer {
             keyword = SysMLTokens.END_KEYWORD;
         }
         return this.parserDeclarationKeyword(element, keyword);
+    }
+
+    /**
+     * Writes the direction and the {@code derived}/{@code abstract}/{@code variation}/{@code constant} modifiers of
+     * {@code refPrefix}. An end feature writes them after {@code end}, the only place where {@code defaultReferenceUsage}
+     * accepts them.
+     */
+    private void writeDirectionAndPrefixModifiers(final Element element,
+            final TextOutput output) {
+        final String direction = this.flags.direction(element);
+        if (!direction.isBlank()) {
+            output.token(direction).space();
+        }
+        this.declarations.serializePrefixModifiers(element);
     }
 
     /**
@@ -475,6 +487,8 @@ public final class DefinitionAndUsageRenderer {
             return new EndDeclarationPlan("", "", "", false, false);
         }
         final EndDeclarationPlan plan = this.endDeclarationPlan(element);
+        output.space();
+        this.writeDirectionAndPrefixModifiers(element, output);
         this.writeEndReferenceAndMultiplicity(element, output, plan);
         this.writeEndModifiers(element, output);
         if (refPrefix) {
