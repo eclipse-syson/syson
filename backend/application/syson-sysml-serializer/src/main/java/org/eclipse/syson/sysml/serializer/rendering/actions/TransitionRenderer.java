@@ -64,6 +64,8 @@ public final class TransitionRenderer {
 
     private final ExpressionAndReferenceWriter referenceWriter;
 
+    private final ElementSyntaxQueries syntax;
+
     private final SerializationContext context;
 
     private final ModelNavigation navigation;
@@ -105,6 +107,7 @@ public final class TransitionRenderer {
         this.dispatch = dispatch;
         this.referenceResolver = referenceResolver;
         this.referenceWriter = referenceWriter;
+        this.syntax = syntax;
         this.context = context;
         this.navigation = context.modelQueries().navigation();
         this.adapters = context.modelQueries().adapters();
@@ -135,7 +138,34 @@ public final class TransitionRenderer {
             output.space().token(SysMLTokens.THEN_KEYWORD);
             this.writeTransitionTarget(transitionUsage, parts, fragment);
         }
-        this.declarations.serializeStatementEnd(transitionUsage);
+        final List<Relationship> bodyRelationships = this.transitionBodyRelationships(transitionUsage);
+        if (bodyRelationships.isEmpty()) {
+            this.declarations.serializeStatementEnd(transitionUsage);
+        } else {
+            this.declarations.serializeSelectedBodyOrStatementEnd(transitionUsage, bodyRelationships);
+        }
+    }
+
+    /**
+     * Returns the members of the {@code actionBody} that ends every transition rule: the relationships after the
+     * transition succession, which closes the declaration (source, parameters, trigger, guard, effect, then target).
+     * Trigger, guard and effect memberships are left out wherever they are, since the declaration writes them, and so
+     * are memberships that only own generated elements, such as an empty reference usage added after parsing.
+     */
+    private List<Relationship> transitionBodyRelationships(final Element transitionUsage) {
+        final List<Relationship> relationships = this.navigation.bodyRelationships(transitionUsage);
+        int bodyStart = relationships.size();
+        for (int index = 0; index < relationships.size(); index++) {
+            if (this.navigation.ownedRelatedElements(relationships.get(index)).stream().anyMatch(SuccessionAsUsage.class::isInstance)) {
+                bodyStart = index + 1;
+                break;
+            }
+        }
+        return relationships.subList(bodyStart, relationships.size()).stream()
+                .filter(relationship -> !(relationship instanceof TransitionFeatureMembership))
+                .filter(relationship -> this.navigation.ownedRelatedElements(relationship).isEmpty()
+                        || !this.navigation.ownedRelatedElements(relationship).stream().allMatch(this.syntax::isAnonymousGeneratedElement))
+                .toList();
     }
 
     /**
