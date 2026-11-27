@@ -160,4 +160,10 @@ public final class SerializationContext {
     public boolean hasResolvedDanglingTargets() {
         return this.hasResolvedDanglingTargets;
     }
+
+    /** Returns the same rendering options, names and model queries with a separate output buffer. */
+    public SerializationContext withOutput(final TextOutput separateOutput) {
+        return new SerializationContext(this.options, separateOutput, this.nameRenderer, this.modelQueries,
+                this.danglingReferenceIndex, this.referencePathResolver);
+    }
 }

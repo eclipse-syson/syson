@@ -21,6 +21,7 @@ import org.eclipse.syson.sysml.serializer.expression.ExpressionRenderer;
 import org.eclipse.syson.sysml.serializer.model.ElementSyntaxQueries;
 import org.eclipse.syson.sysml.serializer.model.ModelNavigation;
 import org.eclipse.syson.sysml.serializer.output.ExpressionAndReferenceWriter;
+import org.eclipse.syson.sysml.serializer.output.StringTextOutput;
 import org.eclipse.syson.sysml.serializer.output.TextOutput;
 import org.eclipse.syson.sysml.serializer.references.ReferenceResolver;
 import org.eclipse.syson.sysml.serializer.rendering.declarations.DeclarationRenderer;
@@ -68,11 +69,21 @@ public final class SysMLTextRenderer implements ElementDispatch {
         this.navigation = context.modelQueries().navigation();
         this.referenceResolver = new ReferenceResolver(context);
         this.comments = new CommentRenderer(this.referenceResolver, context);
-        final ExpressionRenderer expressions = new ExpressionRenderer(this.referenceResolver, this.comments, context);
+        final ExpressionRenderer expressions = new ExpressionRenderer(this.referenceResolver, this.comments, context, this::relationshipsText);
         final ExpressionAndReferenceWriter referenceWriter = new ExpressionAndReferenceWriter(expressions, this.referenceResolver, context);
         final ElementSyntaxQueries syntax = new ElementSyntaxQueries(context, this.referenceResolver, expressions);
         this.declarations = new DeclarationRenderer(context, this.referenceResolver, expressions, referenceWriter, syntax, this, this.comments);
         this.rendererRegistry = new SysMLTypeRendererRegistry(context, this, this.referenceResolver, referenceWriter, syntax, this.declarations, this.comments);
+    }
+
+    /** Renders a complete list of body relationships into the text of a nested expression. */
+    public String relationshipsText(final List<Relationship> relationships) {
+        final TextOutput output = new StringTextOutput(this.context.options().formatting());
+        final SysMLTextRenderer renderer = new SysMLTextRenderer(this.context.withOutput(output));
+        for (int index = 0; index < relationships.size(); index++) {
+            renderer.serializeRelationship(relationships.get(index), relationships, index);
+        }
+        return output.content();
     }
 
     /**

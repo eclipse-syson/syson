@@ -14,6 +14,7 @@ package org.eclipse.syson.sysml.serializer.expression;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
@@ -27,6 +28,7 @@ import org.eclipse.syson.sysml.serializer.model.SpecializationTargetNames;
 import org.eclipse.syson.sysml.serializer.references.ReferenceResolver;
 import org.eclipse.syson.sysml.serializer.syntax.CommentRenderer;
 import org.eclipse.syson.sysml.serializer.tokens.SysMLTokens;
+import org.omg.sysml.lang.sysml.Comment;
 import org.omg.sysml.lang.sysml.Documentation;
 import org.omg.sysml.lang.sysml.Element;
 import org.omg.sysml.lang.sysml.Expression;
@@ -35,6 +37,7 @@ import org.omg.sysml.lang.sysml.FeatureReferenceExpression;
 import org.omg.sysml.lang.sysml.InvocationExpression;
 import org.omg.sysml.lang.sysml.Membership;
 import org.omg.sysml.lang.sysml.ParameterMembership;
+import org.omg.sysml.lang.sysml.ReferenceUsage;
 import org.omg.sysml.lang.sysml.Relationship;
 import org.omg.sysml.lang.sysml.ResultExpressionMembership;
 import org.omg.sysml.lang.sysml.ReturnParameterMembership;
@@ -70,6 +73,8 @@ final class InvocationExpressionRenderer {
 
     private final OperatorOperandResolver operandResolver;
 
+    private final Function<List<Relationship>, String> relationshipsText;
+
     /**
      * Creates an invocation renderer for one run.
      *
@@ -83,12 +88,14 @@ final class InvocationExpressionRenderer {
      *            the run's context
      * @param operandResolver
      *            reads argument values from parameter features
+     * @param relationshipsText
+     *            renders the members of a full body expression
      */
     InvocationExpressionRenderer(final ExpressionRenderer expressionRenderer,
             final ReferenceResolver referenceResolver,
             final CommentRenderer comments,
             final SerializationContext context,
-            final OperatorOperandResolver operandResolver) {
+            final OperatorOperandResolver operandResolver, final Function<List<Relationship>, String> relationshipsText) {
         this.expressionRenderer = expressionRenderer;
         this.referenceResolver = referenceResolver;
         this.comments = comments;
@@ -99,6 +106,7 @@ final class InvocationExpressionRenderer {
         this.specializationTargets = context.modelQueries().specializationTargets();
         this.nestedTargets = context.modelQueries().nestedTargets();
         this.operandResolver = operandResolver;
+        this.relationshipsText = relationshipsText;
     }
 
     /**
@@ -383,6 +391,14 @@ final class InvocationExpressionRenderer {
      */
     String invocationLambdaText(final Element expression) {
         final Element lambda = this.lambdaArgument(expression);
+        if (this.hasMembersOutsideCompactForm(lambda)) {
+            return this.relationshipsText.apply(this.navigation.bodyRelationships(lambda));
+        }
+        return this.compactLambdaText(lambda);
+    }
+
+    /** Writes named parameters and the result of a compact lambda body. */
+    private String compactLambdaText(final Element lambda) {
         final List<Element> parameters = this.navigation.ownedRelationships(lambda).stream()
                 .filter(relationship -> relationship instanceof Membership membership
                         && membership.getVisibility() != VisibilityKind.PRIVATE
@@ -404,6 +420,25 @@ final class InvocationExpressionRenderer {
                     + resultText;
         }
         return text;
+    }
+
+    /**
+     * Tells whether a body expression has members that the compact {@code in x : T; result} text cannot write: a member
+     * other than a parameter or a comment (an attribute, a binding connector...), a return parameter, or no result
+     * expression. Its members are then written with the element renderers. Other arguments, such as feature chains,
+     * are never body expressions.
+     */
+    private boolean hasMembersOutsideCompactForm(final Element lambda) {
+        if (!this.navigation.isMetaclass(lambda, SysMLPackage.eINSTANCE.getExpression())) {
+            return false;
+        }
+        final List<Relationship> members = this.navigation.bodyRelationships(lambda).stream()
+                .filter(relationship -> !(relationship instanceof ResultExpressionMembership))
+                .toList();
+        return !members.isEmpty() && (this.navigation.resultExpression(lambda) == null
+                || members.stream().anyMatch(relationship -> relationship instanceof ReturnParameterMembership
+                        || this.navigation.ownedRelatedElements(relationship).stream()
+                                .anyMatch(member -> !(member instanceof ReferenceUsage) && !(member instanceof Comment))));
     }
 
     /** Writes the lambda parameter declaration with its direction, explicit {@code ref} and inline body comments. */

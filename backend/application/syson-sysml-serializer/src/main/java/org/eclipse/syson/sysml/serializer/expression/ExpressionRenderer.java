@@ -13,6 +13,7 @@
 package org.eclipse.syson.sysml.serializer.expression;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
@@ -37,6 +38,7 @@ import org.omg.sysml.lang.sysml.FeatureReferenceExpression;
 import org.omg.sysml.lang.sysml.InvocationExpression;
 import org.omg.sysml.lang.sysml.MetadataAccessExpression;
 import org.omg.sysml.lang.sysml.OperatorExpression;
+import org.omg.sysml.lang.sysml.Relationship;
 import org.omg.sysml.lang.sysml.SysMLPackage;
 import org.omg.sysml.lang.sysml.TriggerInvocationExpression;
 
@@ -79,10 +81,12 @@ public final class ExpressionRenderer {
      *            renders comments kept inside expressions
      * @param context
      *            the run's context
+     * @param relationshipsText
+     *            renders the members of a full body expression
      */
     public ExpressionRenderer(final ReferenceResolver referenceResolver,
             final CommentRenderer commentRenderer,
-            final SerializationContext context) {
+            final SerializationContext context, final Function<List<Relationship>, String> relationshipsText) {
         this.referenceResolver = referenceResolver;
         this.context = context;
         this.navigation = context.modelQueries().navigation();
@@ -92,7 +96,7 @@ public final class ExpressionRenderer {
                 context.options().mode() == SerializationMode.ROUND_TRIP);
         this.featurePathRenderer = new FeaturePathExpressionRenderer(this, referenceResolver, context, this.referenceCollector);
         this.operatorOperandResolver = new OperatorOperandResolver(context);
-        this.invocationRenderer = new InvocationExpressionRenderer(this, referenceResolver, commentRenderer, context, this.operatorOperandResolver);
+        this.invocationRenderer = new InvocationExpressionRenderer(this, referenceResolver, commentRenderer, context, this.operatorOperandResolver, relationshipsText);
         this.operatorRenderer = new OperatorExpressionRenderer(this, referenceResolver, this.invocationRenderer, this.operatorOperandResolver, context);
     }
 
