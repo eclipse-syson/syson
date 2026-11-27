@@ -53,6 +53,10 @@ Return parameters match independently of input order.
 ** Internal errors while checking a constraint no longer appear as model violations in the Validation view.
 Other checks continue to run so independently detected model problems remain visible.
 
+** When a _Redefinition_ relationship is missing either required feature, the Validation view now reports one error asking users to complete the relationship.
+Checks that depend on these features are deferred to avoid secondary diagnostics, while independent checks continue.
+The error disappears and dependent checks resume once both features are set.
+
 == Improvements
 
 * In diagrams:

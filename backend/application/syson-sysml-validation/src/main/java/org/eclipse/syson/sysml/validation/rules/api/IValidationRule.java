@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.validation.rules.api;
 
+import java.util.List;
+
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -62,4 +64,15 @@ public interface IValidationRule {
      *         {@link Diagnostic#INFO}, {@link Diagnostic#WARNING}, {@link Diagnostic#ERROR}, {@link Diagnostic#CANCEL}.
      */
     int severity();
+
+    /**
+     * Provides the names of subsequent rules to skip on the same element when this rule evaluates to Boolean false
+     * with status OK. Passing rules and unsuccessful evaluations do not exclude any rules. Providers must place
+     * prerequisites before the rules they may exclude; exclusions do not affect earlier evaluations or other elements.
+     *
+     * @return a non-null list of rule names, empty by default for existing implementations.
+     */
+    default List<String> getRulesToIgnoreOnFailure() {
+        return List.of();
+    }
 }
