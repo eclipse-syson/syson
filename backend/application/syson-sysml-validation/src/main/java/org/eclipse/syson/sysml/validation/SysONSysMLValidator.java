@@ -22,22 +22,29 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EValidator;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.interpreter.Result;
+import org.eclipse.sirius.components.interpreter.Status;
 import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.validation.rules.api.IValidationRule;
 import org.eclipse.syson.sysml.validation.rules.api.IValidationRulesProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * The validator for SysMLv2 elements.
+ * The validator for SysMLv2 elements. Failed rule evaluations are logged without producing model diagnostics.
  *
  * @author arichard
  */
 public class SysONSysMLValidator implements EValidator {
+
+    private final Logger logger = LoggerFactory.getLogger(SysONSysMLValidator.class);
 
     private final IValidationRulesProvider validationRulesProvider;
 
@@ -55,8 +62,12 @@ public class SysONSysMLValidator implements EValidator {
     }
 
     @Override
-    public boolean validate(EObject eObject, DiagnosticChain diagnostics, Map<Object, Object> context) {
-        return this.validate(eObject.eClass(), eObject, diagnostics, context);
+    public boolean validate(EClass eClass, EObject eObject, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        boolean isValid = true;
+        if (eObject instanceof Element element && !this.utilService.isRootNamespace(element)) {
+            isValid = this.checkAllConstraints(element, eClass, diagnostics);
+        }
+        return isValid;
     }
 
     @Override
@@ -66,51 +77,8 @@ public class SysONSysMLValidator implements EValidator {
     }
 
     @Override
-    public boolean validate(EClass eClass, EObject eObject, DiagnosticChain diagnostics, Map<Object, Object> context) {
-        boolean isValid = true;
-        if (eObject instanceof Element element && !this.utilService.isRootNamespace(element)) {
-            isValid = this.checkAllConstraints(element, eClass, diagnostics);
-        }
-        return isValid;
-    }
-
-    /**
-     * Check all constraints related to the given {@link Element}.
-     *
-     * @param element
-     *            the {@link Element} on which the constraints have to be checked.
-     * @param eClass
-     *            the {@link EClass} of the {@link Element}.
-     * @param diagnostics
-     *            the {@link DiagnosticChain} to fill with new diagnostic if constraints are not respected.
-     * @return <code>true</code> if all constraints are respected, <code>false</code> otherwise.
-     */
-    private boolean checkAllConstraints(Element element, EClass eClass, DiagnosticChain diagnostics) {
-        boolean isValid = true;
-
-        for (final IValidationRule validationRule : this.validationRulesProvider.getValidationRules(eClass)) {
-            boolean validConstraint = this.executeConstraint(element, validationRule.expression());
-            if (!validConstraint) {
-                this.addDiagnostic(diagnostics, element, validationRule);
-                isValid = false;
-            }
-        }
-
-        return isValid;
-    }
-
-    /**
-     * Execute the AQL expression.
-     *
-     * @param element
-     *            the {@link Element} on which the constraints have to be checked.
-     * @param aqlExpression
-     *            the expression to execute.
-     * @return <code>true</code> if the AQL expression returns true, <code>false</code> otherwise.
-     */
-    private boolean executeConstraint(Element element, String aqlExpression) {
-        final Map<String, Object> variables = Map.ofEntries(Map.entry(RepresentationVariables.SELF.name(), element));
-        return this.aqlInterpreter.evaluateExpression(variables, aqlExpression).asBoolean().orElse(Boolean.FALSE).booleanValue();
+    public boolean validate(EObject eObject, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return this.validate(eObject.eClass(), eObject, diagnostics, context);
     }
 
     /**
@@ -130,12 +98,16 @@ public class SysONSysMLValidator implements EValidator {
 
         // Since validation usually runs on the whole editing context, we need to make clear which document is
         // concerned.
-        final String elementDocumentLabel = element.eResource().eAdapters().stream()
-                .filter(ResourceMetadataAdapter.class::isInstance)
-                .map(ResourceMetadataAdapter.class::cast)
-                .findFirst()
-                .map(ResourceMetadataAdapter::getName)
-                .orElseGet(() -> element.eResource().getURI().toString());
+        final Resource resource = element.eResource();
+        String elementDocumentLabel = "<no document>";
+        if (resource != null) {
+            elementDocumentLabel = resource.eAdapters().stream()
+                    .filter(ResourceMetadataAdapter.class::isInstance)
+                    .map(ResourceMetadataAdapter.class::cast)
+                    .findFirst()
+                    .map(ResourceMetadataAdapter::getName)
+                    .orElseGet(() -> Objects.toString(resource.getURI(), "<no document>"));
+        }
 
         // Inside a document, the SysML qualified name is usually enough to uniquely identify an element.
         final String elementQualifiedName = element.getQualifiedName();
@@ -164,5 +136,35 @@ public class SysONSysMLValidator implements EValidator {
                     element,
                 });
         diagnostics.add(basicDiagnostic);
+    }
+
+    /**
+     * Check all constraints related to the given {@link Element}.
+     *
+     * @param element
+     *            the {@link Element} on which the constraints have to be checked.
+     * @param eClass
+     *            the {@link EClass} of the {@link Element}.
+     * @param diagnostics
+     *            the {@link DiagnosticChain} to fill with new diagnostic if constraints are not respected.
+     * @return <code>false</code> if a successfully evaluated constraint is violated; failed evaluations are only logged.
+     */
+    private boolean checkAllConstraints(Element element, EClass eClass, DiagnosticChain diagnostics) {
+        boolean isValid = true;
+        final Map<String, Object> variables = Map.of(RepresentationVariables.SELF.name(), element);
+
+        for (final IValidationRule validationRule : this.validationRulesProvider.getValidationRules(eClass)) {
+            Result result = this.aqlInterpreter.evaluateExpression(variables, validationRule.expression());
+            Object constraintResult = result.asObject().orElse(null);
+            if (result.getStatus() != Status.OK || !(constraintResult instanceof Boolean)) {
+                this.logger.warn("Could not evaluate validation rule '{}' for element '{}': status={}, result={}, expression={}",
+                        validationRule.ruleName(), EcoreUtil.getURI(element), result.getStatus(), constraintResult, validationRule.expression());
+            } else if (Boolean.FALSE.equals(constraintResult)) {
+                this.addDiagnostic(diagnostics, element, validationRule);
+                isValid = false;
+            }
+        }
+
+        return isValid;
     }
 }

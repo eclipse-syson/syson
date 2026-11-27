@@ -48,6 +48,11 @@ Return parameters match independently of input order.
 ** A nesting graphical edge is displayed only for a locally owned _Stakeholder_, preventing an inherited _Stakeholder_ from being shown as locally contained.
 ** Undoing the `Add existing elements` tool doesn't remove graphical nodes that were present before applying the tool anymore.
 
+* In validation:
+
+** Internal errors while checking a constraint no longer appear as model violations in the Validation view.
+Other checks continue to run so independently detected model problems remain visible.
+
 == Improvements
 
 * In diagrams:

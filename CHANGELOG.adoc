@@ -28,6 +28,11 @@ Consumers needing only local parameters should filter `getOwnedFeature()` with `
 `Feature#getOwnedRedefinition()` now also returns virtual implicit positional parameter redefinitions.
 Consumers needing only stored redefinitions should filter `getOwnedRelationship()` for `Redefinition` instances.
 
+- https://github.com/eclipse-syson/syson/issues/2685[#2685] [validation] `SysONSysMLValidator#validate(...)` no longer returns `false` solely because a rule evaluation fails or produces a non-Boolean result.
+These checks are logged on the server and produce no model diagnostic.
+Custom `IValidationRule` expressions must return a Boolean with AQL status `OK`; update expressions relying on implicit Boolean conversion.
+Callers must treat a `true` return value as the absence of detected violations, rather than confirmation that every check completed, and use server logs to investigate unsuccessful checks.
+
 === Dependency update
 
 - [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.11.2].
@@ -61,6 +66,10 @@ The derived stakeholder list on a requirement usage now identifies its owning EM
 - https://github.com/eclipse-syson/syson/issues/2665[#2665] [import] `SysMLImportLexer` Set initialization should be moved to a constant.
 - https://github.com/eclipse-syson/syson/issues/2658[#2658] [diagrams] Ensure undoing _add existing elements_ does not remove unsynchronized nodes that shouldn't be removed.
 - https://github.com/eclipse-syson/syson/issues/2631[#2631] [import] Syntax error in a nested body leaves the context stack unbalanced (AssertionError / wrong root type)
+
+- https://github.com/eclipse-syson/syson/issues/2685[#2685] [validation] Prevent unsuccessful AQL constraint evaluations from producing misleading model diagnostics while continuing to evaluate the remaining rules.
+Log the rule, element, evaluation status, result and expression for unsuccessful or non-Boolean evaluations.
+Handle elements without a containing resource when building model diagnostics.
 
 === Improvements
 
