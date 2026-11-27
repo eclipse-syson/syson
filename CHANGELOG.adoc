@@ -90,6 +90,8 @@ It writes SysML v2 models as normalized text, round-trip text that preserves syn
 Imported reference spellings remain available while the model is loaded. After a reload, serialization uses the stored model.
 Downstream callers can migrate from the deprecated `SysMLElementSerializer` to `SysONTextSerializer` for SysON model elements.
 - https://github.com/eclipse-syson/syson/issues/2590[#2590] [diagrams] Add `Redefine a nested feature` tool in diagrams.
+- https://github.com/eclipse-syson/syson/issues/2678[#2678] [textual-view] Add support for an experimental read-only textual representation displaying sample SysML text in a syntax-highlighted editor.
+The textual representation can be tested setting `org.eclipse.syson.experimental.textual.representation.enabled` to `true`.
 
 - https://github.com/eclipse-syson/syson/issues/2654[#2654] [services] Add `redefineFeatureChain` to materialize and reuse local SysML usages along a selected path.
 

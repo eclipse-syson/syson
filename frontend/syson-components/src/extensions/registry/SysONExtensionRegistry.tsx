@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
+import { ExtensionRegistry, representationFactoryExtensionPoint } from '@eclipse-sirius/sirius-components-core';
 import {
   DIAGRAM_REPRESENTATION_KIND,
   diagramToolbarActionExtensionPoint,
@@ -57,6 +57,10 @@ import { SysMLNoteNodePaletteAppearanceSection } from '../../nodes/note/SysMLNot
 import { SysMLPackageNodePaletteAppearanceSection } from '../../nodes/package/SysMLPackageNodePaletteAppearanceSection';
 import { sysMLNodesStyleDocumentTransform } from '../../nodes/SysMLNodesDocumentTransform';
 import { SysMLViewFrameNodePaletteAppearanceSection } from '../../nodes/view_frame/SysMLViewFrameNodePaletteAppearanceSection';
+import {
+  TEXTUAL_VIEW_REPRESENTATION_KIND,
+  TextualViewRepresentation,
+} from '../../textual-view/TextualViewRepresentation';
 import { DeleteExpressionDiagramToolOverriddenContribution } from '../expressions/DeleteExpressionDiagramToolOverriddenContribution';
 import { DeleteExpressionExplorerToolOverriddenContribution } from '../expressions/DeleteExpressionExplorerToolOverriddenContribution';
 import { DeleteSysMLExpressionMenuContribution } from '../expressions/DeleteSysMLExpressionMenuContribution';
@@ -75,6 +79,14 @@ import { RotateNodeToolOverriddenContribution } from '../rotateNodeTool/RotateNo
 import { SysONDiagramPanelMenu } from '../SysONDiagramPanelMenu';
 
 const sysONExtensionRegistry: ExtensionRegistry = new ExtensionRegistry();
+
+sysONExtensionRegistry.putData(representationFactoryExtensionPoint, {
+  identifier: 'syson_textualViewRepresentation',
+  data: [
+    (representationMetadata) =>
+      representationMetadata.kind === TEXTUAL_VIEW_REPRESENTATION_KIND ? TextualViewRepresentation : null,
+  ],
+});
 
 const omniboxCommandOverrides: OmniboxCommandOverrideContribution[] = [
   {

@@ -31,6 +31,11 @@ See the xref:developer-guide:textual-sysml.adoc[Textual SysML developer guide].
 
 ** Applications can now create local redefinitions along a selected feature path before configuring its usages.
 
+* In textual representation:
+
+** Allow creating an experimental read-only textual representation displaying sample SysML text in a syntax-highlighted editor.
+** The textual representation can be tested setting `org.eclipse.syson.experimental.textual.representation.enabled` to `true`
+
 == Bug fixes
 
 * In SysML models:
