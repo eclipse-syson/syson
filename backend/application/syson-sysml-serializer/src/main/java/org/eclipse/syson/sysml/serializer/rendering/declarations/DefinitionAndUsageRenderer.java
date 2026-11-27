@@ -485,7 +485,7 @@ public final class DefinitionAndUsageRenderer {
     private EndDeclarationPlan writeEndDeclaration(final Element element,
             final TextOutput output, final boolean isEnd, final boolean refPrefix) {
         if (!isEnd) {
-            return new EndDeclarationPlan("", "", "", false, false);
+            return new EndDeclarationPlan(null, "", "", false, false);
         }
         final EndDeclarationPlan plan = this.endDeclarationPlan(element);
         output.space();
@@ -503,11 +503,9 @@ public final class DefinitionAndUsageRenderer {
      * suffix in the specialization part.
      */
     private EndDeclarationPlan endDeclarationPlan(final Element element) {
-        final boolean hasNestedReference = this.syntax.hasNestedEndReference(element);
-        String nestedName = "";
+        final Element crossFeature = this.nestedEndReference(element);
         String nestedMultiplicity = "";
-        if (hasNestedReference) {
-            nestedName = this.nestedEndReferenceName(element);
+        if (crossFeature != null) {
             nestedMultiplicity = this.multiplicities.crossFeatureMultiplicityText(element,
                     this.referenceWriter::expressionText);
         }
@@ -516,10 +514,10 @@ public final class DefinitionAndUsageRenderer {
         final boolean hasDirectMultiplicity = this
                 .hasDirectEndMultiplicity(element);
         final boolean ownMultiplicityAsTypeSuffix = hasDirectMultiplicity
-                && !hasNestedReference
+                && crossFeature == null
                 && this.mustRenderEndMultiplicityAsTypeSuffix(element,
                         ownMultiplicity, nestedMultiplicity);
-        return new EndDeclarationPlan(nestedName, nestedMultiplicity,
+        return new EndDeclarationPlan(crossFeature, nestedMultiplicity,
                 ownMultiplicity, ownMultiplicityAsTypeSuffix,
                 hasDirectMultiplicity);
     }
@@ -535,12 +533,23 @@ public final class DefinitionAndUsageRenderer {
                                 SysMLPackage.eINSTANCE.getMultiplicityRange()));
     }
 
-    /** Writes the cross feature of an end: its nested reference name, then the multiplicity that precedes the end name. */
+    /**
+     * Writes the cross feature of an end, which {@code ownedCrossFeature} declares like a usage: its nested reference name
+     * and its specializations with their multiplicity, in source order (<code>end crossPart : Member [0..1] :> all item
+     * left</code>). Without cross feature, writes the multiplicity that precedes the end name.
+     */
     private void writeEndReferenceAndMultiplicity(final Element element,
             final TextOutput output, final EndDeclarationPlan plan) {
-        if (!plan.nestedName().isBlank()) {
-            this.referenceWriter.writeReferenceText(output.space(), plan.nestedName(),
-                    element);
+        final Element crossFeature = plan.crossFeature();
+        if (crossFeature != null) {
+            output.space();
+            this.writeDirectionAndPrefixModifiers(crossFeature, output);
+            if (this.flags.hasExplicitRefPrefix(crossFeature)) {
+                output.token(SysMLTokens.REF_KEYWORD).space();
+            }
+            this.writeDeclarationNames(crossFeature, output, "");
+            this.declarations.serializeSpecializations(crossFeature, true);
+            return;
         }
         final String multiplicity = this.endMultiplicityToWrite(plan);
         if (!multiplicity.isBlank()) {
@@ -549,22 +558,18 @@ public final class DefinitionAndUsageRenderer {
         }
     }
 
-    /** Returns the multiplicity written in the end prefix: none when it is a type suffix, else nested before own. */
+    /** Returns the own multiplicity of an end without cross feature when it precedes the name rather than follows the type. */
     private String endMultiplicityToWrite(final EndDeclarationPlan plan) {
         if (plan.ownMultiplicityAsTypeSuffix()) {
             return "";
         }
-        String multiplicity = plan.nestedMultiplicity();
-        if (multiplicity.isBlank()) {
-            multiplicity = plan.ownMultiplicity();
-        }
-        return multiplicity;
+        return plan.ownMultiplicity();
     }
 
     /**
      * Writes end modifiers after the cross feature, then the user keywords and the end feature keyword, as in {@code usagePrefix
      * : endUsagePrefix usageExtensionKeyword*}. {@code ordered} is written here only for the interface occurrence usage
-     * parser rule; {@code nonunique} comes from the cross feature.
+     * parser rule; {@code nonunique} is written with the cross feature.
      */
     private void writeEndModifiers(final Element element,
             final TextOutput output) {
@@ -572,9 +577,6 @@ public final class DefinitionAndUsageRenderer {
                 && SourceSyntax.isRootParserEntry(this.context.options(), element,
                         ParserFragments.INTERFACE_OCCURRENCE_USAGE_ELEMENT)) {
             output.space().token(SysMLTokens.ORDERED_KEYWORD);
-        }
-        if (this.hasNonUniqueNestedEndReference(element)) {
-            output.space().token(SysMLTokens.NONUNIQUE_KEYWORD);
         }
         output.space();
         this.declarations.serializeUserKeywords(element);
@@ -653,7 +655,7 @@ public final class DefinitionAndUsageRenderer {
     }
 
     /** Values collected before rendering an end declaration. */
-    private record EndDeclarationPlan(String nestedName,
+    private record EndDeclarationPlan(Element crossFeature,
             String nestedMultiplicity, String ownMultiplicity,
             boolean ownMultiplicityAsTypeSuffix,
             boolean hasDirectMultiplicity) {
@@ -786,36 +788,11 @@ public final class DefinitionAndUsageRenderer {
         return suffix;
     }
 
-    /**
-     * Returns the name of the first named reference usage nested in an end (its cross feature), or an empty string.
-     */
-    private String nestedEndReferenceName(final Element element) {
-        String name = "";
-        if (this.syntax.hasNestedEndReference(element)) {
-            name = this.navigation.bodyRelationships(element).stream()
-                    .flatMap(relationship -> this.navigation
-                            .ownedRelatedElements(relationship).stream())
-                    .filter(related -> this.syntax.isNestedEndReference(element, related))
-                    .map(this.referenceResolver::declaredName)
-                    .filter(candidate -> !candidate.isBlank()).findFirst()
-                    .orElse("");
-        }
-        return name;
-    }
-
-    /**
-     * Tells whether the end's cross feature is {@code nonunique}, which is written in the end prefix rather than on the
-     * nested usage.
-     */
-    private boolean hasNonUniqueNestedEndReference(final Element element) {
-        boolean nonUnique = false;
-        if (this.syntax.hasNestedEndReference(element)) {
-            nonUnique = this.navigation.bodyRelationships(element).stream()
-                    .flatMap(relationship -> this.navigation
-                            .ownedRelatedElements(relationship).stream())
-                    .filter(related -> this.syntax.isNestedEndReference(element, related))
-                    .anyMatch(this.flags::isNonUnique);
-        }
-        return nonUnique;
+    /** Returns the reference usage nested in an end (its cross feature), or null. */
+    private Element nestedEndReference(final Element element) {
+        return this.navigation.bodyRelationships(element).stream()
+                .flatMap(relationship -> this.navigation.ownedRelatedElements(relationship).stream())
+                .filter(related -> this.syntax.isNestedEndReference(element, related))
+                .findFirst().orElse(null);
     }
 }
