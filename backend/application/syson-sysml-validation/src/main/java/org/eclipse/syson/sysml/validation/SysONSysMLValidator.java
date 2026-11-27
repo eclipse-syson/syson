@@ -12,8 +12,10 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.validation;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.BasicDiagnostic;
@@ -153,7 +155,11 @@ public class SysONSysMLValidator implements EValidator {
         boolean isValid = true;
         final Map<String, Object> variables = Map.of(RepresentationVariables.SELF.name(), element);
 
+        Set<String> ignoredRuleNames = new HashSet<>();
         for (final IValidationRule validationRule : this.validationRulesProvider.getValidationRules(eClass)) {
+            if (ignoredRuleNames.contains(validationRule.ruleName())) {
+                continue;
+            }
             Result result = this.aqlInterpreter.evaluateExpression(variables, validationRule.expression());
             Object constraintResult = result.asObject().orElse(null);
             if (result.getStatus() != Status.OK || !(constraintResult instanceof Boolean)) {
@@ -162,6 +168,7 @@ public class SysONSysMLValidator implements EValidator {
             } else if (Boolean.FALSE.equals(constraintResult)) {
                 this.addDiagnostic(diagnostics, element, validationRule);
                 isValid = false;
+                ignoredRuleNames.addAll(validationRule.getRulesToIgnoreOnFailure());
             }
         }
 

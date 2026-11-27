@@ -28,7 +28,8 @@ import org.eclipse.syson.sysml.validation.SysONSysMLValidator;
 public interface IValidationRulesProvider {
 
     /**
-     * Provides the validation rules to apply on a type of model element.
+     * Provides the validation rules to apply on a type of model element, in evaluation order. Rules declaring
+     * {@link IValidationRule#getRulesToIgnoreOnFailure() exclusions} must precede the rules they may exclude.
      * <p>
      * Note: For a given type, the list of rules may change arbitrarily between different calls (e.g. to allow
      * applications to provide a UI to select the validation rules to apply).

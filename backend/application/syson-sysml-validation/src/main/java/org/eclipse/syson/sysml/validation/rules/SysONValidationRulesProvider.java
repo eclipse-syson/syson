@@ -24,8 +24,8 @@ import org.eclipse.syson.sysml.validation.rules.api.IValidationRulesProvider;
 import org.springframework.stereotype.Service;
 
 /**
- * Default {@link IValidationRulesProvider} implementation that always provides all the {@link SysMLValidationRule
- * SysML validation rules}.
+ * Default {@link IValidationRulesProvider} implementation providing SysON prerequisites before the validation rules
+ * from the SysML specification.
  *
  * Consumers may override this implementation to add and/or remove rules.
  *
@@ -38,7 +38,7 @@ public class SysONValidationRulesProvider implements IValidationRulesProvider {
 
     @Override
     public List<? extends IValidationRule> getValidationRules(final EClass eClass) {
-        return ALL_SYSML_VALIDATION_RULES.stream()
+        return Stream.concat(Stream.of(SysONValidationRule.values()), ALL_SYSML_VALIDATION_RULES.stream())
                 .filter(rule -> rule.eClass().equals(eClass) || rule.eClass().isSuperTypeOf(eClass))
                 .toList();
     }

@@ -33,6 +33,10 @@ These checks are logged on the server and produce no model diagnostic.
 Custom `IValidationRule` expressions must return a Boolean with AQL status `OK`; update expressions relying on implicit Boolean conversion.
 Callers must treat a `true` return value as the absence of detected violations, rather than confirmation that every check completed, and use server logs to investigate unsuccessful checks.
 
+- https://github.com/eclipse-syson/syson/issues/2690[#2690] [validation] `SysONValidationRulesProvider` now supplies `SysONValidationRule` prerequisites before the specification rules: a missing `Redefinition` endpoint produces an `ERROR` diagnostic.
+Clients creating relationships in multiple steps must assign both endpoints before expecting integrity validation to succeed.
+Custom providers declaring rule exclusions must return prerequisites before the rules they can exclude.
+
 === Dependency update
 
 - [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.11.2].
@@ -70,6 +74,11 @@ The derived stakeholder list on a requirement usage now identifies its owning EM
 - https://github.com/eclipse-syson/syson/issues/2685[#2685] [validation] Prevent unsuccessful AQL constraint evaluations from producing misleading model diagnostics while continuing to evaluate the remaining rules.
 Log the rule, element, evaluation status, result and expression for unsuccessful or non-Boolean evaluations.
 Handle elements without a containing resource when building model diagnostics.
+
+- https://github.com/eclipse-syson/syson/issues/2690[#2690] [validation] Introduce a separate `SysONValidationRule` registry for application constraints, provided through `SysONValidationRulesProvider`.
+Report missing `Redefinition` endpoints with one `validateRedefinitionRequiredFeatures` error and skip the seven dependent specification rules until both endpoints are present, while keeping independent checks active.
+Add `IValidationRule#getRulesToIgnoreOnFailure()` with an empty default implementation to preserve existing implementations.
+Providers must return prerequisite rules before the rules they can exclude; exclusions apply only to subsequent rules on the same element after a successful Boolean-false evaluation.
 
 === Improvements
 
