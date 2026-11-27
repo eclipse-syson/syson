@@ -404,8 +404,12 @@ public final class ElementSyntaxQueries {
                 || this.hasSerializableBody(element);
     }
 
+    /**
+     * Tells whether a body element was written by the user: not a generated helper, which includes an unnamed reference
+     * usage that designates something, such as the extra end <code>end ref ::> extra;</code> of a connector body.
+     */
     private boolean isExplicitActionBodyElement(final Element element) {
-        final boolean explicitModelElement = !this.isAnonymousGeneratedElement(element)
+        final boolean explicitModelElement = this.hasOwnSyntax(element)
                 && !this.isPromotedUserKeywordMetadata(element)
                 && !this.isStatementBodyMetadata(element);
         return explicitModelElement
