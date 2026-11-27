@@ -143,6 +143,25 @@ public final class ExpressionRenderer {
      */
     public String expressionText(final Expression expression,
             final String parentOperator, final boolean rightOperand) {
+        return this.expressionLeadingCommentText(expression)
+                + this.expressionTextWithoutLeadingComments(expression, parentOperator, rightOperand);
+    }
+
+    /**
+     * Renders a top-level expression without the comments attached before it, for an expression written as an element
+     * whose dispatch already wrote them, such as the result expression of a calculation body.
+     *
+     * @param expression
+     *            the expression, or {@code null}
+     * @return the rendered text
+     */
+    public String standaloneExpressionText(final Expression expression) {
+        return this.expressionTextWithoutLeadingComments(expression, "", false);
+    }
+
+    /** Renders an expression in its parent's precedence context, with its source parentheses but without its leading comments. */
+    private String expressionTextWithoutLeadingComments(final Expression expression,
+            final String parentOperator, final boolean rightOperand) {
         String text;
         if (expression == null) {
             text = "";
@@ -160,7 +179,7 @@ public final class ExpressionRenderer {
                 && !ExpressionPathSupport.isEnclosedInParentheses(text)) {
             text = ExpressionPathSupport.parenthesized(text);
         }
-        return this.expressionLeadingCommentText(expression) + text;
+        return text;
     }
 
     private String structuredExpressionText(final Expression expression,
