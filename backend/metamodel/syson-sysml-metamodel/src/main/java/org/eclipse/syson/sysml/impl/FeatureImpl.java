@@ -454,25 +454,41 @@ public class FeatureImpl extends TypeImpl implements Feature {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Implements deriveFeatureFeaturingType (KerML 8.3.3.3.4):
+     * "The featuringTypes of a Feature include the featuringTypes of all the typeFeaturings of the Feature."
+     * Follows only the first chaining feature, visiting each feature once to bound inconsistent cycles.
+     * Explicit contexts are collected in traversal order, followed by implicit contexts in reverse traversal order.
      *
+     * @return an unmodifiable snapshot of the featuring types, preserving duplicates
      * @generated NOT
      */
     @Override
     public EList<Type> getFeaturingType() {
         List<Type> featuringTypes = new LinkedList<>();
-        this.getOwnedTypeFeaturing().stream()
-                .map(TypeFeaturing::getFeaturingType)
-                .forEach(featuringTypes::add);
-        var chainingFeature = this.getChainingFeature();
-        if (!chainingFeature.isEmpty()) {
-            featuringTypes.addAll(chainingFeature.get(0).getFeaturingType());
+        Set<Feature> visited = new LinkedHashSet<>();
+        Deque<FeatureImpl> chainedFeatures = new ArrayDeque<>();
+        Feature current = this;
+        while (current instanceof FeatureImpl feature && visited.add(current)) {
+            feature.getOwnedTypeFeaturing().stream()
+                    .map(TypeFeaturing::getFeaturingType)
+                    .forEach(featuringTypes::add);
+            chainedFeatures.push(feature);
+            EList<Feature> chainingFeatures = feature.getChainingFeature();
+            current = null;
+            if (!chainingFeatures.isEmpty()) {
+                current = chainingFeatures.get(0);
+            }
+        }
+        if (current != null && !visited.contains(current)) {
+            featuringTypes.addAll(current.getFeaturingType());
         }
 
-        // Add implicit featuring type
-        Type implicitType = this.computeImplicitFeaturingType();
-        if (implicitType != null) {
-            featuringTypes.add(implicitType);
+        // Implicit contexts follow the return order of the chain traversal.
+        while (!chainedFeatures.isEmpty()) {
+            Type implicitType = chainedFeatures.pop().computeImplicitFeaturingType();
+            if (implicitType != null) {
+                featuringTypes.add(implicitType);
+            }
         }
 
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_FeaturingType(), featuringTypes.size(), featuringTypes.toArray());
