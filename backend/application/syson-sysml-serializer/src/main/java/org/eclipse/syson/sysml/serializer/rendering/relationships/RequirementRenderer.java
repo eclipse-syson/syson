@@ -508,16 +508,24 @@ public final class RequirementRenderer {
     }
 
     /**
-     * Returns the subject membership written as the {@code by} clause: one whose untyped subject has an endpoint path,
-     * or null.
+     * Returns the subject membership written as the {@code by} clause, or null. It has the shape of
+     * {@code satisfactionSubjectMember}: an unidentified, untyped subject whose value designates the satisfying feature. A
+     * declared subject, such as <code>subject participant redefines R::participant;</code>, stays in the body.
      */
     private Relationship satisfactionSubjectMembership(final List<Relationship> bodyRelationships) {
         return bodyRelationships.stream()
                 .filter(SubjectMembership.class::isInstance)
                 .filter(relationship -> this.navigation.ownedRelatedElements(relationship).stream()
-                        .anyMatch(element -> !this.referenceResolver.endpointPath(element).isBlank()
-                                && this.featureTypeNames(element).isEmpty()))
+                        .anyMatch(this::isSatisfactionParameter))
                 .findFirst().orElse(null);
+    }
+
+    /** Tells whether a subject has the shape of {@code satisfactionParameter}, written as the target of {@code by}. */
+    private boolean isSatisfactionParameter(final Element subject) {
+        return !this.referenceResolver.hasIdentification(subject)
+                && !this.navigation.featureValues(subject).isEmpty()
+                && !this.referenceResolver.endpointPath(subject).isBlank()
+                && this.featureTypeNames(subject).isEmpty();
     }
 
     /** Returns the first member of the {@code by} subject membership that has an endpoint path, or null. */
