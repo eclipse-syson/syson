@@ -898,7 +898,7 @@ public abstract class AbstractSysMLEMFParser extends Parser {
     }
 
     private void attachLeadingComments(ParserRuleContext ctx, EObject eObject) {
-        if (ctx == null || ctx.getStart() == null || eObject == null || !(this.getTokenStream() instanceof CommonTokenStream commonTokenStream)) {
+        if (ctx == null || ctx.getStart() == null || eObject == null || isEmptyRule(ctx) || !(this.getTokenStream() instanceof CommonTokenStream commonTokenStream)) {
             return;
         }
         List<Token> hiddenTokens = commonTokenStream.getHiddenTokensToLeft(ctx.getStart().getTokenIndex());
@@ -915,6 +915,16 @@ public abstract class AbstractSysMLEMFParser extends Parser {
                 adapter.addLeadingComment(comment);
             }
         }
+    }
+
+    /**
+     * Tells whether the rule ending now consumed no token, such as {@code portConjugation} or {@code emptyParameterMember}.
+     * Its start token is the next token of the input, so the comments before that token belong to the next element, not
+     * to the element the empty rule builds. The context has no stop token yet when its end action runs.
+     */
+    private boolean isEmptyRule(ParserRuleContext ctx) {
+        Token lastConsumedToken = this.getTokenStream().LT(-1);
+        return lastConsumedToken == null || lastConsumedToken.getTokenIndex() < ctx.getStart().getTokenIndex();
     }
 
     private void attachTrailingComments(ParserRuleContext ctx, EObject eObject) {
