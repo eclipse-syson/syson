@@ -33,6 +33,8 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.sirius.web.application.document.services.LoadingReport;
 import org.eclipse.syson.sysml.dto.ExpressionPropertiesInput;
 import org.eclipse.syson.sysml.dto.FeatureValueExpressionPropertiesInput;
 import org.eclipse.syson.sysml.services.SysMLExpressionEditor;
@@ -179,13 +181,19 @@ public class SysMLSIImportTests {
     @Test
     public void rejectsIncompatibleAndGlobalTargets() {
         var incompatible = this.parse(null, "package model { part def Invalid :> kg; }");
-        assertThat(incompatible.messages()).anyMatch(message -> message.body().contains("kg"));
+        assertThat(incompatible.messages()).anySatisfy(message -> {
+            assertThat(message.body()).contains("kg");
+            assertThat(message.level()).isEqualTo(MessageLevel.WARNING);
+        });
         assertThat(this.all(incompatible.root(), NamespaceImport.class)).isEmpty();
         assertThat(this.all(incompatible.root(), Subclassification.class)).singleElement()
                 .satisfies(specialization -> assertThat(specialization.getSuperclassifier()).isNull());
 
         var global = this.parse(null, "package model { alias mass for $::kg; }");
-        assertThat(global.messages()).isNotEmpty();
+        assertThat(global.messages()).anySatisfy(message -> {
+            assertThat(message.body()).contains("kg");
+            assertThat(message.level()).isEqualTo(MessageLevel.WARNING);
+        });
         assertThat(this.all(global.root(), NamespaceImport.class)).isEmpty();
     }
 
@@ -282,7 +290,10 @@ public class SysMLSIImportTests {
         var result = new SysMLExpressionEditor(this.service).editExpression(this.editingContext(), parent, expression, "50 [g] * unknownUnit", properties);
 
         assertThat(result.createdExpression()).isNull();
-        assertThat(result.messages()).anyMatch(message -> message.body().contains("unknownUnit"));
+        assertThat(result.messages()).anySatisfy(message -> {
+            assertThat(message.body()).contains("unknownUnit");
+            assertThat(message.level()).isEqualTo(MessageLevel.WARNING);
+        });
         assertThat(result.messages()).noneMatch(message -> message.body().contains("resolve name 'g'"));
         assertThat(parent.getOwnedRelationship()).containsExactly(value);
         assertThat(value.getValue()).isSameAs(expression);
@@ -303,7 +314,10 @@ public class SysMLSIImportTests {
         var elements = new SysMLTextImporter(this.service).importSysMLText(this.editingContext(), parent, "attribute mass = 1 [g]; attribute other = unknownUnit;", messages);
 
         assertThat(elements).hasSize(2);
-        assertThat(messages).anyMatch(message -> message.body().contains("unknownUnit"));
+        assertThat(messages).anySatisfy(message -> {
+            assertThat(message.body()).contains("unknownUnit");
+            assertThat(message.level()).isEqualTo(MessageLevel.WARNING);
+        });
         assertThat(messages).noneMatch(message -> message.body().contains("resolve name 'g'"));
         assertThat(this.all(this.root, NamespaceImport.class)).singleElement()
                 .satisfies(namespaceImport -> assertThat(namespaceImport.getImportedNamespace()).isSameAs(this.library));
@@ -320,6 +334,8 @@ public class SysMLSIImportTests {
 
         var loaded = loader.getResource(input, URI.createURI("memory:/uploaded.sysml"), this.context, false).orElseThrow();
 
+        assertThat(loaded.loadingReport()).isInstanceOfSatisfying(LoadingReport.class, report ->
+                assertThat(report.content()).anySatisfy(message -> assertThat(message).startsWith("WARNING: ").contains("unknownUnit")));
         assertThat(this.all(loaded.resource().getContents().getFirst(), NamespaceImport.class)).singleElement()
                 .satisfies(namespaceImport -> assertThat(namespaceImport.getImportedNamespace()).isSameAs(this.library));
         assertThat(this.root.getOwnedRelationship()).isEmpty();

@@ -350,7 +350,7 @@ public class SysMLParsingService {
                 if (diagnostic.getData().size() >= 2 && diagnostic.getData().get(0) instanceof Integer line && diagnostic.getData().get(1) instanceof Integer column) {
                     location = "line " + line + ":" + column + ": ";
                 }
-                Message message = new Message(location + diagnostic.getMessage(), MessageLevel.WARNING);
+                Message message = new Message(location + diagnostic.getMessage(), this.getMessageLevel(diagnostic));
                 if (!messages.contains(message)) {
                     messages.add(message);
                 }
@@ -358,5 +358,39 @@ public class SysMLParsingService {
         } else {
             diagnostic.getChildren().forEach(child -> this.addDiagnostics(child, messages));
         }
+    }
+
+    /**
+     * Gets the {@link MessageLevel} for the given {@link Diagnostic}.
+     *
+     * @param diagnostic
+     *            the {@link Diagnostic}
+     * @return the {@link MessageLevel} for the given {@link Diagnostic}
+     */
+    private MessageLevel getMessageLevel(Diagnostic diagnostic) {
+        MessageLevel result;
+
+        switch (diagnostic.getSeverity()) {
+            case Diagnostic.OK:
+                result = MessageLevel.SUCCESS;
+                break;
+
+            case Diagnostic.INFO:
+                result = MessageLevel.INFO;
+                break;
+
+            case Diagnostic.WARNING:
+                result = MessageLevel.WARNING;
+                break;
+
+            case Diagnostic.ERROR:
+                result = MessageLevel.ERROR;
+                break;
+
+            default:
+                result = MessageLevel.ERROR;
+        }
+
+        return result;
     }
 }

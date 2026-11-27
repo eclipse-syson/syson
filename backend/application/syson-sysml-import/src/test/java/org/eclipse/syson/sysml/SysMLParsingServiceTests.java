@@ -38,6 +38,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.application.configuration.SysONDefaultLibrariesConfiguration;
 import org.eclipse.syson.application.configuration.SysONLoadDefaultLibrariesOnApplicationStartConfiguration;
 import org.eclipse.syson.sysml.dto.ExpressionPropertiesInput;
@@ -217,14 +218,20 @@ public class SysMLParsingServiceTests {
     public void reportsSyntaxAndUnresolvedNames() {
         var unresolved = this.parse(this.context(), null, "package P { part p : Missing; }");
         assertThat(unresolved.root()).isNotNull();
-        assertThat(unresolved.messages()).anySatisfy(message -> assertThat(message.body()).contains("Missing"));
+        assertThat(unresolved.messages()).anySatisfy(message -> {
+            assertThat(message.body()).contains("Missing");
+            assertThat(message.level()).isEqualTo(MessageLevel.WARNING);
+        });
         assertThat(this.all(unresolved.root(), FeatureTyping.class)).singleElement().satisfies(typing -> assertThat(typing.getType()).isNull());
         var unsupported = this.parse(this.context(), null, "package P; class C;");
-        assertThat(unsupported.messages()).anySatisfy(message -> assertThat(message.body()).contains("line 1:"));
+        assertThat(unsupported.messages()).anySatisfy(message -> {
+            assertThat(message.body()).contains("line 1:");
+            assertThat(message.level()).isEqualTo(MessageLevel.ERROR);
+        });
         var malformed = this.parse(this.context(), null, "package P { part a; @@@ }");
-        assertThat(malformed.messages()).isNotEmpty();
+        assertThat(malformed.messages()).anyMatch(message -> message.level() == MessageLevel.ERROR);
         var recovered = this.parse(this.context(), null, "package Recovered { part a;; part b; }");
-        assertThat(recovered.messages()).isNotEmpty();
+        assertThat(recovered.messages()).anyMatch(message -> message.level() == MessageLevel.ERROR);
         assertThat(recovered.root()).isNotNull();
         assertThat(this.all(recovered.root(), PartUsage.class)).extracting(PartUsage::getDeclaredName).containsExactly("a", "b");
     }
@@ -238,7 +245,10 @@ public class SysMLParsingServiceTests {
         var result = this.parse(this.context(), null, "action A { join j; first start then j; then done; }");
 
         assertThat(result.root()).isNotNull();
-        assertThat(result.messages()).anySatisfy(message -> assertThat(message.body()).contains("line 1:", "then"));
+        assertThat(result.messages()).anySatisfy(message -> {
+            assertThat(message.body()).contains("line 1:", "then");
+            assertThat(message.level()).isEqualTo(MessageLevel.ERROR);
+        });
     }
 
     @DisplayName("GIVEN a then succession without a semicolon, WHEN importing an action definition, THEN the succession target still resolves")
@@ -254,7 +264,10 @@ public class SysMLParsingServiceTests {
                 }
                 """);
 
-        assertThat(result.messages()).singleElement().satisfies(message -> assertThat(message.body()).contains("line 5:4:", "expecting {';', '{'}"));
+        assertThat(result.messages()).singleElement().satisfies(message -> {
+            assertThat(message.body()).contains("line 5:4:", "expecting {';', '{'}");
+            assertThat(message.level()).isEqualTo(MessageLevel.ERROR);
+        });
         var definition = this.all(result.root(), ActionDefinition.class).getFirst();
         var target = this.all(definition, ActionUsage.class).stream().filter(action -> "x".equals(action.getDeclaredName())).findFirst().orElseThrow();
         assertThat(this.all(definition, SuccessionAsUsage.class)).singleElement().satisfies(succession -> {
@@ -339,7 +352,10 @@ public class SysMLParsingServiceTests {
     public void reportsTrailingInputAtOriginalLocation() {
         var result = this.parse(this.context(), null, "import Missing::*;\nimport Other::*;\n}");
 
-        assertThat(result.messages()).anySatisfy(message -> assertThat(message.body()).contains("line 3:0: Unexpected trailing input '}'"));
+        assertThat(result.messages()).anySatisfy(message -> {
+            assertThat(message.body()).contains("line 3:0: Unexpected trailing input '}'");
+            assertThat(message.level()).isEqualTo(MessageLevel.ERROR);
+        });
     }
 
     /**
@@ -388,7 +404,10 @@ public class SysMLParsingServiceTests {
         var result = new SysMLExpressionEditor(this.parsingService).editExpression(editingContext, attribute, expression, "unknownName", properties);
 
         assertThat(result.createdExpression()).isNull();
-        assertThat(result.messages()).isNotEmpty();
+        assertThat(result.messages()).anySatisfy(message -> {
+            assertThat(message.body()).contains("unknownName");
+            assertThat(message.level()).isEqualTo(MessageLevel.WARNING);
+        });
         assertThat(attribute.getOwnedRelationship()).containsExactly(value);
         assertThat(value.getOwnedRelatedElement()).containsExactly(expression);
         assertThat(value.isIsDefault()).isTrue();
