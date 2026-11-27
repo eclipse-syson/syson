@@ -190,7 +190,7 @@ public final class DefinitionAndUsageRenderer {
         }
         final String portionKind = this.flags.portionKind(element);
         if (!portionKind.isBlank()) {
-            keyword = this.portionDeclarationKeyword(portionKind, keyword);
+            keyword = this.portionDeclarationKeyword(element, portionKind, keyword);
         }
         if (this.flags.isEnd(element)) {
             keyword = SysMLTokens.END_KEYWORD;
@@ -214,13 +214,14 @@ public final class DefinitionAndUsageRenderer {
 
     /**
      * Combines the portion kind with the metaclass keyword; for plain occurrences the portion kind alone is the
-     * keyword.
+     * keyword, unless the source wrote {@code occurrence} after it ({@code timeslice occurrence phase}).
      */
-    private String portionDeclarationKeyword(final String portionKind,
+    private String portionDeclarationKeyword(final Element element, final String portionKind,
             final String keyword) {
         String declarationKeyword = portionKind;
         if (!keyword.isBlank()
-                && !SysMLTokens.OCCURRENCE_KEYWORD.equals(keyword)) {
+                && (!SysMLTokens.OCCURRENCE_KEYWORD.equals(keyword)
+                        || this.adapters.hasTextAdapter(element, ITextAdapter.PORTION_KIND_BEFORE_USAGE_KEYWORD))) {
             declarationKeyword = portionKind + SysMLTokens.SPACE + keyword;
         }
         return declarationKeyword;

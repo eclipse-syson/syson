@@ -341,6 +341,10 @@ public abstract class AbstractSysMLEMFParser extends Parser {
         this.attach(ITextAdapter.COMPACT_INDIVIDUAL_USAGE);
     }
 
+    protected void attachPortionKindBeforeUsageKeyword() {
+        this.attach(ITextAdapter.PORTION_KIND_BEFORE_USAGE_KEYWORD);
+    }
+
     protected void attachMetadataAtSign() {
         this.attach(ITextAdapter.METADATA_AT_SIGN);
     }

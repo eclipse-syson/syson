@@ -926,7 +926,7 @@ occurrenceUsageKeyword:
 occurrenceUsagePrefix:
 	(
 		endUsagePrefix
-		| basicUsagePrefix ('individual' {setTrue(occurrenceUsage_IsIndividual());})? (portionKind {set(occurrenceUsage_PortionKind());})?
+		| basicUsagePrefix ('individual' {setTrue(occurrenceUsage_IsIndividual());})? (portionKind {set(occurrenceUsage_PortionKind());} {attachPortionKindBeforeUsageKeyword();})?
 	) usageExtensionKeyword*
 ;
 
