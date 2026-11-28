@@ -24,4 +24,6 @@ public class ModelConfigurationTestProjectData {
     public static final String EDITING_CONTEXT_ID = "7c7f188c-3a29-40f6-9993-fbac59824caa";
 
     public static final String PACKAGE_ID = "91de7c88-472b-41ab-87a9-2d047ae8d42b";
+
+    public static final String PART_1_ID = "9cbdb3f6-2274-452a-95b9-6909d2990e98";
 }
